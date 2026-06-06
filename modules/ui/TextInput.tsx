@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TextInput as RNTextInput, View, type TextInputProps as RNTextInputProps } from "react-native";
 
+import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
 import { Text } from "./Text";
@@ -23,6 +24,7 @@ export function TextInput({
   onBlur,
   ...rest
 }: TextInputProps) {
+  const t = useThemeTokens();
   const [focused, setFocused] = useState(false);
 
   return (
@@ -33,8 +35,8 @@ export function TextInput({
         </Text>
       ) : null}
       <RNTextInput
-        // placeholderTextColor needs a raw color (no className) — text-disabled token value
-        placeholderTextColor="#9ca3af"
+        // placeholderTextColor needs a raw color (no className) — themed text-disabled
+        placeholderTextColor={t["text-disabled"]}
         onFocus={(e) => {
           setFocused(true);
           onFocus?.(e);

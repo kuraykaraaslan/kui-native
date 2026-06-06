@@ -1,5 +1,6 @@
 import { ActivityIndicator, View } from "react-native";
 
+import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
 type SpinnerSize = "sm" | "md" | "lg";
@@ -12,19 +13,20 @@ const rnSize: Record<SpinnerSize, "small" | "large"> = {
 
 export type SpinnerProps = {
   size?: SpinnerSize;
-  /** Raw color (ActivityIndicator has no className). Defaults to the primary token value. */
+  /** Override color (defaults to the primary token for the active theme). */
   color?: string;
   className?: string;
 };
 
-export function Spinner({ size = "md", color = "#3b82f6", className }: SpinnerProps) {
+export function Spinner({ size = "md", color, className }: SpinnerProps) {
+  const t = useThemeTokens();
   return (
     <View
       accessibilityRole="progressbar"
       accessibilityLabel="Loading"
       className={cn("items-center justify-center", className)}
     >
-      <ActivityIndicator size={rnSize[size]} color={color} />
+      <ActivityIndicator size={rnSize[size]} color={color ?? t.primary} />
     </View>
   );
 }

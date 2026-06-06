@@ -1,5 +1,6 @@
 import { Switch as RNSwitch, View } from "react-native";
 
+import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
 import { Text } from "./Text";
@@ -13,6 +14,7 @@ export type SwitchProps = {
 };
 
 export function Switch({ value, onValueChange, label, disabled = false, className }: SwitchProps) {
+  const t = useThemeTokens();
   return (
     <View
       className={cn("flex-row items-center justify-between gap-3", disabled && "opacity-50", className)}
@@ -29,8 +31,8 @@ export function Switch({ value, onValueChange, label, disabled = false, classNam
         accessibilityRole="switch"
         accessibilityLabel={label}
         accessibilityState={{ checked: value, disabled }}
-        // Switch needs raw color props (no className) — primary / border-strong token values
-        trackColor={{ true: "#3b82f6", false: "#d1d5db" }}
+        // RNSwitch needs raw colors (no className): themed track, white knob (convention)
+        trackColor={{ true: t.primary, false: t["border-strong"] }}
         thumbColor="#ffffff"
       />
     </View>

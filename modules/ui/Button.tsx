@@ -1,6 +1,7 @@
 import type * as React from "react";
 import { ActivityIndicator, Pressable, Text } from "react-native";
 
+import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "destructive";
@@ -57,6 +58,7 @@ export function Button({
   iconLeft,
   className,
 }: ButtonProps) {
+  const t = useThemeTokens();
   const isDisabled = disabled || loading;
   const lightSpinner = variant !== "outline" && variant !== "ghost";
 
@@ -77,7 +79,7 @@ export function Button({
       )}
     >
       {loading ? (
-        <ActivityIndicator size="small" color={lightSpinner ? "#ffffff" : "#3b82f6"} />
+        <ActivityIndicator size="small" color={lightSpinner ? t["primary-fg"] : t.primary} />
       ) : (
         iconLeft
       )}

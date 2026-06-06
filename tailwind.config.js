@@ -4,7 +4,7 @@ const { colors } = require("./libs/utils/tailwind-tokens");
 module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./modules/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
-  darkMode: "media",
+  darkMode: "class",
   theme: {
     extend: {
       colors,

@@ -2,6 +2,7 @@ import { Pressable, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
 
+import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
 import { Text } from "./Text";
@@ -23,6 +24,7 @@ export function Checkbox({
   disabled = false,
   className,
 }: CheckboxProps) {
+  const t = useThemeTokens();
   const active = checked || indeterminate;
 
   return (
@@ -41,7 +43,7 @@ export function Checkbox({
         )}
       >
         {active ? (
-          <FontAwesomeIcon icon={indeterminate ? faMinus : faCheck} size={12} color="#ffffff" />
+          <FontAwesomeIcon icon={indeterminate ? faMinus : faCheck} size={12} color={t["primary-fg"]} />
         ) : null}
       </View>
       {label ? <Text variant="label">{label}</Text> : null}

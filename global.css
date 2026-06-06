@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 /*
- * Semantic design tokens — mirrors $KUIREACT_ROOT/app/globals.css 1:1 so the
- * React Native palette matches the web KUIREACT library. NativeWind v4 reads
- * these CSS variables; dark values swap automatically with the OS color scheme
- * via @media(prefers-color-scheme). Token names are consumed in tailwind.config
+ * Light-mode fallback values for the semantic tokens. The actual theme is driven
+ * at runtime by NativeWind `vars()` applied at the app root (see libs/theme.ts),
+ * which lets the in-app toggle switch light/dark/system. Values mirror
+ * $KUIREACT_ROOT/app/globals.css. Token names are consumed in tailwind.config.js
  * (libs/utils/tailwind-tokens.js) as var(--color-*).
  */
 :root {
@@ -51,50 +51,4 @@
   --color-info: #06b6d4;
   --color-info-subtle: #ecfeff;
   --color-info-fg: #164e63;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-primary: #60a5fa;
-    --color-primary-hover: #93c5fd;
-    --color-primary-active: #1d4ed8;
-    --color-primary-subtle: #1e3a5f;
-    --color-primary-fg: #ffffff;
-
-    --color-secondary: #a78bfa;
-    --color-secondary-hover: #c4b5fd;
-    --color-secondary-active: #7c3aed;
-    --color-secondary-subtle: #2e1065;
-    --color-secondary-fg: #ffffff;
-
-    --color-surface-base: #0f172a;
-    --color-surface-raised: #1e293b;
-    --color-surface-overlay: #334155;
-    --color-surface-sunken: #1e293b;
-
-    --color-text-primary: #f1f5f9;
-    --color-text-secondary: #94a3b8;
-    --color-text-disabled: #475569;
-    --color-text-inverse: #111827;
-
-    --color-border: #334155;
-    --color-border-strong: #475569;
-    --color-border-focus: #60a5fa;
-
-    --color-success: #4ade80;
-    --color-success-subtle: #052e16;
-    --color-success-fg: #bbf7d0;
-
-    --color-warning: #fbbf24;
-    --color-warning-subtle: #451a03;
-    --color-warning-fg: #fef3c7;
-
-    --color-error: #f87171;
-    --color-error-subtle: #450a0a;
-    --color-error-fg: #fee2e2;
-
-    --color-info: #22d3ee;
-    --color-info-subtle: #083344;
-    --color-info-fg: #cffafe;
-  }
 }

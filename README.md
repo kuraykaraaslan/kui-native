@@ -16,8 +16,11 @@ semantic design tokens so the palette matches the web library 1:1.
 - **Semantic tokens** (KUIREACT-style): `bg-primary`, `text-text-primary`, `border-border`, …
   defined as CSS variables in [`global.css`](./global.css), mapped in
   [`tailwind.config.js`](./tailwind.config.js) via [`libs/utils/tailwind-tokens.js`](./libs/utils/tailwind-tokens.js)
-- **Dark mode**: automatic — values swap with the OS color scheme via
-  `@media(prefers-color-scheme: dark)` in `global.css` (no per-component `dark:` needed)
+- **Dark mode**: runtime **light / dark / system** toggle (header button) via NativeWind
+  `vars()` applied at the app root (`libs/theme.ts`); component raw colors (Switch track,
+  Spinner, placeholder…) follow it through `useThemeTokens()`
+- **Showcase**: searchable, category-grouped home with live preview cards; each detail screen
+  shows the variants in a canvas plus a copy-able usage snippet
 
 ## Run (on Windows — Android Studio lives here)
 
@@ -68,7 +71,7 @@ images, semantic token classes only (raw colors appear only where an RN prop has
 
 1. Create `modules/ui/MyThing.tsx` (named export, variant/size maps, `cn()`, a11y props).
 2. Export it from `modules/ui/index.ts`.
-3. Add an entry to `modules/showcase/registry.tsx` so it appears in the showcase.
+3. Add an entry to `modules/showcase/registry.tsx` (`id`, `title`, `category`, `description`, `icon`, `usage`, `preview`, `variants`) so it appears in the showcase.
 
 ## Notes
 
