@@ -21,26 +21,18 @@ semantic design tokens so the palette matches the web library 1:1.
 
 ## Run (on Windows — Android Studio lives here)
 
-Expo uses **SDK-aligned versioning** (every `expo-*` / `react-native-*` package tracks the
-SDK), so let the Expo CLI pin those — don't hand-write their versions.
+All dependencies are pinned at **Expo SDK 55** versions (from the SDK's
+`bundledNativeModules`), so a single install is enough.
 
 ```bash
-# 1. install the proven core (expo + react/react-native + non-Expo libs)
 npm install
-
-# 2. let Expo add the SDK-correct versions of the router / RN packages
-npx expo install expo-router expo-constants expo-linking expo-status-bar expo-image \
-  react-native-safe-area-context react-native-screens react-native-gesture-handler \
-  react-native-reanimated react-native-svg react-native-web
-
-# 3. run it
 npm run web        # fastest preview
 # or: npm run android   (Android emulator / device)
 ```
 
-> If step 1 errors with `ERESOLVE`, retry `npm install --legacy-peer-deps`; then after step 2
-> run `npx expo install --fix` to realign every package to the installed SDK. This project
-> lives on the Windows filesystem because React Native / Android tooling (Android Studio,
+> If `npm install` errors with `ERESOLVE`, retry `npm install --legacy-peer-deps`, then
+> `npx expo install --fix` to realign every package to the installed SDK. This project lives
+> on the Windows filesystem because React Native / Android tooling (Android Studio,
 > emulators) runs on Windows — run all `npm`/`expo` commands from Windows, not WSL.
 
 ## Structure (mirrors KUIREACT)
