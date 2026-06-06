@@ -14,7 +14,7 @@ export default function ComponentDetail() {
   if (!entry) {
     return (
       <View className="flex-1 bg-surface-base">
-        <Header title="Not found" back />
+        <Header title="Not found" />
         <EmptyState title="Not found" description={`No component "${id}".`} />
       </View>
     );
@@ -22,7 +22,7 @@ export default function ComponentDetail() {
 
   return (
     <View className="flex-1 bg-surface-base">
-      <Header title={entry.title} back />
+      <Header title={entry.title} />
       <SafeAreaView edges={["bottom"]} className="flex-1">
         <ScrollView contentContainerClassName="p-4 gap-5" keyboardShouldPersistTaps="handled">
           <View className="gap-2">

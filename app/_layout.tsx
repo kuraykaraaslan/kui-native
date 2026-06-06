@@ -9,6 +9,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { themes, useResolvedScheme } from "@/libs/theme";
+import { AppDrawer } from "@/modules/showcase/ui/AppDrawer";
 
 function ThemedRoot() {
   const scheme = useResolvedScheme();
@@ -22,6 +23,7 @@ function ThemedRoot() {
     <View style={themes[scheme]} className="flex-1 bg-surface-base">
       <StatusBar style={scheme === "dark" ? "light" : "dark"} />
       <Stack screenOptions={{ headerShown: false }} />
+      <AppDrawer />
     </View>
   );
 }

@@ -19,8 +19,9 @@ semantic design tokens so the palette matches the web library 1:1.
 - **Dark mode**: runtime **light / dark / system** toggle (header button) via NativeWind
   `vars()` applied at the app root (`libs/theme.ts`); component raw colors (Switch track,
   Spinner, placeholder…) follow it through `useThemeTokens()`
-- **Showcase**: searchable, category-grouped home with live preview cards; each detail screen
-  shows the variants in a canvas plus a copy-able usage snippet
+- **Showcase**: a KUIreact-style landing homepage + a slide-in **drawer** (brand, search,
+  category-grouped component nav) that opens each component's detail screen — variants in a
+  canvas plus a copy-able usage snippet
 
 ## Run (on Windows — Android Studio lives here)
 
@@ -43,11 +44,12 @@ npm run web        # fastest preview
 ```
 app/                      Expo Router — the showcase host
   _layout.tsx             SafeAreaProvider + GestureHandler, imports global.css
-  index.tsx               component list
-  component/[id].tsx      component detail (renders variants)
+  index.tsx               KUIreact-style landing homepage
+  component/[id].tsx      component detail (variants canvas + usage code)
 modules/
   ui/                     THE LIBRARY — 12 components + index.ts barrel
-  showcase/registry.tsx   showcase metadata (id, title, category, variants)
+  showcase/registry.tsx   component metadata (usage, preview, variants)
+  showcase/ui/            Sidebar (drawer), AppDrawer, Header, ThemeToggle, CodeBlock
 libs/
   utils/cn.ts             twMerge(clsx()) — identical to KUIREACT
   utils/tailwind-tokens.js semantic color tokens → var(--color-*)
