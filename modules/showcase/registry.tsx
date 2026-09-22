@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faCube,
+  faCircleQuestion,
   faCalendarDays,
   faCalendarWeek,
   faSliders,
@@ -90,6 +92,8 @@ import {
   DatePicker,
   DateRangePicker,
   type DateRange,
+  BrandLogo,
+  Popconfirm,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1951,6 +1955,44 @@ export const REGISTRY: ShowcaseEntry[] = [
     ],
   },
   {
+    id: "brand-logo",
+    title: "BrandLogo",
+    category: "Atoms",
+    icon: faCube,
+    description: "Square brand mark with rounded corners. Renders a single letter or short token on a primary-coloured tile. 5 sizes (sm → 2xl).",
+    usage: `<BrandLogo size="md">B</BrandLogo>`,
+    preview: () => <BrandLogo size="sm">K</BrandLogo>,
+    // Mirrors KuiReact's BrandLogo showcase variants 1:1 (same titles and content).
+    variants: [
+      {
+        title: "Default sizes",
+        Demo: () => (
+          <View className="flex-row items-end gap-3">
+            <BrandLogo size="sm">A</BrandLogo>
+            <BrandLogo size="md">B</BrandLogo>
+            <BrandLogo size="lg">C</BrandLogo>
+            <BrandLogo size="xl">D</BrandLogo>
+            <BrandLogo size="2xl">E</BrandLogo>
+          </View>
+        ),
+      },
+      {
+        title: "Custom content",
+        Demo: () => (
+          <View className="flex-row items-center gap-3">
+            <BrandLogo size="lg">KU</BrandLogo>
+            <BrandLogo size="lg" className="bg-secondary">
+              N
+            </BrandLogo>
+            <BrandLogo size="lg" className="bg-success">
+              ✓
+            </BrandLogo>
+          </View>
+        ),
+      },
+    ],
+  },
+  {
     id: "tab-group",
     title: "TabGroup",
     category: "Atoms",
@@ -2157,6 +2199,35 @@ export const REGISTRY: ShowcaseEntry[] = [
               <Button>Delayed</Button>
             </Tooltip>
           </View>
+        ),
+      },
+    ],
+  },
+  {
+    id: "popconfirm",
+    title: "Popconfirm",
+    category: "Overlays",
+    icon: faCircleQuestion,
+    description: "Inline \"are you sure?\" confirmation popover for destructive or consequential actions — lighter-weight than a full Modal.",
+    usage: `<Popconfirm trigger={<Button variant="outline">Log out</Button>} title="Log out of your account?" onConfirm={logOut} />`,
+    preview: () => <Button variant="danger" size="sm">Delete</Button>,
+    // Mirrors KuiReact's Popconfirm showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Default",
+        Demo: () => <Popconfirm trigger={<Button variant="outline">Log out</Button>} title="Log out of your account?" onConfirm={() => {}} />,
+      },
+      {
+        title: "Danger + description",
+        Demo: () => (
+          <Popconfirm
+            trigger={<Button variant="danger">Delete project</Button>}
+            title="Delete this project?"
+            description="This action cannot be undone. All data will be permanently removed."
+            danger
+            confirmLabel="Delete"
+            onConfirm={() => {}}
+          />
         ),
       },
     ],
