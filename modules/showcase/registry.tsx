@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faCirclePlay,
   faMapLocationDot,
   faChartLine,
   faCodeCompare,
@@ -144,6 +145,7 @@ import {
   DonutChart,
   SparkLine,
   MapView,
+  VideoPlayer,
   type MapMarker,
   type MapRoute,
   type MapZone,
@@ -542,6 +544,48 @@ const MAP_ROUTES: MapRoute[] = [
     weight: 3,
     dashed: true,
   },
+];
+
+// KuiReact's VideoPlayer demo media (verbatim). KuiReact turns the VTT text
+// into Blob URLs; RN can't load those, so they become data: URIs.
+const VIDEO_PLACEHOLDER = "https://placeholdervideo.dev/1920x1080";
+const VIDEO_EN_VTT = `WEBVTT
+
+00:00:01.000 --> 00:00:04.500
+Welcome to the custom HTML5 video player.
+
+00:00:05.000 --> 00:00:09.000
+Press the gear icon to open settings.
+
+00:00:09.500 --> 00:00:13.500
+You can change quality, speed, language,
+and subtitle font size.
+
+00:00:14.000 --> 00:00:18.000
+Keyboard shortcuts: Space=play, ←→=seek,
+↑↓=volume, M=mute, F=fullscreen.
+`;
+
+const VIDEO_TR_VTT = `WEBVTT
+
+00:00:01.000 --> 00:00:04.500
+Özel HTML5 video oynatıcıya hoş geldiniz.
+
+00:00:05.000 --> 00:00:09.000
+Ayarlar menüsünü açmak için dişli simgesine basın.
+
+00:00:09.500 --> 00:00:13.500
+Kalite, hız, dil ve altyazı boyutunu
+ayarlayabilirsiniz.
+
+00:00:14.000 --> 00:00:18.000
+Klavye kısayolları: Boşluk=oynat, ←→=ileri/geri,
+↑↓=ses, M=sessiz, F=tam ekran.
+`;
+const vttUri = (content: string) => `data:text/vtt,${encodeURIComponent(content)}`;
+const VIDEO_SUBTITLES = [
+  { label: "English", srclang: "en", src: vttUri(VIDEO_EN_VTT) },
+  { label: "Türkçe", srclang: "tr", src: vttUri(VIDEO_TR_VTT) },
 ];
 
 const COMBO_OPTIONS: ComboBoxOption[] = [
@@ -3483,6 +3527,71 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "Yalnız zone ve rota",
         Demo: () => <MapView center={[39.5, 35.0]} zoom={5} zones={MAP_ZONES} routes={MAP_ROUTES} height={380} />,
+      },
+    ],
+  },
+  {
+    id: "video-player",
+    title: "VideoPlayer",
+    category: "Atoms",
+    icon: faCirclePlay,
+    description: "Custom-controls video player: seek bar with buffered range, volume, speed, quality, subtitle (with font size) and audio-language settings, fullscreen and auto-hiding controls.",
+    usage: `<VideoPlayer src="video.mp4" title="Video Title" subtitles={subtitles} />`,
+    preview: () => (
+      <View className="h-16 w-full items-center justify-center rounded-md bg-black">
+        <FontAwesomeIcon icon={faCirclePlay} size={22} color="#ffffff" />
+      </View>
+    ),
+    // Mirrors KuiReact's VideoPlayer showcase variants 1:1 (same titles, media and copy).
+    variants: [
+      {
+        title: "Full featured (kalite + altyazı + dil)",
+        Demo: function FullFeaturedDemo() {
+          const [log, setLog] = useState("—");
+          return (
+            <View className="w-full max-w-2xl gap-3">
+              <VideoPlayer
+                src={VIDEO_PLACEHOLDER}
+                title="Placeholder Video — Full Features Demo"
+                qualities={[
+                  { label: "1080p HD", value: "1080" },
+                  { label: "720p", value: "720" },
+                  { label: "480p", value: "480" },
+                  { label: "360p", value: "360" },
+                  { label: "Auto", value: "auto" },
+                ]}
+                defaultQuality="auto"
+                subtitles={VIDEO_SUBTITLES}
+                audioTracks={[
+                  { label: "English", language: "en" },
+                  { label: "Türkçe", language: "tr" },
+                  { label: "Français", language: "fr" },
+                ]}
+                onQualityChange={(v) => setLog(`Quality → ${v}`)}
+                onAudioTrackChange={(i) => setLog(`Audio track → ${i}`)}
+              />
+              <Text className="text-xs text-text-secondary">
+                <Text className="text-xs font-semibold text-text-primary">Son callback:</Text> {log}
+              </Text>
+            </View>
+          );
+        },
+      },
+      {
+        title: "Subtitle + Font Boyutu",
+        Demo: () => (
+          <View className="w-full max-w-xl">
+            <VideoPlayer src={VIDEO_PLACEHOLDER} title="Placeholder Video — Subtitle Demo" subtitles={VIDEO_SUBTITLES} />
+          </View>
+        ),
+      },
+      {
+        title: "Minimal (sadece oynatma hızı)",
+        Demo: () => (
+          <View className="w-full max-w-lg">
+            <VideoPlayer src={VIDEO_PLACEHOLDER} />
+          </View>
+        ),
       },
     ],
   },

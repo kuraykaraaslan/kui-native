@@ -135,6 +135,8 @@ export type { TooltipProps } from "./Tooltip";
 export { Timeline } from "./Timeline";
 export { TreeView } from "./TreeView";
 export type { NodeId, SelectionMode, TreeNode, TreeViewMessages, TreeViewProps } from "./TreeView";
+export { VideoPlayer } from "./VideoPlayer";
+export type { AudioTrackOption, QualityOption, SubtitleTrack, VideoPlayerProps } from "./VideoPlayer";
 export { ViewToggle } from "./ViewToggle";
 export type { ViewOrientation, ViewToggleProps } from "./ViewToggle";
 export { TimePicker } from "./TimePicker";
