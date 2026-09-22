@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react";
 import type * as React from "react";
 import { router, usePathname } from "expo-router";
-import { Pressable, ScrollView, TextInput, View } from "react-native";
+import { Pressable, ScrollView, TextInput, View, type ViewStyle } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faHouse, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faHouse, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useThemeTokens } from "@/libs/theme";
+import { FONTS } from "@/libs/utils/typography";
 import { Text } from "@/modules/ui";
 
 import {
@@ -83,41 +84,61 @@ const ABBR: Record<string, string> = {
   modal: "Md",
 };
 
-const categoryBadge: Record<ShowcaseCategory, string> = {
-  Atoms: "bg-info-subtle",
-  Forms: "bg-primary-subtle",
-  Feedback: "bg-success-subtle",
-  Overlays: "bg-warning-subtle",
-};
-const categoryBadgeText: Record<ShowcaseCategory, string> = {
-  Atoms: "text-info-fg",
-  Forms: "text-primary",
-  Feedback: "text-success-fg",
-  Overlays: "text-warning-fg",
-};
+/**
+ * The showcase navigation, 1:1 with kui-react (ShowcaseShell + AppSidebar +
+ * SidebarBrand) and kui-ejs (views/showcase/partials/sidebar.ejs) — every
+ * class below is the web class of the same element there. Change all three
+ * together.
+ */
+
+// Web text below 12px inherits line-height 1.5 from its parent (15px at
+// 10px); RN has no inheritance, so those lines set leading-[15px] explicitly.
+
+/** FontAwesome's web box: `.svg-inline--fa` renders 1.25em x 1em (20x16 at
+ *  16px) and wins over the w-3/w-4 utilities in KuiReact, so every chrome
+ *  icon there is a 16px glyph centred in a 20x16 box. */
+function FaBox({ children, style }: { children: React.ReactNode; style?: ViewStyle }) {
+  return (
+    <View style={style} className="h-4 w-5 items-center justify-center">
+      {children}
+    </View>
+  );
+}
+
+/** Icon slot: KuiReact's `shrink-0 w-5` span. The 24px abbr badge inside it
+ *  overflows 4px into the gap on the web, so the label starts 30px in. */
+function IconSlot({ children }: { children: React.ReactNode }) {
+  return <View className="w-5 shrink-0 items-start justify-center overflow-visible">{children}</View>;
+}
 
 function NavRow({
   active,
-  children,
+  label,
+  icon,
   onPress,
-  accessibilityLabel,
 }: {
   active: boolean;
-  children: React.ReactNode;
+  label: string;
+  icon: React.ReactNode;
   onPress: () => void;
-  accessibilityLabel: string;
 }) {
   return (
     <Pressable
       onPress={onPress}
-      accessibilityRole="button"
+      accessibilityRole="link"
       accessibilityState={{ selected: active }}
-      accessibilityLabel={accessibilityLabel}
-      className={`flex-row items-center gap-3 rounded-lg px-3 py-2 active:opacity-80 ${
-        active ? "bg-primary-subtle" : ""
+      accessibilityLabel={label}
+      className={`w-full flex-row items-center gap-2.5 rounded-lg px-3 py-2 ${
+        active ? "bg-primary-subtle" : "active:bg-surface-overlay"
       }`}
     >
-      {children}
+      <IconSlot>{icon}</IconSlot>
+      <Text
+        numberOfLines={1}
+        className={`flex-1 text-sm ${active ? "font-medium text-primary" : "font-normal text-text-secondary"}`}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 }
@@ -127,22 +148,28 @@ export function Sidebar() {
   const pathname = usePathname();
   const close = useDrawer((s) => s.close);
   const [query, setQuery] = useState("");
+  const [collapsed, setCollapsed] = useState<Set<ShowcaseCategory>>(() => new Set());
 
   const activeId = pathname.startsWith("/component/") ? pathname.split("/").pop() : null;
   const homeActive = pathname === "/";
 
+  // KuiReact's AppSidebar filters on the item label only.
   const groups = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const matches = q
-      ? REGISTRY.filter(
-          (e) => e.title.toLowerCase().includes(q) || e.description.toLowerCase().includes(q),
-        )
-      : REGISTRY;
+    const matches = q ? REGISTRY.filter((e) => e.title.toLowerCase().includes(q)) : REGISTRY;
     return CATEGORY_ORDER.map((category) => ({
       category,
       items: matches.filter((e) => e.category === category),
     })).filter((g) => g.items.length > 0);
   }, [query]);
+
+  const toggle = (category: ShowcaseCategory) =>
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(category)) next.delete(category);
+      else next.add(category);
+      return next;
+    });
 
   const go = (path: Parameters<typeof router.navigate>[0]) => {
     close();
@@ -151,121 +178,148 @@ export function Sidebar() {
 
   return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-surface-raised">
-      {/* Brand header */}
-      <View className="h-14 flex-row items-center gap-2.5 border-b border-border px-4">
-        <BrandMark size={28} />
-        <View>
-          <Text variant="label" className="font-semibold leading-tight">
-            KUInative
-          </Text>
-          <Text variant="caption">Component library</Text>
+      {/* Header — SidebarBrand in the Drawer's h-14 header bar */}
+      <View className="h-14 flex-row items-center gap-3 border-b border-border px-4">
+        <View className="min-w-0 flex-1 flex-row items-center gap-2.5">
+          <BrandMark size={28} />
+          <View className="min-w-0 flex-1">
+            <Text numberOfLines={1} className="text-sm font-semibold text-text-primary">
+              KUInative
+            </Text>
+            <Text numberOfLines={1} className="text-xs font-normal text-text-secondary">
+              Component library
+            </Text>
+          </View>
         </View>
+        <Pressable
+          onPress={close}
+          accessibilityRole="button"
+          accessibilityLabel="Close drawer"
+          hitSlop={6}
+          className="rounded p-1.5 active:bg-surface-overlay"
+        >
+          {/* KuiReact's inline svg sits 1px above the bar's centre (baseline + vertical-align). */}
+          <FaBox style={{ transform: [{ translateY: -1 }] }}>
+            <FontAwesomeIcon icon={faXmark} size={16} color={t["text-secondary"]} />
+          </FaBox>
+        </Pressable>
       </View>
 
       {/* Search */}
       <View className="border-b border-border px-3 py-2">
-        <View className="flex-row items-center gap-2 rounded-md border border-border bg-surface-base px-2.5">
-          <FontAwesomeIcon icon={faMagnifyingGlass} size={12} color={t["text-secondary"]} />
+        <View className="relative justify-center">
+          <View pointerEvents="none" className="absolute left-2.5 z-10">
+            <FaBox>
+              <FontAwesomeIcon icon={faMagnifyingGlass} size={16} color={t["text-disabled"]} />
+            </FaBox>
+          </View>
           <TextInput
             value={query}
             onChangeText={setQuery}
-            placeholder="Search components…"
+            onKeyPress={(e) => {
+              if (e.nativeEvent.key === "Escape") setQuery("");
+            }}
+            placeholder="Search…"
             placeholderTextColor={t["text-disabled"]}
             autoCapitalize="none"
             autoCorrect={false}
-            className="flex-1 py-2 text-sm text-text-primary"
+            accessibilityLabel="Search navigation"
+            style={{ fontFamily: FONTS.sans }}
+            className="w-full rounded-md border border-border bg-surface-base py-1.5 pl-7 pr-3 text-xs text-text-primary"
           />
         </View>
       </View>
 
       <ScrollView
         className="flex-1"
-        contentContainerClassName="px-2 py-3 gap-1"
+        contentContainerClassName="px-2 py-3 gap-4"
         keyboardShouldPersistTaps="handled"
       >
-        {/* Home */}
-        <NavRow active={homeActive} onPress={() => go("/")} accessibilityLabel="Home">
-          <View
-            className={`h-7 w-7 items-center justify-center rounded-md ${
-              homeActive ? "bg-primary" : "bg-surface-sunken"
-            }`}
-          >
-            <FontAwesomeIcon
-              icon={faHouse}
-              size={12}
-              color={homeActive ? t["primary-fg"] : t["text-secondary"]}
-            />
-          </View>
-          <Text
-            variant="label"
-            className={homeActive ? "font-medium text-primary" : "text-text-secondary"}
-          >
-            Home
-          </Text>
-        </NavRow>
+        {/* Home — the label-less first group */}
+        <NavRow
+          active={homeActive}
+          label="Home"
+          onPress={() => go("/")}
+          icon={
+            <View className="w-5 items-center">
+              <FontAwesomeIcon icon={faHouse} size={17} color={homeActive ? t.primary : t["text-secondary"]} />
+            </View>
+          }
+        />
 
-        {groups.map((group) => (
-          <View key={group.category} className="gap-0.5">
-            <Text className="px-3 pb-1 pt-3 text-[10px] font-semibold uppercase tracking-widest text-text-disabled">
-              {group.category}
-            </Text>
-            {group.items.map((entry: ShowcaseEntry) => {
-              const active = entry.id === activeId;
-              return (
-                <NavRow
-                  key={entry.id}
-                  active={active}
-                  accessibilityLabel={entry.title}
-                  onPress={() => go({ pathname: "/component/[id]", params: { id: entry.id } })}
+        {groups.map((group) => {
+          const expanded = !collapsed.has(group.category) || query.trim().length > 0;
+          const hasActive = group.items.some((e) => e.id === activeId);
+          return (
+            <View key={group.category}>
+              <Pressable
+                onPress={() => toggle(group.category)}
+                accessibilityRole="button"
+                accessibilityState={{ expanded }}
+                className="mb-1 w-full flex-row items-center justify-between rounded-md px-3 py-1"
+              >
+                <Text
+                  className={`text-[10px] leading-[15px] font-semibold uppercase tracking-widest ${
+                    hasActive ? "text-text-primary" : "text-text-disabled"
+                  }`}
                 >
-                  <View
-                    className={`h-7 w-7 items-center justify-center rounded-md ${
-                      active ? "bg-primary" : "bg-surface-sunken"
-                    }`}
-                  >
-                    <Text
-                      className={`text-xs font-bold ${
-                        active ? "text-primary-fg" : "text-text-secondary"
-                      }`}
-                    >
-                      {ABBR[entry.id] ?? entry.title.slice(0, 2)}
-                    </Text>
-                  </View>
-                  <Text
-                    variant="label"
-                    numberOfLines={1}
-                    className={`flex-1 ${active ? "font-medium text-primary" : "text-text-primary"}`}
-                  >
-                    {entry.title}
-                  </Text>
-                  <View className={`rounded-full px-1.5 py-0.5 ${categoryBadge[entry.category]}`}>
-                    <Text className={`text-[10px] font-medium ${categoryBadgeText[entry.category]}`}>
-                      {entry.category}
-                    </Text>
-                  </View>
-                </NavRow>
-              );
-            })}
-          </View>
-        ))}
+                  {group.category}
+                </Text>
+                <FaBox style={{ transform: [{ rotate: expanded ? "0deg" : "-90deg" }] }}>
+                  <FontAwesomeIcon
+                    icon={faChevronDown}
+                    size={16}
+                    color={hasActive ? t["text-primary"] : t["text-disabled"]}
+                  />
+                </FaBox>
+              </Pressable>
+              {expanded ? (
+                <View className="gap-0.5">
+                  {group.items.map((entry: ShowcaseEntry) => (
+                    <NavRow
+                      key={entry.id}
+                      active={entry.id === activeId}
+                      label={entry.title}
+                      onPress={() => go({ pathname: "/component/[id]", params: { id: entry.id } })}
+                      icon={
+                        <View className="h-6 w-6 items-center justify-center rounded bg-surface-sunken">
+                          <Text className="text-[11px] font-bold text-text-secondary">
+                            {ABBR[entry.id] ?? entry.title.slice(0, 2)}
+                          </Text>
+                        </View>
+                      }
+                    />
+                  ))}
+                </View>
+              ) : null}
+            </View>
+          );
+        })}
 
         {groups.length === 0 ? (
-          <Text variant="bodySm" className="px-3 py-6 text-center">
-            No results for “{query}”.
-          </Text>
+          <View className="items-center gap-2 py-8">
+            <View style={{ opacity: 0.4 }}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} size={20} color={t["text-secondary"]} />
+            </View>
+            <Text className="text-sm font-normal text-text-secondary">{`No results for "${query}"`}</Text>
+          </View>
         ) : null}
       </ScrollView>
 
       {/* Footer */}
-      <View className="flex-row items-center gap-2.5 border-t border-border px-4 py-3">
-        <View className="h-8 w-8 items-center justify-center rounded-full bg-primary-subtle">
-          <Text className="text-xs font-bold text-primary">K</Text>
-        </View>
-        <View>
-          <Text variant="caption" className="font-semibold text-text-primary">
-            Kuray Karaaslan
-          </Text>
-          <Text className="text-[10px] text-text-secondary">kui-native</Text>
+      <View className="border-t border-border">
+        <View className="flex-row items-center gap-2 p-3">
+          <View className="h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-subtle">
+            <Text className="text-xs font-bold text-primary">D</Text>
+          </View>
+          <View className="min-w-0">
+            <Text numberOfLines={1} className="text-xs font-semibold text-text-primary">
+              Developer
+            </Text>
+            <Text numberOfLines={1} className="text-[10px] leading-[15px] font-normal text-text-secondary">
+              Component Library
+            </Text>
+          </View>
         </View>
       </View>
     </SafeAreaView>

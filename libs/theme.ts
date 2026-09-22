@@ -1,5 +1,6 @@
+import { useSyncExternalStore } from "react";
 import { vars } from "nativewind";
-import { useColorScheme } from "react-native";
+import { Appearance } from "react-native";
 import { create } from "zustand";
 
 /**
@@ -115,11 +116,29 @@ export const useThemeMode = create<ThemeState>((set, get) => ({
     set({ mode: get().mode === "system" ? "light" : get().mode === "light" ? "dark" : "system" }),
 }));
 
-/** The concrete scheme to render (resolves "system" against the OS). */
+function subscribeToScheme(onChange: () => void) {
+  const sub = Appearance.addChangeListener(onChange);
+  return () => sub.remove();
+}
+
+/**
+ * The concrete scheme to render (resolves "system" against the OS).
+ *
+ * Read through useSyncExternalStore rather than useColorScheme: the static web
+ * export is rendered in Node (always "light"), and useColorScheme's first
+ * client render already says "dark" — React does not patch mismatched
+ * attributes during hydration, so the root's theme variables stayed light
+ * while JS-side tokens went dark. The server snapshot keeps hydration on
+ * "light", then React re-renders with the real scheme.
+ */
 export function useResolvedScheme(): "light" | "dark" {
   const mode = useThemeMode((s) => s.mode);
-  const system = useColorScheme() ?? "light";
-  return mode === "system" ? (system as "light" | "dark") : mode;
+  const system = useSyncExternalStore(
+    subscribeToScheme,
+    () => Appearance.getColorScheme() ?? "light",
+    () => "light" as const,
+  );
+  return mode === "system" ? (system === "dark" ? "dark" : "light") : mode;
 }
 
 /** Raw token hex for the active scheme — for color props that can't take a className. */

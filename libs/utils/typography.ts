@@ -14,8 +14,21 @@ import { Platform, type TextStyle } from "react-native";
  * rendered visually regular-weight on Android too, not just iOS/web.)
  */
 export const FONTS = {
-  sans: Platform.select({ ios: "System", android: "sans-serif", default: "System" }),
-  mono: Platform.select({ ios: "Menlo", android: "monospace", default: "monospace" }),
+  // Web loads Geist + Geist Mono from Google Fonts in app/+html.tsx (same
+  // request as KUIejs's _head.ejs), so the web build sets type exactly like
+  // KUIreact/KUIejs; native keeps the zero-asset system font.
+  sans: Platform.select({
+    ios: "System",
+    android: "sans-serif",
+    web: "Geist, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    default: "System",
+  }),
+  mono: Platform.select({
+    ios: "Menlo",
+    android: "monospace",
+    web: "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+    default: "monospace",
+  }),
 } as const;
 
 export const FONT_WEIGHTS: Record<"regular" | "medium" | "semiBold" | "bold", TextStyle["fontWeight"]> = {
