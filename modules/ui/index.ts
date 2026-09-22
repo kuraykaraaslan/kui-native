@@ -77,6 +77,8 @@ export type { SpinnerProps } from "./Spinner";
 export { Switch, Toggle } from "./Toggle";
 export type { SwitchProps, ToggleProps } from "./Toggle";
 export { TabButton } from "./TabButton";
+export { Table } from "./Table";
+export type { Column, SortDirection, TableColumn, TableProps } from "./Table";
 export { TagInput } from "./TagInput";
 export type { TagInputProps } from "./TagInput";
 export type { TabButtonProps } from "./TabButton";

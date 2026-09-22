@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faTable,
   faFileArrowUp,
   faListUl as faComboBox,
   faHashtag as faTagsInput,
@@ -111,6 +112,7 @@ import {
   ComboBox,
   type ComboBoxOption,
   FileInput,
+  Table,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -2359,6 +2361,65 @@ export const REGISTRY: ShowcaseEntry[] = [
               ]}
             />
           </View>
+        ),
+      },
+    ],
+  },
+  {
+    id: "table",
+    title: "Table",
+    category: "Atoms",
+    icon: faTable,
+    description: "Responsive table with column headers, an empty-state message, custom cell render support and sortable columns.",
+    usage: `<Table caption="Users" columns={[{ key: "name", header: "Name" }]} rows={rows} />`,
+    preview: () => <Table columns={[{ key: "name", header: "Name" }]} rows={[{ name: "Jane Doe" }]} />,
+    // Mirrors KuiReact's Table showcase variants 1:1 (same titles and data).
+    variants: [
+      {
+        title: "With data",
+        Demo: () => (
+          <Table
+            caption="Users table"
+            columns={[
+              { key: "name", header: "Name" },
+              { key: "email", header: "Email" },
+              { key: "role", header: "Role" },
+              { key: "status", header: "Status", render: (row) => <Badge variant={row.status === "Active" ? "success" : "neutral"}>{String(row.status)}</Badge> },
+            ]}
+            rows={[
+              { name: "Jane Doe", email: "jane@example.com", role: "Admin", status: "Active" },
+              { name: "John Smith", email: "john@example.com", role: "Member", status: "Inactive" },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "Empty state",
+        Demo: () => (
+          <Table
+            caption="Empty table"
+            columns={[{ key: "name", header: "Name" }, { key: "email", header: "Email" }]}
+            rows={[]}
+            emptyMessage="No users found. Invite your team to get started."
+          />
+        ),
+      },
+      {
+        title: "Sortable columns",
+        Demo: () => (
+          <Table
+            caption="Sortable users table"
+            columns={[
+              { key: "name", header: "Name", sortable: true },
+              { key: "email", header: "Email", sortable: true },
+              { key: "role", header: "Role", sortable: true },
+            ]}
+            rows={[
+              { name: "Zara Kim", email: "zara@example.com", role: "Admin" },
+              { name: "Alice Brown", email: "alice@example.com", role: "Member" },
+              { name: "Bob Lee", email: "bob@example.com", role: "Viewer" },
+            ]}
+          />
         ),
       },
     ],
