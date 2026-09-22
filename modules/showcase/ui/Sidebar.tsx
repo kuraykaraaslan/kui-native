@@ -45,6 +45,7 @@ const ABBR: Record<string, string> = {
   popover: "Po",
   "dropdown-menu": "Dm",
   tooltip: "Tt",
+  accordion: "Ac",
   modal: "Md",
 };
 

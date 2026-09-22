@@ -1,5 +1,7 @@
 // Explicit named barrel (KUIREACT style) — keeps tree-shaking clean.
 
+export { Accordion } from "./Accordion";
+export type { AccordionItem, AccordionProps } from "./Accordion";
 export { AlertBanner } from "./AlertBanner";
 export type { AlertAction, AlertBannerProps } from "./AlertBanner";
 export { Avatar, AvatarGroup } from "./Avatar";

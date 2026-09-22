@@ -4,6 +4,7 @@ import { countries, getEmojiFlag, type TCountryCode } from "countries-list";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
+  faBars,
   faCircleDot,
   faCircleExclamation,
   faFolder,
@@ -66,6 +67,7 @@ import {
   toast,
   Toggle,
   Tooltip,
+  Accordion,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1267,6 +1269,48 @@ export const REGISTRY: ShowcaseEntry[] = [
       },
       // KuiReact's "Table rows" and "Dashboard layout" variants use
       // SkeletonTableRow, which is not ported (KuiNative has no Table yet).
+    ],
+  },
+  {
+    id: "accordion",
+    title: "Accordion",
+    category: "Atoms",
+    icon: faBars,
+    description: "Vertically stacked, collapsible content panels. Single-open by default, or `allowMultiple` for independent panels.",
+    usage: `<Accordion items={[{ id: "shipping", title: "Shipping", content: "..." }]} defaultOpenIds={["shipping"]} />`,
+    preview: () => (
+      <Accordion className="w-full" items={[{ id: "a", title: "Shipping", content: "" }, { id: "b", title: "Returns", content: "" }]} />
+    ),
+    // Mirrors KuiReact's Accordion showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Single open (default)",
+        Demo: () => (
+          <Accordion
+            className="w-full max-w-md"
+            items={[
+              { id: "shipping", title: "Shipping", content: "Orders ship within 2 business days via standard carrier." },
+              { id: "returns", title: "Returns", content: "Free returns within 30 days of delivery, unworn and with tags." },
+              { id: "warranty", title: "Warranty", content: "Covered by a 1-year limited manufacturer warranty.", disabled: true },
+            ]}
+            defaultOpenIds={["shipping"]}
+          />
+        ),
+      },
+      {
+        title: "Allow multiple open",
+        Demo: () => (
+          <Accordion
+            className="w-full max-w-md"
+            allowMultiple
+            items={[
+              { id: "a", title: "Section A", content: "Content for section A." },
+              { id: "b", title: "Section B", content: "Content for section B." },
+            ]}
+            defaultOpenIds={["a", "b"]}
+          />
+        ),
+      },
     ],
   },
   {
