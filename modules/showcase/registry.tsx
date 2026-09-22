@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faAnglesRight,
   faListCheck,
   faTableCellsLarge,
   faCircleDot,
@@ -73,6 +74,7 @@ import {
   ButtonGroup,
   CheckboxGroup,
   SearchBar,
+  Pagination,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1538,6 +1540,45 @@ export const REGISTRY: ShowcaseEntry[] = [
             />
           </View>
         ),
+      },
+    ],
+  },
+  {
+    id: "pagination",
+    title: "Pagination",
+    category: "Atoms",
+    icon: faAnglesRight,
+    description: "Page navigation control. Collapses large page counts with ellipsis; the current page is announced as selected.",
+    usage: `<Pagination page={page} totalPages={10} onPageChange={setPage} />`,
+    preview: () => <Pagination page={2} totalPages={5} onPageChange={() => {}} size="sm" />,
+    // Mirrors KuiReact's Pagination showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Default",
+        Demo: function PaginationDemo() {
+          const [page, setPage] = useState(1);
+          return <Pagination page={page} totalPages={10} onPageChange={setPage} />;
+        },
+      },
+      {
+        title: "Sizes",
+        Demo: function SizesDemo() {
+          const [p, setP] = useState(3);
+          return (
+            <View className="gap-3">
+              {(["sm", "md", "lg"] as const).map((s) => (
+                <Pagination key={s} page={p} totalPages={10} onPageChange={setP} size={s} />
+              ))}
+            </View>
+          );
+        },
+      },
+      {
+        title: "First / Last + Jump to page",
+        Demo: function FullDemo() {
+          const [p, setP] = useState(5);
+          return <Pagination page={p} totalPages={20} onPageChange={setP} showFirstLast showJumpTo />;
+        },
       },
     ],
   },
