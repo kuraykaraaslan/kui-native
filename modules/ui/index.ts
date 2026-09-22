@@ -85,8 +85,19 @@ export type { SpinnerProps } from "./Spinner";
 export { Switch, Toggle } from "./Toggle";
 export type { SwitchProps, ToggleProps } from "./Toggle";
 export { TabButton } from "./TabButton";
-export { Table } from "./Table";
-export type { Column, SortDirection, TableColumn, TableProps } from "./Table";
+export { DataTable, Table, useServerTable, useTable } from "./Table";
+export type {
+  Column,
+  DataTableFetchArgs,
+  DataTableFetchResult,
+  DataTableMessages,
+  DataTableMode,
+  DataTableProps,
+  SortDirection,
+  SortState,
+  TableColumn,
+  TableProps,
+} from "./Table";
 export { TagInput } from "./TagInput";
 export type { TagInputProps } from "./TagInput";
 export type { TabButtonProps } from "./TabButton";

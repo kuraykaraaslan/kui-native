@@ -1,9 +1,17 @@
 // Table family — public entry point (KuiReact: modules/ui/Table/index.tsx).
-// Only the low-level <Table /> primitive is ported so far; DataTable and its
-// server/paginated modes are a separate roadmap item.
+// Exposes the <Table /> primitive and the unified <DataTable /> (static /
+// paginated / server modes) plus its core hooks. KuiReact's deprecated
+// AdvancedDataTable / ServerDataTable wrappers are a separate roadmap item.
 
 export { Table } from "./Table";
 export type { TableProps } from "./Table";
+export { DataTable } from "./DataTable";
+export type { DataTableProps } from "./DataTable";
+export { useTable, applySort, applySearch, applyColumnFilters, nextSortState } from "./core/useTable";
+export type { UseTableArgs, UseTableReturn } from "./core/useTable";
+export { useServerTable } from "./core/useServerTable";
+export type { UseServerTableArgs, UseServerTableReturn } from "./core/useServerTable";
+export { DEFAULT_MESSAGES as DATA_TABLE_MESSAGES } from "./types";
 export type {
   Column,
   TableColumn,

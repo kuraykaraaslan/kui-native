@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faTableCellsColumnLock,
   faClock,
   faPalette,
   faSitemap,
@@ -127,6 +128,9 @@ import {
   ViewToggle,
   TreeView,
   ColorPicker,
+  DataTable,
+  type DataTableFetchArgs,
+  type DataTableFetchResult,
   type ScoreRule,
   type ViewOrientation,
 } from "@/modules/ui";
@@ -304,6 +308,35 @@ function GradientTile({ from, to, label }: { from: string; to: string; label: st
       <Text className="text-lg font-semibold text-white">{label}</Text>
     </View>
   );
+}
+type ServerUser = { id: string; name: string; email: string; team: string; joined: string; [key: string]: unknown };
+const SERVER_USERS: ServerUser[] = Array.from({ length: 32 }, (_, i) => ({
+  id: `u-${i + 1}`,
+  name: ["Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace", "Hank"][i % 8] + ` #${i + 1}`,
+  email: `user${i + 1}@example.com`,
+  team: ["Platform", "Growth", "Ops", "Design"][i % 4],
+  joined: `2024-${String((i % 12) + 1).padStart(2, "0")}-15`,
+}));
+function serverFetchPage(args: DataTableFetchArgs): Promise<DataTableFetchResult<ServerUser>> {
+  return new Promise((resolve) => {
+    // Simulate latency.
+    setTimeout(() => {
+      let filtered = SERVER_USERS;
+      const q = args.search.trim().toLowerCase();
+      if (q) filtered = filtered.filter((u) => [u.name, u.email, u.team, u.joined].some((v) => v.toLowerCase().includes(q)));
+      if (args.sort.length) {
+        filtered = [...filtered].sort((a, b) => {
+          for (const s of args.sort) {
+            const cmp = String(a[s.key] ?? "").localeCompare(String(b[s.key] ?? ""), undefined, { numeric: true });
+            if (cmp !== 0) return s.dir === "asc" ? cmp : -cmp;
+          }
+          return 0;
+        });
+      }
+      const start = (args.page - 1) * args.pageSize;
+      resolve({ rows: filtered.slice(start, start + args.pageSize), total: filtered.length });
+    }, 200);
+  });
 }
 const COMBO_OPTIONS: ComboBoxOption[] = [
   { value: "nextjs", label: "Next.js", description: "App Router framework" },
@@ -2855,6 +2888,112 @@ export const REGISTRY: ShowcaseEntry[] = [
             />
           );
         },
+      },
+    ],
+  },
+  {
+    id: "data-table",
+    title: "DataTable",
+    category: "Atoms",
+    icon: faTableCellsColumnLock,
+    description: "Unified table with `mode=\"static\" | \"paginated\" | \"server\"`. Multi-column sort (long-press), global search, per-column filter (text + select), pagination, and unified loading/empty/error state.",
+    usage: `<DataTable caption="Users" rows={rows} columns={columns} pageSize={5} />`,
+    preview: () => <DataTable mode="static" searchable={false} columns={[{ key: "name", header: "Name" }]} rows={[{ name: "Alice Martin" }]} />,
+    // Mirrors KuiReact's DataTable showcase variants 1:1 (same titles and data).
+    variants: [
+      {
+        title: "Full example",
+        Demo: () => {
+          type User = { name: string; email: string; role: string; status: string; joined: string };
+          const USERS: User[] = [
+            { name: "Alice Martin", email: "alice@example.com", role: "Admin", status: "Active", joined: "2024-01-15" },
+            { name: "Bob Johnson", email: "bob@example.com", role: "Member", status: "Active", joined: "2024-02-20" },
+            { name: "Carol Williams", email: "carol@example.com", role: "Editor", status: "Inactive", joined: "2024-03-10" },
+            { name: "David Brown", email: "david@example.com", role: "Member", status: "Active", joined: "2024-04-05" },
+            { name: "Eve Davis", email: "eve@example.com", role: "Admin", status: "Active", joined: "2024-05-18" },
+            { name: "Frank Wilson", email: "frank@example.com", role: "Member", status: "Pending", joined: "2024-06-22" },
+            { name: "Grace Moore", email: "grace@example.com", role: "Editor", status: "Active", joined: "2024-07-01" },
+            { name: "Hank Taylor", email: "hank@example.com", role: "Member", status: "Inactive", joined: "2024-08-14" },
+          ];
+          return (
+            <View className="w-full">
+              <DataTable<User>
+                caption="Users"
+                searchPlaceholder="Search users…"
+                pageSize={5}
+                rows={USERS}
+                columns={[
+                  { key: "name", header: "Name" },
+                  { key: "email", header: "Email" },
+                  { key: "role", header: "Role" },
+                  { key: "status", header: "Status", render: (row) => <Badge variant={row.status === "Active" ? "success" : row.status === "Pending" ? "warning" : "neutral"}>{row.status}</Badge> },
+                  { key: "joined", header: "Joined" },
+                ]}
+              />
+            </View>
+          );
+        },
+      },
+      {
+        title: "Sortable columns",
+        Demo: () => {
+          type Product = { name: string; category: string; price: string; stock: string };
+          const PRODUCTS: Product[] = [
+            { name: "Widget A", category: "Tools", price: "29.99", stock: "150" },
+            { name: "Gadget B", category: "Electronics", price: "99.00", stock: "42" },
+            { name: "Part C", category: "Tools", price: "9.50", stock: "500" },
+            { name: "Device D", category: "Electronics", price: "249.00", stock: "18" },
+            { name: "Item E", category: "Misc", price: "14.75", stock: "200" },
+          ];
+          return (
+            <View className="w-full">
+              <DataTable<Product>
+                caption="Products"
+                pageSize={5}
+                rows={PRODUCTS}
+                columns={[
+                  { key: "name", header: "Product", sortable: true },
+                  { key: "category", header: "Category", sortable: true },
+                  { key: "price", header: "Price", sortable: true, align: "right" },
+                  { key: "stock", header: "Stock", sortable: true, align: "right" },
+                ]}
+              />
+            </View>
+          );
+        },
+      },
+      {
+        title: 'Server mode (mode="server")',
+        Demo: () => (
+          <View className="w-full">
+            <DataTable<ServerUser>
+              mode="server"
+              fetchPage={serverFetchPage}
+              caption="Server-paged users"
+              pageSize={5}
+              searchPlaceholder="Search users…"
+              columns={[
+                { key: "name", header: "Name", sortable: true },
+                { key: "email", header: "Email", sortable: true, filter: { kind: "text", placeholder: "Contains…" } },
+                {
+                  key: "team",
+                  header: "Team",
+                  sortable: true,
+                  filter: {
+                    kind: "select",
+                    options: [
+                      { label: "Platform", value: "platform" },
+                      { label: "Growth", value: "growth" },
+                      { label: "Ops", value: "ops" },
+                      { label: "Design", value: "design" },
+                    ],
+                  },
+                },
+                { key: "joined", header: "Joined", sortable: true },
+              ]}
+            />
+          </View>
+        ),
       },
     ],
   },
