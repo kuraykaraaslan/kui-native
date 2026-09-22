@@ -14,6 +14,7 @@ import {
   faIdCard,
   faInbox,
   faKeyboard,
+  faBarsProgress,
   faAlignLeft,
   faArrowTrendUp,
   faChartBar,
@@ -38,6 +39,7 @@ import {
   EmptyState,
   Label,
   Modal,
+  Progress,
   RadioGroup,
   Separator,
   SkeletonAvatar,
@@ -710,6 +712,37 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "In a Button",
         Demo: () => <Button label="Saving…" loading />,
+      },
+    ],
+  },
+  {
+    id: "progress",
+    title: "Progress",
+    category: "Feedback",
+    icon: faBarsProgress,
+    description: "Determinate progress as a bar or a circle, in four colours and three sizes.",
+    usage: `<Progress value={62} variant="warning" showLabel />`,
+    preview: () => <Progress value={62} className="w-44" />,
+    // Mirrors KuiReact's Progress showcase variants 1:1 (same titles and values).
+    variants: [
+      {
+        title: "Bar",
+        Demo: () => (
+          <View className="gap-4">
+            <Progress value={30} />
+            <Progress value={62} variant="warning" showLabel />
+            <Progress value={90} variant="success" size="lg" showLabel />
+          </View>
+        ),
+      },
+      {
+        title: "Circle",
+        Demo: () => (
+          <View className="flex-row items-center gap-6">
+            <Progress value={40} shape="circle" showLabel />
+            <Progress value={75} shape="circle" variant="success" size="lg" showLabel />
+          </View>
+        ),
       },
     ],
   },

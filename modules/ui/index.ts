@@ -18,6 +18,8 @@ export { Label } from "./Label";
 export type { LabelProps } from "./Label";
 export { Modal } from "./Modal";
 export type { ModalProps } from "./Modal";
+export { Progress } from "./Progress";
+export type { ProgressProps } from "./Progress";
 export { RadioGroup } from "./RadioGroup";
 export type { RadioGroupProps, RadioOption } from "./RadioGroup";
 export { Separator } from "./Separator";

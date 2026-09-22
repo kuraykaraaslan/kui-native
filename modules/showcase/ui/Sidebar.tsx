@@ -34,6 +34,7 @@ const ABBR: Record<string, string> = {
   checkbox: "Cb",
   switch: "Tg",
   spinner: "Sp",
+  progress: "Pr",
   "alert-banner": "Ab",
   "empty-state": "Es",
   skeleton: "Sk",
