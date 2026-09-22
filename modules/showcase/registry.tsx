@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faTableCellsLarge,
   faCircleDot,
   faCircleExclamation,
   faFolder,
@@ -68,6 +69,7 @@ import {
   Toggle,
   Tooltip,
   Accordion,
+  ButtonGroup,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1309,6 +1311,101 @@ export const REGISTRY: ShowcaseEntry[] = [
             ]}
             defaultOpenIds={["a", "b"]}
           />
+        ),
+      },
+    ],
+  },
+  {
+    id: "button-group",
+    title: "ButtonGroup",
+    category: "Atoms",
+    icon: faTableCellsLarge,
+    description: "Segmented button group for mutually-exclusive options. Supports 4 variants, 4 sizes and disabled items.",
+    usage: `<ButtonGroup value={v} onChange={setV} items={[{ value: "day", label: "Day" }, { value: "week", label: "Week" }]} />`,
+    preview: () => (
+      <ButtonGroup value="week" onChange={() => {}} size="sm" items={[{ value: "day", label: "Day" }, { value: "week", label: "Week" }]} />
+    ),
+    // Mirrors KuiReact's ButtonGroup showcase variants 1:1 (same titles, glyphs and copy).
+    variants: [
+      {
+        title: "Outline (default)",
+        Demo: function ButtonGroupDemo() {
+          const [v, setV] = useState("week");
+          return (
+            <ButtonGroup
+              value={v}
+              onChange={setV}
+              items={[{ value: "day", label: "Day" }, { value: "week", label: "Week" }, { value: "month", label: "Month" }]}
+            />
+          );
+        },
+      },
+      {
+        title: "Sizes",
+        Demo: () => (
+          <View className="flex-row flex-wrap items-center gap-4">
+            {(["xs", "sm", "md", "lg"] as const).map((s) => (
+              <ButtonGroup
+                key={s}
+                value="a"
+                onChange={() => {}}
+                size={s}
+                items={[{ value: "a", label: "A" }, { value: "b", label: "B" }, { value: "c", label: "C" }]}
+              />
+            ))}
+          </View>
+        ),
+      },
+      {
+        title: "Primary / secondary / ghost",
+        Demo: () => (
+          <View className="gap-3">
+            {(["primary", "secondary", "ghost"] as const).map((variant) => (
+              <View key={variant} className="gap-1.5">
+                <Text className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                  {variant[0].toUpperCase() + variant.slice(1)}
+                </Text>
+                <ButtonGroup
+                  value="week"
+                  onChange={() => {}}
+                  variant={variant}
+                  items={[{ value: "day", label: "Day" }, { value: "week", label: "Week" }, { value: "month", label: "Month" }]}
+                />
+              </View>
+            ))}
+          </View>
+        ),
+      },
+      {
+        title: "With disabled item",
+        Demo: () => (
+          <ButtonGroup
+            value="week"
+            onChange={() => {}}
+            items={[
+              { value: "day", label: "Day" },
+              { value: "week", label: "Week" },
+              { value: "month", label: "Month", disabled: true },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "Icon-style labels",
+        Demo: () => (
+          <View className="flex-row flex-wrap items-center gap-4">
+            <ButtonGroup
+              value="grid"
+              onChange={() => {}}
+              items={[{ value: "list", label: "☰" }, { value: "grid", label: "⊞" }, { value: "map", label: "◫" }]}
+            />
+            <ButtonGroup
+              value="center"
+              onChange={() => {}}
+              variant="secondary"
+              items={[{ value: "left", label: "⇤" }, { value: "center", label: "↔" }, { value: "right", label: "⇥" }]}
+            />
+          </View>
         ),
       },
     ],

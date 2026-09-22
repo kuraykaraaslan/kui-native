@@ -9,6 +9,8 @@ export type { AvatarGroupProps, AvatarProps } from "./Avatar";
 export { Badge } from "./Badge";
 export type { BadgeProps } from "./Badge";
 export { Button } from "./Button";
+export { ButtonGroup } from "./ButtonGroup";
+export type { ButtonGroupItem, ButtonGroupProps } from "./ButtonGroup";
 export type { ButtonProps } from "./Button";
 export { Card } from "./Card";
 export type { CardProps } from "./Card";
