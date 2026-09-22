@@ -30,5 +30,7 @@ export { Switch } from "./Switch";
 export type { SwitchProps } from "./Switch";
 export { Text } from "./Text";
 export type { TextProps } from "./Text";
+export { Textarea } from "./Textarea";
+export type { TextareaProps } from "./Textarea";
 export { TextInput } from "./TextInput";
 export type { TextInputProps } from "./TextInput";

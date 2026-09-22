@@ -14,6 +14,7 @@ import {
   faIdCard,
   faInbox,
   faKeyboard,
+  faAlignLeft,
   faRocket,
   faSpinner,
   faSquareCheck,
@@ -43,6 +44,7 @@ import {
   Spinner,
   Switch,
   Text,
+  Textarea,
   TextInput,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
@@ -174,6 +176,19 @@ function RadioCardDemo() {
       variant="card"
       optionClassName="gap-3 px-4 py-3"
     />
+  );
+}
+// Mirrors KuiReact's Textarea "Character counter" demo verbatim.
+function TextareaCounterDemo() {
+  const MAX = 200;
+  const [v, setV] = useState("");
+  return (
+    <View className="gap-1">
+      <Textarea label="Bio" value={v} maxLength={MAX} rows={3} onChangeText={setV} />
+      <Text className={`text-right text-xs ${MAX - v.length < 20 ? "text-error" : "text-text-secondary"}`}>
+        {MAX - v.length} characters remaining
+      </Text>
+    </View>
   );
 }
 function TextInputDemo() {
@@ -589,6 +604,25 @@ export const REGISTRY: ShowcaseEntry[] = [
         title: "Disabled",
         Demo: () => <TextInput label="Email" placeholder="you@example.com" editable={false} />,
       },
+    ],
+  },
+  {
+    id: "textarea",
+    title: "Textarea",
+    category: "Forms",
+    icon: faAlignLeft,
+    description: "Multi-line text field with label, hint, error and required marker.",
+    usage: `<Textarea label="Message" placeholder="Write your message…" hint="Max 500 characters." />`,
+    preview: () => <Textarea label="Message" rows={2} className="w-44" />,
+    // Mirrors KuiReact's Textarea showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Default",
+        Demo: () => <Textarea label="Message" placeholder="Write your message…" hint="Max 500 characters." />,
+      },
+      { title: "Error", Demo: () => <Textarea label="Message" error="Message is required." required /> },
+      { title: "Disabled", Demo: () => <Textarea label="Message" placeholder="Not editable" disabled /> },
+      { title: "Character counter", Demo: TextareaCounterDemo },
     ],
   },
   {
