@@ -3,10 +3,11 @@ import type * as React from "react";
 import { router, usePathname } from "expo-router";
 import { Pressable, ScrollView, TextInput, View, type ViewStyle } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronDown, faHouse, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronLeft, faHouse, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useThemeTokens } from "@/libs/theme";
+import { cn } from "@/libs/utils/cn";
 import { FONTS } from "@/libs/utils/typography";
 import { Text } from "@/modules/ui";
 
@@ -119,11 +120,14 @@ function NavRow({
   label,
   icon,
   onPress,
+  collapsed = false,
 }: {
   active: boolean;
   label: string;
   icon: React.ReactNode;
   onPress: () => void;
+  /** Desktop icon rail: KuiReact's `justify-center px-2 py-2` with the label hidden. */
+  collapsed?: boolean;
 }) {
   return (
     <Pressable
@@ -131,25 +135,54 @@ function NavRow({
       accessibilityRole="link"
       accessibilityState={{ selected: active }}
       accessibilityLabel={label}
-      className={`w-full flex-row items-center gap-2.5 rounded-lg px-3 py-2 ${
-        active ? "bg-primary-subtle" : "active:bg-surface-overlay"
-      }`}
+      className={cn(
+        "w-full flex-row items-center gap-2.5 rounded-lg",
+        collapsed ? "justify-center px-2 py-2" : "px-3 py-2",
+        active ? "bg-primary-subtle" : "active:bg-surface-overlay",
+      )}
     >
       <IconSlot>{icon}</IconSlot>
-      <Text
-        numberOfLines={1}
-        className={`flex-1 text-sm ${active ? "font-medium text-primary" : "font-normal text-text-secondary"}`}
-      >
-        {label}
-      </Text>
+      {!collapsed ? (
+        <Text numberOfLines={1} className={cn("flex-1 text-sm", active ? "font-medium text-primary" : "font-normal text-text-secondary")}>
+          {label}
+        </Text>
+      ) : null}
     </Pressable>
   );
 }
 
-export function Sidebar() {
+/** KuiReact's SidebarBrand: mark + name + "Component library". */
+function SidebarBrand() {
+  return (
+    <View className="min-w-0 flex-1 flex-row items-center gap-2.5">
+      <BrandMark size={28} />
+      <View className="min-w-0 flex-1">
+        <Text numberOfLines={1} className="text-sm font-semibold text-text-primary">
+          KUInative
+        </Text>
+        <Text numberOfLines={1} className="text-xs font-normal text-text-secondary">
+          Component library
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+/**
+ * `variant="drawer"` is the mobile drawer body (KuiReact's AppShell Drawer
+ * with SidebarBrand in its h-14 header). `variant="desktop"` is the `lg:`
+ * aside: the h-14 logo bar, then AppSidebar's collapse row, search, groups
+ * and footer; 224px wide (`lg:w-56`), or a 56px icon rail (`lg:w-14`) when
+ * collapsed.
+ */
+export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop" }) {
   const t = useThemeTokens();
   const pathname = usePathname();
   const close = useDrawer((s) => s.close);
+  const railCollapsed = useDrawer((s) => s.collapsed);
+  const setCollapsed = useDrawer((s) => s.setCollapsed);
+  const desktop = variant === "desktop";
+  const rail = desktop && railCollapsed;
   const [query, setQuery] = useState("");
   const [collapsed, setCollapsed] = useState<Set<ShowcaseCategory>>(() => new Set());
 
@@ -180,20 +213,20 @@ export function Sidebar() {
   };
 
   return (
-    <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-surface-raised">
-      {/* Header — SidebarBrand in the Drawer's h-14 header bar */}
-      <View className="h-14 flex-row items-center gap-3 border-b border-border px-4">
-        <View className="min-w-0 flex-1 flex-row items-center gap-2.5">
-          <BrandMark size={28} />
-          <View className="min-w-0 flex-1">
-            <Text numberOfLines={1} className="text-sm font-semibold text-text-primary">
-              KUInative
-            </Text>
-            <Text numberOfLines={1} className="text-xs font-normal text-text-secondary">
-              Component library
-            </Text>
-          </View>
+    <SafeAreaView
+      edges={desktop ? ["top", "bottom", "left"] : ["top", "bottom"]}
+      className={cn("bg-surface-raised", desktop ? "h-full shrink-0 border-r border-border" : "flex-1")}
+      // KuiReact: lg:w-56 (224px) / lg:w-14 (56px) plus the aside's 1px border-r.
+      style={desktop ? { width: (rail ? 56 : 224) + 1 } : undefined}
+    >
+      {desktop ? (
+        // KuiReact: the aside's h-14 logo bar (the compact mark, centred, when collapsed).
+        <View className={cn("h-14 flex-row items-center overflow-hidden border-b border-border", rail ? "justify-center px-2" : "px-4")}>
+          {rail ? <BrandMark size={28} /> : <SidebarBrand />}
         </View>
+      ) : (
+      <View className="h-14 flex-row items-center gap-3 border-b border-border px-4">
+        <SidebarBrand />
         <Pressable
           onPress={close}
           accessibilityRole="button"
@@ -207,8 +240,26 @@ export function Sidebar() {
           </FaBox>
         </Pressable>
       </View>
+      )}
 
-      {/* Search */}
+      {desktop ? (
+        // KuiReact AppSidebar: `hidden lg:flex items-center px-2 py-2 border-b` collapse toggle.
+        <View className={cn("flex-row items-center border-b border-border px-2 py-2", rail ? "justify-center" : "justify-end")}>
+          <Pressable
+            onPress={() => setCollapsed(!railCollapsed)}
+            accessibilityRole="button"
+            accessibilityLabel={railCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            className="rounded p-1.5 active:bg-surface-overlay"
+          >
+            <FaBox style={{ transform: [{ rotate: railCollapsed ? "180deg" : "0deg" }] }}>
+              <FontAwesomeIcon icon={faChevronLeft} size={16} color={t["text-secondary"]} />
+            </FaBox>
+          </Pressable>
+        </View>
+      ) : null}
+
+      {/* Search (hidden on the collapsed rail) */}
+      {!rail ? (
       <View className="border-b border-border px-3 py-2">
         <View className="relative justify-center">
           <View pointerEvents="none" className="absolute left-2.5 z-10">
@@ -232,6 +283,7 @@ export function Sidebar() {
           />
         </View>
       </View>
+      ) : null}
 
       <ScrollView
         className="flex-1"
@@ -240,6 +292,7 @@ export function Sidebar() {
       >
         {/* Home — the label-less first group */}
         <NavRow
+          collapsed={rail}
           active={homeActive}
           label="Home"
           onPress={() => go("/")}
@@ -251,10 +304,12 @@ export function Sidebar() {
         />
 
         {groups.map((group) => {
-          const expanded = !collapsed.has(group.category) || query.trim().length > 0;
+          // KuiReact: groups are always expanded (and their headers hidden) on the collapsed rail.
+          const expanded = rail || !collapsed.has(group.category) || query.trim().length > 0;
           const hasActive = group.items.some((e) => e.id === activeId);
           return (
             <View key={group.category}>
+              {!rail ? (
               <Pressable
                 onPress={() => toggle(group.category)}
                 accessibilityRole="button"
@@ -276,10 +331,12 @@ export function Sidebar() {
                   />
                 </FaBox>
               </Pressable>
+              ) : null}
               {expanded ? (
                 <View className="gap-0.5">
                   {group.items.map((entry: ShowcaseEntry) => (
                     <NavRow
+                      collapsed={rail}
                       key={entry.id}
                       active={entry.id === activeId}
                       label={entry.title}
@@ -309,12 +366,13 @@ export function Sidebar() {
         ) : null}
       </ScrollView>
 
-      {/* Footer */}
-      <View className="border-t border-border">
-        <View className="flex-row items-center gap-2 p-3">
+      {/* Footer (KuiReact: avatar only, centred, on the collapsed rail) */}
+      <View className={cn("border-t border-border", rail && "items-center px-2 py-3")}>
+        <View className={cn("flex-row items-center p-3", rail ? "justify-center" : "gap-2")}>
           <View className="h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-subtle">
             <Text className="text-xs font-bold text-primary">D</Text>
           </View>
+          {!rail ? (
           <View className="min-w-0">
             <Text numberOfLines={1} className="text-xs font-semibold text-text-primary">
               Developer
@@ -323,6 +381,7 @@ export function Sidebar() {
               Component Library
             </Text>
           </View>
+          ) : null}
         </View>
       </View>
     </SafeAreaView>

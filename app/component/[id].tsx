@@ -32,7 +32,7 @@ export default function ComponentDetail() {
       <SiteHead title={entry.title} description={entry.description} path={`/component/${entry.id}`} />
       <Header title={entry.title} />
       <SafeAreaView edges={["bottom"]} className="flex-1">
-        <ScrollView contentContainerClassName="p-4 gap-5" keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerClassName="p-4 sm:p-6 gap-5" keyboardShouldPersistTaps="handled">
           <View className="gap-2">
             <Badge variant="primary">{entry.category}</Badge>
             <Text variant="body">{entry.description}</Text>

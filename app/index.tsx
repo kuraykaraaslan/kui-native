@@ -103,7 +103,7 @@ export default function Home() {
       <SiteHead />
       <Header title="KUInative" />
       <SafeAreaView edges={["bottom"]} className="flex-1">
-        <ScrollView contentContainerClassName="p-4 gap-6" showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerClassName="p-4 sm:p-6 gap-6" showsVerticalScrollIndicator={false}>
           {/* Hero */}
           <View className="gap-3">
             <View className="flex-row items-center gap-3">
