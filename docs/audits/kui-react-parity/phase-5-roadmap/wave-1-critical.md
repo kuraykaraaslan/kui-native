@@ -10,9 +10,9 @@ Required before serious production adoption. Wave 1 fixes the foundations (packa
 
 | | |
 | --- | --- |
-| Items | 28 (13 remediation of shared components/infra, 15 new components) |
-| Estimated effort | 30.5–51 engineer-days (6.1–10.2 engineer-weeks) |
-| By priority | Critical 19 · High 7 · Medium 2 · Low 0 |
+| Items | 21 (11 remediation of shared components/infra, 10 new components) |
+| Estimated effort | 27–44 engineer-days (5.4–8.8 engineer-weeks) |
+| By priority | Critical 19 · High 2 · Medium 0 · Low 0 |
 
 ## Items in recommended order
 
@@ -38,11 +38,4 @@ Required before serious production adoption. Wave 1 fixes the foundations (packa
 | 18 | **R-modal** Modal rewrite (see rewrite-candidates.md) | Critical | Medium | R-overlay-core | 2–3 d | Merged accessibility tree, no close button, no scroll, no sizes, `visible` vs `open`. |
 | 19 | [Select](../component-backlog/select.md) | Critical | Medium | R-overlay-core, R-field-shell | 2–3 d | Single-select is the most common form control after Input; forms cannot be built without it. |
 | 20 | [Toast](../component-backlog/toast.md) | Critical | Medium | — | 2–3 d | Transient notifications with a programmatic `toast()` store are required by virtually every app; KuiReact exports Toast, ToastProvider, Toa… |
-| 21 | [FocusTrap](../component-backlog/accessibility-kit.md) | High | Small | R-overlay-core | 0.5–1 d | Announcer, AnnouncerOutlet, FocusTrap, LiveRegion, useAnnounce (exported, not in registry). |
-| 22 | **R-empty-state** EmptyState parity (`action: ReactNode`, optional icon, KuiReact spacing) | Medium | Small | — | 0.5–1 d | `actionLabel/onAction` cannot express KuiReact's arbitrary action node. _(pulled into this wave because error-state depends on it)_ |
-| 23 | [ErrorState](../component-backlog/error-state.md) | High | Small | alert-banner, R-button, R-empty-state | 0.5–1 d | Page-level error with retry; pairs with EmptyState. |
-| 24 | **R-spinner** Spinner parity (xs–xl, two-tone ring, md ≠ sm) | Medium | Small | — | 0.5–1 d | `sm` and `md` render identically; xs/xl missing. _(pulled into this wave because loading-state depends on it)_ |
-| 25 | [LoadingState](../component-backlog/loading-state.md) | High | Small | R-spinner | 0.5–1 d | Page-level loading pattern (5 variants) built on Spinner/Skeleton; screens need it immediately. |
-| 26 | [NotificationProvider](../component-backlog/notification-system.md) | High | Small | toast | 0.5–1 d | KuiReact `NotificationProvider` + `notify()`/`toast()` app-level API (exported, not in registry). |
-| 27 | **R-fa-version** Align Font Awesome to v7 (KuiReact peer range `>=7`) | High | Small | — | 0.5–1 d | ADR 0003 requires same icon-set version; KuiNative pins `^6.7.2`. |
-| 28 | [useBreakpoint](../component-backlog/use-breakpoint.md) | High | Small | — | 0.5–1 d | Responsive hook (libs/hooks/useBreakpoint.ts) used by responsive components. |
+| 21 | **R-fa-version** Align Font Awesome to v7 (KuiReact peer range `>=7`) | High | Small | — | 0.5–1 d | ADR 0003 requires same icon-set version; KuiNative pins `^6.7.2`. |

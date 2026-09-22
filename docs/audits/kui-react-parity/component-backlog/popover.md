@@ -17,7 +17,7 @@ Anchor-based contextual panel. Closes on outside click (capture-phase pointerdow
 | Public export | `@kuraykaraaslan/kui-react/ui` — public (npm: root + /ui) |
 | Registry | yes · status `stable` · since 2025-03 |
 | Showcase variants | Bottom (default), Placements, Focus trap inside Popover |
-| Composes | useFocusTrap (missing) |
+| Composes | useFocusTrap (excluded) |
 | Used by (registry) | — |
 | Usage frequency | imported by 0 production file(s), 2 showcase file(s) |
 | Third-party imports | — |
@@ -104,7 +104,7 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 
 **KuiReact components it composes:**
 
-- useFocusTrap — missing → [backlog](use-focus-trap.md)
+- useFocusTrap — excluded
 
 **Blocked by (roadmap):** `R-overlay-core`
 

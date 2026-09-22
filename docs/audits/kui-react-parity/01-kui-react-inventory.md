@@ -17,39 +17,38 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | --- | --- | --- | --- |
 | Foundation | 2 | 1 | 1 |
 | Typography | 1 | 0 | 1 |
-| Layout | 9 | 1 | 8 |
-| Navigation | 13 | 0 | 13 |
-| Forms | 26 | 3 | 23 |
-| Feedback | 14 | 3 | 11 |
-| Overlay | 8 | 1 | 7 |
+| Layout | 4 | 1 | 3 |
+| Navigation | 5 | 0 | 5 |
+| Forms | 20 | 3 | 17 |
+| Feedback | 6 | 3 | 3 |
+| Overlay | 6 | 1 | 5 |
 | Data Display | 8 | 2 | 6 |
-| Tables | 5 | 0 | 5 |
+| Tables | 4 | 0 | 4 |
 | Charts | 1 | 0 | 1 |
-| Media | 4 | 0 | 4 |
-| Advanced Components | 9 | 0 | 9 |
-| Providers | 2 | 0 | 2 |
-| Hooks | 3 | 0 | 3 |
-| Theme | 1 | 0 | 1 |
+| Media | 3 | 0 | 3 |
+| Advanced Components | 1 | 0 | 1 |
 | Utility | 1 | 0 | 1 |
-| Other (external library) | 1 | 0 | 0 |
-| Domain — Common | 42 | 0 | 42 |
-| Domain — AI | 9 | 0 | 9 |
-| Domain — API Doc | 15 | 0 | 15 |
-| Domain — Blog | 11 | 0 | 11 |
-| Domain — Commerce | 10 | 0 | 10 |
-| Domain — Event | 19 | 0 | 19 |
-| Domain — Fintech | 12 | 0 | 12 |
-| Domain — Food | 11 | 0 | 11 |
-| Domain — Forum | 10 | 0 | 10 |
-| Domain — IoT | 11 | 0 | 11 |
-| Domain — Jobs | 8 | 0 | 8 |
-| Domain — Landing | 14 | 0 | 14 |
-| Domain — Media | 9 | 0 | 9 |
-| Domain — NFT | 16 | 0 | 16 |
-| Domain — Real Estate | 5 | 0 | 5 |
-| Domain — Reviews | 4 | 0 | 4 |
-| Domain — Social | 6 | 0 | 6 |
-| Domain — Travel | 5 | 0 | 5 |
+| App layer (out of scope) | 40 | 0 | 0 |
+| Other (out of scope) | 3 | 0 | 0 |
+| Hook (out of scope) | 3 | 0 | 0 |
+| Domain — AI (out of scope) | 9 | 0 | 0 |
+| Domain — API Doc (out of scope) | 15 | 0 | 0 |
+| Domain — Blog (out of scope) | 11 | 0 | 0 |
+| Domain — Commerce (out of scope) | 10 | 0 | 0 |
+| Domain — Common (out of scope) | 42 | 0 | 0 |
+| Domain — Event (out of scope) | 19 | 0 | 0 |
+| Domain — Fintech (out of scope) | 12 | 0 | 0 |
+| Domain — Food (out of scope) | 11 | 0 | 0 |
+| Domain — Forum (out of scope) | 10 | 0 | 0 |
+| Domain — IoT (out of scope) | 11 | 0 | 0 |
+| Domain — Jobs (out of scope) | 8 | 0 | 0 |
+| Domain — Landing (out of scope) | 14 | 0 | 0 |
+| Domain — Media (out of scope) | 9 | 0 | 0 |
+| Domain — NFT (out of scope) | 16 | 0 | 0 |
+| Domain — Real Estate (out of scope) | 5 | 0 | 0 |
+| Domain — Reviews (out of scope) | 4 | 0 | 0 |
+| Domain — Social (out of scope) | 6 | 0 | 0 |
+| Domain — Travel (out of scope) | 5 | 0 | 0 |
 
 ## Top 25 by usage
 
@@ -63,20 +62,20 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | SkipLink + LiveRegion | 16 | ✗ |
 | SearchBar | 14 | ✗ |
 | Modal | 11 | ✓ |
-| Form | 11 | ✗ |
 | Textarea | 9 | ✗ |
 | Card | 9 | ✓ |
-| NavDrawer | 8 | ✗ |
 | DropdownMenu | 7 | ✗ |
 | BrandLogo | 6 | ✗ |
 | EmptyState | 6 | ✓ |
-| useFocusTrap | 6 | ✗ |
 | Select | 5 | ✗ |
 | AlertBanner | 5 | ✗ |
 | DataTable | 5 | ✗ |
 | Spinner | 4 | ✓ |
 | Drawer | 4 | ✗ |
-| AppShell | 4 | ✗ |
-| InlineAlert | 4 | ✗ |
 | StarRating | 3 | ✗ |
 | TagInput | 3 | ✗ |
+| Slider | 3 | ✗ |
+| StatCard | 3 | ✗ |
+| Table | 3 | ✗ |
+| RadioGroup | 2 | ✗ |
+| Toggle | 2 | ✓ |

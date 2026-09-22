@@ -18,7 +18,7 @@ Note: no KuiNative component has tests, so **none can be PARITY_COMPLETE** under
 | Status | Count | Components |
 | --- | --- | --- |
 | PARITY_COMPLETE | 0 | — |
-| PARITY_MINOR_GAPS | 3 | Avatar, Spinner, Text (native-only) |
+| PARITY_MINOR_GAPS | 3 | Avatar, Spinner (fixed this pass — size ladder + a11y bug — pending re-audit against every KuiReact detail before reclassifying to COMPLETE), Text (native-only) |
 | PARITY_MAJOR_GAPS | 8 | Button, Card, Badge, TextInput (Input), Checkbox, Switch (Toggle), EmptyState, SkeletonCard (Skeleton) |
 | REQUIRES_REWRITE | 2 | Modal, AvatarGroup |
 
@@ -57,8 +57,8 @@ Missing `hint`, `error`, uncontrolled mode. Boolean `onChange` is an approved im
 Different component name and prop names (`value/onValueChange` vs `checked/onChange`); missing `description`, `size`, `ariaLabel`; label not pressable; two accessibility focus stops; OS rendering differs from KuiReact's custom track. → [matrix](../feature-matrix/toggle.md)
 
 ### Spinner
-**Status: PARITY_MINOR_GAPS** · KuiReact `Spinner`
-Same props; missing `xs`/`xl`; `sm` and `md` render identically (bug); OS indicator instead of the two-tone ring. → [matrix](../feature-matrix/spinner.md)
+**Status: PARITY_MINOR_GAPS** · KuiReact `Spinner` · **fixed 2026-09-22**
+Now has all 5 sizes (xs–xl) via a scale transform on `ActivityIndicator`, `size="sm"` and `size="md"` are visually distinct, `accessibilityLabel` is overridable, and the component carries `accessible` so its `accessibilityRole="progressbar"` actually registers (previously it did not — see [B5, AX-Spinner]). Remaining gap: OS indicator shape instead of KuiReact's two-tone rotating ring. Has a real test suite (8 cases). → [matrix](../feature-matrix/spinner.md)
 
 ### EmptyState
 **Status: PARITY_MAJOR_GAPS** · KuiReact `EmptyState`

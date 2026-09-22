@@ -17,7 +17,7 @@ Two-month popover for picking a start → end date range. Shares the same Calend
 | Public export | `@kuraykaraaslan/kui-react/ui` — public (npm: root + /ui) |
 | Registry | yes · status `stable` · since 2025-03 |
 | Showcase variants | Date range, With value (EN locale), Time picker |
-| Composes | Calendar (missing) |
+| Composes | Calendar (excluded) |
 | Used by (registry) | — |
 | Usage frequency | imported by 1 production file(s), 1 showcase file(s) |
 | Third-party imports | `@fortawesome/react-fontawesome`, `@fortawesome/free-solid-svg-icons` |
@@ -152,9 +152,9 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 
 **KuiReact components it composes:**
 
-- Calendar — missing → [backlog](calendar.md)
+- Calendar — excluded
 
-**Blocked by (roadmap):** `calendar`, `date-picker`, `R-overlay-core`, `R-field-shell`
+**Blocked by (roadmap):** `date-picker`, `R-overlay-core`, `R-field-shell`
 
 **Third-party:** `@fortawesome/react-fontawesome` → @fortawesome/react-native-fontawesome, `@fortawesome/free-solid-svg-icons`
 

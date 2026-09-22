@@ -26,24 +26,21 @@ const cur = Object.fromEntries(rows.map(([id, category, priority, complexity, wa
 const VERT = { common: "Common", blog: "Blog", event: "Event", "api-doc": "API Doc", landing: "Landing", jobs: "Jobs", fintech: "Fintech", commerce: "Commerce", media: "Media", forum: "Forum", "real-estate": "Real Estate", food: "Food", travel: "Travel", ai: "AI", social: "Social", iot: "IoT", nft: "NFT", reviews: "Reviews" };
 
 function complexityFromLoc(loc) { return loc < 70 ? "Small" : loc < 200 ? "Medium" : loc < 600 ? "Large" : "Very Large"; }
+const IN_SCOPE = (f) => f.layer === "ui" && ["Atom", "Molecule", "Organism"].includes(f.regCategory);
+
 function meta(f) {
   if (SHARED[f.id]) return { category: SHARED_CATEGORY[f.id], shared: true };
-  if (f.layer === "library") return { category: "Other (external library)", priority: "—", complexity: "—", wave: null, fit: "web-only", reason: "External npm package (kui-viewer) featured in the showcase; not a first-party component, so no backlog item.", excluded: true };
-  if (cur[f.id] && f.layer !== "domain") return cur[f.id];
-  if (f.vertical) {
-    const pol = domainPolicy[f.vertical] || domainPolicy._default;
-    const c = cur[f.id];
-    const isBadge = /Badge$|Chip$|Tag$/.test(f.name);
-    return {
-      category: `Domain — ${VERT[f.vertical] || f.vertical}`,
-      priority: c ? c.priority : domainOverrides[f.id] || pol.priority,
-      complexity: c ? c.complexity : isBadge ? "Small" : complexityFromLoc(f.loc),
-      wave: 3,
-      fit: c ? c.fit : "adapt",
-      reason: c ? c.reason : pol.reason + (isBadge ? " Thin semantic wrapper over Badge — trivial once Badge reaches parity." : ""),
-      rnNotes: c ? c.rnNotes : null,
-      rnDeps: c ? c.rnDeps : [],
-    };
+  if (!IN_SCOPE(f)) {
+    const why = f.layer === "domain"
+      ? `Domain vertical (${VERT[f.vertical] || f.vertical}) — out of scope. KuiNative development is scoped to core ui-layer atoms, molecules and organisms only; domain verticals and theme demos are not covered by this audit or roadmap.`
+      : f.layer === "app"
+      ? "App-layer component (app shell, navigation chrome, forms/flows, providers) — out of scope. KuiNative development is scoped to core ui-layer atoms, molecules and organisms only."
+      : f.layer === "library"
+      ? "External npm package (kui-viewer) featured in the showcase; not a first-party component."
+      : f.layer === "hook"
+      ? "Supporting hook, not a component — out of scope for the atoms/molecules/organisms backlog; referenced only as a dependency note where relevant."
+      : `ui-layer component in category "${f.regCategory}" (not Atom/Molecule/Organism) — out of scope.`;
+    return { category: f.layer === "domain" ? `Domain — ${VERT[f.vertical] || f.vertical} (out of scope)` : f.layer === "app" ? "App layer (out of scope)" : f.layer === "hook" ? "Hook (out of scope)" : "Other (out of scope)", priority: "—", complexity: "—", wave: null, fit: "web-only", reason: why, excluded: true, outOfScope: true };
   }
   if (cur[f.id]) return cur[f.id];
   throw new Error("no curation for " + f.id);
@@ -293,7 +290,7 @@ All ✗ in KuiNative.
 // inventory summary + 01/02
 const catCounts = cats.map((c) => { const l = facts.filter((f) => f.meta.category === c); return [c, l.length, l.filter((f) => f.meta.shared).length, l.filter((f) => !f.meta.shared && !f.meta.excluded).length]; });
 const coreFacts = facts.filter((f) => !f.vertical && !f.meta.excluded);
-const topUsed = facts.filter((f) => !f.vertical).sort((a, b) => b.importsProd - a.importsProd).slice(0, 25);
+const topUsed = facts.filter((f) => IN_SCOPE(f) || f.meta.shared).sort((a, b) => b.importsProd - a.importsProd).slice(0, 25);
 const summaryTable = table(["Category", "KuiReact", "Shared with KuiNative", "Missing in KuiNative"], catCounts);
 {
   const rel = "phase-1-inventory/inventory-summary.md";
@@ -305,15 +302,13 @@ const summaryTable = table(["Category", "KuiReact", "Shared with KuiNative", "Mi
 | KuiReact catalogued components (registry) | ${facts.filter((f) => f.registry).length} (ui ${facts.filter((f) => f.registry && f.layer === "ui").length}, app ${facts.filter((f) => f.registry && f.layer === "app").length}, domain ${facts.filter((f) => f.layer === "domain").length}, external library 1) |
 | KuiReact barrel exports missing from its own registry | ${facts.filter((f) => !f.registry && f.layer !== "hook").length} components + 3 internal hooks |
 | KuiReact audited entries (total) | ${facts.length} |
-| KuiReact core (ui + app + hooks, excl. external) | ${coreFacts.length} |
+| KuiReact in-scope (ui-layer Atom/Molecule/Organism) | ${coreFacts.length} |
+| KuiReact out of scope (app layer, domains, hooks, external library, other ui categories) | ${facts.length - coreFacts.length} |
 | KuiNative library exports | ${knFacts.length} (12 components; \`AvatarGroup\` counted with \`Avatar\`) |
 | Shared components (counterpart exists) | ${Object.keys(SHARED).length} KuiReact ids ↔ 12 KuiNative exports |
 | KuiNative-only components | 1 (\`Text\`) |
-| Missing from KuiNative (total) | ${missing.length} |
-| — of which core (ui/app/hooks) | ${missingCore.length} |
-| — of which domain verticals | ${missingDomain.length} |
-| Core coverage | ${Object.keys(SHARED).length} / ${coreFacts.length} = **${(100 * Object.keys(SHARED).length / coreFacts.length).toFixed(1)} %** |
-| Total coverage (incl. domains) | ${Object.keys(SHARED).length} / ${facts.length - 1} = **${(100 * Object.keys(SHARED).length / (facts.length - 1)).toFixed(1)} %** |
+| Missing from KuiNative (in scope) | ${missing.length} |
+| In-scope coverage | ${Object.keys(SHARED).length} / ${coreFacts.length} = **${(100 * Object.keys(SHARED).length / coreFacts.length).toFixed(1)} %** |
 | Color tokens | 33 / 33 names and light+dark values identical |
 
 ## By category
@@ -363,7 +358,7 @@ Full table: [phase-1-inventory/kui-native-components.md](phase-1-inventory/kui-n
 - **Stack:** Expo SDK 56 (\`expo ^56.0.9\`, README still says SDK 55) · React Native 0.85 · React 19.2 · NativeWind 4 + Tailwind 3.4 · Font Awesome **6.7.2** · zustand · expo-image · reanimated 4 (installed, unused by the library).
 - **Layers:** \`modules/ui\` only. No app layer, no domains, no providers.
 - **Catalog:** ${knFacts.length} exports (Avatar, AvatarGroup, Badge, Button, Card, Checkbox, EmptyState, Modal, SkeletonCard, Spinner, Switch, Text, TextInput) + theme utilities in \`libs/theme.ts\`.
-- **Quality infrastructure:** none — no tests, no ESLint config, no CI, no registry, no ADRs. A showcase app (Expo Router) with 12 entries is the only documentation besides the README.
+- **Quality infrastructure:** a Jest (\`jest-expo\`) + \`@testing-library/react-native\` harness is configured and verified (\`jest.config.js\`, \`npm test\`), with one passing suite (Spinner, 8 cases) as of this audit; still no ESLint config, no CI, no registry, no ADRs. A showcase app (Expo Router) with 12 entries is the only documentation besides the README.
 - **Packaging:** not publishable (\`private: true\`, \`main: expo-router/entry\`).
 
 ## Components
@@ -382,7 +377,19 @@ const missRowX = (f, fromRel) => [...missRow(f, fromRel).slice(0, 4), `W${f.meta
 {
   const rel = "phase-2-gap-analysis/missing-components.md";
   const core = [...missingCore].sort((a, b) => priRank(a.meta.priority) - priRank(b.meta.priority) || catKey(a.meta.category) - catKey(b.meta.category) || a.name.localeCompare(b.name));
-  const parts = [header("Missing components", `${missing.length} KuiReact components have no KuiNative counterpart (${missingCore.length} core, ${missingDomain.length} domain).`)];
+  const parts = [header("Missing components", `${missing.length} in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart.`)];
+  parts.push(`## Scope
+
+KuiNative development is scoped to KuiReact's core **ui-layer atoms, molecules and organisms** (the registry's own ${code("Atom")}/${code("Molecule")}/${code("Organism")} categories, all under ${code("modules/ui/")}). **App-layer components** (${code("modules/app/")}, e.g. AppShell, Toast's provider chrome, Form, Calendar, RichTextEditor), **domain verticals** (${code("modules/domains/*")}, 217 components across 18 industries) and **theme demos** (${code("app/theme/*")}) are out of scope for this backlog and roadmap. They remain listed for reference in [01-kui-react-inventory.md](../01-kui-react-inventory.md) and [phase-1-inventory/kui-react-components.md](../phase-1-inventory/kui-react-components.md), marked out of scope, but have no backlog file and do not count toward coverage.
+
+| Scope | KuiReact components |
+| --- | --- |
+| In scope (ui-layer Atom/Molecule/Organism) | ${facts.filter((f) => IN_SCOPE(f)).length} |
+| Out of scope: app layer | ${facts.filter((f) => f.layer === "app").length} |
+| Out of scope: domain verticals | ${facts.filter((f) => f.layer === "domain").length} |
+| Out of scope: hooks | ${facts.filter((f) => f.layer === "hook").length} |
+| Out of scope: external library | ${facts.filter((f) => f.layer === "library").length} |
+| Out of scope: other ui-layer categories | ${facts.filter((f) => f.layer === "ui" && !IN_SCOPE(f)).length} |`);
   parts.push(`## Priority and complexity definitions
 
 - **Critical** — required before any production mobile app can be built on KuiNative (baseline form, feedback, overlay, navigation primitives) or a dependency root for many others.
@@ -393,26 +400,18 @@ const missRowX = (f, fromRel) => [...missRow(f, fromRel).slice(0, 4), `W${f.meta
 - **Fit** — \`direct\` mechanical port · \`adapt\` needs a platform-idiomatic redesign (sheet instead of popover, etc.) · \`web-only\` recommended parity exception.
 - **Wave** — roadmap wave (see [08-roadmap.md](../08-roadmap.md)).
 
-## Core components (ui / app / hooks) — ${missingCore.length}
+## Core components (ui-layer Atom/Molecule/Organism) — ${missingCore.length}
 
 ` + table(["Component", "Category", "Priority", "Complexity", "Wave", "Fit", "Reason"], core.map((f) => missRowX(f, rel))));
-  const verts = [...new Set(missingDomain.map((f) => f.vertical))].sort((a, b) => (a === "common" ? -1 : b === "common" ? 1 : a.localeCompare(b)));
-  parts.push(`## Domain components — ${missingDomain.length}
-
-Domain verticals are industry demo components. KuiReact's own ADR 0003 records 16 of 18 verticals as React-only with respect to KuiEJS; only \`common\` and \`api-doc\` carry a parity obligation there. This audit applies the same policy: \`common\` is Medium (a few auth/user items High), everything else Low and a candidate for \`parity.exceptions.json\`.
-
-` + verts.map((v) => { const l = missingDomain.filter((f) => f.vertical === v).sort((a, b) => priRank(a.meta.priority) - priRank(b.meta.priority) || a.name.localeCompare(b.name)); return `### ${VERT[v] || v} (${l.length})\n\n` + table(["Component", "Category", "Priority", "Complexity", "Reason"], l.map((f) => missRow(f, rel))); }).join("\n\n"));
   write(rel, parts.join("\n\n"));
 
   // priority matrix
-  const pm = [header("Priority matrix", "Priority × complexity for the core missing set; domain set summarised by counts.")];
+  const pm = [header("Priority matrix", "Priority × complexity for the in-scope missing set (ui-layer Atom/Molecule/Organism).")];
   pm.push(`## Core (${missingCore.length})\n\n| Priority \\ Complexity | ${CPX.join(" | ")} | Total |\n| --- | ${CPX.map(() => "---").join(" | ")} | --- |\n` +
     PRI.map((p) => `| **${p}** | ${CPX.map((c) => missingCore.filter((f) => f.meta.priority === p && f.meta.complexity === c).map((f) => f.name).join(", ") || "—").join(" | ")} | ${missingCore.filter((f) => f.meta.priority === p).length} |`).join("\n"));
   pm.push(`## Quick wins (Critical/High × Small)\n\n${missingCore.filter((f) => ["Critical", "High"].includes(f.meta.priority) && f.meta.complexity === "Small").map((f) => `- ${f.name} — ${f.meta.reason}`).join("\n")}`);
   pm.push(`## Expensive and important (Critical/High × Large/Very Large)\n\n${missingCore.filter((f) => ["Critical", "High"].includes(f.meta.priority) && ["Large", "Very Large"].includes(f.meta.complexity)).map((f) => `- ${f.name} (${f.meta.complexity}) — ${f.meta.reason}`).join("\n") || "- none"}`);
   pm.push(`## Recommended parity exceptions (fit = web-only)\n\n${missing.filter((f) => f.meta.fit === "web-only").map((f) => `- ${f.name} — ${f.meta.reason}`).join("\n")}`);
-  pm.push(`## Domain (${missingDomain.length})\n\n| Vertical | ${PRI.join(" | ")} | ${CPX.join(" | ")} |\n| --- | ${PRI.map(() => "---").join(" | ")} | ${CPX.map(() => "---").join(" | ")} |\n` +
-    verts.map((v) => { const l = missingDomain.filter((f) => f.vertical === v); return `| ${VERT[v] || v} | ${PRI.map((p) => l.filter((f) => f.meta.priority === p).length || "—").join(" | ")} | ${CPX.map((c) => l.filter((f) => f.meta.complexity === c).length || "—").join(" | ")} |`; }).join("\n"));
   write("phase-2-gap-analysis/priority-matrix.md", pm.join("\n\n"));
 
   // dependency analysis
@@ -454,16 +453,16 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
   const crit = missingCore.filter((f) => f.meta.priority === "Critical");
   const high = missingCore.filter((f) => f.meta.priority === "High");
   write("03-missing-components.md", `${header("03 · Missing components")}
-**${missing.length}** KuiReact components have no KuiNative counterpart: **${missingCore.length} core** (ui/app/hooks) and **${missingDomain.length} domain**. Every one has a backlog file under [component-backlog/](component-backlog/README.md).
+**${missing.length}** in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart. Every one has a backlog file under [component-backlog/](component-backlog/README.md). App-layer components, domain verticals and theme demos are out of scope (see [missing-components.md](phase-2-gap-analysis/missing-components.md#scope)).
 
 Details: [missing-components.md](phase-2-gap-analysis/missing-components.md) · [priority-matrix.md](phase-2-gap-analysis/priority-matrix.md) · [dependency-analysis.md](phase-2-gap-analysis/dependency-analysis.md) · [implementation-order.md](phase-2-gap-analysis/implementation-order.md)
 
 ## Counts
 
-| Priority | Core | Domain | Total |
-| --- | --- | --- | --- |
-${PRI.map((p) => `| ${p} | ${missingCore.filter((f) => f.meta.priority === p).length} | ${missingDomain.filter((f) => f.meta.priority === p).length} | ${missing.filter((f) => f.meta.priority === p).length} |`).join("\n")}
-| **Total** | **${missingCore.length}** | **${missingDomain.length}** | **${missing.length}** |
+| Priority | Count |
+| --- | --- |
+${PRI.map((p) => `| ${p} | ${missingCore.filter((f) => f.meta.priority === p).length} |`).join("\n")}
+| **Total** | **${missingCore.length}** |
 
 | Fit | Count |
 | --- | --- |
@@ -483,9 +482,9 @@ ${table(["Component", "Category", "Priority", "Complexity", "Reason"], high.map(
 
 ${[...missingCore].filter((f) => ["Medium", "Low"].includes(f.meta.priority)).sort((a, b) => priRank(a.meta.priority) - priRank(b.meta.priority) || a.name.localeCompare(b.name)).map((f) => `[${f.name}](${backlogPath(f)}) (${f.meta.priority[0]}/${f.meta.complexity})`).join(" · ")}
 
-## Domain verticals
+## Out of scope
 
-${verts.map((v) => `- **${VERT[v] || v}** — ${missingDomain.filter((f) => f.vertical === v).length} components (${[...new Set(missingDomain.filter((f) => f.vertical === v).map((f) => f.meta.priority))].join("/")})`).join("\n")}
+${facts.filter((f) => f.layer === "domain").length} domain-vertical components, ${facts.filter((f) => f.layer === "app").length} app-layer components, ${facts.filter((f) => f.layer === "hook").length} hooks and ${facts.filter((f) => f.layer === "library").length} external-library entry are excluded from this backlog by scope decision (ui-layer atoms/molecules/organisms only). See [missing-components.md](phase-2-gap-analysis/missing-components.md#scope).
 `);
 }
 
@@ -612,19 +611,14 @@ for (const f of missing) backlogFile(f);
 // backlog index
 {
   const rel = "component-backlog/README.md";
-  const verts = [...new Set(missingDomain.map((f) => f.vertical))].sort((a, b) => (a === "common" ? -1 : b === "common" ? 1 : a.localeCompare(b)));
-  write(rel, `${header("Component backlog", `${missing.length} backlog files — one per KuiReact component missing from KuiNative.`)}
+  write(rel, `${header("Component backlog", `${missing.length} backlog files — one per in-scope KuiReact ui-layer component (Atom/Molecule/Organism) missing from KuiNative.`)}
 Each file contains: Overview · KuiReact Reference · Required Props (parsed from source) · Variants (KuiReact showcase code) · States · Accessibility Requirements (ARIA → RN mapping) · Design Tokens (with light/dark values) · Dependencies · Implementation Notes · Acceptance Criteria.
 
-Shared components that exist but lack parity are **not** here — see [feature-matrix/](../feature-matrix/) and [phase-3-parity-review/](../phase-3-parity-review/component-status-matrix.md).
+Shared components that exist but lack parity are **not** here — see [feature-matrix/](../feature-matrix/) and [phase-3-parity-review/](../phase-3-parity-review/component-status-matrix.md). App-layer components, domain verticals and theme demos are out of scope by decision (see [missing-components.md](../phase-2-gap-analysis/missing-components.md#scope)) and have no backlog file.
 
 ## Core (${missingCore.length})
 
 ${table(["Component", "Category", "Priority", "Complexity", "Wave", "Fit"], [...missingCore].sort((a, b) => priRank(a.meta.priority) - priRank(b.meta.priority) || a.name.localeCompare(b.name)).map((f) => [`[${f.name}](${linkFrom(rel, f)})`, f.meta.category, f.meta.priority, f.meta.complexity, f.meta.wave, f.meta.fit]))}
-
-## Domain (${missingDomain.length})
-
-${verts.map((v) => `### ${VERT[v] || v}\n\n${missingDomain.filter((f) => f.vertical === v).sort((a, b) => a.name.localeCompare(b.name)).map((f) => `[${f.name}](${linkFrom(rel, f)}) (${f.meta.priority[0]})`).join(" · ")}`).join("\n\n")}
 `);
 }
 
@@ -643,12 +637,12 @@ function waveDoc(w, title, intro, rel) {
 write("phase-5-roadmap/wave-1-critical.md", waveDoc(1, "Wave 1 — Critical", `Required before serious production adoption. Wave 1 fixes the foundations (packaging, theme provider, typography, tests), brings the three most-used shared components (Button, Input, Modal) to parity, and adds the primitives no app can ship without (Select, Textarea, RadioGroup, Toast, Drawer/sheet, TabGroup, AlertBanner, Progress, Label, Separator, loading/error states).
 
 **Exit criteria:** KuiNative installs as a package; a consumer can build a themed, accessible login + settings + list screen without reaching for another UI library; every Wave 1 component has tests and a showcase entry.`, "phase-5-roadmap/wave-1-critical.md"));
-write("phase-5-roadmap/wave-2-core-completion.md", waveDoc(2, "Wave 2 — Core completion", `Required for strong parity. Finishes the remaining shared-component remediation (Badge, Card, Avatar/AvatarGroup, Checkbox, Toggle, Skeleton, Spinner, EmptyState, shadows), adds the parity contract tooling, and ports the remaining commonly-used ui/app primitives.
+write("phase-5-roadmap/wave-2-core-completion.md", waveDoc(2, "Wave 2 — Core completion", `Required for strong parity. Finishes the remaining shared-component remediation (Badge, Card, Avatar/AvatarGroup, Checkbox, Toggle, Skeleton, Spinner, EmptyState, shadows), adds the parity contract tooling, and ports the remaining commonly-used ui-layer primitives.
 
 **Exit criteria:** every shared component is PARITY_COMPLETE; every KuiReact ui-layer component with fit \`direct\`/\`adapt\` and priority ≥ Medium exists; \`parity.exceptions.json\` lists every deliberate gap and CI fails on an unexplained one.`, "phase-5-roadmap/wave-2-core-completion.md"));
 write("phase-5-roadmap/wave-3-advanced.md", waveDoc(3, "Wave 3 — Advanced", `Nice-to-have: heavy organisms (tables, charts, calendar, media), desktop-web patterns and recommended exceptions. Items with fit \`web-only\` should be closed by adding an exception entry, not by implementation.
 
-**Domain verticals (${missingDomain.length} components)** are also Wave 3. Recommended policy: port \`common\` (${missingDomain.filter((f) => f.vertical === "common").length} components, ${missingDomain.filter((f) => f.vertical === "common" && ["High", "Medium"].includes(f.meta.priority)).length} of them Medium/High) once Wave 2 is complete; record the other ${[...new Set(missingDomain.filter((f) => f.vertical !== "common").map((f) => f.vertical))].length} verticals as exceptions unless a product needs them — matching KuiReact ADR 0003's treatment of KuiEJS. Domain effort if all were ported: ${sumEffort(missingDomain.map((f) => ({ complexity: f.meta.complexity })))[0]}–${sumEffort(missingDomain.map((f) => ({ complexity: f.meta.complexity })))[1]} engineer-days.`, "phase-5-roadmap/wave-3-advanced.md"));
+App-layer components, domain verticals (${facts.filter((f) => f.layer === "domain").length} components) and theme demos are out of scope for this roadmap by decision — see [missing-components.md](../phase-2-gap-analysis/missing-components.md#scope).`, "phase-5-roadmap/wave-3-advanced.md"));
 write("phase-5-roadmap/implementation-order.md", `${header("Implementation order")}
 Single ordered list across all waves (dependencies always precede dependants; a dependency is pulled into an earlier wave when needed).
 
@@ -665,10 +659,10 @@ Detail: [wave-1-critical.md](phase-5-roadmap/wave-1-critical.md) · [wave-2-core
 | Wave | Goal | Items | Effort (engineer-days) |
 | --- | --- | --- | --- |
 | 1 — Critical | Installable, themed, tested library; Button/Input/Modal at parity; baseline form, feedback, overlay and navigation primitives | ${waveTotals[0][1]} | ${waveTotals[0][2]}–${waveTotals[0][3]} |
-| 2 — Core completion | All shared components at parity; parity contract in CI; remaining common ui/app primitives | ${waveTotals[1][1]} | ${waveTotals[1][2]}–${waveTotals[1][3]} |
-| 3 — Advanced | Heavy organisms, desktop-web patterns (mostly exceptions), domain verticals | ${waveTotals[2][1]} core + ${missingDomain.length} domain | ${waveTotals[2][2]}–${waveTotals[2][3]} core + ${sumEffort(missingDomain.map((f) => ({ complexity: f.meta.complexity })))[0]}–${sumEffort(missingDomain.map((f) => ({ complexity: f.meta.complexity })))[1]} domain |
+| 2 — Core completion | All shared components at parity; parity contract in CI; remaining ui-layer primitives | ${waveTotals[1][1]} | ${waveTotals[1][2]}–${waveTotals[1][3]} |
+| 3 — Advanced | Heavy organisms, desktop-web patterns (mostly exceptions) | ${waveTotals[2][1]} | ${waveTotals[2][2]}–${waveTotals[2][3]} |
 
-Estimates assume one engineer familiar with both codebases, Small 0.5–1 d · Medium 2–3 d · Large 5–8 d · Very Large 10–20 d, including tests and a showcase entry.
+Estimates assume one engineer familiar with both codebases, Small 0.5–1 d · Medium 2–3 d · Large 5–8 d · Very Large 10–20 d, including tests and a showcase entry. Scope is KuiReact's ui-layer atoms, molecules and organisms only — app-layer components, domain verticals and theme demos are excluded by decision (see [missing-components.md](phase-2-gap-analysis/missing-components.md#scope)).
 
 ## Wave 1 in order
 
@@ -681,8 +675,6 @@ ${ordered.filter((i) => i.wave === 2).map((it) => `${it.order}. ${it.kind === "m
 ## Wave 3
 
 ${ordered.filter((i) => i.wave === 3).map((it) => it.kind === "missing" ? `[${it.f.name}](${backlogPath(it.f)})${it.f.meta.fit === "web-only" ? " _(exception)_" : ""}` : it.id).join(" · ")}
-
-Plus ${missingDomain.length} domain components ([backlog](component-backlog/README.md#domain-${missingDomain.length})).
 `);
 
 // stats for hand-written docs

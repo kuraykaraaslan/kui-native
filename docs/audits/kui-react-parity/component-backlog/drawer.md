@@ -17,7 +17,7 @@ Side panel sliding in from the screen edge. Left / right placement with focus ma
 | Public export | `@kuraykaraaslan/kui-react/ui` — public (npm: root + /ui) |
 | Registry | yes · status `stable` · since 2025-02 |
 | Showcase variants | Right drawer, Left drawer, Route-aware close (M6 stub) |
-| Composes | useFocusTrap (missing) |
+| Composes | useFocusTrap (excluded) |
 | Used by (registry) | — |
 | Usage frequency | imported by 4 production file(s), 2 showcase file(s) |
 | Third-party imports | `react-dom`, `@fortawesome/react-fontawesome`, `@fortawesome/free-solid-svg-icons` |
@@ -128,7 +128,7 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 
 **KuiReact components it composes:**
 
-- useFocusTrap — missing → [backlog](use-focus-trap.md)
+- useFocusTrap — excluded
 
 **Blocked by (roadmap):** `R-overlay-core`
 

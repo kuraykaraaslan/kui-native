@@ -12,7 +12,7 @@
 | Input | TextInput | ○ | ○ 4/12 | — | ○ no success/readOnly/disabled styling | ◐ 45 | ○ | ○ 35 | ○ 1/12 | ○ 0/9 | MAJOR |
 | Checkbox | Checkbox | ● | ◐ 4/6 | — | ◐ no error | ◐ 55 | ◐ controlled only | ◐ 60 | ○ 1/5 | ○ 0/6 | MAJOR |
 | Toggle | Switch | ○ | ○ 3/8 | ○ sizes 0/3 | ● | ○ 35 | ○ label not pressable | ◐ 45 | ○ 1/4 | ○ 0/6 | MAJOR |
-| Spinner | Spinner | ● | ● 2/2 | ◐ 3/5 (md = sm bug) | — | ◐ 40 | ● | ● 80 | ◐ 1/2 | ● 0/0 | MINOR |
+| Spinner | Spinner | ● | ● 3/3 (+accessibilityLabel) | ● 5/5 | — | ◐ 55 | ● | ● 85 | ◐ 2/2 | ● 8/8 | MINOR |
 | EmptyState | EmptyState | ● | ◐ 4/5 (shape differs) | — | — | ◐ 45 | ◐ icon always shown | ◐ 50 | ◐ 1/2 | ● 0/0 | MAJOR |
 | Skeleton | SkeletonCard | ○ | ○ 1/5 exports | ○ | ◐ | ○ 35 | ◐ faster pulse | ◐ 70 | ○ 1/6 | ● 0/0 | MAJOR |
 | Modal | Modal | ● | ○ 5/13 | ○ sizes 0/3 | ○ no scroll/fullscreen | ○ 30 | ○ overflow bug | ○ 10 | ○ 1/5 | ○ 0/7 | REWRITE |

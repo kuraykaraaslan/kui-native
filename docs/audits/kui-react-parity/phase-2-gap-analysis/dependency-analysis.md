@@ -13,8 +13,8 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | Button | 60 | 17 | 43 | exists as `Button` |
 | Avatar | 25 | 3 | 22 | exists as `Avatar` + `AvatarGroup` |
 | Input | 14 | 1 | 13 | exists as `TextInput` |
-| Form | 10 | 0 | 10 | missing |
-| useFocusTrap | 6 | 6 | 0 | missing |
+| Form | 10 | 0 | 10 | excluded |
+| useFocusTrap | 6 | 6 | 0 | excluded |
 | AlertBanner | 6 | 6 | 0 | missing |
 | DropdownMenu | 6 | 2 | 4 | missing |
 | EmptyState | 5 | 4 | 1 | exists as `EmptyState` |
@@ -28,25 +28,25 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | TagInput | 3 | 1 | 2 | missing |
 | Card | 3 | 2 | 1 | exists as `Card` |
 | StarRating | 3 | 0 | 3 | missing |
-| Calendar | 2 | 2 | 0 | missing |
+| Calendar | 2 | 2 | 0 | excluded |
 | DataTable | 2 | 2 | 0 | missing |
 | Tooltip | 2 | 1 | 1 | missing |
 | TabGroup | 2 | 0 | 2 | missing |
 | Table | 1 | 1 | 0 | missing |
-| ContextMenu | 1 | 1 | 0 | missing |
-| NavDrawer | 1 | 1 | 0 | missing |
+| ContextMenu | 1 | 1 | 0 | excluded |
+| NavDrawer | 1 | 1 | 0 | excluded |
 | DateRangePicker | 1 | 1 | 0 | missing |
 | MultiSelect | 1 | 1 | 0 | missing |
 | Breadcrumb | 1 | 1 | 0 | missing |
 | ColorPicker | 1 | 1 | 0 | missing |
 | SkipLink + LiveRegion | 1 | 1 | 0 | missing |
-| ThemeSwitcher | 1 | 0 | 1 | missing |
+| ThemeSwitcher | 1 | 0 | 1 | excluded |
 | Toggle | 1 | 0 | 1 | exists as `Switch` |
 | RadioGroup | 1 | 0 | 1 | missing |
 | BrandLogo | 1 | 0 | 1 | missing |
 | ButtonGroup | 1 | 0 | 1 | missing |
 | StatCard | 1 | 0 | 1 | missing |
-| CodeEditor | 1 | 0 | 1 | missing |
+| CodeEditor | 1 | 0 | 1 | excluded |
 | Stepper | 1 | 1 | 0 | missing |
 
 ## Shared-but-incomplete primitives are dependency roots too
@@ -59,100 +59,55 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
 
 | Component | Priority | KuiReact composes | Blocked by | Unblocks | RN libraries |
 | --- | --- | --- | --- | --- | --- |
-| [AlertBanner](../component-backlog/alert-banner.md) | Critical | — | — | app-command-bar, form, error-state, not-found-state, step-flow, no-access-state | — |
-| [Drawer](../component-backlog/drawer.md) | Critical | useFocusTrap | R-overlay-core | dropdown-menu, app-shell, nav-drawer, app-drawer | react-native-reanimated, react-native-gesture-handler |
+| [AlertBanner](../component-backlog/alert-banner.md) | Critical | — | — | — | — |
+| [Drawer](../component-backlog/drawer.md) | Critical | useFocusTrap | R-overlay-core | dropdown-menu | react-native-reanimated, react-native-gesture-handler |
 | [Label](../component-backlog/label.md) | Critical | — | — | R-field-shell | — |
-| [Progress](../component-backlog/progress.md) | Critical | — | — | file-upload-section | react-native-svg, react-native-reanimated |
+| [Progress](../component-backlog/progress.md) | Critical | — | — | — | react-native-svg, react-native-reanimated |
 | [RadioGroup](../component-backlog/radio-group.md) | Critical | — | R-field-shell | — | — |
-| [Select](../component-backlog/select.md) | Critical | — | R-overlay-core, R-field-shell | filter-bar | @gorhom/bottom-sheet (or in-house Sheet) |
+| [Select](../component-backlog/select.md) | Critical | — | R-overlay-core, R-field-shell | — | @gorhom/bottom-sheet (or in-house Sheet) |
 | [Separator](../component-backlog/separator.md) | Critical | — | — | — | — |
-| [TabGroup](../component-backlog/tab-group.md) | Critical | — | — | detail-header | — |
+| [TabGroup](../component-backlog/tab-group.md) | Critical | — | — | — | — |
 | [Textarea](../component-backlog/textarea.md) | Critical | — | R-field-shell | — | — |
-| [Toast](../component-backlog/toast.md) | Critical | — | — | notification-system | zustand, react-native-reanimated, react-native-safe-area-context |
+| [Toast](../component-backlog/toast.md) | Critical | — | — | — | zustand, react-native-reanimated, react-native-safe-area-context |
 | [Accordion](../component-backlog/accordion.md) | High | — | — | — | — |
 | [ButtonGroup](../component-backlog/button-group.md) | High | — | — | — | — |
 | [CheckboxGroup](../component-backlog/checkbox-group.md) | High | — | R-field-shell | — | — |
-| [DatePicker](../component-backlog/date-picker.md) | High | Calendar | calendar, R-overlay-core, R-field-shell | date-range-picker, filter-bar | @react-native-community/datetimepicker |
-| [DropdownMenu](../component-backlog/dropdown-menu.md) | High | useFocusTrap | R-overlay-core, popover, drawer | advanced-data-table, app-breadcrumbs, theme-switcher, context-menu | — |
-| [ErrorState](../component-backlog/error-state.md) | High | AlertBanner, Button ✓, EmptyState ✓ | alert-banner, R-button, R-empty-state | — | — |
-| [FocusTrap](../component-backlog/accessibility-kit.md) | High | useFocusTrap | R-overlay-core | — | — |
-| [Form](../component-backlog/form.md) | High | AlertBanner | alert-banner | — | — |
-| [FormField](../component-backlog/form-field.md) | High | — | — | — | react-hook-form |
-| [InlineAlert](../component-backlog/inline-alert.md) | High | — | — | — | — |
-| [LoadingState](../component-backlog/loading-state.md) | High | Spinner ✓ | R-spinner | — | — |
-| [MultiSelect](../component-backlog/multi-select.md) | High | — | R-overlay-core, R-field-shell | filter-bar | bottom sheet |
-| [NotificationProvider](../component-backlog/notification-system.md) | High | — | toast | — | — |
-| [PageHeader](../component-backlog/page-header.md) | High | — | — | detail-header | — |
+| [DatePicker](../component-backlog/date-picker.md) | High | Calendar | R-overlay-core, R-field-shell | date-range-picker | @react-native-community/datetimepicker |
+| [DropdownMenu](../component-backlog/dropdown-menu.md) | High | useFocusTrap | R-overlay-core, popover, drawer | advanced-data-table | — |
+| [MultiSelect](../component-backlog/multi-select.md) | High | — | R-overlay-core, R-field-shell | — | bottom sheet |
+| [PageHeader](../component-backlog/page-header.md) | High | — | — | — | — |
 | [RangeSlider](../component-backlog/range-slider.md) | High | — | — | — | react-native-gesture-handler, react-native-reanimated |
-| [SearchBar](../component-backlog/search-bar.md) | High | — | R-field-shell | data-table, advanced-data-table, global-search, server-data-table, app-drawer | — |
-| [SectionCard](../component-backlog/section-card.md) | High | — | — | — | — |
-| [Stepper](../component-backlog/stepper.md) | High | — | — | onboarding-wizard, step-flow | — |
-| [ThemeSwitcher](../component-backlog/theme-switcher.md) | High | Button ✓, DropdownMenu | dropdown-menu, R-button, R-theme-provider | — | — |
-| [useBreakpoint](../component-backlog/use-breakpoint.md) | High | — | — | — | — |
-| [AppDrawer](../component-backlog/app-drawer.md) | Medium | Badge ✓, Button ✓, Drawer, SearchBar | drawer, search-bar, R-badge, R-button | — | — |
-| [AppShell](../component-backlog/app-shell.md) | Medium | Drawer | drawer | — | expo-router, @react-navigation/drawer |
-| [AppSidebar](../component-backlog/app-sidebar.md) | Medium | Badge ✓ | R-badge | — | expo-router |
-| [AppTopBar](../component-backlog/app-top-bar.md) | Medium | — | — | — | — |
+| [SearchBar](../component-backlog/search-bar.md) | High | — | R-field-shell | data-table, advanced-data-table | — |
+| [Stepper](../component-backlog/stepper.md) | High | — | — | — | — |
 | [BrandLogo](../component-backlog/brand-logo.md) | Medium | — | — | — | expo-image |
 | [Chart](../component-backlog/chart.md) | Medium | — | — | — | victory-native or react-native-gifted-charts |
 | [ComboBox](../component-backlog/combo-box.md) | Medium | — | R-overlay-core, R-field-shell | — | bottom sheet |
-| [DateRangePicker](../component-backlog/date-range-picker.md) | Medium | Calendar | calendar, date-picker, R-overlay-core, R-field-shell | filter-bar | — |
-| [DetailHeader](../component-backlog/detail-header.md) | Medium | Badge ✓ | R-badge, page-header, tab-group | — | — |
-| [FileInput](../component-backlog/file-input.md) | Medium | — | R-field-shell | file-upload-section | expo-document-picker, expo-image-picker |
-| [FileUploadSection](../component-backlog/file-upload-section.md) | Medium | — | file-input, progress | — | — |
-| [FilterBar](../component-backlog/filter-bar.md) | Medium | Button ✓, DateRangePicker, MultiSelect, Select, TagInput | date-range-picker, multi-select, select, tag-input, R-button, date-picker | — | — |
-| [GlobalSearch](../component-backlog/global-search.md) | Medium | SearchBar | search-bar | — | — |
-| [ImageGallery](../component-backlog/image-gallery.md) | Medium | ContextMenu | context-menu | — | expo-image, react-native-gesture-handler |
-| [NoAccessState](../component-backlog/no-access-state.md) | Medium | AlertBanner, Button ✓, EmptyState ✓ | alert-banner, R-button, R-empty-state | — | — |
-| [NotFoundState](../component-backlog/not-found-state.md) | Medium | AlertBanner, Button ✓, EmptyState ✓ | alert-banner, R-button, R-empty-state | — | — |
-| [OnboardingWizard](../component-backlog/onboarding-wizard.md) | Medium | Button ✓, Modal ✓ | R-button, R-modal, stepper | — | — |
-| [Pagination](../component-backlog/pagination.md) | Medium | — | — | data-table, advanced-data-table, server-data-table | — |
+| [DateRangePicker](../component-backlog/date-range-picker.md) | Medium | Calendar | date-picker, R-overlay-core, R-field-shell | — | — |
+| [FileInput](../component-backlog/file-input.md) | Medium | — | R-field-shell | — | expo-document-picker, expo-image-picker |
+| [Pagination](../component-backlog/pagination.md) | Medium | — | — | data-table, advanced-data-table | — |
 | [Popconfirm](../component-backlog/popconfirm.md) | Medium | Button ✓, useFocusTrap | R-overlay-core, R-button, popover | — | — |
-| [Popover](../component-backlog/popover.md) | Medium | useFocusTrap | R-overlay-core | popconfirm, tooltip, dropdown-menu, mention-picker | — |
+| [Popover](../component-backlog/popover.md) | Medium | useFocusTrap | R-overlay-core | popconfirm, tooltip, dropdown-menu | — |
 | [Slider](../component-backlog/slider.md) | Medium | — | — | — | react-native-reanimated |
-| [SplashScreen](../component-backlog/splash-screen.md) | Medium | Spinner ✓ | R-spinner | — | expo-splash-screen |
 | [StarRating](../component-backlog/star-rating.md) | Medium | — | — | — | — |
 | [StatCard](../component-backlog/stat-card.md) | Medium | — | — | — | — |
 | [Statistic](../component-backlog/statistic.md) | Medium | — | — | — | — |
-| [StepFlow](../component-backlog/step-flow.md) | Medium | AlertBanner, Button ✓, Stepper | alert-banner, stepper, R-button, step-shell | — | — |
-| [StepShell](../component-backlog/step-shell.md) | Medium | Button ✓ | R-button | step-flow | — |
 | [TabButton](../component-backlog/tab-button.md) | Medium | — | — | — | — |
 | [Table](../component-backlog/table.md) | Medium | — | — | data-table, bulk-action-table | — |
-| [TagInput](../component-backlog/tag-input.md) | Medium | — | R-field-shell | filter-bar | — |
+| [TagInput](../component-backlog/tag-input.md) | Medium | — | R-field-shell | — | — |
 | [Timeline](../component-backlog/timeline.md) | Medium | — | — | — | — |
 | [TimePicker](../component-backlog/time-picker.md) | Medium | — | R-overlay-core, R-field-shell | — | @react-native-community/datetimepicker |
 | [AdvancedDataTable](../component-backlog/advanced-data-table.md) | Low | DataTable, Pagination, SearchBar, Spinner ✓ | data-table, pagination, search-bar, R-spinner, dropdown-menu | — | — |
-| [AppBreadcrumbs](../component-backlog/app-breadcrumbs.md) | Low | Breadcrumb, Button ✓, DropdownMenu, Tooltip | breadcrumb, dropdown-menu, tooltip, R-button | — | — |
-| [AppCommandBar](../component-backlog/app-command-bar.md) | Low | AlertBanner, Badge ✓, Button ✓, EmptyState ✓, Modal ✓ | alert-banner, R-badge, R-button, R-empty-state, R-modal | — | — |
-| [AppFooter](../component-backlog/app-footer.md) | Low | Badge ✓ | R-badge | — | — |
-| [AppNav](../component-backlog/app-nav.md) | Low | Button ✓, NavDrawer | nav-drawer, R-button | — | expo-router |
-| [Breadcrumb](../component-backlog/breadcrumb.md) | Low | — | — | app-breadcrumbs | — |
+| [Breadcrumb](../component-backlog/breadcrumb.md) | Low | — | — | — | — |
 | [BulkActionTable](../component-backlog/bulk-action-table.md) | Low | Table | table | — | — |
-| [Calendar](../component-backlog/calendar.md) | Low | EventCard, SkipLink + LiveRegion | event-card, skip-link | date-picker, date-range-picker | — |
-| [CodeEditor](../component-backlog/code-editor.md) | Low | — | — | — | — |
-| [ColorPicker](../component-backlog/color-picker.md) | Low | — | — | rich-text-editor | react-native-gesture-handler, react-native-svg |
-| [CommentThread](../component-backlog/comment-thread.md) | Low | Avatar ✓, Button ✓ | R-avatar, R-button | — | — |
+| [ColorPicker](../component-backlog/color-picker.md) | Low | — | — | — | react-native-gesture-handler, react-native-svg |
 | [ContentScoreBar](../component-backlog/content-score-bar.md) | Low | — | — | — | — |
-| [ContextMenu](../component-backlog/context-menu.md) | Low | — | dropdown-menu, R-overlay-core | image-gallery | — |
-| [DataTable](../component-backlog/data-table.md) | Low | Pagination | pagination, table, search-bar | advanced-data-table, server-data-table | — |
+| [DataTable](../component-backlog/data-table.md) | Low | Pagination | pagination, table, search-bar | advanced-data-table | — |
 | [DiffViewer](../component-backlog/diff-viewer.md) | Low | — | — | — | — |
-| [FormBuilder](../component-backlog/form-builder.md) | Low | — | — | — | — |
-| [Gantt](../component-backlog/gantt.md) | Low | — | — | — | — |
-| [KanbanBoard](../component-backlog/kanban-board.md) | Low | Card ✓ | R-card | — | react-native-draggable-flatlist |
-| [MaintenancePage](../component-backlog/maintenance-page.md) | Low | Badge ✓ | R-badge | — | — |
 | [MapView](../component-backlog/map-view.md) | Low | Button ✓, Card ✓ | R-button, R-card | — | react-native-maps |
-| [MentionPicker](../component-backlog/mention-picker.md) | Low | Avatar ✓ | R-avatar, popover | — | — |
-| [NavDrawer](../component-backlog/nav-drawer.md) | Low | Drawer | drawer | app-nav | — |
-| [NotFoundPage](../component-backlog/common-not-found-page.md) | Low | — | — | — | — |
-| [RichTextEditor](../component-backlog/rich-text-editor.md) | Low | Button ✓, ColorPicker, Input ✓, Modal ✓ | color-picker, R-button, R-input, R-modal | — | WebView-based editor |
 | [ScrollArea](../component-backlog/scroll-area.md) | Low | — | — | — | — |
-| [ServerDataTable](../component-backlog/server-data-table.md) | Low | DataTable, Pagination, SearchBar, Spinner ✓ | data-table, pagination, search-bar, R-spinner | — | — |
-| [ShareDialog](../component-backlog/share-dialog.md) | Low | Avatar ✓, Button ✓, Modal ✓ | R-avatar, R-button, R-modal, R-overlay-core | — | — |
-| [SkipLink + LiveRegion](../component-backlog/skip-link.md) | Low | — | — | calendar | — |
-| [Tooltip](../component-backlog/tooltip.md) | Low | — | popover, R-overlay-core | app-breadcrumbs | — |
+| [SkipLink + LiveRegion](../component-backlog/skip-link.md) | Low | — | — | — | — |
+| [Tooltip](../component-backlog/tooltip.md) | Low | — | popover, R-overlay-core | — | — |
 | [TreeView](../component-backlog/tree-view.md) | Low | — | — | — | — |
-| [useA11yCheck](../component-backlog/use-a11y-check.md) | Low | — | — | — | — |
-| [useFocusTrap](../component-backlog/use-focus-trap.md) | Low | — | — | — | — |
 | [VideoPlayer](../component-backlog/video-player.md) | Low | — | — | — | expo-video |
 | [ViewToggle](../component-backlog/view-toggle.md) | Low | — | — | — | — |
 

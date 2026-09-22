@@ -17,7 +17,7 @@ Popover-based date picker with a locale-aware calendar grid (TR / EN), quick mon
 | Public export | `@kuraykaraaslan/kui-react/ui` — public (npm: root + /ui) |
 | Registry | yes · status `stable` · since 2025-02 |
 | Showcase variants | Default, With value, Error / Disabled, Locale: Türkçe + custom messages |
-| Composes | Calendar (missing) |
+| Composes | Calendar (excluded) |
 | Used by (registry) | — |
 | Usage frequency | imported by 1 production file(s), 1 showcase file(s) |
 | Third-party imports | `@fortawesome/react-fontawesome`, `@fortawesome/free-solid-svg-icons` |
@@ -157,9 +157,9 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 
 **KuiReact components it composes:**
 
-- Calendar — missing → [backlog](calendar.md)
+- Calendar — excluded
 
-**Blocked by (roadmap):** `calendar`, `R-overlay-core`, `R-field-shell`
+**Blocked by (roadmap):** `R-overlay-core`, `R-field-shell`
 
 **Third-party:** `@fortawesome/react-fontawesome` → @fortawesome/react-native-fontawesome, `@fortawesome/free-solid-svg-icons`
 

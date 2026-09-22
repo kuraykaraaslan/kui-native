@@ -31,7 +31,7 @@
 | EmptyState | Feedback | `modules/ui/EmptyState.tsx` | `@/modules/ui` | barrel export | 50 | 6 | Button, Text | 3 | — | 0 | EmptyState (`empty-state`) |
 | Modal | Overlay | `modules/ui/Modal.tsx` | `@/modules/ui` | barrel export | 52 | 6 | Text | 2 | accessibilityViewIsModal | 1 | Modal (`modal`) |
 | SkeletonCard | Feedback | `modules/ui/SkeletonCard.tsx` | `@/modules/ui` | barrel export | 39 | 1 | — | 2 | accessibilityLabel, accessibilityRole | 0 | Skeleton (`skeleton`) |
-| Spinner | Feedback | `modules/ui/Spinner.tsx` | `@/modules/ui` | barrel export | 33 | 3 | — | 2 | accessibilityLabel, accessibilityRole | 0 | Spinner (`spinner`) |
+| Spinner | Feedback | `modules/ui/Spinner.tsx` | `@/modules/ui` | barrel export | 58 | 4 | — | 2 | accessibilityLabel, accessibilityRole | 0 | Spinner (`spinner`) |
 | Switch | Forms | `modules/ui/Switch.tsx` | `@/modules/ui` | barrel export | 41 | 5 | Text | 2 | accessibilityLabel, accessibilityRole, accessibilityState | 1 | Toggle (`toggle`) |
 | Text | Typography | `modules/ui/Text.tsx` | `@/modules/ui` | barrel export | 47 | 2 + TextProps | — | 15 | — | 0 | none (native-only) |
 | TextInput | Forms | `modules/ui/TextInput.tsx` | `@/modules/ui` | barrel export | 66 | 5 + TextInputProps | Text | 3 | accessibilityLabel | 0 | Input (`input`) |
@@ -134,6 +134,7 @@ Extends: `ViewProps`
 | --- | --- | --- | --- |
 | size | `SpinnerSize` | no | `"md"` |
 | color | `string` | no | — |
+| accessibilityLabel | `string` | no | `"Loading"` |
 | className | `string` | no | — |
 
 ### Switch

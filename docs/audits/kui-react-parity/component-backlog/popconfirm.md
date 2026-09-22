@@ -17,7 +17,7 @@ Inline "are you sure?" confirmation popover for destructive or consequential act
 | Public export | `@kuraykaraaslan/kui-react/ui` — public (npm: root + /ui) |
 | Registry | yes · status `stable` · since 2026-09 |
 | Showcase variants | Default, Danger + description |
-| Composes | Button (exists as `Button`), useFocusTrap (missing) |
+| Composes | Button (exists as `Button`), useFocusTrap (excluded) |
 | Used by (registry) | — |
 | Usage frequency | imported by 0 production file(s), 1 showcase file(s) |
 | Third-party imports | `@fortawesome/react-fontawesome`, `@fortawesome/free-solid-svg-icons` |
@@ -106,7 +106,7 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 **KuiReact components it composes:**
 
 - Button — exists as `Button`
-- useFocusTrap — missing → [backlog](use-focus-trap.md)
+- useFocusTrap — excluded
 
 **Blocked by (roadmap):** `R-overlay-core`, `R-button`, `popover`
 

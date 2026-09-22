@@ -275,7 +275,7 @@ export const REGISTRY: ShowcaseEntry[] = [
     title: "Spinner",
     category: "Feedback",
     icon: faSpinner,
-    description: "Activity indicator in three sizes.",
+    description: "Activity indicator in five sizes (xs–xl), mirrors KuiReact's Spinner.",
     usage: `<Spinner size="lg" />`,
     preview: () => <Spinner size="lg" />,
     variants: [
@@ -283,10 +283,17 @@ export const REGISTRY: ShowcaseEntry[] = [
         title: "Sizes",
         Demo: () => (
           <View className="flex-row gap-4 items-center">
+            <Spinner size="xs" />
             <Spinner size="sm" />
+            <Spinner size="md" />
             <Spinner size="lg" />
+            <Spinner size="xl" />
           </View>
         ),
+      },
+      {
+        title: "In a Button",
+        Demo: () => <Button label="Saving…" loading />,
       },
     ],
   },
