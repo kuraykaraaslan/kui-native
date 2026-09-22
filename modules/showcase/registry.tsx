@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faListCheck,
   faTableCellsLarge,
   faCircleDot,
   faCircleExclamation,
@@ -70,6 +71,7 @@ import {
   Tooltip,
   Accordion,
   ButtonGroup,
+  CheckboxGroup,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -968,6 +970,53 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: () => <Checkbox defaultChecked disabled label="Checked and disabled" />,
       },
       { title: "Indeterminate (select all)", Demo: CheckboxSelectAllDemo },
+    ],
+  },
+  {
+    id: "checkbox-group",
+    title: "CheckboxGroup",
+    category: "Forms",
+    icon: faListCheck,
+    description: "Chip-style multi-select group. Selected chips use bg-primary-subtle / border-primary tokens.",
+    usage: `<CheckboxGroup legend="Tech stack" options={options} selected={sel} onChange={setSel} />`,
+    preview: () => (
+      <CheckboxGroup legend="Tech stack" options={[{ value: "react", label: "React" }, { value: "vue", label: "Vue" }]} selected={["react"]} onChange={() => {}} />
+    ),
+    // Mirrors KuiReact's CheckboxGroup showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Default",
+        Demo: function CheckboxGroupDemo() {
+          const [sel, setSel] = useState<string[]>(["react", "typescript"]);
+          return (
+            <CheckboxGroup
+              legend="Tech stack"
+              options={[
+                { value: "react", label: "React" },
+                { value: "vue", label: "Vue" },
+                { value: "angular", label: "Angular" },
+                { value: "typescript", label: "TypeScript" },
+                { value: "javascript", label: "JavaScript" },
+                { value: "nodejs", label: "Node.js" },
+              ]}
+              selected={sel}
+              onChange={setSel}
+            />
+          );
+        },
+      },
+      {
+        title: "Disabled",
+        Demo: () => (
+          <CheckboxGroup
+            legend="Permissions"
+            options={[{ value: "read", label: "Read" }, { value: "write", label: "Write" }, { value: "delete", label: "Delete" }]}
+            selected={["read"]}
+            onChange={() => {}}
+            disabled
+          />
+        ),
+      },
     ],
   },
   {

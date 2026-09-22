@@ -15,6 +15,8 @@ export type { ButtonProps } from "./Button";
 export { Card } from "./Card";
 export type { CardProps } from "./Card";
 export { Checkbox } from "./Checkbox";
+export { CheckboxGroup } from "./CheckboxGroup";
+export type { CheckboxGroupProps, CheckboxOption } from "./CheckboxGroup";
 export type { CheckboxProps } from "./Checkbox";
 export { Drawer } from "./Drawer";
 export { DropdownMenu } from "./DropdownMenu";
