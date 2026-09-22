@@ -20,6 +20,16 @@ export type { ButtonGroupItem, ButtonGroupProps } from "./ButtonGroup";
 export type { ButtonProps } from "./Button";
 export { Card } from "./Card";
 export type { CardProps } from "./Card";
+export {
+  AreaChart,
+  BarChart,
+  DonutChart,
+  LineChart,
+  PieChart,
+  ScatterChart,
+  SparkLine,
+} from "./Chart";
+export type { BaseChartProps, Series, SeriesPoint } from "./Chart";
 export { Checkbox } from "./Checkbox";
 export { CheckboxGroup } from "./CheckboxGroup";
 export type { CheckboxGroupProps, CheckboxOption } from "./CheckboxGroup";

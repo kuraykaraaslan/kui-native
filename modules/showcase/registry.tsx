@@ -1,10 +1,11 @@
-import { useRef, useState, type ComponentType } from "react";
+import { useRef, useState, type ComponentType, type ReactNode } from "react";
 import { View } from "react-native";
 import { countries, getEmojiFlag, type TCountryCode } from "countries-list";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faChartLine,
   faCodeCompare,
   faTableColumns as faAdvancedTable,
   faListCheck as faBulkRows,
@@ -135,6 +136,13 @@ import {
   BulkActionTable,
   AdvancedDataTable,
   DiffViewer,
+  LineChart,
+  BarChart,
+  AreaChart,
+  PieChart,
+  DonutChart,
+  SparkLine,
+  type Series,
   type DataTableFetchArgs,
   type DataTableFetchResult,
   type ScoreRule,
@@ -393,6 +401,29 @@ export function Counter({ initial = 0 }) {
   );
 }
 `;
+
+// KuiReact's Chart demo data (verbatim).
+const chartLineSeries: Series[] = [
+  { id: "active", name: "Active users", data: [{ x: "Mon", y: 1200 }, { x: "Tue", y: 1900 }, { x: "Wed", y: 1500 }, { x: "Thu", y: 2300 }, { x: "Fri", y: 2100 }, { x: "Sat", y: 2800 }, { x: "Sun", y: 1700 }] },
+  { id: "signups", name: "New signups", data: [{ x: "Mon", y: 300 }, { x: "Tue", y: 480 }, { x: "Wed", y: 220 }, { x: "Thu", y: 560 }, { x: "Fri", y: 410 }, { x: "Sat", y: 690 }, { x: "Sun", y: 320 }] },
+];
+const chartBarSeries: Series[] = [
+  { id: "revenue", name: "Revenue", data: [{ x: "Jan", y: 4200 }, { x: "Feb", y: 5800 }, { x: "Mar", y: 4900 }, { x: "Apr", y: 7100 }, { x: "May", y: 6300 }, { x: "Jun", y: 8400 }] },
+  { id: "expenses", name: "Expenses", data: [{ x: "Jan", y: 2800 }, { x: "Feb", y: 3200 }, { x: "Mar", y: 3600 }, { x: "Apr", y: 4100 }, { x: "May", y: 3900 }, { x: "Jun", y: 4700 }] },
+];
+const chartPieSeries: Series[] = [
+  { id: "category-share", name: "Category share", data: [{ x: "Electronics", y: 35 }, { x: "Clothing", y: 25 }, { x: "Food", y: 20 }, { x: "Books", y: 12 }, { x: "Other", y: 8 }] },
+];
+const chartSparkValues = [12, 14, 11, 17, 19, 16, 22, 21, 24, 27, 23, 29];
+// KuiReact's preview card so each variant is visually comparable.
+function ChartFrame({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <View className="w-full rounded-xl border border-border bg-surface-raised p-4 shadow-sm">
+      <Text className="mb-2 text-xs font-medium text-text-secondary">{title}</Text>
+      {children}
+    </View>
+  );
+}
 
 const COMBO_OPTIONS: ComboBoxOption[] = [
   { value: "nextjs", label: "Next.js", description: "App Router framework" },
@@ -3199,6 +3230,75 @@ export const REGISTRY: ShowcaseEntry[] = [
       { title: "Split (yan yana)", Demo: () => <DiffViewer oldText={DIFF_SAMPLE_OLD} newText={DIFF_SAMPLE_NEW} mode="split" /> },
       { title: "With context=1", Demo: () => <DiffViewer oldText={DIFF_LONG_OLD} newText={DIFF_LONG_NEW} context={1} /> },
       { title: "Collapsible unchanged context", Demo: () => <DiffViewer oldText={DIFF_LONG_OLD} newText={DIFF_LONG_NEW} context={3} collapsible /> },
+    ],
+  },
+  {
+    id: "chart",
+    title: "Chart",
+    category: "Atoms",
+    icon: faChartLine,
+    description: "Token-aware SVG charts — line, bar, area, pie, donut, scatter and inline sparklines — with axes, grid, legend and a touch tooltip.",
+    usage: `<LineChart series={series} height={220} />`,
+    preview: () => <SparkLine values={chartSparkValues} width={120} height={28} filled />,
+    // Mirrors KuiReact's Chart showcase variants 1:1 (same titles, data and frame copy).
+    variants: [
+      {
+        title: "LineChart",
+        Demo: () => (
+          <ChartFrame title="Daily active users vs new signups">
+            <LineChart series={chartLineSeries} height={220} />
+          </ChartFrame>
+        ),
+      },
+      {
+        title: "BarChart",
+        Demo: () => (
+          <ChartFrame title="Revenue vs expenses (monthly)">
+            <BarChart series={chartBarSeries} height={220} />
+          </ChartFrame>
+        ),
+      },
+      {
+        title: "AreaChart",
+        Demo: () => (
+          <ChartFrame title="Engagement over the week (smoothed)">
+            <AreaChart series={chartLineSeries} height={220} fillOpacity={0.18} />
+          </ChartFrame>
+        ),
+      },
+      {
+        title: "PieChart",
+        Demo: () => (
+          <ChartFrame title="Sales by category">
+            <PieChart series={chartPieSeries} height={220} />
+          </ChartFrame>
+        ),
+      },
+      {
+        title: "DonutChart",
+        Demo: () => (
+          <ChartFrame title="Sales by category (donut)">
+            <DonutChart series={chartPieSeries} height={220} innerRadius={0.62} />
+          </ChartFrame>
+        ),
+      },
+      {
+        title: "SparkLine",
+        Demo: () => (
+          <ChartFrame title="Inline sparklines">
+            <View className="flex-row items-center gap-4">
+              <Text className="text-sm text-text-primary">MRR</Text>
+              <SparkLine values={chartSparkValues} width={120} height={28} filled />
+              <Text className="ml-2 text-sm font-medium text-success">+24%</Text>
+            </View>
+            <View className="mt-3 flex-row items-center gap-4">
+              <Text className="text-sm text-text-primary">DAU</Text>
+              <SparkLine values={[5, 7, 6, 9, 8, 11, 10, 13]} width={120} height={28} />
+              <Text className="ml-2 text-sm font-medium text-success">+8%</Text>
+            </View>
+          </ChartFrame>
+        ),
+      },
     ],
   },
   {
