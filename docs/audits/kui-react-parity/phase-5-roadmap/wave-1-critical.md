@@ -10,9 +10,9 @@ Required before serious production adoption. Wave 1 fixes the foundations (packa
 
 | | |
 | --- | --- |
-| Items | 14 (11 remediation of shared components/infra, 3 new components) |
-| Estimated effort | 22–35 engineer-days (4.4–7.0 engineer-weeks) |
-| By priority | Critical 12 · High 2 · Medium 0 · Low 0 |
+| Items | 11 (11 remediation of shared components/infra, 0 new components) |
+| Estimated effort | 16–26 engineer-days (3.2–5.2 engineer-weeks) |
+| By priority | Critical 9 · High 2 · Medium 0 · Low 0 |
 
 ## Items in recommended order
 
@@ -25,10 +25,7 @@ Required before serious production adoption. Wave 1 fixes the foundations (packa
 | 5 | **R-field-shell** Extract FieldShell (Label, hint, error, success, count) shared by all form controls | Critical | Small | label | 0.5–1 d | KuiReact Input/Textarea/Select/Checkbox share one label/hint/error convention; KuiNative re-implements a subset per component. |
 | 6 | **R-theme-provider** Export a `KuiProvider` (token `vars()` + scheme resolution) from the library | Critical | Small | R-infra-package | 0.5–1 d | Theme wiring lives in the showcase `app/_layout.tsx`; a consumer gets unthemed components. |
 | 7 | **R-typography** Fix `Text` weights/fonts (Geist, real bold/semibold) and align scale to KuiReact usage | Critical | Small | — | 0.5–1 d | Heading variants set `fontFamily: 'System'` with no `fontWeight`, so h1–h4 render regular-weight on iOS/web; README claims Inter while KuiR… |
-| 8 | **R-overlay-core** Overlay core (presence/animation, backdrop, host, a11y) mirroring `Overlays/shared` | Critical | Medium | — | 2–3 d | KuiReact Modal/Drawer/Popover share presence, focus-trap, scroll-lock, portal and positioning hooks. KuiNative has no shared overlay layer,… |
-| 9 | [Drawer](../component-backlog/drawer.md) | Critical | Medium | R-overlay-core | 2–3 d | Side/bottom sheets are the primary overlay on mobile; KuiReact Drawer shares the Overlays/shared primitives with Modal. |
-| 10 | **R-input** Input parity (rename to `Input`, success, required, prefix/suffix, clearable, password toggle, count, readOnly, typed ref) | Critical | Medium | R-field-shell | 2–3 d | 8 KuiReact features missing; name differs. |
-| 11 | **R-modal** Modal rewrite (see rewrite-candidates.md) | Critical | Medium | R-overlay-core | 2–3 d | Merged accessibility tree, no close button, no scroll, no sizes, `visible` vs `open`. |
-| 12 | [Select](../component-backlog/select.md) | Critical | Medium | R-overlay-core, R-field-shell | 2–3 d | Single-select is the most common form control after Input; forms cannot be built without it. |
-| 13 | [Toast](../component-backlog/toast.md) | Critical | Medium | — | 2–3 d | Transient notifications with a programmatic `toast()` store are required by virtually every app; KuiReact exports Toast, ToastProvider, Toa… |
-| 14 | **R-fa-version** Align Font Awesome to v7 (KuiReact peer range `>=7`) | High | Small | — | 0.5–1 d | ADR 0003 requires same icon-set version; KuiNative pins `^6.7.2`. |
+| 8 | **R-input** Input parity (rename to `Input`, success, required, prefix/suffix, clearable, password toggle, count, readOnly, typed ref) | Critical | Medium | R-field-shell | 2–3 d | 8 KuiReact features missing; name differs. |
+| 9 | **R-overlay-core** Overlay core (presence/animation, backdrop, host, a11y) mirroring `Overlays/shared` | Critical | Medium | — | 2–3 d | KuiReact Modal/Drawer/Popover share presence, focus-trap, scroll-lock, portal and positioning hooks. KuiNative has no shared overlay layer,… |
+| 10 | **R-modal** Modal rewrite (see rewrite-candidates.md) | Critical | Medium | R-overlay-core | 2–3 d | Merged accessibility tree, no close button, no scroll, no sizes, `visible` vs `open`. |
+| 11 | **R-fa-version** Align Font Awesome to v7 (KuiReact peer range `>=7`) | High | Small | — | 0.5–1 d | ADR 0003 requires same icon-set version; KuiNative pins `^6.7.2`. |

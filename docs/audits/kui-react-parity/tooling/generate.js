@@ -21,7 +21,7 @@ const table = (head, body) => [`| ${head.join(" | ")} |`, `| ${head.map(() => "-
 const byId = Object.fromEntries(facts.map((f) => [f.id, f]));
 
 // ---------------------------------------------------------------- classification
-const SHARED_CATEGORY = { button: "Foundation", badge: "Data Display", avatar: "Data Display", spinner: "Feedback", skeleton: "Feedback", input: "Forms", checkbox: "Forms", toggle: "Forms", card: "Layout", "empty-state": "Feedback", modal: "Overlay", label: "Typography", separator: "Layout", "alert-banner": "Feedback", "radio-group": "Forms", textarea: "Forms", "tab-group": "Navigation", progress: "Feedback" };
+const SHARED_CATEGORY = { button: "Foundation", badge: "Data Display", avatar: "Data Display", spinner: "Feedback", skeleton: "Feedback", input: "Forms", checkbox: "Forms", toggle: "Forms", card: "Layout", "empty-state": "Feedback", modal: "Overlay", label: "Typography", separator: "Layout", "alert-banner": "Feedback", "radio-group": "Forms", textarea: "Forms", "tab-group": "Navigation", progress: "Feedback", select: "Forms", drawer: "Overlay", toast: "Feedback" };
 const cur = Object.fromEntries(rows.map(([id, category, priority, complexity, wave, fit, reason, rnNotes, rnDeps]) => [id, { category, priority, complexity, wave, fit, reason, rnNotes, rnDeps }]));
 const VERT = { common: "Common", blog: "Blog", event: "Event", "api-doc": "API Doc", landing: "Landing", jobs: "Jobs", fintech: "Fintech", commerce: "Commerce", media: "Media", forum: "Forum", "real-estate": "Real Estate", food: "Food", travel: "Travel", ai: "AI", social: "Social", iot: "IoT", nft: "NFT", reviews: "Reviews" };
 
@@ -189,7 +189,7 @@ const knShowcasePrivate = [
   ["CodeBlock", "modules/showcase/ui/CodeBlock.tsx", "Data Display", "—"],
   ["useDrawer (zustand store)", "modules/showcase/ui/drawer.store.ts", "Hooks", "—"],
 ];
-const KN_CATEGORY = { Button: "Foundation", Text: "Typography", Card: "Layout", Avatar: "Data Display", AvatarGroup: "Data Display", Badge: "Data Display", TextInput: "Forms", Checkbox: "Forms", Switch: "Forms", Spinner: "Feedback", EmptyState: "Feedback", SkeletonCard: "Feedback", Modal: "Overlay", Label: "Typography", Separator: "Layout", AlertBanner: "Feedback", RadioGroup: "Forms", Textarea: "Forms", TabGroup: "Navigation", Progress: "Feedback", SkeletonLine: "Feedback", SkeletonAvatar: "Feedback", SkeletonText: "Feedback" };
+const KN_CATEGORY = { Button: "Foundation", Text: "Typography", Card: "Layout", Avatar: "Data Display", AvatarGroup: "Data Display", Badge: "Data Display", TextInput: "Forms", Input: "Forms", Toggle: "Forms", Checkbox: "Forms", Switch: "Forms", Spinner: "Feedback", EmptyState: "Feedback", SkeletonCard: "Feedback", Modal: "Overlay", Label: "Typography", Separator: "Layout", AlertBanner: "Feedback", RadioGroup: "Forms", Textarea: "Forms", TabGroup: "Navigation", Progress: "Feedback", SkeletonLine: "Feedback", SkeletonAvatar: "Feedback", SkeletonText: "Feedback", Select: "Forms", Drawer: "Overlay", Toaster: "Feedback", Toast: "Feedback", ToastProvider: "Feedback", ToastRegion: "Feedback" };
 {
   const rel = "phase-1-inventory/kui-native-components.md";
   const deps = (k) => { const src = fs.readFileSync(path.join("C:/Users/kuray/Documents/Projects/KUInative", k.file), "utf8"); return [...src.matchAll(/from\s+["']\.\/(\w+)["']/g)].map((m) => m[1]).join(", ") || "—"; };

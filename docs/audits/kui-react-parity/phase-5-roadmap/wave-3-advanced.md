@@ -18,18 +18,18 @@ App-layer components, domain verticals (217 components) and theme demos are out 
 
 | Order | Item | Priority | Complexity | Dependencies | Estimated effort | Why |
 | --- | --- | --- | --- | --- | --- | --- |
-| 51 | [Chart](../component-backlog/chart.md) | Medium | Very Large | — | 10–20 d | KuiReact wraps Chart.js (1.8k LOC); canvas is not available on RN. |
-| 52 | [Breadcrumb](../component-backlog/breadcrumb.md) | Low | Small | — | 0.5–1 d | Breadcrumbs are uncommon on mobile but required for tablet/web targets of RN. |
-| 53 | [ContentScoreBar](../component-backlog/content-score-bar.md) | Low | Small | — | 0.5–1 d | SEO/content-quality meter; niche. |
-| 54 | [ScrollArea](../component-backlog/scroll-area.md) | Low | Small | — | 0.5–1 d | Styled-scrollbar container; on RN `ScrollView` is already the primitive. |
-| 55 | [SkipLink + LiveRegion](../component-backlog/skip-link.md) | Low | Small | — | 0.5–1 d | Skip-to-content links are a keyboard/DOM concept. LiveRegion/Announcer (same file) do have an RN equivalent and are tracked in accessibilit… |
-| 56 | [Tooltip](../component-backlog/tooltip.md) | Low | Small | popover, R-overlay-core | 0.5–1 d | Hover-driven on web; on touch devices only long-press makes sense. |
-| 57 | [ViewToggle](../component-backlog/view-toggle.md) | Low | Small | — | 0.5–1 d | List/grid switch; small. |
-| 58 | [BulkActionTable](../component-backlog/bulk-action-table.md) | Low | Medium | table | 2–3 d | Selection + bulk actions. |
-| 59 | [ColorPicker](../component-backlog/color-picker.md) | Low | Large | — | 5–8 d | Niche input; large (1.2k LOC). |
-| 60 | [DataTable](../component-backlog/data-table.md) | Low | Large | pagination, table, search-bar | 5–8 d | Searchable/sortable table (800 LOC). |
-| 61 | [DiffViewer](../component-backlog/diff-viewer.md) | Low | Large | — | 5–8 d | Diff display. |
-| 62 | [TreeView](../component-backlog/tree-view.md) | Low | Large | — | 5–8 d | Recursive tree; niche on mobile. |
-| 63 | [AdvancedDataTable](../component-backlog/advanced-data-table.md) | Low | Very Large | data-table, pagination, search-bar, R-spinner, dropdown-menu | 10–20 d | Selectable table with row actions (2k LOC). |
-| 64 | [MapView](../component-backlog/map-view.md) | Low | Very Large | R-button, R-card | 10–20 d | Leaflet map with markers/zones/routes. |
-| 65 | [VideoPlayer](../component-backlog/video-player.md) | Low | Very Large | — | 10–20 d | Custom HTML5 player (1.5k LOC). |
+| 48 | [Chart](../component-backlog/chart.md) | Medium | Very Large | — | 10–20 d | KuiReact wraps Chart.js (1.8k LOC); canvas is not available on RN. |
+| 49 | [Breadcrumb](../component-backlog/breadcrumb.md) | Low | Small | — | 0.5–1 d | Breadcrumbs are uncommon on mobile but required for tablet/web targets of RN. |
+| 50 | [ContentScoreBar](../component-backlog/content-score-bar.md) | Low | Small | — | 0.5–1 d | SEO/content-quality meter; niche. |
+| 51 | [ScrollArea](../component-backlog/scroll-area.md) | Low | Small | — | 0.5–1 d | Styled-scrollbar container; on RN `ScrollView` is already the primitive. |
+| 52 | [SkipLink + LiveRegion](../component-backlog/skip-link.md) | Low | Small | — | 0.5–1 d | Skip-to-content links are a keyboard/DOM concept. LiveRegion/Announcer (same file) do have an RN equivalent and are tracked in accessibilit… |
+| 53 | [Tooltip](../component-backlog/tooltip.md) | Low | Small | popover, R-overlay-core | 0.5–1 d | Hover-driven on web; on touch devices only long-press makes sense. |
+| 54 | [ViewToggle](../component-backlog/view-toggle.md) | Low | Small | — | 0.5–1 d | List/grid switch; small. |
+| 55 | [BulkActionTable](../component-backlog/bulk-action-table.md) | Low | Medium | table | 2–3 d | Selection + bulk actions. |
+| 56 | [ColorPicker](../component-backlog/color-picker.md) | Low | Large | — | 5–8 d | Niche input; large (1.2k LOC). |
+| 57 | [DataTable](../component-backlog/data-table.md) | Low | Large | pagination, table, search-bar | 5–8 d | Searchable/sortable table (800 LOC). |
+| 58 | [DiffViewer](../component-backlog/diff-viewer.md) | Low | Large | — | 5–8 d | Diff display. |
+| 59 | [TreeView](../component-backlog/tree-view.md) | Low | Large | — | 5–8 d | Recursive tree; niche on mobile. |
+| 60 | [AdvancedDataTable](../component-backlog/advanced-data-table.md) | Low | Very Large | data-table, pagination, search-bar, R-spinner, dropdown-menu | 10–20 d | Selectable table with row actions (2k LOC). |
+| 61 | [MapView](../component-backlog/map-view.md) | Low | Very Large | R-button, R-card | 10–20 d | Leaflet map with markers/zones/routes. |
+| 62 | [VideoPlayer](../component-backlog/video-player.md) | Low | Very Large | — | 10–20 d | Custom HTML5 player (1.5k LOC). |

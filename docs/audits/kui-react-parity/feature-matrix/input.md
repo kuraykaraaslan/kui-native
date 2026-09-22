@@ -1,7 +1,20 @@
 # Feature matrix — Input (KuiNative `TextInput`)
 
 > KuiReact `modules/ui/Input.tsx` (215 LOC, 9 tests, 12 showcase variants, 23 production imports) ↔ KuiNative `modules/ui/TextInput.tsx` (65 LOC, 0 tests, 1 demo).
-> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+> **Status (2026-09-22): PARITY_COMPLETE.** Audit-time detail below; see the Update blocks for what changed.
+
+## Update 2026-09-22 (API parity, `92af9a3`)
+
+**Fixed**
+
+- Renamed to `Input` (`TextInput` kept as an alias).
+- `success`, `required`, `prefixIcon` / `suffixIcon`, `clearable`, `showCount`, password eye toggle, number stepper, read-only styling, typed ref.
+- `className` targets the wrapper (field: `inputClassName`), as in KuiReact; errors announced.
+- 16 tests including KuiReact's 9; showcase shows all 12 KuiReact variants.
+
+**Still open**
+
+- Nothing for parity.
 
 ## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
 

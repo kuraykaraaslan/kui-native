@@ -282,10 +282,11 @@ const extras = [
 // KuiReact id → KuiNative export
 const SHARED = {
   button: ["Button"], card: ["Card"], avatar: ["Avatar", "AvatarGroup"], badge: ["Badge"],
-  input: ["TextInput"], checkbox: ["Checkbox"], toggle: ["Switch"], spinner: ["Spinner"],
+  input: ["Input", "TextInput"], checkbox: ["Checkbox"], toggle: ["Toggle", "Switch"], spinner: ["Spinner"],
   "empty-state": ["EmptyState"], skeleton: ["SkeletonCard", "SkeletonLine", "SkeletonAvatar", "SkeletonText"], modal: ["Modal"],
   label: ["Label"], separator: ["Separator"], "alert-banner": ["AlertBanner"], "radio-group": ["RadioGroup"],
   textarea: ["Textarea"], "tab-group": ["TabGroup"], progress: ["Progress"],
+  select: ["Select"], drawer: ["Drawer"], toast: ["Toaster", "Toast", "ToastProvider", "ToastRegion"],
 };
 
 const entries = reg.components.map((c) => ({ ...c, source: undefined, registry: true }));
@@ -517,7 +518,7 @@ const facts = entries.map(analyse);
 
 // ---------------------------------------------------------------- KuiNative side
 const knBarrel = read(path.join(KN, "modules/ui/index.ts"));
-const knExports = [...knBarrel.matchAll(/export\s+\{([^}]*)\}\s*from\s*["']\.\/(\w+)["']/g)].flatMap((m) => m[1].split(",").map((n) => ({ name: n.trim(), file: `modules/ui/${m[2]}.tsx` })));
+const knExports = [...knBarrel.matchAll(/export\s+\{([^}]*)\}\s*from\s*["']\.\/(\w+)["']/g)].flatMap((m) => m[1].split(",").map((n) => ({ name: n.trim(), file: fs.existsSync(path.join(KN, `modules/ui/${m[2]}.tsx`)) ? `modules/ui/${m[2]}.tsx` : `modules/ui/${m[2]}/index.tsx` })));
 const knFacts = knExports.map((x) => {
   const p = extractComponent(path.join(KN, x.file), x.name, KN);
   const text = read(path.join(KN, x.file));

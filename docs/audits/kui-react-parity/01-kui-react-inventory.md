@@ -19,9 +19,9 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | Typography | 1 | 1 | 0 |
 | Layout | 4 | 2 | 2 |
 | Navigation | 5 | 1 | 4 |
-| Forms | 20 | 5 | 15 |
-| Feedback | 6 | 5 | 1 |
-| Overlay | 6 | 1 | 5 |
+| Forms | 20 | 6 | 14 |
+| Feedback | 6 | 6 | 0 |
+| Overlay | 6 | 2 | 4 |
 | Data Display | 8 | 2 | 6 |
 | Tables | 4 | 0 | 4 |
 | Charts | 1 | 0 | 1 |
@@ -67,11 +67,11 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | DropdownMenu | 7 | ✗ |
 | BrandLogo | 6 | ✗ |
 | EmptyState | 6 | ✓ |
-| Select | 5 | ✗ |
+| Select | 5 | ✓ |
 | AlertBanner | 5 | ✓ |
 | DataTable | 5 | ✗ |
 | Spinner | 4 | ✓ |
-| Drawer | 4 | ✗ |
+| Drawer | 4 | ✓ |
 | StarRating | 3 | ✗ |
 | TagInput | 3 | ✗ |
 | Slider | 3 | ✗ |

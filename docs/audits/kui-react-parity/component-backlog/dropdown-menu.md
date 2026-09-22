@@ -117,7 +117,7 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 
 - useFocusTrap — excluded
 
-**Blocked by (roadmap):** `R-overlay-core`, `popover`, `drawer`
+**Blocked by (roadmap):** `R-overlay-core`, `popover`
 
 **Third-party:** none
 

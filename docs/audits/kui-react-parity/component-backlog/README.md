@@ -1,19 +1,16 @@
 # Component backlog
 
 > KuiReact ↔ KuiNative parity audit · 2026-09-22 · generated from source (KuiReact registry v0.1.0, snapshot 2026-09-18).
-> 44 backlog files — one per in-scope KuiReact ui-layer component (Atom/Molecule/Organism) missing from KuiNative.
+> 41 backlog files — one per in-scope KuiReact ui-layer component (Atom/Molecule/Organism) missing from KuiNative.
 
 Each file contains: Overview · KuiReact Reference · Required Props (parsed from source) · Variants (KuiReact showcase code) · States · Accessibility Requirements (ARIA → RN mapping) · Design Tokens (with light/dark values) · Dependencies · Implementation Notes · Acceptance Criteria.
 
 Shared components that exist but lack parity are **not** here — see [feature-matrix/](../feature-matrix/) and [phase-3-parity-review/](../phase-3-parity-review/component-status-matrix.md). App-layer components, domain verticals and theme demos are out of scope by decision (see [missing-components.md](../phase-2-gap-analysis/missing-components.md#scope)) and have no backlog file.
 
-## Core (44)
+## Core (41)
 
 | Component | Category | Priority | Complexity | Wave | Fit |
 | --- | --- | --- | --- | --- | --- |
-| [Drawer](drawer.md) | Overlay | Critical | Medium | 1 | adapt |
-| [Select](select.md) | Forms | Critical | Medium | 1 | adapt |
-| [Toast](toast.md) | Feedback | Critical | Medium | 1 | adapt |
 | [Accordion](accordion.md) | Data Display | High | Small | 2 | direct |
 | [ButtonGroup](button-group.md) | Forms | High | Small | 2 | direct |
 | [CheckboxGroup](checkbox-group.md) | Forms | High | Small | 2 | direct |

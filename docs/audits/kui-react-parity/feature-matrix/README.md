@@ -1,19 +1,18 @@
 # Feature matrices
 
-One file per component that exists in both libraries (plus `Text`, KuiNative-only). Status legend: **Match** · **Missing** (KuiReact has it, KuiNative doesn't) · **Differs** (both have it, incompatibly) · **Gap** (partial) · **Bug** (defect in KuiNative) · **N/A** (not applicable on the platform) · **Native-ahead** (KuiNative better than KuiReact) · **Adapted** (same outcome, platform-specific mechanism).
+One file per component that exists in both libraries (plus `Text`, KuiNative-only). Status legend: **Match** · **Missing** · **Differs** · **Gap** (partial) · **Bug** · **N/A** (not applicable on the platform) · **Native-ahead** · **Adapted** (same outcome, platform-specific mechanism).
 
-The matrices for the original twelve components record the audit-time state and carry an **Update** block describing what the pixel-perfect pass (`048ebed`) changed.
+The matrices for the original twelve components keep their audit-time detail and carry **Update** blocks for the pixel-perfect pass (`048ebed`) and the API-parity work.
 
 | KuiReact | KuiNative | Matrix | Status |
 | --- | --- | --- | --- |
-| Button | Button | [button.md](button.md) | PARITY_MAJOR_GAPS |
-| Card | Card | [card.md](card.md) | PARITY_MAJOR_GAPS |
-| Avatar | Avatar | [avatar.md](avatar.md) | PARITY_COMPLETE |
-| AvatarGroup | AvatarGroup | [avatar.md](avatar.md#avatargroup) | REQUIRES_REWRITE |
-| Badge | Badge | [badge.md](badge.md) | PARITY_MAJOR_GAPS |
-| Input | TextInput | [input.md](input.md) | PARITY_MAJOR_GAPS |
-| Checkbox | Checkbox | [checkbox.md](checkbox.md) | PARITY_MAJOR_GAPS |
-| Toggle | Switch | [toggle.md](toggle.md) | PARITY_MAJOR_GAPS |
+| Button | Button | [button.md](button.md) | PARITY_COMPLETE |
+| Card | Card | [card.md](card.md) | PARITY_COMPLETE |
+| Avatar / AvatarGroup | Avatar / AvatarGroup | [avatar.md](avatar.md) | PARITY_COMPLETE |
+| Badge | Badge | [badge.md](badge.md) | PARITY_COMPLETE |
+| Input | Input (`TextInput` alias) | [input.md](input.md) | PARITY_COMPLETE |
+| Checkbox | Checkbox | [checkbox.md](checkbox.md) | PARITY_COMPLETE |
+| Toggle | Toggle (`Switch` alias) | [toggle.md](toggle.md) | PARITY_COMPLETE |
 | Spinner | Spinner | [spinner.md](spinner.md) | PARITY_MINOR_GAPS |
 | EmptyState | EmptyState | [empty-state.md](empty-state.md) | PARITY_COMPLETE |
 | Skeleton | SkeletonLine / Avatar / Text / Card | [skeleton.md](skeleton.md) | PARITY_MINOR_GAPS |
@@ -26,3 +25,6 @@ The matrices for the original twelve components record the audit-time state and 
 | Textarea | Textarea | [textarea.md](textarea.md) | PARITY_COMPLETE |
 | TabGroup | TabGroup | [tab-group.md](tab-group.md) | PARITY_MINOR_GAPS |
 | Progress | Progress | [progress.md](progress.md) | PARITY_COMPLETE |
+| Select | Select | [select.md](select.md) | PARITY_MINOR_GAPS |
+| Drawer | Drawer | [drawer.md](drawer.md) | PARITY_COMPLETE |
+| Toast | Toast suite | [toast.md](toast.md) | PARITY_COMPLETE |

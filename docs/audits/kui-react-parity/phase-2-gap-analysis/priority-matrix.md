@@ -3,11 +3,11 @@
 > KuiReact ↔ KuiNative parity audit · 2026-09-22 · generated from source (KuiReact registry v0.1.0, snapshot 2026-09-18).
 > Priority × complexity for the in-scope missing set (ui-layer Atom/Molecule/Organism).
 
-## Core (44)
+## Core (41)
 
 | Priority \ Complexity | Small | Medium | Large | Very Large | Total |
 | --- | --- | --- | --- | --- | --- |
-| **Critical** | — | Select, Toast, Drawer | — | — | 3 |
+| **Critical** | — | — | — | — | 0 |
 | **High** | ButtonGroup, SearchBar, CheckboxGroup, Accordion, PageHeader, Stepper | MultiSelect, RangeSlider, DropdownMenu | DatePicker | — | 10 |
 | **Medium** | BrandLogo, StarRating, Statistic, Popconfirm, StatCard, Pagination, TabButton, Timeline | TagInput, FileInput, TimePicker, Slider, Popover, Table | ComboBox, DateRangePicker | Chart | 17 |
 | **Low** | SkipLink + LiveRegion, ScrollArea, Breadcrumb, ViewToggle, Tooltip, ContentScoreBar | BulkActionTable | ColorPicker, DiffViewer, TreeView, DataTable | AdvancedDataTable, VideoPlayer, MapView | 14 |

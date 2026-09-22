@@ -1,7 +1,18 @@
 # Feature matrix — Card
 
 > KuiReact `modules/ui/Card.tsx` (84 LOC, 0 tests, 6 showcase variants, 9 production imports) ↔ KuiNative `modules/ui/Card.tsx` (46 LOC, 0 tests, 2 demos).
-> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+> **Status (2026-09-22): PARITY_COMPLETE.** Audit-time detail below; see the Update blocks for what changed.
+
+## Update 2026-09-22 (API parity, `dbdbdbd`)
+
+**Fixed**
+
+- `onPress` (KuiReact `onClick`), `hoverable` (pressed-state hover look), `loading` skeleton.
+- Showcase shows all 6 KuiReact variants.
+
+**Still open**
+
+- Nothing for parity.
 
 ## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
 

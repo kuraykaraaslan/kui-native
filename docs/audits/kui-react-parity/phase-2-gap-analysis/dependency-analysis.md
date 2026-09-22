@@ -12,7 +12,7 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | Badge | 68 | 6 | 62 | exists as `Badge` |
 | Button | 60 | 17 | 43 | exists as `Button` |
 | Avatar | 25 | 3 | 22 | exists as `Avatar` + `AvatarGroup` |
-| Input | 14 | 1 | 13 | exists as `TextInput` |
+| Input | 14 | 1 | 13 | exists as `Input` + `TextInput` |
 | Form | 10 | 0 | 10 | excluded |
 | useFocusTrap | 6 | 6 | 0 | excluded |
 | AlertBanner | 6 | 6 | 0 | exists as `AlertBanner` |
@@ -23,8 +23,8 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | SearchBar | 4 | 4 | 0 | missing |
 | Spinner | 4 | 4 | 0 | exists as `Spinner` |
 | Pagination | 3 | 3 | 0 | missing |
-| Drawer | 3 | 3 | 0 | missing |
-| Select | 3 | 1 | 2 | missing |
+| Drawer | 3 | 3 | 0 | exists as `Drawer` |
+| Select | 3 | 1 | 2 | exists as `Select` |
 | TagInput | 3 | 1 | 2 | missing |
 | Card | 3 | 2 | 1 | exists as `Card` |
 | StarRating | 3 | 0 | 3 | missing |
@@ -41,7 +41,7 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | ColorPicker | 1 | 1 | 0 | missing |
 | SkipLink + LiveRegion | 1 | 1 | 0 | missing |
 | ThemeSwitcher | 1 | 0 | 1 | excluded |
-| Toggle | 1 | 0 | 1 | exists as `Switch` |
+| Toggle | 1 | 0 | 1 | exists as `Toggle` + `Switch` |
 | RadioGroup | 1 | 0 | 1 | exists as `RadioGroup` |
 | BrandLogo | 1 | 0 | 1 | missing |
 | ButtonGroup | 1 | 0 | 1 | missing |
@@ -51,7 +51,7 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 
 ## Shared-but-incomplete primitives are dependency roots too
 
-Components that exist in KuiNative but lack parity still block ports: a domain component written against KuiReact's `<Badge variant="neutral" dot>` or `<Button variant="danger" iconRight>` cannot be ported mechanically until the shared component's API matches. Fan-in of shared ids: Button 60, Card 3, Avatar 25, Badge 68, Input 14, Checkbox 0, Toggle 1, Spinner 4, EmptyState 5, Skeleton 0, Modal 5, Label 0, Separator 0, AlertBanner 6, RadioGroup 1, Textarea 5, TabGroup 2, Progress 0.
+Components that exist in KuiNative but lack parity still block ports: a domain component written against KuiReact's `<Badge variant="neutral" dot>` or `<Button variant="danger" iconRight>` cannot be ported mechanically until the shared component's API matches. Fan-in of shared ids: Button 60, Card 3, Avatar 25, Badge 68, Input 14, Checkbox 0, Toggle 1, Spinner 4, EmptyState 5, Skeleton 0, Modal 5, Label 0, Separator 0, AlertBanner 6, RadioGroup 1, Textarea 5, TabGroup 2, Progress 0, Select 3, Drawer 3, Toast 0.
 
 ## Core missing components — dependencies
 
@@ -59,14 +59,11 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
 
 | Component | Priority | KuiReact composes | Blocked by | Unblocks | RN libraries |
 | --- | --- | --- | --- | --- | --- |
-| [Drawer](../component-backlog/drawer.md) | Critical | useFocusTrap | R-overlay-core | dropdown-menu | react-native-reanimated, react-native-gesture-handler |
-| [Select](../component-backlog/select.md) | Critical | — | R-overlay-core, R-field-shell | — | @gorhom/bottom-sheet (or in-house Sheet) |
-| [Toast](../component-backlog/toast.md) | Critical | — | — | — | zustand, react-native-reanimated, react-native-safe-area-context |
 | [Accordion](../component-backlog/accordion.md) | High | — | — | — | — |
 | [ButtonGroup](../component-backlog/button-group.md) | High | — | — | — | — |
 | [CheckboxGroup](../component-backlog/checkbox-group.md) | High | — | R-field-shell | — | — |
 | [DatePicker](../component-backlog/date-picker.md) | High | Calendar | R-overlay-core, R-field-shell | date-range-picker | @react-native-community/datetimepicker |
-| [DropdownMenu](../component-backlog/dropdown-menu.md) | High | useFocusTrap | R-overlay-core, popover, drawer | advanced-data-table | — |
+| [DropdownMenu](../component-backlog/dropdown-menu.md) | High | useFocusTrap | R-overlay-core, popover | advanced-data-table | — |
 | [MultiSelect](../component-backlog/multi-select.md) | High | — | R-overlay-core, R-field-shell | — | bottom sheet |
 | [PageHeader](../component-backlog/page-header.md) | High | — | — | — | — |
 | [RangeSlider](../component-backlog/range-slider.md) | High | — | — | — | react-native-gesture-handler, react-native-reanimated |

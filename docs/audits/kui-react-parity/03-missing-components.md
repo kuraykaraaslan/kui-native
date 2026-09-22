@@ -2,7 +2,7 @@
 
 > KuiReact ↔ KuiNative parity audit · 2026-09-22 · generated from source (KuiReact registry v0.1.0, snapshot 2026-09-18).
 
-**44** in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart. Every one has a backlog file under [component-backlog/](component-backlog/README.md). App-layer components, domain verticals and theme demos are out of scope (see [missing-components.md](phase-2-gap-analysis/missing-components.md#scope)).
+**41** in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart. Every one has a backlog file under [component-backlog/](component-backlog/README.md). App-layer components, domain verticals and theme demos are out of scope (see [missing-components.md](phase-2-gap-analysis/missing-components.md#scope)).
 
 Details: [missing-components.md](phase-2-gap-analysis/missing-components.md) · [priority-matrix.md](phase-2-gap-analysis/priority-matrix.md) · [dependency-analysis.md](phase-2-gap-analysis/dependency-analysis.md) · [implementation-order.md](phase-2-gap-analysis/implementation-order.md)
 
@@ -10,25 +10,22 @@ Details: [missing-components.md](phase-2-gap-analysis/missing-components.md) · 
 
 | Priority | Count |
 | --- | --- |
-| Critical | 3 |
+| Critical | 0 |
 | High | 10 |
 | Medium | 17 |
 | Low | 14 |
-| **Total** | **44** |
+| **Total** | **41** |
 
 | Fit | Count |
 | --- | --- |
 | direct port | 18 |
-| platform adaptation | 25 |
+| platform adaptation | 22 |
 | recommended exception (web-only) | 1 |
 
-## Critical (3)
+## Critical (0)
 
 | Component | Category | Priority | Complexity | Reason |
 | --- | --- | --- | --- | --- |
-| [Select](component-backlog/select.md) | Forms | Critical | Medium | Single-select is the most common form control after Input; forms cannot be built without it. |
-| [Toast](component-backlog/toast.md) | Feedback | Critical | Medium | Transient notifications with a programmatic `toast()` store are required by virtually every app; KuiReact exports Toast, ToastProvider, ToastRegion, useToastStore, toast(). |
-| [Drawer](component-backlog/drawer.md) | Overlay | Critical | Medium | Side/bottom sheets are the primary overlay on mobile; KuiReact Drawer shares the Overlays/shared primitives with Modal. |
 
 ## High (10)
 

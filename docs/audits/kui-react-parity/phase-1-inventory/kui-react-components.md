@@ -50,15 +50,15 @@
 
 | Component | id | Layer | Export path | Public status | LOC | Composes | Used by | Imports (prod / showcase) | Tests | KuiNative |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Input | `input` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 215 | — | 3 | 23 / 2 | ✓ (9) | ✓ TextInput |
+| Input | `input` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 215 | — | 3 | 23 / 2 | ✓ (9) | ✓ Input + TextInput |
 | SearchBar | `search-bar` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 75 | — | 0 | 14 / 1 | — | ✗ [backlog](../component-backlog/search-bar.md) |
 | Textarea | `textarea` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 69 | — | 2 | 9 / 3 | — | ✓ Textarea |
-| Select | `select` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 226 | — | 1 | 5 / 2 | ✓ (10) | ✗ [backlog](../component-backlog/select.md) |
+| Select | `select` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 226 | — | 1 | 5 / 2 | ✓ (10) | ✓ Select |
 | StarRating | `star-rating` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 138 | — | 3 | 3 / 1 | — | ✗ [backlog](../component-backlog/star-rating.md) |
 | TagInput | `tag-input` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 150 | — | 0 | 3 / 1 | — | ✗ [backlog](../component-backlog/tag-input.md) |
 | ColorPicker | `color-picker` | ui | `@/modules/ui/ColorPicker/index` | source-only (not exported from a barrel) | 1190 | — | 0 | 2 / 1 | — | ✗ [backlog](../component-backlog/color-picker.md) |
 | RadioGroup | `radio-group` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 121 | — | 0 | 2 / 1 | — | ✓ RadioGroup |
-| Toggle | `toggle` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 81 | — | 0 | 2 / 2 | ✓ (6) | ✓ Switch |
+| Toggle | `toggle` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 81 | — | 0 | 2 / 2 | ✓ (6) | ✓ Toggle + Switch |
 | ButtonGroup | `button-group` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 96 | — | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/button-group.md) |
 | Checkbox | `checkbox` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 65 | — | 1 | 1 / 1 | ✓ (6) | ✓ Checkbox |
 | DatePicker | `date-picker` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1421 | calendar | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/date-picker.md) |
@@ -80,7 +80,7 @@
 | Spinner | `spinner` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 33 | — | 0 | 4 / 2 | — | ✓ Spinner |
 | Progress | `progress` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 109 | — | 0 | 0 / 1 | — | ✓ Progress |
 | Skeleton | `skeleton` | ui | `@/modules/ui/Skeleton` | source-only (not exported from a barrel) | 60 | — | 0 | 0 / 0 | — | ✓ SkeletonCard + SkeletonLine + SkeletonAvatar + SkeletonText |
-| Toast | `toast` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 733 | — | 0 | 0 / 0 | — | ✗ [backlog](../component-backlog/toast.md) |
+| Toast | `toast` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 733 | — | 0 | 0 / 0 | — | ✓ Toaster + Toast + ToastProvider + ToastRegion |
 
 ## Overlay (6)
 
@@ -88,7 +88,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Modal | `modal` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 145 | use-focus-trap | 3 | 11 / 1 | ✓ (7) | ✓ Modal |
 | DropdownMenu | `dropdown-menu` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 113 | use-focus-trap | 0 | 7 / 1 | ✓ (11) | ✗ [backlog](../component-backlog/dropdown-menu.md) |
-| Drawer | `drawer` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 120 | use-focus-trap | 0 | 4 / 2 | ✓ (8) | ✗ [backlog](../component-backlog/drawer.md) |
+| Drawer | `drawer` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 120 | use-focus-trap | 0 | 4 / 2 | ✓ (8) | ✓ Drawer |
 | Tooltip | `tooltip` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 105 | — | 0 | 2 / 1 | ✓ (6) | ✗ [backlog](../component-backlog/tooltip.md) |
 | Popconfirm | `popconfirm` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 94 | button, use-focus-trap | 0 | 0 / 1 | ✓ (6) | ✗ [backlog](../component-backlog/popconfirm.md) |
 | Popover | `popover` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 74 | use-focus-trap | 0 | 0 / 2 | ✓ (5) | ✗ [backlog](../component-backlog/popover.md) |

@@ -27,12 +27,17 @@ Working branch: `feature/wave1-parity`. Scope: KuiReact ui-layer atoms, molecule
 | `27def3b` | Overlay core (`Overlays/shared`: usePresence, Backdrop, useFocusOnOpen) + Drawer; Modal refactored onto it |
 | `55f2d1b` | Toast suite (`toast()` API, Toaster, cards), `<Toaster />` mounted in the app root |
 | `2866e66` | Button API parity (children, danger, iconRight, iconOnly, selected, rest/ref); Text defers to explicit font classes |
+| `3e48fad` | Badge API parity (children, neutral, sizes, dot, dismissible) |
+| `75edb0c` | Checkbox parity (hint, error, uncontrolled, disabled look) |
+| `5f484a8` | Switch → Toggle (checked / onChange / ariaLabel; Switch kept as alias) |
+| `92af9a3` | TextInput → Input with KuiReact's full feature set (TextInput kept as alias) |
+| `dbdbdbd` | Card onPress / hoverable / loading |
+| `599c8a1` | AvatarGroup rewritten to KuiReact's data-driven API |
+| (this commit) | Docs refresh: Select / Drawer / Toast matrices, API-parity Update blocks, status matrix (16 complete, 7 minor, 0 major), re-scoring 56 → 66 |
 
 ## Next
 
-1. **Docs refresh** for Select, Drawer, Toast and the Button API (add ids to `SHARED`, regenerate, prune backlog, feature matrices, status matrix, scores).
-2. **API parity on older components** (keep deprecated aliases): Badge `children`/`neutral`/`size`/`dot`/`dismissible`; `TextInput` → `Input` with its missing features; Checkbox `hint`/`error`; `Switch` → `Toggle` (`checked`/`onChange`); Card `onPress`/`loading`; AvatarGroup rewrite.
-3. **Remaining roadmap components** in order (DropdownMenu, Popover, Tooltip, Accordion, ButtonGroup, …), each pixel-perfect with 1:1 showcase demos.
-4. **Accessibility:** announce TextInput/Checkbox errors.
-5. **Infra:** packaging + `KuiProvider`, ESLint config, Font Awesome 7, Geist, CI.
-6. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), re-run both scripts, delete the now-stale backlog files, write feature matrices, update status matrix and scores.
+1. **Remaining roadmap components** in order (DropdownMenu, Popover, Tooltip, Accordion, ButtonGroup, CheckboxGroup, SearchBar, Pagination, Stepper, Breadcrumb, …), each pixel-perfect with 1:1 showcase demos. Popover / Tooltip / DropdownMenu should build on `Overlays/shared`.
+2. **Infra:** packaging + `KuiProvider`, ESLint config, Font Awesome 7, Geist, CI.
+3. **Minor gaps:** Spinner two-tone ring, Select outside-tap close, Modal `ref`, Label rest props, `SkeletonTableRow` (with Table).
+4. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), re-run both scripts, delete the now-stale backlog files, write feature matrices, update status matrix and scores.

@@ -1,7 +1,7 @@
 # Missing components
 
 > KuiReact ↔ KuiNative parity audit · 2026-09-22 · generated from source (KuiReact registry v0.1.0, snapshot 2026-09-18).
-> 44 in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart.
+> 41 in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart.
 
 ## Scope
 
@@ -26,13 +26,10 @@ KuiNative development is scoped to KuiReact's core **ui-layer atoms, molecules a
 - **Fit** — `direct` mechanical port · `adapt` needs a platform-idiomatic redesign (sheet instead of popover, etc.) · `web-only` recommended parity exception.
 - **Wave** — roadmap wave (see [08-roadmap.md](../08-roadmap.md)).
 
-## Core components (ui-layer Atom/Molecule/Organism) — 44
+## Core components (ui-layer Atom/Molecule/Organism) — 41
 
 | Component | Category | Priority | Complexity | Wave | Fit | Reason |
 | --- | --- | --- | --- | --- | --- | --- |
-| [Select](../component-backlog/select.md) | Forms | Critical | Medium | W1 | adapt | Single-select is the most common form control after Input; forms cannot be built without it. |
-| [Toast](../component-backlog/toast.md) | Feedback | Critical | Medium | W1 | adapt | Transient notifications with a programmatic `toast()` store are required by virtually every app; KuiReact exports Toast, ToastProvider, ToastRegion, useToastStore, toast(). |
-| [Drawer](../component-backlog/drawer.md) | Overlay | Critical | Medium | W1 | adapt | Side/bottom sheets are the primary overlay on mobile; KuiReact Drawer shares the Overlays/shared primitives with Modal. |
 | [PageHeader](../component-backlog/page-header.md) | Layout | High | Small | W2 | direct | Screen title + subtitle + actions; every screen uses one. |
 | [Stepper](../component-backlog/stepper.md) | Navigation | High | Small | W2 | direct | Step indicator used by wizards/checkout. |
 | [ButtonGroup](../component-backlog/button-group.md) | Forms | High | Small | W2 | direct | Segmented control pattern (options/selected/onChange); very common on mobile. |

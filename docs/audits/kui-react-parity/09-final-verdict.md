@@ -2,60 +2,57 @@
 
 > **If KuiNative were released today, how close is it to being a true React Native counterpart of KuiReact?**
 >
-> Scope: KuiReact's ui-layer atoms, molecules and organisms (62 components under `modules/ui/`). App-layer components, domain verticals and theme demos are out of scope by decision. Updated 2026-09-22 through commit `12b56f3`; the first-pass verdict (34 / 100) is in git history.
+> Scope: KuiReact's ui-layer atoms, molecules and organisms (62 components under `modules/ui/`). App-layer components, domain verticals and theme demos are out of scope by decision. Updated 2026-09-22 through commit `599c8a1`; earlier verdicts (34, then 56) are in git history.
 
-**Halfway, and visually faithful.** In-scope parity is **56 / 100**.
+**A faithful counterpart for what exists, but only a third of it exists.** In-scope parity is **66 / 100**.
 
-- **Coverage:** 18 of 62 in-scope KuiReact components exist. They carry 75.8% of KuiReact's in-scope usage.
-- **Visuals:** every component now renders with KuiReact's exact classes, and its showcase reuses KuiReact's own demos.
-- **Remaining gaps:** they are now mostly about API naming, missing components, and packaging, rather than looks.
+- **Shared components:** all 21 match KuiReact's classes, prop names and showcase demos. Sixteen are fully at parity; the other seven have only minor, platform-driven gaps.
+- **Coverage:** 41 in-scope KuiReact components aren't built yet.
+- **Packaging:** the library can't be installed yet.
 
 ## Estimated parity
 
 | Lens | Value |
 | --- | --- |
-| Overall parity score | **56 %** |
-| In-scope components that exist | 29.0 % (18 / 62) |
-| In-scope usage covered | 75.8 % |
-| Prop-name parity on shared components | 79.7 % |
-| Components at PARITY_COMPLETE | 7 / 20 |
-| Tests | 18 suites, 195 tests |
+| Overall parity score | **66 %** |
+| In-scope components that exist | 33.9 % (21 / 62) |
+| In-scope usage covered | 77.7 % |
+| Prop-name parity on shared components | 97.9 % |
+| Components at PARITY_COMPLETE | 16 / 23 |
+| Tests | 22 suites, 278 tests |
 
 ## Strengths
 
-1. **Pixel parity on everything that exists:** radius, padding, type scale, weights, borders, shadows and motion match KuiReact's source classes.
-2. **Showcase parity:** demos reuse KuiReact's variant titles and sample copy. Where a variant needs an unported prop, a comment says so instead of inventing a substitute.
-3. **Tokens:** all 33 colour tokens are identical in light and dark.
-4. **Accessibility fixes beyond KuiReact's baseline:**
-   - Modal, Switch and AlertBanner keep interactive children as separate accessibility elements.
-   - Every role-bearing View is `accessible`.
-   - Reduce Motion is honoured by Skeleton and Modal.
-5. **Tests:** every component has a suite, and KuiReact's own cases are ported where they exist.
+1. **Pixel and API parity on everything shared.**
+   - The component names, props, variants and sizes are KuiReact's.
+   - Old KuiNative names remain as deprecated aliases.
+2. **Showcase parity:** 102 of 104 KuiReact demos are reproduced with KuiReact's own titles and copy.
+3. **Architecture echoes KuiReact:**
+   - A shared overlay core under `Overlays/shared`, used by Modal and Drawer.
+   - Toast's store and API ported line for line.
+   - Label reused as the form-field label.
+4. **Accessibility:** every defect from the first audit is fixed, and role-bearing Views are `accessible`.
+5. **Tests on every component,** with KuiReact's own cases ported where they exist.
 
 ## Weaknesses
 
-1. **Not a package:** `private: true`, no exports map, and theme wiring lives in the showcase.
-2. **API naming is still React Native-flavoured** on older components: `label` vs `children`, `destructive`, `default`, `TextInput`, `Switch`.
-3. **44 in-scope components are still missing**, including Select, Toast, Drawer, DropdownMenu, Popover and Tooltip.
-4. **Form errors aren't announced to screen readers** on TextInput and Checkbox.
-5. **Geist isn't bundled**, so typography uses the system font.
+1. **Coverage:** 41 in-scope components are missing, including DropdownMenu, Popover, Tooltip, Accordion, ButtonGroup, Pagination, Stepper, the date pickers and the tables.
+2. **Not a package:** `private: true`, no exports map, and theme wiring lives in the showcase.
+3. **Geist isn't bundled,** so typography uses the system font.
+4. **Nothing has been verified visually on a device** or against KuiReact screenshots.
 
 ## Release readiness
 
 | Use | Ready? |
 | --- | --- |
 | Internal showcase / design reference | Yes |
-| Starter code to copy into an Expo app | Yes, for the 20 components that exist |
+| Starter code to copy into an Expo app | Yes, for the 21 shared components |
 | Published component library | No: not installable |
-| "React Native counterpart of KuiReact" claim | Not yet: 29% in-scope coverage, 7 components fully at parity |
+| "React Native counterpart of KuiReact" claim | For the shared set, yes; for the library as a whole, not until coverage rises |
 
 ## Recommended next actions
 
-1. **Finish Wave 1:** Select, Drawer, Toast, then the overlay core they share.
-2. **Do the API renames** as a batch, keeping deprecated aliases:
-   - Button and Badge: `label` → `children`.
-   - Values: `destructive` → `danger`, `default` → `neutral`.
-   - Components: `TextInput` → `Input`, `Switch` → `Toggle`.
-3. **Package the library:** exports map, build, `KuiProvider`, Font Awesome v7.
-4. **Add Geist, and announce form errors.**
-5. **Add CI** running typecheck and tests, then take the first side-by-side screenshots against KuiReact's showcase.
+1. **Build the remaining roadmap components** in order: DropdownMenu, Popover, Tooltip, Accordion, ButtonGroup, and so on.
+2. **Package the library:** exports map, build, `KuiProvider`, Font Awesome v7.
+3. **Bundle Geist.**
+4. **Add CI** (typecheck and tests), then take side-by-side screenshots against KuiReact's showcase.

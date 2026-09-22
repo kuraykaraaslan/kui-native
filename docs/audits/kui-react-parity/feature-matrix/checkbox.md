@@ -1,7 +1,19 @@
 # Feature matrix — Checkbox
 
 > KuiReact `modules/ui/Checkbox.tsx` (65 LOC, 6 tests, 5 showcase variants) ↔ KuiNative `modules/ui/Checkbox.tsx` (52 LOC, 0 tests, 1 demo).
-> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+> **Status (2026-09-22): PARITY_COMPLETE.** Audit-time detail below; see the Update blocks for what changed.
+
+## Update 2026-09-22 (API parity, `75edb0c`)
+
+**Fixed**
+
+- `hint`, `error` (alert + border-error), uncontrolled `defaultChecked`.
+- Disabled dims only the box and greys the label, as KuiReact does.
+- Showcase shows all 5 KuiReact variants.
+
+**Still open**
+
+- Nothing for parity.
 
 ## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
 

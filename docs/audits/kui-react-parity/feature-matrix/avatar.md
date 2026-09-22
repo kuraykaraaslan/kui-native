@@ -1,7 +1,18 @@
 # Feature matrix — Avatar & AvatarGroup
 
 > KuiReact `modules/ui/Avatar.tsx` (124 LOC, 0 tests, 5 showcase variants, 41 production imports) ↔ KuiNative `modules/ui/Avatar.tsx` (83 LOC, 0 tests, 1 demo).
-> **Status (2026-09-22): Avatar PARITY_COMPLETE · AvatarGroup REQUIRES_REWRITE.** Audit-time detail below; see the Update block for what changed.
+> **Status (2026-09-22): Avatar PARITY_COMPLETE · AvatarGroup PARITY_COMPLETE.** Audit-time detail below; see the Update blocks for what changed.
+
+## Update 2026-09-22 (API parity, `599c8a1`)
+
+**Fixed**
+
+- AvatarGroup rewritten to KuiReact's `avatars` / `max` / `size` API with overlap, ring and `+N` chip (children form kept, deprecated).
+- Showcase shows all 5 KuiReact variants.
+
+**Still open**
+
+- Nothing for parity.
 
 ## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
 

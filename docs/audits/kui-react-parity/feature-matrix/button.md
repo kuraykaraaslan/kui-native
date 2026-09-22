@@ -1,7 +1,21 @@
 # Feature matrix — Button
 
 > KuiReact `modules/ui/Button.tsx` (91 LOC, 12 tests, 12 showcase variants, **137 production imports**, the most-used KuiReact component) ↔ KuiNative `modules/ui/Button.tsx` (89 LOC, 0 tests, 3 showcase demos).
-> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+> **Status (2026-09-22): PARITY_COMPLETE.** Audit-time detail below; see the Update blocks for what changed.
+
+## Update 2026-09-22 (API parity, `2866e66`)
+
+**Fixed**
+
+- `children` is the content prop (`label` kept as a deprecated alias).
+- `danger` variant (`destructive` kept as an alias).
+- `iconRight`, `iconOnly` (KuiReact's p-1…p-3 map) and `selected` (ring via outline props + `accessibilityState.selected`).
+- Pressed colours use KuiReact's hover tokens; decorative icons hidden; `PressableProps` spread and `ref` forwarded.
+- Showcase shows all 12 KuiReact variants.
+
+**Still open**
+
+- Deliberate difference: `loading` also blocks presses (KuiReact only sets aria-busy).
 
 ## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
 

@@ -1,7 +1,18 @@
 # Feature matrix — Toggle (KuiNative `Switch`)
 
 > KuiReact `modules/ui/Toggle.tsx` (81 LOC, 6 tests, 4 showcase variants) ↔ KuiNative `modules/ui/Switch.tsx` (40 LOC, 0 tests, 1 demo).
-> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+> **Status (2026-09-22): PARITY_COMPLETE.** Audit-time detail below; see the Update blocks for what changed.
+
+## Update 2026-09-22 (API parity, `5f484a8`)
+
+**Fixed**
+
+- Renamed to `Toggle` with `checked` / `onChange` / `ariaLabel`; `Switch` kept as a deprecated wrapper.
+- Showcase entry renamed to `toggle` / `Toggle`.
+
+**Still open**
+
+- Nothing for parity.
 
 ## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
 
