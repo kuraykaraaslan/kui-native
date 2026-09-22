@@ -1,7 +1,20 @@
 # Feature matrix — Skeleton (KuiNative `SkeletonCard`)
 
 > KuiReact `modules/ui/Skeleton.tsx` (60 LOC, 0 tests, 6 showcase variants; exports `SkeletonLine`, `SkeletonAvatar`, `SkeletonText`, `SkeletonCard`, `SkeletonTableRow`) ↔ KuiNative `modules/ui/SkeletonCard.tsx` (38 LOC, 0 tests, 1 demo; exports `SkeletonCard` only).
-> **Status: PARITY_MAJOR_GAPS.**
+> **Status (2026-09-22): PARITY_MINOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- New `Skeleton.tsx` with `SkeletonLine`, `SkeletonAvatar`, `SkeletonText` and `SkeletonCard` (`SkeletonCard.tsx` kept as a re-export).
+- SkeletonCard reproduces KuiReact's `p-6` layout: avatar + two header lines, three text lines, two footer chips.
+- Pulse matches Tailwind's `animate-pulse` (opacity 1 → 0.5, 2s cubic-bezier); skipped with Reduce Motion.
+- `accessible` + busy progressbar semantics; 11 tests; showcase uses KuiReact's Lines / Text block / Card / Article layout demos.
+
+**Still open**
+
+- `SkeletonTableRow` (waits for Table).
 
 ## Exports
 

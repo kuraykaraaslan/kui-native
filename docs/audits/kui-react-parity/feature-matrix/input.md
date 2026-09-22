@@ -1,7 +1,22 @@
 # Feature matrix — Input (KuiNative `TextInput`)
 
 > KuiReact `modules/ui/Input.tsx` (215 LOC, 9 tests, 12 showcase variants, 23 production imports) ↔ KuiNative `modules/ui/TextInput.tsx` (65 LOC, 0 tests, 1 demo).
-> **Status: PARITY_MAJOR_GAPS.**
+> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- Field `rounded-md px-3 py-2 text-sm` (was `rounded-lg py-2.5 text-base`).
+- 4px spacing between label / field / message (KuiReact `space-y-1`).
+- Error background `bg-error-subtle`; disabled `opacity-50 bg-surface-sunken`.
+- 7 tests; showcase uses KuiReact's Default / Error / Disabled demos.
+
+**Still open**
+
+- The `Input` name.
+- `success`, `required`, `prefixIcon` / `suffixIcon`, `clearable`, `showCount`, password toggle, number stepper, read-only styling.
+- Typed ref; errors announced to screen readers; `className` targets the field instead of the wrapper.
 
 ## API
 

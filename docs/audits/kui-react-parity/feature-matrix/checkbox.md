@@ -1,7 +1,19 @@
 # Feature matrix — Checkbox
 
 > KuiReact `modules/ui/Checkbox.tsx` (65 LOC, 6 tests, 5 showcase variants) ↔ KuiNative `modules/ui/Checkbox.tsx` (52 LOC, 0 tests, 1 demo).
-> **Status: PARITY_MAJOR_GAPS.**
+> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- 16px box (was 20px), unchecked `border-border` (was `border-border-strong`), `gap-3 items-start` (was `gap-2 items-center`).
+- 6 tests; showcase uses KuiReact's Default / Disabled / Indeterminate (select all) demos.
+
+**Still open**
+
+- `hint`, `error`.
+- Uncontrolled `defaultChecked`.
 
 ## API
 

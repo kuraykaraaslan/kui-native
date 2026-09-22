@@ -16,11 +16,11 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | Category | KuiReact | Shared with KuiNative | Missing in KuiNative |
 | --- | --- | --- | --- |
 | Foundation | 2 | 1 | 1 |
-| Typography | 1 | 0 | 1 |
-| Layout | 4 | 1 | 3 |
-| Navigation | 5 | 0 | 5 |
-| Forms | 20 | 3 | 17 |
-| Feedback | 6 | 3 | 3 |
+| Typography | 1 | 1 | 0 |
+| Layout | 4 | 2 | 2 |
+| Navigation | 5 | 1 | 4 |
+| Forms | 20 | 5 | 15 |
+| Feedback | 6 | 5 | 1 |
 | Overlay | 6 | 1 | 5 |
 | Data Display | 8 | 2 | 6 |
 | Tables | 4 | 0 | 4 |
@@ -62,13 +62,13 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | SkipLink + LiveRegion | 16 | ✗ |
 | SearchBar | 14 | ✗ |
 | Modal | 11 | ✓ |
-| Textarea | 9 | ✗ |
+| Textarea | 9 | ✓ |
 | Card | 9 | ✓ |
 | DropdownMenu | 7 | ✗ |
 | BrandLogo | 6 | ✗ |
 | EmptyState | 6 | ✓ |
 | Select | 5 | ✗ |
-| AlertBanner | 5 | ✗ |
+| AlertBanner | 5 | ✓ |
 | DataTable | 5 | ✗ |
 | Spinner | 4 | ✓ |
 | Drawer | 4 | ✗ |
@@ -77,5 +77,5 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | Slider | 3 | ✗ |
 | StatCard | 3 | ✗ |
 | Table | 3 | ✗ |
-| RadioGroup | 2 | ✗ |
+| RadioGroup | 2 | ✓ |
 | Toggle | 2 | ✓ |

@@ -15,11 +15,11 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | Input | 14 | 1 | 13 | exists as `TextInput` |
 | Form | 10 | 0 | 10 | excluded |
 | useFocusTrap | 6 | 6 | 0 | excluded |
-| AlertBanner | 6 | 6 | 0 | missing |
+| AlertBanner | 6 | 6 | 0 | exists as `AlertBanner` |
 | DropdownMenu | 6 | 2 | 4 | missing |
 | EmptyState | 5 | 4 | 1 | exists as `EmptyState` |
 | Modal | 5 | 4 | 1 | exists as `Modal` |
-| Textarea | 5 | 0 | 5 | missing |
+| Textarea | 5 | 0 | 5 | exists as `Textarea` |
 | SearchBar | 4 | 4 | 0 | missing |
 | Spinner | 4 | 4 | 0 | exists as `Spinner` |
 | Pagination | 3 | 3 | 0 | missing |
@@ -31,7 +31,7 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | Calendar | 2 | 2 | 0 | excluded |
 | DataTable | 2 | 2 | 0 | missing |
 | Tooltip | 2 | 1 | 1 | missing |
-| TabGroup | 2 | 0 | 2 | missing |
+| TabGroup | 2 | 0 | 2 | exists as `TabGroup` |
 | Table | 1 | 1 | 0 | missing |
 | ContextMenu | 1 | 1 | 0 | excluded |
 | NavDrawer | 1 | 1 | 0 | excluded |
@@ -42,7 +42,7 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | SkipLink + LiveRegion | 1 | 1 | 0 | missing |
 | ThemeSwitcher | 1 | 0 | 1 | excluded |
 | Toggle | 1 | 0 | 1 | exists as `Switch` |
-| RadioGroup | 1 | 0 | 1 | missing |
+| RadioGroup | 1 | 0 | 1 | exists as `RadioGroup` |
 | BrandLogo | 1 | 0 | 1 | missing |
 | ButtonGroup | 1 | 0 | 1 | missing |
 | StatCard | 1 | 0 | 1 | missing |
@@ -51,7 +51,7 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 
 ## Shared-but-incomplete primitives are dependency roots too
 
-Components that exist in KuiNative but lack parity still block ports: a domain component written against KuiReact's `<Badge variant="neutral" dot>` or `<Button variant="danger" iconRight>` cannot be ported mechanically until the shared component's API matches. Fan-in of shared ids: Button 60, Card 3, Avatar 25, Badge 68, Input 14, Checkbox 0, Toggle 1, Spinner 4, EmptyState 5, Skeleton 0, Modal 5.
+Components that exist in KuiNative but lack parity still block ports: a domain component written against KuiReact's `<Badge variant="neutral" dot>` or `<Button variant="danger" iconRight>` cannot be ported mechanically until the shared component's API matches. Fan-in of shared ids: Button 60, Card 3, Avatar 25, Badge 68, Input 14, Checkbox 0, Toggle 1, Spinner 4, EmptyState 5, Skeleton 0, Modal 5, Label 0, Separator 0, AlertBanner 6, RadioGroup 1, Textarea 5, TabGroup 2, Progress 0.
 
 ## Core missing components — dependencies
 
@@ -59,15 +59,8 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
 
 | Component | Priority | KuiReact composes | Blocked by | Unblocks | RN libraries |
 | --- | --- | --- | --- | --- | --- |
-| [AlertBanner](../component-backlog/alert-banner.md) | Critical | — | — | — | — |
 | [Drawer](../component-backlog/drawer.md) | Critical | useFocusTrap | R-overlay-core | dropdown-menu | react-native-reanimated, react-native-gesture-handler |
-| [Label](../component-backlog/label.md) | Critical | — | — | R-field-shell | — |
-| [Progress](../component-backlog/progress.md) | Critical | — | — | — | react-native-svg, react-native-reanimated |
-| [RadioGroup](../component-backlog/radio-group.md) | Critical | — | R-field-shell | — | — |
 | [Select](../component-backlog/select.md) | Critical | — | R-overlay-core, R-field-shell | — | @gorhom/bottom-sheet (or in-house Sheet) |
-| [Separator](../component-backlog/separator.md) | Critical | — | — | — | — |
-| [TabGroup](../component-backlog/tab-group.md) | Critical | — | — | — | — |
-| [Textarea](../component-backlog/textarea.md) | Critical | — | R-field-shell | — | — |
 | [Toast](../component-backlog/toast.md) | Critical | — | — | — | zustand, react-native-reanimated, react-native-safe-area-context |
 | [Accordion](../component-backlog/accordion.md) | High | — | — | — | — |
 | [ButtonGroup](../component-backlog/button-group.md) | High | — | — | — | — |

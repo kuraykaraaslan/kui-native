@@ -60,7 +60,7 @@ function initials(name: string): string {
 
 export type AvatarProps = {
   name: string;
-  src?: string;
+  src?: string | null;
   size?: AvatarSize;
   status?: AvatarStatus;
   className?: string;
@@ -91,7 +91,7 @@ export function Avatar({ name, src, size = "md", status, className }: AvatarProp
     >
       {showImage ? (
         <Image
-          source={{ uri: src }}
+          source={{ uri: src ?? undefined }}
           style={{ width: sizePx[size], height: sizePx[size] }}
           contentFit="cover"
           transition={150}

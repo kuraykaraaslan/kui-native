@@ -1,7 +1,21 @@
 # Feature matrix — Avatar & AvatarGroup
 
 > KuiReact `modules/ui/Avatar.tsx` (124 LOC, 0 tests, 5 showcase variants, 41 production imports) ↔ KuiNative `modules/ui/Avatar.tsx` (83 LOC, 0 tests, 1 demo).
-> **Avatar: PARITY_MINOR_GAPS · AvatarGroup: REQUIRES_REWRITE.**
+> **Status (2026-09-22): Avatar PARITY_COMPLETE · AvatarGroup REQUIRES_REWRITE.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- `lg` 48px / `xl` 64px with `text-base` / `text-lg` (were 56 / 80px, `text-lg` / `text-2xl`).
+- Borders (`border-border` on images, `border-primary-subtle` on initials).
+- `status` dot (online / offline / away / busy); `?` for blank names; `src` accepts `null`.
+- The view now sets `accessible`, so its `image` role registers.
+- 15 tests; showcase uses KuiReact's Initials (sizes) / With label / Image source / Status dot demos.
+
+**Still open**
+
+- AvatarGroup rewrite (data-driven `avatars` / `max` / overlap / `+N`).
 
 ## Avatar — API
 

@@ -54,6 +54,11 @@ describe("Avatar", () => {
     expect(screen.getByLabelText(status)).toBeTruthy();
   });
 
+  it("accepts src={null} like KuiReact and falls back to initials", async () => {
+    await render(<Avatar name="Kuray K" src={null} />);
+    expect(screen.getByText("KK")).toBeTruthy();
+  });
+
   it("exposes the name as the accessible label", async () => {
     await render(<Avatar name="Kuray Karaaslan" />);
     expect(screen.getByLabelText("Kuray Karaaslan")).toBeTruthy();

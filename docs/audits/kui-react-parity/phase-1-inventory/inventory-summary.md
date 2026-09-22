@@ -11,11 +11,11 @@
 | KuiReact audited entries (total) | 325 |
 | KuiReact in-scope (ui-layer Atom/Molecule/Organism) | 62 |
 | KuiReact out of scope (app layer, domains, hooks, external library, other ui categories) | 263 |
-| KuiNative library exports | 13 (12 components; `AvatarGroup` counted with `Avatar`) |
-| Shared components (counterpart exists) | 11 KuiReact ids ↔ 12 KuiNative exports |
+| KuiNative library exports | 23 (12 components; `AvatarGroup` counted with `Avatar`) |
+| Shared components (counterpart exists) | 18 KuiReact ids ↔ 12 KuiNative exports |
 | KuiNative-only components | 1 (`Text`) |
-| Missing from KuiNative (in scope) | 51 |
-| In-scope coverage | 11 / 62 = **17.7 %** |
+| Missing from KuiNative (in scope) | 44 |
+| In-scope coverage | 18 / 62 = **29.0 %** |
 | Color tokens | 33 / 33 names and light+dark values identical |
 
 ## By category
@@ -23,11 +23,11 @@
 | Category | KuiReact | Shared with KuiNative | Missing in KuiNative |
 | --- | --- | --- | --- |
 | Foundation | 2 | 1 | 1 |
-| Typography | 1 | 0 | 1 |
-| Layout | 4 | 1 | 3 |
-| Navigation | 5 | 0 | 5 |
-| Forms | 20 | 3 | 17 |
-| Feedback | 6 | 3 | 3 |
+| Typography | 1 | 1 | 0 |
+| Layout | 4 | 2 | 2 |
+| Navigation | 5 | 1 | 4 |
+| Forms | 20 | 5 | 15 |
+| Feedback | 6 | 5 | 1 |
 | Overlay | 6 | 1 | 5 |
 | Data Display | 8 | 2 | 6 |
 | Tables | 4 | 0 | 4 |
@@ -71,13 +71,13 @@ Usage frequency = distinct files under `modules/**` and `app/theme/**` importing
 | 6 | SkipLink + LiveRegion | 16 | 1 | ✗ |
 | 7 | SearchBar | 14 | 1 | ✗ |
 | 8 | Modal | 11 | 1 | ✓ Modal |
-| 9 | Textarea | 9 | 3 | ✗ |
+| 9 | Textarea | 9 | 3 | ✓ Textarea |
 | 10 | Card | 9 | 1 | ✓ Card |
 | 11 | DropdownMenu | 7 | 1 | ✗ |
 | 12 | BrandLogo | 6 | 2 | ✗ |
 | 13 | EmptyState | 6 | 1 | ✓ EmptyState |
 | 14 | Select | 5 | 2 | ✗ |
-| 15 | AlertBanner | 5 | 2 | ✗ |
+| 15 | AlertBanner | 5 | 2 | ✓ AlertBanner |
 | 16 | DataTable | 5 | 1 | ✗ |
 | 17 | Spinner | 4 | 2 | ✓ Spinner |
 | 18 | Drawer | 4 | 2 | ✗ |
@@ -86,10 +86,10 @@ Usage frequency = distinct files under `modules/**` and `app/theme/**` importing
 | 21 | Slider | 3 | 2 | ✗ |
 | 22 | StatCard | 3 | 1 | ✗ |
 | 23 | Table | 3 | 1 | ✗ |
-| 24 | RadioGroup | 2 | 1 | ✗ |
+| 24 | RadioGroup | 2 | 1 | ✓ RadioGroup |
 | 25 | Toggle | 2 | 2 | ✓ Switch |
 
-Of the 25 most-used KuiReact components, KuiNative has 9. The missing heavy-hitters (Breadcrumb, SkipLink + LiveRegion, SearchBar, Textarea, DropdownMenu, BrandLogo, …) block any port of KuiReact's domain and app layers.
+Of the 25 most-used KuiReact components, KuiNative has 12. The missing heavy-hitters (Breadcrumb, SkipLink + LiveRegion, SearchBar, DropdownMenu, BrandLogo, Select, …) block any port of KuiReact's domain and app layers.
 
 ## Hooks, providers, theme utilities
 

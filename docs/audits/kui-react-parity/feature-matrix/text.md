@@ -1,7 +1,19 @@
 # Feature matrix — Text (KuiNative-only)
 
 > KuiReact has **no** `Text`/`Typography`/`Heading` component (verified: no such export in `modules/` or `libs/`). Typography is expressed with Tailwind classes inline. React Native requires every string to sit inside `<Text>`, so KuiNative needs this primitive. It is audited against KuiReact's *de facto* typography.
-> **Status: PARITY_MINOR_GAPS** (no API to match; scale and weights must match KuiReact's actual usage) — with a **rendering bug** that makes it effectively Critical to fix.
+> **Status (2026-09-22): PARITY_MINOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- Headings render real bold / semibold (numeric `fontWeight`; the old family swap left them regular on iOS, web and Android).
+- `title` / `titleSm` variants anchored to KuiReact's component-title typography.
+- Heading variants default to the `header` role; typed `ref`; 14 tests.
+
+**Still open**
+
+- Geist / Geist Mono not bundled (system font).
 
 ## Scale vs KuiReact usage
 

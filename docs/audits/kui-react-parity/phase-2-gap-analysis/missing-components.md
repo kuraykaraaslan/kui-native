@@ -1,7 +1,7 @@
 # Missing components
 
 > KuiReact ↔ KuiNative parity audit · 2026-09-22 · generated from source (KuiReact registry v0.1.0, snapshot 2026-09-18).
-> 51 in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart.
+> 44 in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart.
 
 ## Scope
 
@@ -26,18 +26,11 @@ KuiNative development is scoped to KuiReact's core **ui-layer atoms, molecules a
 - **Fit** — `direct` mechanical port · `adapt` needs a platform-idiomatic redesign (sheet instead of popover, etc.) · `web-only` recommended parity exception.
 - **Wave** — roadmap wave (see [08-roadmap.md](../08-roadmap.md)).
 
-## Core components (ui-layer Atom/Molecule/Organism) — 51
+## Core components (ui-layer Atom/Molecule/Organism) — 44
 
 | Component | Category | Priority | Complexity | Wave | Fit | Reason |
 | --- | --- | --- | --- | --- | --- | --- |
-| [Label](../component-backlog/label.md) | Typography | Critical | Small | W1 | direct | Every KuiReact form control renders its label with the same required-marker + disabled treatment; KuiNative duplicates ad-hoc label Text in TextInput/Checkbox/Switch. |
-| [Separator](../component-backlog/separator.md) | Layout | Critical | Small | W1 | direct | Trivial primitive used by DropdownMenu, Card sections, lists and settings screens; its absence forces raw `View` borders everywhere. |
-| [TabGroup](../component-backlog/tab-group.md) | Navigation | Critical | Small | W1 | direct | In-screen tabs (tabs/activeTab/onChange) are a staple of mobile screens. |
-| [RadioGroup](../component-backlog/radio-group.md) | Forms | Critical | Small | W1 | direct | Mutually-exclusive choice control; core form primitive. |
 | [Select](../component-backlog/select.md) | Forms | Critical | Medium | W1 | adapt | Single-select is the most common form control after Input; forms cannot be built without it. |
-| [Textarea](../component-backlog/textarea.md) | Forms | Critical | Small | W1 | direct | Multi-line text entry is a baseline form control; KuiReact has a dedicated component with label/hint/error/count. |
-| [AlertBanner](../component-backlog/alert-banner.md) | Feedback | Critical | Small | W1 | direct | Inline semantic alerts (success/error/warning/info) with title/message/action; basic feedback surface. |
-| [Progress](../component-backlog/progress.md) | Feedback | Critical | Medium | W1 | direct | Determinate progress (bar + circle) is a baseline feedback primitive for uploads, onboarding and quotas. |
 | [Toast](../component-backlog/toast.md) | Feedback | Critical | Medium | W1 | adapt | Transient notifications with a programmatic `toast()` store are required by virtually every app; KuiReact exports Toast, ToastProvider, ToastRegion, useToastStore, toast(). |
 | [Drawer](../component-backlog/drawer.md) | Overlay | Critical | Medium | W1 | adapt | Side/bottom sheets are the primary overlay on mobile; KuiReact Drawer shares the Overlays/shared primitives with Modal. |
 | [PageHeader](../component-backlog/page-header.md) | Layout | High | Small | W2 | direct | Screen title + subtitle + actions; every screen uses one. |

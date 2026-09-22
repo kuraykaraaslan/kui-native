@@ -1,7 +1,20 @@
 # Feature matrix — EmptyState
 
 > KuiReact `modules/ui/EmptyState.tsx` (37 LOC, 0 tests, 2 showcase variants) ↔ KuiNative `modules/ui/EmptyState.tsx` (49 LOC, 0 tests, 1 demo).
-> **Status: PARITY_MAJOR_GAPS** (API shape of `icon` and `action` differs).
+> **Status (2026-09-22): PARITY_COMPLETE.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- `py-16`, 48px icon circle, `text-disabled` icon, `text-sm font-semibold` title.
+- No icon unless one is passed; `icon` accepts a Font Awesome definition or any node.
+- KuiReact's `action` node is supported (the `actionLabel` / `onAction` shorthand remains).
+- 10 tests; showcase uses KuiReact's With action / Minimal demos.
+
+**Still open**
+
+- Nothing for parity.
 
 ## API
 

@@ -1,7 +1,22 @@
 # Feature matrix — Button
 
 > KuiReact `modules/ui/Button.tsx` (91 LOC, 12 tests, 12 showcase variants, **137 production imports**, the most-used KuiReact component) ↔ KuiNative `modules/ui/Button.tsx` (89 LOC, 0 tests, 3 showcase demos).
-> **Status: PARITY_MAJOR_GAPS.** Details: [component-status-matrix](../phase-3-parity-review/component-status-matrix.md#button)
+> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- Radius `rounded-md` and label weight `font-medium` (were `rounded-lg` / `font-semibold`).
+- Full size ladder `xs · sm · md · lg · xl` with KuiReact's exact padding and text sizes.
+- 12 tests; showcase uses KuiReact's variant titles (Primary … Loading state).
+
+**Still open**
+
+- `label: string` instead of `children`.
+- `destructive` instead of `danger`.
+- No `iconRight`, `iconOnly`, `selected`; no rest props / ref / `testID`.
+- Pressed state still `active:opacity-80` rather than the `*-hover` tokens; no focus style on RN-web.
 
 ## API
 

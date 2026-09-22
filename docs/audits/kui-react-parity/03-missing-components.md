@@ -2,7 +2,7 @@
 
 > KuiReact ↔ KuiNative parity audit · 2026-09-22 · generated from source (KuiReact registry v0.1.0, snapshot 2026-09-18).
 
-**51** in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart. Every one has a backlog file under [component-backlog/](component-backlog/README.md). App-layer components, domain verticals and theme demos are out of scope (see [missing-components.md](phase-2-gap-analysis/missing-components.md#scope)).
+**44** in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart. Every one has a backlog file under [component-backlog/](component-backlog/README.md). App-layer components, domain verticals and theme demos are out of scope (see [missing-components.md](phase-2-gap-analysis/missing-components.md#scope)).
 
 Details: [missing-components.md](phase-2-gap-analysis/missing-components.md) · [priority-matrix.md](phase-2-gap-analysis/priority-matrix.md) · [dependency-analysis.md](phase-2-gap-analysis/dependency-analysis.md) · [implementation-order.md](phase-2-gap-analysis/implementation-order.md)
 
@@ -10,31 +10,24 @@ Details: [missing-components.md](phase-2-gap-analysis/missing-components.md) · 
 
 | Priority | Count |
 | --- | --- |
-| Critical | 10 |
+| Critical | 3 |
 | High | 10 |
 | Medium | 17 |
 | Low | 14 |
-| **Total** | **51** |
+| **Total** | **44** |
 
 | Fit | Count |
 | --- | --- |
-| direct port | 25 |
+| direct port | 18 |
 | platform adaptation | 25 |
 | recommended exception (web-only) | 1 |
 
-## Critical (10)
+## Critical (3)
 
 | Component | Category | Priority | Complexity | Reason |
 | --- | --- | --- | --- | --- |
-| [Label](component-backlog/label.md) | Typography | Critical | Small | Every KuiReact form control renders its label with the same required-marker + disabled treatment; KuiNative duplicates ad-hoc label Text in TextInput/Checkbox/Switch. |
-| [Separator](component-backlog/separator.md) | Layout | Critical | Small | Trivial primitive used by DropdownMenu, Card sections, lists and settings screens; its absence forces raw `View` borders everywhere. |
-| [Progress](component-backlog/progress.md) | Feedback | Critical | Medium | Determinate progress (bar + circle) is a baseline feedback primitive for uploads, onboarding and quotas. |
-| [Textarea](component-backlog/textarea.md) | Forms | Critical | Small | Multi-line text entry is a baseline form control; KuiReact has a dedicated component with label/hint/error/count. |
-| [RadioGroup](component-backlog/radio-group.md) | Forms | Critical | Small | Mutually-exclusive choice control; core form primitive. |
 | [Select](component-backlog/select.md) | Forms | Critical | Medium | Single-select is the most common form control after Input; forms cannot be built without it. |
-| [AlertBanner](component-backlog/alert-banner.md) | Feedback | Critical | Small | Inline semantic alerts (success/error/warning/info) with title/message/action; basic feedback surface. |
 | [Toast](component-backlog/toast.md) | Feedback | Critical | Medium | Transient notifications with a programmatic `toast()` store are required by virtually every app; KuiReact exports Toast, ToastProvider, ToastRegion, useToastStore, toast(). |
-| [TabGroup](component-backlog/tab-group.md) | Navigation | Critical | Small | In-screen tabs (tabs/activeTab/onChange) are a staple of mobile screens. |
 | [Drawer](component-backlog/drawer.md) | Overlay | Critical | Medium | Side/bottom sheets are the primary overlay on mobile; KuiReact Drawer shares the Overlays/shared primitives with Modal. |
 
 ## High (10)

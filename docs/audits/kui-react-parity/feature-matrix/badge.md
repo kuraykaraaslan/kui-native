@@ -1,7 +1,19 @@
 # Feature matrix — Badge
 
 > KuiReact `modules/ui/Badge.tsx` (87 LOC, 0 tests, 9 showcase variants, **109 production imports**; wrapped by ~60 domain status badges) ↔ KuiNative `modules/ui/Badge.tsx` (39 LOC, 0 tests, 1 demo).
-> **Status: PARITY_MAJOR_GAPS.**
+> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- Nothing needed visually: the rendering already matched KuiReact's `md` size pixel for pixel.
+
+**Still open**
+
+- `label` vs `children`; `default` vs `neutral`.
+- `size`, `dot`, `dismissible` / `onDismiss`.
+- No tests yet.
 
 ## API
 

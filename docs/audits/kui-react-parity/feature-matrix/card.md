@@ -1,7 +1,21 @@
 # Feature matrix — Card
 
 > KuiReact `modules/ui/Card.tsx` (84 LOC, 0 tests, 6 showcase variants, 9 production imports) ↔ KuiNative `modules/ui/Card.tsx` (46 LOC, 0 tests, 2 demos).
-> **Status: PARITY_MAJOR_GAPS.**
+> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- Header / body / footer sections with KuiReact's `px-6 py-4` (footer `py-3`, `bg-surface-base`) and dividers.
+- Title `text-sm font-semibold`, subtitle `text-xs` (were `text-lg` / `text-sm`).
+- `shadow-sm` on `raised` (+ Android elevation); new `flat` variant; new `headerRight` slot.
+- 10 tests; showcase uses KuiReact's Raised / With footer / Flat / Outline demos.
+
+**Still open**
+
+- Interactive `onPress` (KuiReact `onClick`), `hoverable` pressed feedback.
+- `loading` skeleton state.
 
 ## API
 

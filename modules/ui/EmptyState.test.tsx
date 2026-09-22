@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 
+import { Button } from "./Button";
 import { EmptyState } from "./EmptyState";
+import { Text } from "./Text";
 
 function classNameOf(el: { props: { className?: string | string[] } }) {
   const c = el.props.className;
@@ -49,6 +51,16 @@ describe("EmptyState", () => {
   it("renders no action button when onAction is missing", async () => {
     await render(<EmptyState title="No results" actionLabel="Retry" />);
     expect(screen.queryByRole("button")).toBeNull();
+  });
+
+  it("renders a custom action node (KuiReact's `action`) instead of the shorthand button", async () => {
+    await render(<EmptyState title="No results" action={<Button label="New project" variant="outline" />} />);
+    expect(screen.getByRole("button", { name: "New project" })).toBeTruthy();
+  });
+
+  it("accepts a node as the icon", async () => {
+    await render(<EmptyState title="No results" icon={<Text>📁</Text>} />);
+    expect(screen.getByText("📁", { hidden: true } as never)).toBeTruthy();
   });
 
   it("accepts a custom className without crashing", async () => {

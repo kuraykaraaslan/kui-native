@@ -1,77 +1,77 @@
 # Component status matrix
 
-> Every KuiNative library export classified against its KuiReact counterpart. 2026-09-22.
+> Every KuiNative library export classified against its KuiReact counterpart. Re-classified 2026-09-22 after the pixel-perfect pass (`048ebed`) and the first Wave 1 components (`9f595c4`…`12b56f3`). The pre-fix classification is in git history.
 
 ## Rubric
 
 | Status | Definition |
 | --- | --- |
-| PARITY_COMPLETE | Every KuiReact prop, variant, size and state that is meaningful on RN exists with the same name and default; visuals are token-equivalent; tests and showcase demos exist. |
-| PARITY_MINOR_GAPS | Same component and prop names and the same API shape; gaps limited to missing enumeration values, cosmetic token/spacing deviations, or one non-critical feature. |
+| PARITY_COMPLETE | Every KuiReact prop, variant, size and state that is meaningful on RN exists with the same name and default; visuals use KuiReact's exact classes/tokens; tests and 1:1 showcase demos exist. |
+| PARITY_MINOR_GAPS | Same component and prop names and the same API shape; gaps limited to a platform-adapted detail, a missing enumeration value, or one non-critical feature. |
 | PARITY_MAJOR_GAPS | Component or prop **names** differ, or KuiReact-documented variants/states/features are missing, so KuiReact usages cannot be ported mechanically. Fixable incrementally. |
-| REQUIRES_REWRITE | The API model or internal structure differs so fundamentally (or has critical defects) that incremental fixes would touch most of the file and break every call site anyway. |
-
-Note: no KuiNative component has tests, so **none can be PARITY_COMPLETE** under this rubric regardless of API.
+| REQUIRES_REWRITE | The API model differs so fundamentally that incremental fixes would break every call site anyway. |
 
 ## Summary
 
 | Status | Count | Components |
 | --- | --- | --- |
-| PARITY_COMPLETE | 0 | — |
-| PARITY_MINOR_GAPS | 3 | Avatar, Spinner (fixed this pass — size ladder + a11y bug — pending re-audit against every KuiReact detail before reclassifying to COMPLETE), Text (native-only) |
-| PARITY_MAJOR_GAPS | 8 | Button, Card, Badge, TextInput (Input), Checkbox, Switch (Toggle), EmptyState, SkeletonCard (Skeleton) |
-| REQUIRES_REWRITE | 2 | Modal, AvatarGroup |
+| PARITY_COMPLETE | 7 | Avatar, EmptyState, Separator, AlertBanner, RadioGroup, Textarea, Progress |
+| PARITY_MINOR_GAPS | 6 | Spinner, Text (native-only), Skeleton, Modal, Label, TabGroup |
+| PARITY_MAJOR_GAPS | 6 | Button, Card, Badge, TextInput (Input), Checkbox, Switch (Toggle) |
+| REQUIRES_REWRITE | 1 | AvatarGroup |
+
+Every component now renders with KuiReact's exact classes. The remaining MAJOR entries are **API** gaps (names and missing props), not visual ones.
 
 ## Per component
 
-### Button
-**Status: PARITY_MAJOR_GAPS** · KuiReact `Button`
-`label: string` instead of `children`; `destructive` instead of `danger`; missing `xs`/`xl`, `iconRight`, `iconOnly`, `selected`; no rest/ref/testID; radius and weight differ; hover/active tokens unused. Colours, loading, disabled and fullWidth match. → [matrix](../feature-matrix/button.md)
+### Button — PARITY_MAJOR_GAPS
+Pixel-perfect since `048ebed` (rounded-md, font-medium, full xs–xl ladder). Still open: `label` instead of `children`, `destructive` instead of `danger`, no `iconRight` / `iconOnly` / `selected`, no rest props or ref. → [matrix](../feature-matrix/button.md)
 
-### Card
-**Status: PARITY_MAJOR_GAPS** · KuiReact `Card`
-Missing `flat`, `headerRight`, interactive `onPress`, `loading`; single padded box instead of header/body/footer sections; title typography far larger; no shadow. → [matrix](../feature-matrix/card.md)
+### Card — PARITY_MAJOR_GAPS
+Pixel-perfect (header/body/footer sections, typography, shadow, `flat`, `headerRight`). Still open: interactive `onPress` (KuiReact `onClick`), `hoverable`, `loading`. → [matrix](../feature-matrix/card.md)
 
-### Avatar
-**Status: PARITY_MINOR_GAPS** · KuiReact `Avatar`
-Same props and sizes; missing `status` dot; `lg`/`xl` pixel sizes differ (56/80 vs 48/64); empty name renders nothing instead of `?`. Image-error fallback is better than KuiReact. → [matrix](../feature-matrix/avatar.md)
+### Avatar — PARITY_COMPLETE
+48/64px lg/xl, borders, status dot, `?` fallback, `src: string | null`; tests. Image-error fallback is better than KuiReact's. → [matrix](../feature-matrix/avatar.md)
 
-### AvatarGroup
-**Status: REQUIRES_REWRITE** · KuiReact `AvatarGroup`
-Children-based flex row vs data-driven `avatars/max/size` with overlap and `+N` chip. Shares only the name. → [rewrite](rewrite-candidates.md#avatargroup)
+### AvatarGroup — REQUIRES_REWRITE
+Still children-based; KuiReact's is data-driven (`avatars`, `max`, overlap, `+N`). → [rewrite](rewrite-candidates.md#avatargroup)
 
-### Badge
-**Status: PARITY_MAJOR_GAPS** · KuiReact `Badge`
-`label` vs `children`; `default` vs `neutral`; missing `size`, `dot`, `dismissible`. The md visual is an exact match. → [matrix](../feature-matrix/badge.md)
+### Badge — PARITY_MAJOR_GAPS
+Visual already matched KuiReact's `md`. Still open: `label` vs `children`, `default` vs `neutral`, `size`, `dot`, `dismissible`. → [matrix](../feature-matrix/badge.md)
 
-### TextInput
-**Status: PARITY_MAJOR_GAPS** · KuiReact `Input`
-Different name; 8 KuiReact features missing (success, required, prefix/suffix, clearable, counter, password toggle, number stepper, readOnly/disabled styling); untyped ref; `className` targets a different element; hint/error not exposed to assistive tech. → [matrix](../feature-matrix/input.md)
+### TextInput — PARITY_MAJOR_GAPS
+Pixel-perfect field (rounded-md, py-2, text-sm, error background, disabled look). Still open: the `Input` name, `success`, `required`, prefix/suffix, clearable, counter, password toggle, typed ref, and errors announced to screen readers. → [matrix](../feature-matrix/input.md)
 
-### Checkbox
-**Status: PARITY_MAJOR_GAPS** · KuiReact `Checkbox`
-Missing `hint`, `error`, uncontrolled mode. Boolean `onChange` is an approved improvement. → [matrix](../feature-matrix/checkbox.md)
+### Checkbox — PARITY_MAJOR_GAPS
+Pixel-perfect (16px box, border-border, gap-3, items-start). Still open: `hint`, `error`, uncontrolled `defaultChecked`. → [matrix](../feature-matrix/checkbox.md)
 
-### Switch
-**Status: PARITY_MAJOR_GAPS** · KuiReact `Toggle`
-Different component name and prop names (`value/onValueChange` vs `checked/onChange`); missing `description`, `size`, `ariaLabel`; label not pressable; two accessibility focus stops; OS rendering differs from KuiReact's custom track. → [matrix](../feature-matrix/toggle.md)
+### Switch — PARITY_MAJOR_GAPS
+Rebuilt as KuiReact's custom track (sizes, description, whole-row press, single a11y element). Still open: the names (`Switch`/`value`/`onValueChange` vs `Toggle`/`checked`/`onChange`). → [matrix](../feature-matrix/toggle.md)
 
-### Spinner
-**Status: PARITY_MINOR_GAPS** · KuiReact `Spinner` · **fixed 2026-09-22**
-Now has all 5 sizes (xs–xl) via a scale transform on `ActivityIndicator`, `size="sm"` and `size="md"` are visually distinct, `accessibilityLabel` is overridable, and the component carries `accessible` so its `accessibilityRole="progressbar"` actually registers (previously it did not — see [B5, AX-Spinner]). Remaining gap: OS indicator shape instead of KuiReact's two-tone rotating ring. Has a real test suite (8 cases). → [matrix](../feature-matrix/spinner.md)
+### Spinner — PARITY_MINOR_GAPS
+Five sizes, overridable label, a11y fixed. Remaining: OS indicator instead of KuiReact's two-tone ring. → [matrix](../feature-matrix/spinner.md)
 
-### EmptyState
-**Status: PARITY_MAJOR_GAPS** · KuiReact `EmptyState`
-`icon: IconDefinition` (always shown) vs optional `ReactNode`; `actionLabel/onAction` vs `action: ReactNode`; spacing and title size differ. → [matrix](../feature-matrix/empty-state.md)
+### EmptyState — PARITY_COMPLETE
+48px circle, text-disabled icon, text-sm title, py-16, optional icon (IconDefinition or node), KuiReact's `action` node (plus the `actionLabel`/`onAction` shorthand). → [matrix](../feature-matrix/empty-state.md)
 
-### SkeletonCard
-**Status: PARITY_MAJOR_GAPS** · KuiReact `Skeleton` module
-Only 1 of 5 exports; card layout and pulse timing differ; no reduced-motion. → [matrix](../feature-matrix/skeleton.md)
+### Skeleton — PARITY_MINOR_GAPS
+SkeletonLine/Avatar/Text/Card with KuiReact's shapes and pulse timing, reduce-motion aware. Remaining: `SkeletonTableRow` (needs Table). → [matrix](../feature-matrix/skeleton.md)
 
-### Modal
-**Status: REQUIRES_REWRITE** · KuiReact `Modal`
-`visible` vs `open`; 7 props missing; no close button; long content overflows; nested accessible Pressables merge the whole dialog into one VoiceOver element; no focus management; no keyboard avoidance. → [rewrite](rewrite-candidates.md#modal)
+### Modal — PARITY_MINOR_GAPS
+Rebuilt on KuiReact's panel; sizes, fullscreen, scrollable, backdrop option, motion, a11y fixed. Remaining: `closeOnRouteChange`, a panel `ref` (KuiReact's `reducedMotion` is a TODO there; KuiNative honours the OS setting automatically). → [matrix](../feature-matrix/modal.md)
 
-### Text
-**Status: PARITY_MINOR_GAPS (native-only)** · no KuiReact counterpart
-Required by RN. Heading variants render regular weight on iOS/web (no `fontWeight`); scale not anchored to KuiReact usage; Geist not loaded. → [matrix](../feature-matrix/text.md)
+### Text — PARITY_MINOR_GAPS (native-only)
+Real bold/semibold weights, `title`/`titleSm`, header role. Remaining: Geist font not bundled. → [matrix](../feature-matrix/text.md)
+
+### Label — PARITY_MINOR_GAPS
+Remaining: no rest props; `htmlFor` adapted to `onPress`. → [matrix](../feature-matrix/label.md)
+
+### Separator — PARITY_COMPLETE → [matrix](../feature-matrix/separator.md)
+### AlertBanner — PARITY_COMPLETE → [matrix](../feature-matrix/alert-banner.md)
+### RadioGroup — PARITY_COMPLETE → [matrix](../feature-matrix/radio-group.md)
+### Textarea — PARITY_COMPLETE → [matrix](../feature-matrix/textarea.md)
+
+### TabGroup — PARITY_MINOR_GAPS
+Remaining: KuiReact's desktop keyboard navigation. → [matrix](../feature-matrix/tab-group.md)
+
+### Progress — PARITY_COMPLETE → [matrix](../feature-matrix/progress.md)

@@ -1,3 +1,5 @@
+import type * as React from "react";
+import { isValidElement } from "react";
 import { View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -9,19 +11,28 @@ import { Button } from "./Button";
 import { Text } from "./Text";
 
 export type EmptyStateProps = {
-  icon?: IconDefinition;
+  /** A Font Awesome icon definition, or any node (KuiReact: `icon?: ReactNode`). */
+  icon?: IconDefinition | React.ReactNode;
   title: string;
   description?: string;
+  /** Any action node, e.g. one or more Buttons (KuiReact's `action`). */
+  action?: React.ReactNode;
+  /** Shorthand for a single primary Button when `action` is not given. */
   actionLabel?: string;
   onAction?: () => void;
   className?: string;
 };
+
+function isIconDefinition(icon: unknown): icon is IconDefinition {
+  return typeof icon === "object" && icon !== null && !isValidElement(icon) && "iconName" in icon;
+}
 
 /** Placeholder for empty lists/screens — use as FlatList's ListEmptyComponent. */
 export function EmptyState({
   icon,
   title,
   description,
+  action,
   actionLabel,
   onAction,
   className,
@@ -39,7 +50,7 @@ export function EmptyState({
           importantForAccessibility="no-hide-descendants"
           className="mb-4 h-12 w-12 items-center justify-center rounded-full bg-surface-sunken"
         >
-          <FontAwesomeIcon icon={icon} size={24} color={t["text-disabled"]} />
+          {isIconDefinition(icon) ? <FontAwesomeIcon icon={icon} size={24} color={t["text-disabled"]} /> : icon}
         </View>
       ) : null}
       {/* KuiReact's title is "text-sm font-semibold", not the h4 (text-lg)
@@ -52,7 +63,9 @@ export function EmptyState({
           {description}
         </Text>
       ) : null}
-      {actionLabel && onAction ? (
+      {action ? (
+        <View className="mt-4">{action}</View>
+      ) : actionLabel && onAction ? (
         <Button label={actionLabel} onPress={onAction} className="mt-4" />
       ) : null}
     </View>

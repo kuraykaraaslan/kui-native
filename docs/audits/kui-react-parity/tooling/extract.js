@@ -283,7 +283,9 @@ const extras = [
 const SHARED = {
   button: ["Button"], card: ["Card"], avatar: ["Avatar", "AvatarGroup"], badge: ["Badge"],
   input: ["TextInput"], checkbox: ["Checkbox"], toggle: ["Switch"], spinner: ["Spinner"],
-  "empty-state": ["EmptyState"], skeleton: ["SkeletonCard"], modal: ["Modal"],
+  "empty-state": ["EmptyState"], skeleton: ["SkeletonCard", "SkeletonLine", "SkeletonAvatar", "SkeletonText"], modal: ["Modal"],
+  label: ["Label"], separator: ["Separator"], "alert-banner": ["AlertBanner"], "radio-group": ["RadioGroup"],
+  textarea: ["Textarea"], "tab-group": ["TabGroup"], progress: ["Progress"],
 };
 
 const entries = reg.components.map((c) => ({ ...c, source: undefined, registry: true }));

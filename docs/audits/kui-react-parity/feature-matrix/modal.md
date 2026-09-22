@@ -1,7 +1,21 @@
 # Feature matrix — Modal
 
 > KuiReact `modules/ui/Overlays/Modal/index.tsx` (145 LOC + shared overlay hooks, 7 tests, 5 showcase variants, 11 production imports) ↔ KuiNative `modules/ui/Modal.tsx` (51 LOC, 0 tests, 1 demo).
-> **Status: REQUIRES_REWRITE.** See [rewrite-candidates.md](../phase-3-parity-review/rewrite-candidates.md#modal).
+> **Status (2026-09-22): PARITY_MINOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- Rebuilt: `surface-raised rounded-xl shadow-xl` panel; header (title, description, close button, divider), body, footer (divider, right-aligned actions), all `px-6 py-4`.
+- `open` (with `visible` as a deprecated alias), required `title`, `description`, `size`, `fullscreen`, `scrollable`, `closeOnBackdropClick`.
+- Fade + scale 95% → 100% over 200ms; exit animation; skipped with Reduce Motion.
+- Backdrop is a sibling of the panel, so VoiceOver no longer merges the dialog; focus moves to the title; keyboard avoiding; Android status bar covered.
+- 11 tests (KuiReact's Modal cases ported); showcase uses KuiReact's five demos.
+
+**Still open**
+
+- `closeOnRouteChange`; a panel `ref`.
 
 ## API
 

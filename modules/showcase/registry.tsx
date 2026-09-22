@@ -795,7 +795,7 @@ export const REGISTRY: ShowcaseEntry[] = [
             variant="info"
             title="Documentation updated"
             message="New guides are available."
-            action={{ label: "Read docs", href: "https://kui-react.dev/docs/api" }}
+            action={{ label: "Read docs", href: "https://next-js-components.kuray.dev" }}
           />
         ),
       },
@@ -823,8 +823,7 @@ export const REGISTRY: ShowcaseEntry[] = [
             icon={faFolder}
             title="No projects yet"
             description="Create your first project to get started."
-            actionLabel="New project"
-            onAction={() => {}}
+            action={<Button label="New project" variant="primary" size="sm" />}
           />
         ),
       },

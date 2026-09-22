@@ -1,7 +1,20 @@
 # Feature matrix — Toggle (KuiNative `Switch`)
 
 > KuiReact `modules/ui/Toggle.tsx` (81 LOC, 6 tests, 4 showcase variants) ↔ KuiNative `modules/ui/Switch.tsx` (40 LOC, 0 tests, 1 demo).
-> **Status: PARITY_MAJOR_GAPS.**
+> **Status (2026-09-22): PARITY_MAJOR_GAPS.** Audit-time detail below; see the Update block for what changed.
+
+## Update 2026-09-22 (pixel-perfect pass, `048ebed`)
+
+**Fixed**
+
+- Rebuilt as KuiReact's custom track and thumb (the OS switch could not match): sm / md / lg sizes, `bg-primary` / `bg-surface-sunken` track, 200ms thumb slide.
+- Switch sits left of the label; the whole row is one pressable, one accessibility element.
+- `description` and `accessibilityLabel` (KuiReact `ariaLabel`).
+- 11 tests (KuiReact's Toggle cases ported); showcase uses KuiReact's Sizes / With description / Disabled / Settings list demos.
+
+**Still open**
+
+- Names: `Switch` / `value` / `onValueChange` vs KuiReact's `Toggle` / `checked` / `onChange`.
 
 ## API
 

@@ -1,23 +1,23 @@
 # 07 · Consistency scores
 
-> **Scope: KuiReact ui-layer atoms, molecules and organisms only** (62 components under `modules/ui/`). App-layer components, domain verticals and theme demos are out of scope. From [phase-4-scoring/scoring.md](phase-4-scoring/scoring.md); formulas and evidence in [scoring-rationale.md](phase-4-scoring/scoring-rationale.md).
+> **Scope: KuiReact ui-layer atoms, molecules and organisms only** (62 components). Re-scored 2026-09-22 through commit `12b56f3`. Detail: [phase-4-scoring/scoring.md](phase-4-scoring/scoring.md) · [scoring-rationale.md](phase-4-scoring/scoring-rationale.md).
 
-| Area | Score |
-| --- | --- |
-| Component Coverage | 33 |
-| API Consistency | 44 |
-| Visual Consistency | 46 |
-| Design Token Alignment | 71 |
-| Accessibility Alignment | 40 |
-| Documentation Alignment | 18 |
-| Testing Alignment | 10 |
-| Developer Experience Alignment | 25 |
-| Architecture Consistency | 40 |
-| **Overall Parity** | **34** |
+| Area | First pass | Now |
+| --- | --- | --- |
+| Component Coverage | 33 | **42** |
+| API Consistency | 44 | **70** |
+| Visual Consistency | 46 | **80** |
+| Design Token Alignment | 71 | **89** |
+| Accessibility Alignment | 40 | **70** |
+| Documentation Alignment | 18 | **52** |
+| Testing Alignment | 10 | **45** |
+| Developer Experience Alignment | 25 | **30** |
+| Architecture Consistency | 40 | **50** |
+| **Overall Parity** | **34** | **56** |
 
 ## Reading the scores
 
-- **Strongest:** tokens (71). The colour system is a verified 1:1 copy; the gaps are fonts, shadows and motion.
-- **Weakest:** documentation (18), testing (10), coverage (33) and DX (25).
-- **What moved since the first pass:** Coverage rose from a mis-scoped 25 (denominator 107, including app-layer and hooks) to 33 once the scope was corrected to the 62 in-scope ui-layer components. Testing rose from 0 to 10: a real Jest + `@testing-library/react-native` harness now runs, and it caught and fixed a real accessibility bug (Spinner's `size="sm"`/`"md"` collapsing to the same visual, and a `View` with `accessibilityRole` but no `accessible={true}` being invisible to role queries and, per RN's own docs, to some assistive tech).
-- **Largest lever:** Wave 1 of the roadmap (21 items, 27–44 engineer-days). Packaging, provider, typography, and Button/Input/Modal parity would move DX, testing, API, a11y and architecture together. Projected after Wave 1: roughly coverage 45, API 70, visual 60, tokens 85, a11y 65, docs 35, testing 45, DX 60, architecture 60 → overall ≈ 55. This is a projection, not a measurement; re-score after the wave lands.
+- **What moved it:** the pixel-perfect pass (every existing component now uses KuiReact's exact classes), seven new components ported with KuiReact's own showcase demos, and a real test suite (18 suites, 195 tests).
+- **Strongest:** tokens (89) and visuals (80).
+- **Weakest:** DX (30) — KuiNative still can't be installed as a package — and coverage (42): 44 in-scope components remain.
+- **Biggest remaining levers:** the API renames (`children`, `danger`, `neutral`, `Input`, `Toggle`) would lift API and DX together; packaging plus a `KuiProvider` lifts DX and architecture; each new component lifts coverage by about 1.6 points.
