@@ -42,6 +42,8 @@ export type {
   DisabledDates,
   LocaleCode,
 } from "./DatePicker";
+export { DiffViewer } from "./DiffViewer";
+export type { Change, ChangeType, DiffMode, DiffViewerProps, Hunk } from "./DiffViewer";
 export { Drawer } from "./Drawer";
 export { DropdownMenu } from "./DropdownMenu";
 export type { DropdownItem, DropdownMenuProps } from "./DropdownMenu";

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faCodeCompare,
   faTableColumns as faAdvancedTable,
   faListCheck as faBulkRows,
   faTableCellsColumnLock,
@@ -133,6 +134,7 @@ import {
   DataTable,
   BulkActionTable,
   AdvancedDataTable,
+  DiffViewer,
   type DataTableFetchArgs,
   type DataTableFetchResult,
   type ScoreRule,
@@ -342,6 +344,56 @@ function serverFetchPage(args: DataTableFetchArgs): Promise<DataTableFetchResult
     }, 200);
   });
 }
+// KuiReact's DiffViewer sample sources (verbatim).
+const DIFF_SAMPLE_OLD = `function greet(name) {
+  console.log("Hello, " + name);
+}
+
+greet("world");
+`;
+
+const DIFF_SAMPLE_NEW = `function greet(name) {
+  console.log(\`Hello, \${name}!\`);
+}
+
+greet("world");
+greet("kui");
+`;
+
+const DIFF_LONG_OLD = `import { useState } from 'react';
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+  const handleClick = () => {
+    setCount(count + 1);
+  };
+  return (
+    <button onClick={handleClick}>
+      Clicked {count} times
+    </button>
+  );
+}
+`;
+
+const DIFF_LONG_NEW = `import { useState, useCallback } from 'react';
+
+export function Counter({ initial = 0 }) {
+  const [count, setCount] = useState(initial);
+  const handleClick = useCallback(() => {
+    setCount((c) => c + 1);
+  }, []);
+  const handleReset = () => setCount(initial);
+  return (
+    <div className="flex gap-2">
+      <button onClick={handleClick}>
+        Clicked {count} times
+      </button>
+      <button onClick={handleReset}>Reset</button>
+    </div>
+  );
+}
+`;
+
 const COMBO_OPTIONS: ComboBoxOption[] = [
   { value: "nextjs", label: "Next.js", description: "App Router framework" },
   { value: "react", label: "React", description: "UI library for components" },
@@ -3131,6 +3183,22 @@ export const REGISTRY: ShowcaseEntry[] = [
           </View>
         ),
       },
+    ],
+  },
+  {
+    id: "diff-viewer",
+    title: "DiffViewer",
+    category: "Atoms",
+    icon: faCodeCompare,
+    description: "Line-based text diff with unified and split modes, @@ hunk headers, old/new line numbers, configurable context and collapsible unchanged runs.",
+    usage: `<DiffViewer oldText={oldSrc} newText={newSrc} mode="split" />`,
+    preview: () => <DiffViewer oldText={"a\nb"} newText={"a\nc"} />,
+    // Mirrors KuiReact's DiffViewer showcase variants 1:1 (same titles and samples).
+    variants: [
+      { title: "Unified (default)", Demo: () => <DiffViewer oldText={DIFF_SAMPLE_OLD} newText={DIFF_SAMPLE_NEW} /> },
+      { title: "Split (yan yana)", Demo: () => <DiffViewer oldText={DIFF_SAMPLE_OLD} newText={DIFF_SAMPLE_NEW} mode="split" /> },
+      { title: "With context=1", Demo: () => <DiffViewer oldText={DIFF_LONG_OLD} newText={DIFF_LONG_NEW} context={1} /> },
+      { title: "Collapsible unchanged context", Demo: () => <DiffViewer oldText={DIFF_LONG_OLD} newText={DIFF_LONG_NEW} context={3} collapsible /> },
     ],
   },
   {
