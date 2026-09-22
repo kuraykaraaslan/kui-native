@@ -22,12 +22,18 @@ Working branch: `feature/wave1-parity`. Scope: KuiReact ui-layer atoms, molecule
 | `c935af3` | Textarea |
 | `2ae6209` | TabGroup |
 | `12b56f3` | Progress |
-| (this commit) | Docs refresh: regenerated inventories/backlog (44 missing), feature matrices for the 7 new components, Update blocks on the original 11, status matrix, re-scoring (34 → 56), README corrections; Avatar `src: null`, EmptyState `action` node + ReactNode `icon` |
+| `7ca2284` | Docs refresh: regenerated inventories/backlog (44 missing), feature matrices for the 7 new components, Update blocks on the original 11, status matrix, re-scoring (34 → 56), README corrections; Avatar `src: null`, EmptyState `action` node + ReactNode `icon` |
+
+| `d8af042` | Select (inline listbox panel, as KuiReact); `countries-list` added for the 1:1 demos |
+| `27def3b` | Overlay core (`Overlays/shared`: usePresence, Backdrop, useFocusOnOpen) + Drawer; Modal refactored onto it |
+| `55f2d1b` | Toast suite (`toast()` API, Toaster, cards), `<Toaster />` mounted in the app root |
+| `2866e66` | Button API parity (children, danger, iconRight, iconOnly, selected, rest/ref); Text defers to explicit font classes |
 
 ## Next
 
-1. **Wave 1 new components:** Select, Drawer, Toast (and the overlay core they share), then the rest of the roadmap order, each pixel-perfect with 1:1 showcase demos.
-2. **API renames** on older components (keep deprecated aliases): Button/Badge `children`, `danger`, `neutral`, `TextInput` → `Input`, `Switch` → `Toggle`; then Button `iconRight`/`iconOnly`/`selected`, Badge `size`/`dot`/`dismissible`, Card `onPress`/`loading`, Input features, Checkbox `hint`/`error`, AvatarGroup rewrite.
-3. **Accessibility:** announce TextInput/Checkbox errors.
-4. **Infra:** packaging + `KuiProvider`, ESLint config, Font Awesome 7, Geist, CI.
-5. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), re-run both scripts, delete the now-stale backlog files, write feature matrices, update status matrix and scores.
+1. **Docs refresh** for Select, Drawer, Toast and the Button API (add ids to `SHARED`, regenerate, prune backlog, feature matrices, status matrix, scores).
+2. **API parity on older components** (keep deprecated aliases): Badge `children`/`neutral`/`size`/`dot`/`dismissible`; `TextInput` → `Input` with its missing features; Checkbox `hint`/`error`; `Switch` → `Toggle` (`checked`/`onChange`); Card `onPress`/`loading`; AvatarGroup rewrite.
+3. **Remaining roadmap components** in order (DropdownMenu, Popover, Tooltip, Accordion, ButtonGroup, …), each pixel-perfect with 1:1 showcase demos.
+4. **Accessibility:** announce TextInput/Checkbox errors.
+5. **Infra:** packaging + `KuiProvider`, ESLint config, Font Awesome 7, Geist, CI.
+6. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), re-run both scripts, delete the now-stale backlog files, write feature matrices, update status matrix and scores.
