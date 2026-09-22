@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react-native";
 import { AccessibilityInfo } from "react-native";
 
-import { SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonText } from "./Skeleton";
+import { SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonText, SkeletonTableRow } from "./Skeleton";
 import { SkeletonCard as SkeletonCardShim } from "./SkeletonCard";
 
 function classNameOf(el: { props: { className?: string | string[] } }) {
@@ -86,5 +86,13 @@ describe("SkeletonCard", () => {
   it("is still importable from the old SkeletonCard path", async () => {
     await render(<SkeletonCardShim />);
     expect(screen.getByRole("progressbar")).toBeTruthy();
+  });
+});
+
+describe("SkeletonTableRow", () => {
+  it("renders one cell per column with KuiReact's widths", async () => {
+    await render(<SkeletonTableRow cols={5} animated={false} />);
+    const row = screen.getByTestId("skeleton-table-row", { hidden: true } as never);
+    expect(row.children).toHaveLength(5);
   });
 });

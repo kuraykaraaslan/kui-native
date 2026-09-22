@@ -30,6 +30,8 @@ export type ModalProps = {
   scrollable?: boolean;
   closeOnBackdropClick?: boolean;
   className?: string;
+  /** Forwarded to the dialog panel (KuiReact forwards it to the dialog element). */
+  ref?: React.Ref<View>;
 };
 
 /**
@@ -55,6 +57,7 @@ export function Modal({
   scrollable = false,
   closeOnBackdropClick = true,
   className,
+  ref,
 }: ModalProps) {
   const isOpen = open ?? visible ?? false;
   const t = useThemeTokens();
@@ -87,6 +90,7 @@ export function Modal({
             ]}
           >
             <View
+              ref={ref}
               className={cn(
                 "w-full border border-border bg-surface-raised shadow-xl",
                 fullscreen ? "flex-1 rounded-none" : "max-h-full rounded-xl",

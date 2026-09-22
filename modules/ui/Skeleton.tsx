@@ -117,6 +117,26 @@ export type SkeletonCardProps = {
  * footer chips, `space-y-4` between sections. Only the bars pulse; the card
  * surface and border stay static, as in KuiReact.
  */
+/**
+ * KuiReact's SkeletonTableRow: a `border-b border-border` row of `px-4 py-3`
+ * cells, each a `h-4 rounded` bar (widths w-28 / w-40 / w-20 / w-16, then
+ * w-24). A flex row here, to sit inside <Table />-style layouts.
+ */
+export function SkeletonTableRow({ cols = 4, className, animated = true }: { cols?: number; className?: string } & PulseControl) {
+  const widths = ["w-28", "w-40", "w-20", "w-16"];
+  return (
+    <Pulse animated={animated}>
+      <View testID="skeleton-table-row" className={cn("flex-row border-b border-border", className)} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        {Array.from({ length: cols }).map((_, i) => (
+          <View key={i} className="flex-1 px-4 py-3">
+            <View className={cn(base, "h-4 rounded", widths[i] ?? "w-24")} />
+          </View>
+        ))}
+      </View>
+    </Pulse>
+  );
+}
+
 export function SkeletonCard({ className }: SkeletonCardProps) {
   return (
     <View

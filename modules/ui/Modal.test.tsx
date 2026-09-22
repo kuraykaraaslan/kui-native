@@ -1,3 +1,5 @@
+import { createRef } from "react";
+import type { View } from "react-native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { AccessibilityInfo, Text as RNText } from "react-native";
 
@@ -98,5 +100,13 @@ describe("Modal", () => {
     );
     const scroll = screen.container.queryAll((n) => n.type === "RCTScrollView");
     expect(scroll.length).toBeGreaterThan(0);
+  });
+});
+
+describe("Modal ref", () => {
+  it("forwards ref to the dialog panel", async () => {
+    const ref = createRef<View>();
+    await render(<Modal open onClose={() => {}} title="Hello" ref={ref} />);
+    expect(ref.current).not.toBeNull();
   });
 });

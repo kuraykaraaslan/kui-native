@@ -53,3 +53,10 @@ describe("Label", () => {
     expect(screen.queryByRole("none")).toBeNull();
   });
 });
+
+describe("Label rest props", () => {
+  it("forwards Text props such as testID and nativeID", async () => {
+    await render(<Label testID="email-label" nativeID="email">Email</Label>);
+    expect(screen.getByTestId("email-label").props.nativeID).toBe("email");
+  });
+});

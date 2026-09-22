@@ -1,4 +1,4 @@
-import { Pressable, type GestureResponderEvent } from "react-native";
+import { Pressable, type GestureResponderEvent, type TextProps } from "react-native";
 
 import { cn } from "@/libs/utils/cn";
 
@@ -14,15 +14,16 @@ export type LabelProps = {
    * describes). Pass the paired field's ref/toggle here. */
   onPress?: (e: GestureResponderEvent) => void;
   className?: string;
-};
+} & Omit<TextProps, "children" | "onPress">;
 
 /**
  * Form-field label — mirrors KuiReact's `Label`. The shared primitive form
  * fields (Textarea, Select, …) compose instead of an ad-hoc label `Text`.
  */
-export function Label({ children, required, disabled, onPress, className }: LabelProps) {
+export function Label({ children, required, disabled, onPress, className, ...rest }: LabelProps) {
   const text = (
     <Text
+      {...rest}
       variant="label"
       className={cn("select-none", disabled ? "text-text-disabled" : "font-medium", className)}
       // Setting accessibilityLabel overrides the announced name entirely on

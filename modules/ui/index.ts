@@ -92,7 +92,7 @@ export { Select } from "./Select";
 export type { SelectOption, SelectProps } from "./Select";
 export { Separator } from "./Separator";
 export type { SeparatorProps } from "./Separator";
-export { SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonText } from "./Skeleton";
+export { SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonTableRow, SkeletonText } from "./Skeleton";
 export type { SkeletonCardProps } from "./Skeleton";
 export { Slider, releaseStep } from "./Slider";
 export type { Slide, SliderProps } from "./Slider";

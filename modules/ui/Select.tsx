@@ -37,7 +37,11 @@ export type SelectProps = {
  * inline listbox panel below it (normal flow, not a floating popover).
  * React Native has no <select>, so both modes open that same inline panel;
  * the trigger keeps each mode's look (the native mode's `appearance-none`
- * trigger has no chevron, the custom mode's has one).
+ * trigger has no chevron, the custom mode's has one). KuiReact also closes
+ * the panel on an outside mousedown; an inline RN view can't observe taps
+ * outside itself without a full-screen catcher (which would turn the
+ * in-flow panel into an overlay), so it closes on selection or on another
+ * press of the trigger.
  */
 export function Select({
   id,
