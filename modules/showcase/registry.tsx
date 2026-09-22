@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faListUl as faComboBox,
   faHashtag as faTagsInput,
   faTimeline,
   faStar,
@@ -106,6 +107,8 @@ import {
   TabButton,
   Timeline,
   TagInput,
+  ComboBox,
+  type ComboBoxOption,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -261,6 +264,13 @@ const PLANS = [
   { value: "free", label: "Free" },
   { value: "pro", label: "Pro" },
   { value: "team", label: "Team" },
+];
+const COMBO_OPTIONS: ComboBoxOption[] = [
+  { value: "nextjs", label: "Next.js", description: "App Router framework" },
+  { value: "react", label: "React", description: "UI library for components" },
+  { value: "typescript", label: "TypeScript", description: "Typed JavaScript" },
+  { value: "tailwind", label: "Tailwind CSS", description: "Utility-first CSS toolkit" },
+  { value: "storybook", label: "Storybook", description: "Component documentation workspace" },
 ];
 const COUNTRY_OPTIONS = Object.entries(countries)
   .map(([code, data]) => ({ value: code, label: `${getEmojiFlag(code as TCountryCode)} ${data.name}` }))
@@ -1232,6 +1242,96 @@ export const REGISTRY: ShowcaseEntry[] = [
           return (
             <View className="w-full max-w-sm">
               <TagInput id="sc-ti-err" label="Required tags" value={tags} onChange={setTags} error="At least one tag is required." />
+            </View>
+          );
+        },
+      },
+    ],
+  },
+  {
+    id: "combo-box",
+    title: "ComboBox",
+    category: "Forms",
+    icon: faComboBox,
+    description: "Searchable autocomplete single-select with described options and a clearable button.",
+    usage: `<ComboBox id="framework" label="Framework" options={options} value={value} onChange={setValue} />`,
+    preview: () => <ComboBox id="cb-preview" label="Framework" options={COMBO_OPTIONS} value="nextjs" />,
+    // Mirrors KuiReact's ComboBox showcase variants 1:1 (same titles, data and
+    // copy). Hermes has no DOMException, so the debounced demo rejects with
+    // an Error named "AbortError" (which useAsync treats the same way).
+    variants: [
+      {
+        title: "Controlled selection",
+        Demo: function ComboBoxDemo() {
+          const [value, setValue] = useState("nextjs");
+          return (
+            <View className="w-full max-w-sm gap-1">
+              <ComboBox id="cb-demo" label="Framework" options={COMBO_OPTIONS} value={value} onChange={setValue} hint="Search or pick from the list." />
+              <Text className="text-xs text-text-secondary">Selected: {value || "none"}</Text>
+            </View>
+          );
+        },
+      },
+      {
+        title: "Async search",
+        Demo: function AsyncComboBoxDemo() {
+          const [value, setValue] = useState("");
+          async function search(query: string) {
+            const normalized = query.trim().toLowerCase();
+            await new Promise((resolve) => setTimeout(resolve, 250));
+            if (!normalized) return COMBO_OPTIONS;
+            return COMBO_OPTIONS.filter((opt) => opt.label.toLowerCase().includes(normalized) || opt.description?.toLowerCase().includes(normalized));
+          }
+          return (
+            <View className="w-full max-w-sm gap-1">
+              <ComboBox id="cb-async" label="Async search" options={COMBO_OPTIONS} value={value} onChange={setValue} onSearch={search} placeholder="Type to search..." />
+              <Text className="text-xs text-text-secondary">Selected: {value || "none"}</Text>
+            </View>
+          );
+        },
+      },
+      {
+        title: "Debounced async suggestions",
+        Demo: function DebouncedAsyncComboBoxDemo() {
+          const [value, setValue] = useState("");
+          const POOL: ComboBoxOption[] = [
+            { value: "react", label: "React", description: "UI library" },
+            { value: "react-dom", label: "React DOM", description: "DOM renderer" },
+            { value: "react-native", label: "React Native", description: "Mobile bindings" },
+            { value: "react-router", label: "React Router", description: "Client routing" },
+            { value: "next", label: "Next.js", description: "React framework" },
+            { value: "remix", label: "Remix", description: "Full-stack React" },
+            { value: "redwood", label: "RedwoodJS", description: "Full-stack JS" },
+            { value: "astro", label: "Astro", description: "Content sites" },
+            { value: "svelte", label: "Svelte", description: "Compiler-driven UI" },
+            { value: "solid", label: "SolidJS", description: "Fine-grained reactivity" },
+          ];
+          async function suggest(query: string, signal?: AbortSignal): Promise<ComboBoxOption[]> {
+            const q = query.trim().toLowerCase();
+            await new Promise((resolve, reject) => {
+              const t = setTimeout(resolve, 350);
+              signal?.addEventListener("abort", () => {
+                clearTimeout(t);
+                reject(Object.assign(new Error("aborted"), { name: "AbortError" }));
+              });
+            });
+            if (!q) return POOL.slice(0, 5);
+            return POOL.filter((p) => p.label.toLowerCase().includes(q));
+          }
+          return (
+            <View className="w-full max-w-sm gap-1">
+              <ComboBox
+                id="cb-async-debounced"
+                label="Debounced suggestions"
+                options={[]}
+                value={value}
+                onChange={setValue}
+                onSearch={suggest}
+                debounceMs={300}
+                placeholder="Try typing 'react'…"
+                hint="Debounced 300ms, AbortController cancels in-flight, 5-min cache."
+              />
+              <Text className="text-xs text-text-secondary">Selected: {value || "none"}</Text>
             </View>
           );
         },

@@ -22,6 +22,8 @@ export { Checkbox } from "./Checkbox";
 export { CheckboxGroup } from "./CheckboxGroup";
 export type { CheckboxGroupProps, CheckboxOption } from "./CheckboxGroup";
 export type { CheckboxProps } from "./Checkbox";
+export { ComboBox } from "./ComboBox";
+export type { ComboBoxOption, ComboBoxProps } from "./ComboBox";
 export { DatePicker, DateRangePicker, DateTimePicker } from "./DatePicker";
 export type {
   DatePickerLocale,
