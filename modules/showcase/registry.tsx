@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faPalette,
   faSitemap,
   faGauge,
   faScroll,
@@ -124,6 +125,7 @@ import {
   ScrollArea,
   ViewToggle,
   TreeView,
+  ColorPicker,
   type ScoreRule,
   type ViewOrientation,
 } from "@/modules/ui";
@@ -1419,6 +1421,47 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "Disabled",
         Demo: () => <FileInput id="fi-disabled" label="Disabled upload" disabled />,
+      },
+    ],
+  },
+  {
+    id: "color-picker",
+    title: "ColorPicker",
+    category: "Forms",
+    icon: faPalette,
+    description: "Popover colour picker: swatch grid, hex field, a native-style hue picker, a no-colour option and an optional HEX/RGBA/HSLA/HWB/OKLCH format switcher.",
+    usage: `<ColorPicker label="Brand color" value={c} onChange={setC} showNoColor />`,
+    preview: () => <ColorPicker value="#3b82f6" onChange={() => {}} />,
+    // Mirrors KuiReact's ColorPicker showcase variants 1:1 (same titles and
+    // props). The native picker (<input type="color">) is a hue strip on RN.
+    variants: [
+      {
+        title: "Default",
+        Demo: function ColorPickerDemo() {
+          const [c, setC] = useState<string | null>("#3b82f6");
+          return <ColorPicker label="Brand color" value={c} onChange={setC} showNoColor />;
+        },
+      },
+      {
+        title: "Compact (swatches only)",
+        Demo: function ColorPickerCompactDemo() {
+          const [c, setC] = useState<string | null>("#22c55e");
+          return <ColorPicker value={c} onChange={setC} showHexInput={false} showNativePicker={false} />;
+        },
+      },
+      {
+        title: "Hex + native picker only (no swatches)",
+        Demo: function ColorPickerNativeDemo() {
+          const [c, setC] = useState<string | null>(null);
+          return <ColorPicker label="Background" value={c} onChange={setC} showNoColor showHexInput showNativePicker swatches={[]} />;
+        },
+      },
+      {
+        title: "Format switcher — HEX / RGBA / HSLA / HWB / OKLCH (M1)",
+        Demo: function ColorPickerFormatSwitcherDemo() {
+          const [c, setC] = useState<string | null>("#3b82f6");
+          return <ColorPicker label="Theme color" value={c} onChange={setC} showFormatSwitcher defaultFormat="hex" showHexInput={false} showNativePicker />;
+        },
       },
     ],
   },

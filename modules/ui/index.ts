@@ -22,6 +22,8 @@ export { Checkbox } from "./Checkbox";
 export { CheckboxGroup } from "./CheckboxGroup";
 export type { CheckboxGroupProps, CheckboxOption } from "./CheckboxGroup";
 export type { CheckboxProps } from "./Checkbox";
+export { ColorPicker, DEFAULT_COLOR_SWATCHES } from "./ColorPicker";
+export type { ColorFormat, ColorPickerProps, ColorValue } from "./ColorPicker";
 export { ComboBox } from "./ComboBox";
 export type { ComboBoxOption, ComboBoxProps } from "./ComboBox";
 export { ContentScoreBar } from "./ContentScoreBar";
