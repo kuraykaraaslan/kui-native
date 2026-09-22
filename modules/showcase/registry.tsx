@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faCalendarDays,
+  faCalendarWeek,
   faSliders,
   faTags,
   faHeading,
@@ -85,6 +87,9 @@ import {
   PageHeader,
   MultiSelect,
   RangeSlider,
+  DatePicker,
+  DateRangePicker,
+  type DateRange,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1084,6 +1089,101 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: function RangeSliderDualDemo() {
           const [v, setV] = useState<[number, number]>([20, 70]);
           return <RangeSlider range label="Price range" value={v} onChange={setV} min={0} max={100} className="w-full max-w-xs" />;
+        },
+      },
+    ],
+  },
+  {
+    id: "date-picker",
+    title: "DatePicker",
+    category: "Forms",
+    icon: faCalendarDays,
+    description: "Popover date picker with a locale-aware calendar grid (TR / EN), quick month / year jump from the header, and min / max / disabledDates support.",
+    usage: `<DatePicker id="date" label="Appointment date" hint="Select a future date." value={date} onChange={setDate} />`,
+    preview: () => <DatePicker id="dp-preview" value={null} onChange={() => {}} locale="en" />,
+    // Mirrors KuiReact's DatePicker showcase variants 1:1 (same titles, copy and dates).
+    variants: [
+      {
+        title: "Default",
+        Demo: function DatePickerDefaultDemo() {
+          const [d, setD] = useState<Date | null>(null);
+          return (
+            <View className="w-full max-w-xs">
+              <DatePicker id="sc-dp-default" label="Appointment date" hint="Select a future date." value={d} onChange={setD} />
+            </View>
+          );
+        },
+      },
+      {
+        title: "With value",
+        Demo: function DatePickerValueDemo() {
+          const [d, setD] = useState<Date | null>(new Date("2026-06-15"));
+          return (
+            <View className="w-full max-w-xs">
+              <DatePicker id="sc-dp-val" label="Start date" value={d} onChange={setD} />
+            </View>
+          );
+        },
+      },
+      {
+        title: "Error / Disabled",
+        Demo: function DatePickerErrorDemo() {
+          const [a, setA] = useState<Date | null>(null);
+          const [b, setB] = useState<Date | null>(new Date("2026-01-01"));
+          return (
+            <View className="w-full max-w-xs gap-3">
+              <DatePicker id="sc-dp-err" label="Due date" error="Please select a date." required value={a} onChange={setA} />
+              <DatePicker id="sc-dp-dis" label="Locked date" value={b} onChange={setB} disabled />
+            </View>
+          );
+        },
+      },
+      {
+        title: "Locale: Türkçe + custom messages",
+        Demo: function DatePickerTrDemo() {
+          const [d, setD] = useState<Date | null>(new Date("2026-05-26"));
+          return (
+            <View className="w-full max-w-xs">
+              <DatePicker
+                id="sc-dp-tr"
+                label="Randevu tarihi"
+                hint="Lütfen ileri bir tarih seçin."
+                locale="tr"
+                value={d}
+                onChange={setD}
+                messages={{ today: "Bugün seç", clear: "Temizle" }}
+              />
+            </View>
+          );
+        },
+      },
+    ],
+  },
+  {
+    id: "date-range-picker",
+    title: "DateRangePicker",
+    category: "Forms",
+    icon: faCalendarWeek,
+    description: "Two-month popover for picking a start → end date range. Shares the same Calendar core as DatePicker; locale-aware, with min/max/disabledDates.",
+    usage: `<DateRangePicker id="range" label="Select date range" value={range} onChange={setRange} />`,
+    preview: () => <DateRangePicker id="dr-preview" value={null} onChange={() => {}} locale="en" />,
+    // Mirrors KuiReact's DateRangePicker showcase variants 1:1 (same titles,
+    // copy and dates). KuiReact's third variant, "Time picker", renders
+    // TimePicker (a native time input), which isn't ported yet — see the
+    // roadmap's TimePicker item.
+    variants: [
+      {
+        title: "Date range",
+        Demo: function DateRangeDemo() {
+          const [range, setRange] = useState<DateRange>({ start: null, end: null });
+          return <DateRangePicker id="dr-demo" label="Select date range" value={range} onChange={setRange} />;
+        },
+      },
+      {
+        title: "With value (EN locale)",
+        Demo: function DateRangeValueDemo() {
+          const [range, setRange] = useState<DateRange>({ start: new Date("2026-06-01"), end: new Date("2026-06-15") });
+          return <DateRangePicker id="dr-val" label="Booking window" value={range} onChange={setRange} locale="en" />;
         },
       },
     ],
