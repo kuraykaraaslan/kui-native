@@ -680,10 +680,23 @@ export const REGISTRY: ShowcaseEntry[] = [
           </AvatarGroup>
         ),
       },
-      // KuiReact's "AvatarGroup" variant (data-driven `avatars`/`max` props
-      // with overlap + a "+N" overflow chip) is not reproduced here —
-      // KuiNative's AvatarGroup is still children-based and tracked as a
-      // REQUIRES_REWRITE item (docs/audits/kui-react-parity/phase-3-parity-review/rewrite-candidates.md).
+      {
+        // KuiReact: avatars={[{ name: 'Alice' }, { name: 'Bob' }, ...]} max={4}
+        title: "AvatarGroup",
+        Demo: () => (
+          <AvatarGroup
+            avatars={[
+              { name: "Alice" },
+              { name: "Bob" },
+              { name: "Carol" },
+              { name: "Dave" },
+              { name: "Eve" },
+              { name: "Frank" },
+            ]}
+            max={4}
+          />
+        ),
+      },
     ],
   },
   {

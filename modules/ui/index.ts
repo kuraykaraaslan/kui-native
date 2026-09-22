@@ -3,7 +3,7 @@
 export { AlertBanner } from "./AlertBanner";
 export type { AlertAction, AlertBannerProps } from "./AlertBanner";
 export { Avatar, AvatarGroup } from "./Avatar";
-export type { AvatarProps } from "./Avatar";
+export type { AvatarGroupProps, AvatarProps } from "./Avatar";
 export { Badge } from "./Badge";
 export type { BadgeProps } from "./Badge";
 export { Button } from "./Button";

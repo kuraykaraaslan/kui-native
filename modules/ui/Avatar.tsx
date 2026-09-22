@@ -3,6 +3,7 @@ import type * as React from "react";
 import { View } from "react-native";
 import { Image } from "expo-image";
 
+import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
 import { Text } from "./Text";
@@ -116,12 +117,48 @@ export function Avatar({ name, src, size = "md", status, className }: AvatarProp
   );
 }
 
-export function AvatarGroup({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
+export type AvatarGroupProps = {
+  /** People to show (KuiReact's API). */
+  avatars?: { src?: string | null; name: string }[];
+  /** How many avatars to show before the "+N" chip (default 4). */
+  max?: number;
+  size?: AvatarSize;
+  /** @deprecated Pass `avatars` (KuiReact's API). Children render as a plain row. */
+  children?: React.ReactNode;
   className?: string;
-}) {
-  return <View className={cn("flex-row", className)}>{children}</View>;
+};
+
+/**
+ * Pixel-for-pixel with KuiReact's AvatarGroup: avatars overlap by 8px
+ * ("-space-x-2") with a 2px surface-coloured ring ("ring-2 ring-surface-base"),
+ * and anything past `max` collapses into a "+N" chip.
+ */
+export function AvatarGroup({ avatars, max = 4, size = "md", children, className }: AvatarGroupProps) {
+  const t = useThemeTokens();
+  if (!avatars) return <View className={cn("flex-row", className)}>{children}</View>;
+
+  const visible = avatars.slice(0, max);
+  const overflow = avatars.length - max;
+  // KuiReact's ring is an outline outside the avatar; RN draws it with outline props.
+  const ring = { outlineWidth: 2, outlineColor: t["surface-base"], outlineStyle: "solid" as const, borderRadius: 9999 };
+
+  return (
+    <View accessible accessibilityLabel={`${avatars.length} users`} className={cn("flex-row", className)}>
+      {visible.map((a, i) => (
+        <View key={`${a.name}-${i}`} style={[ring, i > 0 ? { marginLeft: -8 } : null]}>
+          <Avatar name={a.name} src={a.src} size={size} />
+        </View>
+      ))}
+      {overflow > 0 ? (
+        <View
+          accessibilityLabel={`${overflow} more`}
+          style={[ring, { marginLeft: -8 }]}
+          // KuiReact: "rounded-full bg-surface-sunken text-text-secondary font-semibold text-xs … border border-border"
+          className={cn("items-center justify-center rounded-full border border-border bg-surface-sunken", sizeCls[size])}
+        >
+          <Text className="text-xs font-semibold text-text-secondary">+{overflow}</Text>
+        </View>
+      ) : null}
+    </View>
+  );
 }

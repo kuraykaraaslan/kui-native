@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
 
-import { Avatar } from "./Avatar";
+import { Avatar, AvatarGroup } from "./Avatar";
 
 function classNameOf(el: { props: { className?: string | string[] } }) {
   const c = el.props.className;
@@ -62,5 +62,42 @@ describe("Avatar", () => {
   it("exposes the name as the accessible label", async () => {
     await render(<Avatar name="Kuray Karaaslan" />);
     expect(screen.getByLabelText("Kuray Karaaslan")).toBeTruthy();
+  });
+});
+
+describe("AvatarGroup (KuiReact API)", () => {
+  const people = ["Alice", "Bob", "Carol", "Dave", "Eve", "Frank"].map((name) => ({ name }));
+
+  it("shows up to `max` avatars (default 4) and a +N chip for the rest", async () => {
+    await render(<AvatarGroup avatars={people} />);
+    expect(screen.getByText("+2", { hidden: true } as never)).toBeTruthy();
+    expect(screen.queryByText("EV", { hidden: true } as never)).toBeNull();
+  });
+
+  it("respects a custom max", async () => {
+    await render(<AvatarGroup avatars={people} max={2} />);
+    expect(screen.getByText("+4", { hidden: true } as never)).toBeTruthy();
+  });
+
+  it("has no chip when everyone fits", async () => {
+    await render(<AvatarGroup avatars={people.slice(0, 3)} />);
+    expect(screen.queryByText(/^\+/, { hidden: true } as never)).toBeNull();
+  });
+
+  it("is labelled with the total count, like KuiReact's aria-label", async () => {
+    await render(<AvatarGroup avatars={people} />);
+    expect(screen.getByLabelText("6 users")).toBeTruthy();
+  });
+
+  it("overlaps avatars by 8px after the first", async () => {
+    await render(<AvatarGroup avatars={people.slice(0, 2)} />);
+    const wrappers = screen.getByLabelText("2 users").children as unknown as { props: { style: unknown[] } }[];
+    const second = Object.assign({}, ...(wrappers[1].props.style as object[]).filter(Boolean));
+    expect(second.marginLeft).toBe(-8);
+  });
+
+  it("still renders children as a plain row (deprecated)", async () => {
+    await render(<AvatarGroup><Avatar name="Legacy User" /></AvatarGroup>);
+    expect(screen.getByText("LU")).toBeTruthy();
   });
 });
