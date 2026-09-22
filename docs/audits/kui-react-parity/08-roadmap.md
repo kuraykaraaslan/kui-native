@@ -10,7 +10,7 @@ Detail: [wave-1-critical.md](phase-5-roadmap/wave-1-critical.md) · [wave-2-core
 | --- | --- | --- | --- | --- | --- |
 | 1 — Critical | Installable, themed, tested library; Button/Input/Modal at parity; baseline form, feedback, overlay and navigation primitives | 11 | 16–26 | 7 | 9.5–16 |
 | 2 — Core completion | All shared components at parity; parity contract in CI; remaining ui-layer primitives | 10 | 6.5–12 | 3 | 3–5 |
-| 3 — Advanced | Heavy organisms, desktop-web patterns (mostly exceptions) | 10 | 62.5–116 | 10 | 62.5–116 |
+| 3 — Advanced | Heavy organisms, desktop-web patterns (mostly exceptions) | 1 | 0.5–1 | 1 | 0.5–1 |
 
 New components leave the roadmap once they land (their backlog file is deleted); remediation items stay listed and are marked ✓ done or partial.
 
@@ -38,11 +38,11 @@ Estimates assume one engineer familiar with both codebases, Small 0.5–1 d · M
 15. **R-shadow** — Shadow/elevation token strategy (shadow-sm/md/xl → iOS shadow + Android elevation) — ✓ done (`048ebed`: shadow classes + Android elevation) (Medium, Small)
 16. **R-card** — Card parity (flat variant, headerRight, onPress, loading, section layout, shadow) — ✓ done (`dbdbdbd`) (High, Small)
 17. **R-checkbox** — Checkbox parity (hint, error, uncontrolled `defaultChecked`) — ✓ done (`75edb0c`) (High, Small)
-18. **R-skeleton** — Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion — partial: Line / Avatar / Text since `048ebed`; Table primitive landed (`b83d87f`) but SkeletonTableRow is still missing (High, Small)
+18. **R-skeleton** — Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion — partial: Line / Avatar / Text since `048ebed`; Table (`b83d87f`) and DataTable (`da93014`) landed but SkeletonTableRow is still missing (High, Small)
 19. **R-toggle** — Switch → Toggle parity (name, checked/onChange, description, size, label press) — ✓ done (`5f484a8`) (High, Small)
 20. **R-empty-state** — EmptyState parity (`action: ReactNode`, optional icon, KuiReact spacing) — ✓ done (`7ca2284`) (Medium, Small)
 21. **R-spinner** — Spinner parity (xs–xl, two-tone ring, md ≠ sm) — partial: sizes fixed in `4ebda43`; two-tone ring still missing (Medium, Small)
 
 ## Wave 3
 
-[Chart](component-backlog/chart.md) · [SkipLink + LiveRegion](component-backlog/skip-link.md) _(exception)_ · [BulkActionTable](component-backlog/bulk-action-table.md) · [ColorPicker](component-backlog/color-picker.md) · [DataTable](component-backlog/data-table.md) · [DiffViewer](component-backlog/diff-viewer.md) · [TreeView](component-backlog/tree-view.md) · [AdvancedDataTable](component-backlog/advanced-data-table.md) · [MapView](component-backlog/map-view.md) · [VideoPlayer](component-backlog/video-player.md)
+[SkipLink + LiveRegion](component-backlog/skip-link.md) _(exception)_

@@ -8,8 +8,8 @@ Full table: [phase-1-inventory/kui-native-components.md](phase-1-inventory/kui-n
 
 - **Stack:** Expo SDK 56 (`expo ^56.0.9`, README still says SDK 55) · React Native 0.85 · React 19.2 · NativeWind 4 + Tailwind 3.4 · Font Awesome **6.7.2** · zustand · expo-image · reanimated 4 (installed, unused by the library).
 - **Layers:** `modules/ui` only. No app layer, no domains, no providers.
-- **Catalog:** 68 exports from 53 component modules (Accordion, AlertBanner, Avatar, AvatarGroup, Badge, BrandLogo, Breadcrumb, Button, ButtonGroup, Card, Checkbox, CheckboxGroup, ComboBox, ContentScoreBar, DatePicker, DateRangePicker, DateTimePicker, Drawer, DropdownMenu, EmptyState, FileInput, Label, Modal, MultiSelect, PageHeader, Pagination, Popconfirm, Popover, Progress, RadioGroup, RangeSlider, ScrollArea, SearchBar, Select, Separator, SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonText, Slider, Spinner, Switch, Toggle, TabButton, Table, TagInput, TabGroup, Text, StarRating, StatCard, Statistic, Stepper, Tooltip, Timeline, ViewToggle, TimePicker, Toast, ToastProvider, ToastRegion, Toaster, Textarea, Input, TextInput, plus the `toast()` API and its hooks) + theme utilities in `libs/theme.ts`.
-- **Quality infrastructure:** a Jest (`jest-expo`) + `@testing-library/react-native` harness (`jest.config.js`, `npm test`) with 52 test files (436 static `it` / `test` blocks) at commit `08c1c32`; still no ESLint config, no CI, no registry, no ADRs. A showcase app (Expo Router) with 52 entries, 1:1 with KuiReact showcase variants, is the only documentation besides the README.
+- **Catalog:** 86 exports from 60 component modules (Accordion, AlertBanner, Avatar, AvatarGroup, Badge, BrandLogo, Breadcrumb, BulkActionTable, Button, ButtonGroup, Card, AreaChart, BarChart, DonutChart, LineChart, PieChart, ScatterChart, SparkLine, Checkbox, CheckboxGroup, ColorPicker, DEFAULT_COLOR_SWATCHES, ComboBox, ContentScoreBar, DatePicker, DateRangePicker, DateTimePicker, DiffViewer, Drawer, DropdownMenu, EmptyState, FileInput, Label, MapView, Modal, MultiSelect, PageHeader, Pagination, Popconfirm, Popover, Progress, RadioGroup, RangeSlider, ScrollArea, SearchBar, Select, Separator, SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonText, Slider, Spinner, Switch, Toggle, TabButton, AdvancedDataTable, DataTable, Table, TagInput, TabGroup, Text, StarRating, StatCard, Statistic, Stepper, Tooltip, Timeline, TreeView, VideoPlayer, ViewToggle, TimePicker, Toast, ToastProvider, ToastRegion, Toaster, Textarea, Input, TextInput, plus the `toast()` API and its hooks) + theme utilities in `libs/theme.ts`.
+- **Quality infrastructure:** a Jest (`jest-expo`) + `@testing-library/react-native` harness (`jest.config.js`, `npm test`) with 62 test files (517 static `it` / `test` blocks) at commit `3d2d0f9`; still no ESLint config, no CI, no registry, no ADRs. A showcase app (Expo Router) with 62 entries, 1:1 with KuiReact showcase variants, is the only documentation besides the README.
 - **Packaging:** not publishable (`private: true`, `main: expo-router/entry`).
 
 ## Components
@@ -23,26 +23,38 @@ Full table: [phase-1-inventory/kui-native-components.md](phase-1-inventory/kui-n
 | Badge | Data Display | 119 | Badge |
 | BrandLogo | Foundation | 46 | BrandLogo |
 | Breadcrumb | Navigation | 86 | Breadcrumb |
+| BulkActionTable | Tables | 157 | BulkActionTable |
 | Button | Foundation | 145 | Button |
 | ButtonGroup | Forms | 111 | ButtonGroup |
 | Card | Layout | 125 | Card |
+| AreaChart | Charts | 20 | Chart |
+| BarChart | Charts | 20 | Chart |
+| DonutChart | Charts | 20 | Chart |
+| LineChart | Charts | 20 | Chart |
+| PieChart | Charts | 20 | Chart |
+| ScatterChart | Charts | 20 | Chart |
+| SparkLine | Charts | 20 | Chart |
 | Checkbox | Forms | 90 | Checkbox |
 | CheckboxGroup | Forms | 76 | CheckboxGroup |
+| ColorPicker | Forms | 238 | ColorPicker |
+| DEFAULT_COLOR_SWATCHES | Forms | 238 | ColorPicker |
 | ComboBox | Forms | 170 | ComboBox |
 | ContentScoreBar | Data Display | 106 | ContentScoreBar |
 | DatePicker | Forms | 307 | DatePicker |
 | DateRangePicker | Forms | 307 | DateRangePicker |
 | DateTimePicker | Forms | 307 | DatePicker |
+| DiffViewer | Advanced Components | 175 | DiffViewer |
 | Drawer | Overlay | 118 | Drawer |
 | DropdownMenu | Overlay | 120 | DropdownMenu |
 | EmptyState | Feedback | 74 | EmptyState |
 | FileInput | Forms | 270 | FileInput |
 | Label | Typography | 47 | Label |
+| MapView | Media | 186 | MapView |
 | Modal | Overlay | 146 | Modal |
 | MultiSelect | Forms | 248 | MultiSelect |
 | PageHeader | Layout | 85 | PageHeader |
 | Pagination | Navigation | 150 | Pagination |
-| Popconfirm | Overlay | 105 | Popconfirm |
+| Popconfirm | Overlay | 111 | Popconfirm |
 | Popover | Overlay | 52 | Popover |
 | Progress | Feedback | 125 | Progress |
 | RadioGroup | Forms | 126 | RadioGroup |
@@ -61,8 +73,12 @@ Full table: [phase-1-inventory/kui-native-components.md](phase-1-inventory/kui-n
 | Switch | Forms | 110 | Toggle |
 | Toggle | Forms | 110 | Toggle |
 | TabButton | Navigation | 59 | TabButton |
-| Table | Tables | 21 | Table |
-| TagInput | Forms | 195 | TagInput |
+| AdvancedDataTable | Tables | 31 | AdvancedDataTable |
+| DataTable | Tables | 31 | DataTable |
+| Table | Tables | 31 | Table |
+| useServerTable | Hooks | 31 | DataTable |
+| useTable | Hooks | 31 | DataTable |
+| TagInput | Forms | 202 | TagInput |
 | TabGroup | Navigation | 100 | TabGroup |
 | Text | Typography | 73 | — (native-only) |
 | StarRating | Forms | 110 | StarRating |
@@ -71,6 +87,8 @@ Full table: [phase-1-inventory/kui-native-components.md](phase-1-inventory/kui-n
 | Stepper | Navigation | 108 | Stepper |
 | Tooltip | Overlay | 153 | Tooltip |
 | Timeline | Data Display | 124 | Timeline |
+| TreeView | Data Display | 115 | TreeView |
+| VideoPlayer | Media | 248 | VideoPlayer |
 | ViewToggle | Forms | 51 | ViewToggle |
 | TimePicker | Forms | 143 | TimePicker |
 | Toast | Feedback | 238 | Toast |
@@ -85,4 +103,4 @@ Full table: [phase-1-inventory/kui-native-components.md](phase-1-inventory/kui-n
 | Input | Forms | 208 | Input |
 | TextInput | Forms | 8 | Input |
 
-Total library source: 6355 lines across 53 entry files (KuiReact's 52 shared components: 9881 lines in their entry files).
+Total library source: 7517 lines across 60 entry files (KuiReact's 61 shared components: 19932 lines in their entry files).

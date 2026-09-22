@@ -23,19 +23,10 @@ Single ordered list across all waves (dependencies always precede dependants; a 
 | 15 | 2 | **R-shadow** Shadow/elevation token strategy (shadow-sm/md/xl → iOS shadow + Android elevation) — ✓ done (`048ebed`: shadow classes + Android elevation) | Medium | Small | — | 0.5–1 d |
 | 16 | 2 | **R-card** Card parity (flat variant, headerRight, onPress, loading, section layout, shadow) — ✓ done (`dbdbdbd`) | High | Small | R-shadow | 0.5–1 d |
 | 17 | 2 | **R-checkbox** Checkbox parity (hint, error, uncontrolled `defaultChecked`) — ✓ done (`75edb0c`) | High | Small | R-field-shell | 0.5–1 d |
-| 18 | 2 | **R-skeleton** Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion — partial: Line / Avatar / Text since `048ebed`; Table primitive landed (`b83d87f`) but SkeletonTableRow is still missing | High | Small | — | 0.5–1 d |
+| 18 | 2 | **R-skeleton** Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion — partial: Line / Avatar / Text since `048ebed`; Table (`b83d87f`) and DataTable (`da93014`) landed but SkeletonTableRow is still missing | High | Small | — | 0.5–1 d |
 | 19 | 2 | **R-toggle** Switch → Toggle parity (name, checked/onChange, description, size, label press) — ✓ done (`5f484a8`) | High | Small | — | 0.5–1 d |
 | 20 | 2 | **R-empty-state** EmptyState parity (`action: ReactNode`, optional icon, KuiReact spacing) — ✓ done (`7ca2284`) | Medium | Small | — | 0.5–1 d |
 | 21 | 2 | **R-spinner** Spinner parity (xs–xl, two-tone ring, md ≠ sm) — partial: sizes fixed in `4ebda43`; two-tone ring still missing | Medium | Small | — | 0.5–1 d |
-| 22 | 3 | [Chart](../component-backlog/chart.md) | Medium | Very Large | — | 10–20 d |
-| 23 | 3 | [SkipLink + LiveRegion](../component-backlog/skip-link.md) | Low | Small | — | 0.5–1 d |
-| 24 | 3 | [BulkActionTable](../component-backlog/bulk-action-table.md) | Low | Medium | — | 2–3 d |
-| 25 | 3 | [ColorPicker](../component-backlog/color-picker.md) | Low | Large | — | 5–8 d |
-| 26 | 3 | [DataTable](../component-backlog/data-table.md) | Low | Large | — | 5–8 d |
-| 27 | 3 | [DiffViewer](../component-backlog/diff-viewer.md) | Low | Large | — | 5–8 d |
-| 28 | 3 | [TreeView](../component-backlog/tree-view.md) | Low | Large | — | 5–8 d |
-| 29 | 3 | [AdvancedDataTable](../component-backlog/advanced-data-table.md) | Low | Very Large | data-table, R-spinner | 10–20 d |
-| 30 | 3 | [MapView](../component-backlog/map-view.md) | Low | Very Large | R-button, R-card | 10–20 d |
-| 31 | 3 | [VideoPlayer](../component-backlog/video-player.md) | Low | Very Large | — | 10–20 d |
+| 22 | 3 | [SkipLink + LiveRegion](../component-backlog/skip-link.md) | Low | Small | — | 0.5–1 d |
 
-After #31: domain verticals per [wave-3-advanced.md](wave-3-advanced.md).
+After #22: domain verticals per [wave-3-advanced.md](wave-3-advanced.md).

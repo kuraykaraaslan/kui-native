@@ -22,17 +22,8 @@
 | 15 | R-shadow: Shadow/elevation token strategy (shadow-sm/md/xl → iOS shadow + Android elevation) — ✓ done (`048ebed`: shadow classes + Android elevation) | remediation | Medium | Small | W2 | — |
 | 16 | R-card: Card parity (flat variant, headerRight, onPress, loading, section layout, shadow) — ✓ done (`dbdbdbd`) | remediation | High | Small | W2 | R-shadow |
 | 17 | R-checkbox: Checkbox parity (hint, error, uncontrolled `defaultChecked`) — ✓ done (`75edb0c`) | remediation | High | Small | W2 | R-field-shell |
-| 18 | R-skeleton: Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion — partial: Line / Avatar / Text since `048ebed`; Table primitive landed (`b83d87f`) but SkeletonTableRow is still missing | remediation | High | Small | W2 | — |
+| 18 | R-skeleton: Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion — partial: Line / Avatar / Text since `048ebed`; Table (`b83d87f`) and DataTable (`da93014`) landed but SkeletonTableRow is still missing | remediation | High | Small | W2 | — |
 | 19 | R-toggle: Switch → Toggle parity (name, checked/onChange, description, size, label press) — ✓ done (`5f484a8`) | remediation | High | Small | W2 | — |
 | 20 | R-empty-state: EmptyState parity (`action: ReactNode`, optional icon, KuiReact spacing) — ✓ done (`7ca2284`) | remediation | Medium | Small | W2 | — |
 | 21 | R-spinner: Spinner parity (xs–xl, two-tone ring, md ≠ sm) — partial: sizes fixed in `4ebda43`; two-tone ring still missing | remediation | Medium | Small | W2 | — |
-| 22 | [Chart](../component-backlog/chart.md) | new component | Medium | Very Large | W3 | — |
-| 23 | [SkipLink + LiveRegion](../component-backlog/skip-link.md) | new component | Low | Small | W3 | — |
-| 24 | [BulkActionTable](../component-backlog/bulk-action-table.md) | new component | Low | Medium | W3 | — |
-| 25 | [ColorPicker](../component-backlog/color-picker.md) | new component | Low | Large | W3 | — |
-| 26 | [DataTable](../component-backlog/data-table.md) | new component | Low | Large | W3 | — |
-| 27 | [DiffViewer](../component-backlog/diff-viewer.md) | new component | Low | Large | W3 | — |
-| 28 | [TreeView](../component-backlog/tree-view.md) | new component | Low | Large | W3 | — |
-| 29 | [AdvancedDataTable](../component-backlog/advanced-data-table.md) | new component | Low | Very Large | W3 | data-table, R-spinner |
-| 30 | [MapView](../component-backlog/map-view.md) | new component | Low | Very Large | W3 | R-button, R-card |
-| 31 | [VideoPlayer](../component-backlog/video-player.md) | new component | Low | Very Large | W3 | — |
+| 22 | [SkipLink + LiveRegion](../component-backlog/skip-link.md) | new component | Low | Small | W3 | — |

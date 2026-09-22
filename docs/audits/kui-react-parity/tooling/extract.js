@@ -6,6 +6,9 @@ const path = require("path");
 
 const KR = "//wsl.localhost/Ubuntu/home/kuray/kui-react";
 const KN = "C:/Users/kuray/Documents/Projects/KUInative";
+// KN_SRC (env): a directory holding the KuiNative sources at KN_REV (e.g. `git archive <rev> modules libs app | tar -x -C <dir>`),
+// so component sources match the pinned commit even when the checkout has moved on. Defaults to the checkout.
+const KN_SRC = process.env.KN_SRC || KN;
 
 const read = (p) => (fs.existsSync(p) ? fs.readFileSync(p, "utf8") : null);
 const reg = JSON.parse(read(path.join(KR, "public/registry/components.json")));
@@ -294,6 +297,9 @@ const SHARED = {
   popconfirm: ["Popconfirm"], "star-rating": ["StarRating"], "stat-card": ["StatCard"], statistic: ["Statistic"], "tab-button": ["TabButton"],
   timeline: ["Timeline"], "tag-input": ["TagInput"], "combo-box": ["ComboBox"], "file-input": ["FileInput"], table: ["Table"], slider: ["Slider", "releaseStep"],
   "content-score-bar": ["ContentScoreBar"], "view-toggle": ["ViewToggle"], "scroll-area": ["ScrollArea"],
+  "tree-view": ["TreeView"], "color-picker": ["ColorPicker", "DEFAULT_COLOR_SWATCHES"], "data-table": ["DataTable", "useTable", "useServerTable"],
+  "bulk-action-table": ["BulkActionTable"], "advanced-data-table": ["AdvancedDataTable"], "diff-viewer": ["DiffViewer"],
+  chart: ["LineChart", "BarChart", "AreaChart", "PieChart", "DonutChart", "ScatterChart", "SparkLine"], "map-view": ["MapView"], "video-player": ["VideoPlayer"],
 };
 
 const entries = reg.components.map((c) => ({ ...c, source: undefined, registry: true }));
@@ -368,7 +374,7 @@ for (const f of allKR) {
 }
 
 // ---------------------------------------------------------------- per-entry facts
-const knTheme = read(path.join(KN, "libs/theme.ts"));
+const knTheme = read(path.join(KN_SRC, "libs/theme.ts"));
 const knLight = {}; const knDark = {};
 {
   const lm = knTheme.match(/const light: TokenMap = \{([\s\S]*?)\};/)[1];
@@ -530,13 +536,13 @@ const facts = entries.map(analyse);
 const KN_REV = process.env.KN_REV || "HEAD";
 const gitKN = (args) => require("child_process").execSync(`git ${args}`, { cwd: KN, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
 const knBarrel = gitKN(`show ${KN_REV}:modules/ui/index.ts`);
-const knExports = [...knBarrel.matchAll(/export\s+\{([^}]*)\}\s*from\s*["']\.\/(\w+)["']/g)].flatMap((m) => m[1].split(",").map((n) => ({ name: n.trim(), file: fs.existsSync(path.join(KN, `modules/ui/${m[2]}.tsx`)) ? `modules/ui/${m[2]}.tsx` : `modules/ui/${m[2]}/index.tsx` })));
+const knExports = [...knBarrel.matchAll(/export\s+\{([^}]*)\}\s*from\s*["']\.\/(\w+)["']/g)].flatMap((m) => m[1].split(",").map((n) => n.trim()).filter(Boolean).map((n) => ({ name: n, file: [`modules/ui/${m[2]}.tsx`, `modules/ui/${m[2]}/index.tsx`, `modules/ui/${m[2]}/index.ts`].find((f) => fs.existsSync(path.join(KN_SRC, f))) })));
 const knFacts = knExports.map((x) => {
-  const p = extractComponent(path.join(KN, x.file), x.name, KN);
-  const text = read(path.join(KN, x.file));
-  const internalUsers = walk(path.join(KN, "modules"), isSrc).concat(walk(path.join(KN, "app"), isSrc))
-    .filter((f) => f !== path.join(KN, x.file) && new RegExp(`\\b${x.name}\\b`).test(read(f)) && /from\s+["'](\.\/|@\/modules\/ui)/.test(read(f)))
-    .map((f) => rel(KN, f));
+  const p = extractComponent(path.join(KN_SRC, x.file), x.name, KN_SRC);
+  const text = read(path.join(KN_SRC, x.file));
+  const internalUsers = walk(path.join(KN_SRC, "modules"), isSrc).concat(walk(path.join(KN_SRC, "app"), isSrc))
+    .filter((f) => f !== path.join(KN_SRC, x.file) && new RegExp(`\\b${x.name}\\b`).test(read(f)) && /from\s+["'](\.\/|@\/modules\/ui)/.test(read(f)))
+    .map((f) => rel(KN_SRC, f));
   const sharedWith = Object.entries(SHARED).find(([, v]) => v.includes(x.name));
   return {
     name: x.name, file: x.file, loc: text.split("\n").length, props: p,

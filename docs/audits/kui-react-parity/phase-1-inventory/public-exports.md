@@ -9,8 +9,8 @@
 | --- | --- | --- |
 | npm package | `@kuraykaraaslan/kui-react` 1.0.1 (ESM + CJS + d.ts via tsup) | none (`private: true`) |
 | Entry points | `.`, `./ui`, `./app`, `./common`, `./styles` | `@/modules/ui` (repo alias) |
-| ui barrel value exports | 78 | 68 |
-| ui barrel type exports | 35 | 95 |
+| ui barrel value exports | 78 | 86 |
+| ui barrel type exports | 35 | 131 |
 | app barrel value exports | 43 | 0 |
 | common barrel value exports | 52 | 0 |
 | Hooks (public) | `useToastStore`, `useAnnounce`, `useDirection` (+ internal `useBreakpoint`, `useFocusTrap`, `useA11yCheck`) | 0 in barrel (`useThemeMode`, `useResolvedScheme`, `useThemeTokens` in `libs/theme.ts`) |
@@ -49,7 +49,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | Statistic | ✓ same name |
 | Textarea | ✓ same name |
 | Toggle | ✓ same name |
-| AdvancedDataTable | ✗ |
+| AdvancedDataTable | ✓ same name |
 | AlertBanner | ✓ same name |
 | Breadcrumb | ✓ same name |
 | ButtonGroup | ✓ same name |
@@ -57,13 +57,13 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | CheckboxGroup | ✓ same name |
 | ComboBox | ✓ same name |
 | ContentScoreBar | ✓ same name |
-| DataTable | ✗ |
+| DataTable | ✓ same name |
 | DateRangePicker | ✓ same name |
 | TimePicker | ✓ same name |
 | Drawer | ✓ same name |
 | DropdownMenu | ✓ same name |
 | EmptyState | ✓ same name |
-| MapView | ✗ |
+| MapView | ✓ same name |
 | Modal | ✓ same name |
 | MultiSelect | ✓ same name |
 | PageHeader | ✓ same name |
@@ -88,8 +88,8 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | ToastProvider | ✓ same name |
 | ToastRegion | ✓ same name |
 | Tooltip | ✓ same name |
-| TreeView | ✗ |
-| VideoPlayer | ✗ |
+| TreeView | ✓ same name |
+| VideoPlayer | ✓ same name |
 | ViewToggle | ✓ same name |
 | LazyDataTable | ✗ |
 | LazyAdvancedDataTable | ✗ |
@@ -100,7 +100,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | useToastStore | ✓ same name |
 | toast | ✓ same name |
 | getEffectiveDuration | ✓ same name |
-| BulkActionTable | ✗ |
+| BulkActionTable | ✓ same name |
 | Timeline | ✓ same name |
 
 ## KuiReact `modules/ui/index.ts` — type exports (35)
@@ -197,7 +197,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 
 All ✗ in KuiNative.
 
-## KuiNative `modules/ui/index.ts` (68 values, 95 types)
+## KuiNative `modules/ui/index.ts` (86 values, 131 types)
 
 | Export | Props type exported | KuiReact export |
 | --- | --- | --- |
@@ -208,21 +208,33 @@ All ✗ in KuiNative.
 | Badge | ✓ BadgeProps | ✓ Badge |
 | BrandLogo | ✓ BrandLogoProps | ✓ BrandLogo |
 | Breadcrumb | ✓ BreadcrumbProps | ✓ Breadcrumb |
+| BulkActionTable | ✓ BulkActionTableProps | ✓ BulkActionTable |
 | Button | ✓ ButtonProps | ✓ Button |
 | ButtonGroup | ✓ ButtonGroupProps | ✓ ButtonGroup |
 | Card | ✓ CardProps | ✓ Card |
+| AreaChart | ✗ | ≈ Chart |
+| BarChart | ✗ | ≈ Chart |
+| DonutChart | ✗ | ≈ Chart |
+| LineChart | ✗ | ≈ Chart |
+| PieChart | ✗ | ≈ Chart |
+| ScatterChart | ✗ | ≈ Chart |
+| SparkLine | ✗ | ≈ Chart |
 | Checkbox | ✓ CheckboxProps | ✓ Checkbox |
 | CheckboxGroup | ✓ CheckboxGroupProps | ✓ CheckboxGroup |
+| ColorPicker | ✓ ColorPickerProps | ✓ ColorPicker |
+| DEFAULT_COLOR_SWATCHES | ✗ | ≈ ColorPicker |
 | ComboBox | ✓ ComboBoxProps | ✓ ComboBox |
 | ContentScoreBar | ✓ ContentScoreBarProps | ✓ ContentScoreBar |
 | DatePicker | ✓ DatePickerProps | ✓ DatePicker |
 | DateRangePicker | ✓ DateRangePickerProps | ✓ DateRangePicker |
 | DateTimePicker | ✓ DateTimePickerProps | ≈ DatePicker |
+| DiffViewer | ✓ DiffViewerProps | ✓ DiffViewer |
 | Drawer | ✓ DrawerProps | ✓ Drawer |
 | DropdownMenu | ✓ DropdownMenuProps | ✓ DropdownMenu |
 | EmptyState | ✓ EmptyStateProps | ✓ EmptyState |
 | FileInput | ✓ FileInputProps | ✓ FileInput |
 | Label | ✓ LabelProps | ✓ Label |
+| MapView | ✓ MapViewProps | ✓ MapView |
 | Modal | ✓ ModalProps | ✓ Modal |
 | MultiSelect | ✓ MultiSelectProps | ✓ MultiSelect |
 | PageHeader | ✓ PageHeaderProps | ✓ PageHeader |
@@ -246,7 +258,11 @@ All ✗ in KuiNative.
 | Switch | ✓ SwitchProps | ≈ Toggle |
 | Toggle | ✓ ToggleProps | ✓ Toggle |
 | TabButton | ✓ TabButtonProps | ✓ TabButton |
+| AdvancedDataTable | ✓ AdvancedDataTableProps | ✓ AdvancedDataTable |
+| DataTable | ✓ DataTableProps | ✓ DataTable |
 | Table | ✓ TableProps | ✓ Table |
+| useServerTable | ✗ | ≈ DataTable |
+| useTable | ✗ | ≈ DataTable |
 | TagInput | ✓ TagInputProps | ✓ TagInput |
 | TabGroup | ✓ TabGroupProps | ✓ TabGroup |
 | Text | ✓ TextProps | ✗ (no KuiReact Text component) |
@@ -256,6 +272,8 @@ All ✗ in KuiNative.
 | Stepper | ✓ StepperProps | ✓ Stepper |
 | Tooltip | ✓ TooltipProps | ✓ Tooltip |
 | Timeline | ✓ TimelineProps | ✓ Timeline |
+| TreeView | ✓ TreeViewProps | ✓ TreeView |
+| VideoPlayer | ✓ VideoPlayerProps | ✓ VideoPlayer |
 | ViewToggle | ✓ ViewToggleProps | ✓ ViewToggle |
 | TimePicker | ✓ TimePickerProps | ✓ TimePicker |
 | Toast | ✗ | ✓ Toast |

@@ -57,12 +57,24 @@ Working branch: `feature/wave1-parity`. Scope: KuiReact ui-layer atoms, molecule
 | `248e523` | TimePicker (hour / minute columns) + KuiReact's DateRangePicker "Time picker" demo |
 | `cd76c65` | Slider carousel (swipe momentum, edge resistance, autoplay) |
 | `08c1c32` | ContentScoreBar, ViewToggle, ScrollArea |
-| (this commit) | Docs refresh pinned to `08c1c32`: 18 feature matrices, DropdownMenu / MultiSelect matrices closed, backlog pruned (10 left), status matrix (41 complete, 13 minor, 0 major), re-scoring 71 → 75; public-exports reads `*Props` types from the barrel |
+| `d434692` | Docs refresh pinned to `08c1c32`: 18 feature matrices, DropdownMenu / MultiSelect matrices closed, backlog pruned (10 left), status matrix (41 complete, 13 minor, 0 major), re-scoring 71 → 75; public-exports reads `*Props` types from the barrel |
+| `9aafffe` | TreeView (KuiReact's `useTreeState` unchanged; tap / long-press multi-select) |
+| `17c8796` | ColorPicker (KuiReact's colour maths and `useColorState` unchanged; hue strip for the native picker; `expo-clipboard` copy) |
+| `02d510b` | Audit gaps closed: DatePicker / DateRangePicker trigger and TagInput error `ring-1`, Popconfirm initial screen-reader focus (`AnchoredPanel onShow`), `time-picker` showcase entry (Default, Required / error) |
+| `d856e72` | DatePicker error-ring test typing fix |
+| `da93014` | DataTable (static / paginated / server; KuiReact's `useTable` / `useServerTable` unchanged; long-press multi-sort) |
+| `10af451` | BulkActionTable (id-keyed selection, bulk-action bar) |
+| `172a657` | AdvancedDataTable (index-keyed selection, expandable rows, sticky header) |
+| `1466d8c` | DiffViewer (KuiReact's LCS `useDiff` unchanged; unified / split with synced scroll, collapsible context) |
+| `7bb58b2` | Chart library (Line, Bar, Area, Pie, Donut, Scatter, SparkLine on `react-native-svg`; M3 stubs) |
+| `8a03aa8` | MapView (`react-native-maps` with KuiReact's CartoDB tiles, zones / routes, tap-to-add; web build shows a notice) |
+| `3d2d0f9` | VideoPlayer (`expo-video`, KuiReact's control overlay and settings, parsed WebVTT subtitles; Cast and keyboard shortcuts not ported) |
+| (this commit) | Docs refresh pinned to `3d2d0f9`: 9 feature matrices, DatePicker / DateRangePicker / TimePicker / Popconfirm / TagInput matrices closed, backlog pruned (SkipLink left), status matrix (53 complete, 10 minor, 0 major), re-scoring 75 → 77; tooling gains `KN_SRC` (sources read from a snapshot of the pinned commit) and reads `index.ts` / multi-line barrel entries |
 
 ## Next
 
-0. **Refresh the docs for TreeView (`9aafffe`) and ColorPicker (`17c8796`)**, which landed after this refresh's `KN_REV=08c1c32` cutoff.
-1. **Remaining Wave 3 components** in roadmap order: Chart, SkipLink + LiveRegion (record as a parity exception rather than build), BulkActionTable, ColorPicker, DataTable (on the ported `Table/types.ts`), DiffViewer, TreeView, AdvancedDataTable, MapView, VideoPlayer. Each pixel-perfect with 1:1 showcase demos.
+0. **Refresh the docs for `fcc2af9`** (Spinner two-tone ring, `SkeletonTableRow`, Label rest props, Modal `ref`), which landed after this refresh's `KN_REV=3d2d0f9` cutoff; with it Spinner, Skeleton, Label and Modal should move to PARITY_COMPLETE and `R-spinner` / `R-skeleton` to done.
+1. **SkipLink + LiveRegion: decide the exception.** It is the only in-scope KuiReact component without a KuiNative counterpart (fit `web-only`; 16 production imports, mostly the theme-demo `layout.tsx` shells). Either record it in `parity.exceptions.json` with the rationale (no skip-navigation on RN; announcements via `AccessibilityInfo.announceForAccessibility`), or ship a small `LiveRegion` / `announce` helper and except only `SkipLink`.
 2. **Infra:** packaging + `KuiProvider`, ESLint config, Font Awesome 7, Geist, CI.
-3. **Minor gaps:** focus move / restore for Popover and Popconfirm (use `AnchoredPanel onShow`, as DropdownMenu does), error `ring-1` on the DatePicker / DateRangePicker trigger and TagInput, a `time-picker` showcase entry with KuiReact's Default and Required / error demos, `SkeletonTableRow`, Spinner two-tone ring, Select outside-tap close, Modal `ref`, Label rest props.
-4. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), run `KN_REV=<commit> node extract.js` then `node generate.js`, delete the now-stale backlog files, write feature matrices, update status matrix and scores, and mark finished `R-*` items in `REM_STATUS`.
+3. **Remaining minor gaps:** focus move / restore for Popover (use `AnchoredPanel onShow`, as DropdownMenu and Popconfirm do); Chart: `img` role on Pie / Donut / Scatter and the `Brush` stub export; MapView's web fallback; Select outside-tap close (documented in `fcc2af9`); TabGroup arrow keys (keyboard pattern).
+4. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), snapshot the pinned commit (`git archive <commit> modules libs app | tar -x -C <dir>`), run `KN_REV=<commit> KN_SRC=<dir> node extract.js` then `KN_SRC=<dir> node generate.js`, delete the now-stale backlog files, write feature matrices, update status matrix and scores, and mark finished `R-*` items in `REM_STATUS`.

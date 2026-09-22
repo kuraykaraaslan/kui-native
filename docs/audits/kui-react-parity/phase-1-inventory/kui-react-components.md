@@ -56,7 +56,7 @@
 | Select | `select` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 226 | — | 1 | 5 / 2 | ✓ (10) | ✓ Select |
 | StarRating | `star-rating` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 138 | — | 3 | 3 / 1 | — | ✓ StarRating |
 | TagInput | `tag-input` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 150 | — | 0 | 3 / 1 | — | ✓ TagInput |
-| ColorPicker | `color-picker` | ui | `@/modules/ui/ColorPicker/index` | source-only (not exported from a barrel) | 1190 | — | 0 | 2 / 1 | — | ✗ [backlog](../component-backlog/color-picker.md) |
+| ColorPicker | `color-picker` | ui | `@/modules/ui/ColorPicker/index` | source-only (not exported from a barrel) | 1190 | — | 0 | 2 / 1 | — | ✓ ColorPicker + DEFAULT_COLOR_SWATCHES |
 | RadioGroup | `radio-group` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 121 | — | 0 | 2 / 1 | — | ✓ RadioGroup |
 | Toggle | `toggle` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 81 | — | 0 | 2 / 2 | ✓ (6) | ✓ Toggle + Switch |
 | ButtonGroup | `button-group` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 96 | — | 0 | 1 / 1 | — | ✓ ButtonGroup |
@@ -88,7 +88,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Modal | `modal` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 145 | use-focus-trap | 3 | 11 / 1 | ✓ (7) | ✓ Modal |
 | DropdownMenu | `dropdown-menu` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 113 | use-focus-trap | 0 | 7 / 1 | ✓ (11) | ✓ DropdownMenu |
-| Drawer | `drawer` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 120 | use-focus-trap | 0 | 4 / 2 | ✓ (8) | ✓ Drawer |
+| Drawer | `drawer` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 141 | use-focus-trap | 0 | 4 / 2 | ✓ (8) | ✓ Drawer |
 | Tooltip | `tooltip` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 105 | — | 0 | 2 / 1 | ✓ (6) | ✓ Tooltip |
 | Popconfirm | `popconfirm` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 94 | button, use-focus-trap | 0 | 0 / 1 | ✓ (6) | ✓ Popconfirm |
 | Popover | `popover` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 74 | use-focus-trap | 0 | 0 / 2 | ✓ (5) | ✓ Popover |
@@ -100,7 +100,7 @@
 | Badge | `badge` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 87 | — | 3 | 109 / 8 | — | ✓ Badge |
 | Avatar | `avatar` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 124 | — | 5 | 41 / 2 | — | ✓ Avatar + AvatarGroup |
 | StatCard | `stat-card` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 19 | — | 0 | 3 / 1 | — | ✓ StatCard |
-| TreeView | `tree-view` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 849 | — | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/tree-view.md) |
+| TreeView | `tree-view` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 849 | — | 0 | 1 / 1 | — | ✓ TreeView |
 | Accordion | `accordion` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 85 | — | 0 | 0 / 1 | — | ✓ Accordion |
 | ContentScoreBar | `content-score-bar` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 107 | — | 0 | 0 / 1 | — | ✓ ContentScoreBar |
 | Statistic | `statistic` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 66 | — | 0 | 0 / 1 | — | ✓ Statistic |
@@ -110,30 +110,30 @@
 
 | Component | id | Layer | Export path | Public status | LOC | Composes | Used by | Imports (prod / showcase) | Tests | KuiNative |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| DataTable | `data-table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 808 | pagination | 0 | 5 / 1 | — | ✗ [backlog](../component-backlog/data-table.md) |
+| DataTable | `data-table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 808 | pagination | 0 | 5 / 1 | — | ✓ DataTable + useTable + useServerTable |
 | Table | `table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 158 | — | 0 | 3 / 1 | — | ✓ Table |
-| AdvancedDataTable | `advanced-data-table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1999 | data-table, pagination, search-bar, spinner | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/advanced-data-table.md) |
-| BulkActionTable | `bulk-action-table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 236 | table | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/bulk-action-table.md) |
+| AdvancedDataTable | `advanced-data-table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1999 | data-table, pagination, search-bar, spinner | 0 | 0 / 1 | — | ✓ AdvancedDataTable |
+| BulkActionTable | `bulk-action-table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 236 | table | 0 | 0 / 1 | — | ✓ BulkActionTable |
 
 ## Charts (1)
 
 | Component | id | Layer | Export path | Public status | LOC | Composes | Used by | Imports (prod / showcase) | Tests | KuiNative |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Chart | `chart` | ui | `@/modules/ui/Chart/index` | source-only (not exported from a barrel) | 1824 | — | 0 | 0 / 0 | — | ✗ [backlog](../component-backlog/chart.md) |
+| Chart | `chart` | ui | `@/modules/ui/Chart/index` | source-only (not exported from a barrel) | 1824 | — | 0 | 0 / 0 | — | ✓ LineChart + BarChart + AreaChart + PieChart + DonutChart + ScatterChart + SparkLine |
 
 ## Media (3)
 
 | Component | id | Layer | Export path | Public status | LOC | Composes | Used by | Imports (prod / showcase) | Tests | KuiNative |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Slider | `slider` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 644 | — | 0 | 3 / 2 | — | ✓ Slider + releaseStep |
-| VideoPlayer | `video-player` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1487 | — | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/video-player.md) |
-| MapView | `map-view` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 796 | button, card | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/map-view.md) |
+| VideoPlayer | `video-player` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1487 | — | 0 | 1 / 1 | — | ✓ VideoPlayer |
+| MapView | `map-view` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 796 | button, card | 0 | 0 / 1 | — | ✓ MapView |
 
 ## Advanced Components (1)
 
 | Component | id | Layer | Export path | Public status | LOC | Composes | Used by | Imports (prod / showcase) | Tests | KuiNative |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| DiffViewer | `diff-viewer` | ui | `@/modules/ui/DiffViewer/index` | source-only (not exported from a barrel) | 841 | — | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/diff-viewer.md) |
+| DiffViewer | `diff-viewer` | ui | `@/modules/ui/DiffViewer/index` | source-only (not exported from a barrel) | 841 | — | 0 | 0 / 1 | — | ✓ DiffViewer |
 
 ## Utility (1)
 
@@ -147,7 +147,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Form | `form` | app | `@kuraykaraaslan/kui-react/app` | public (npm: root + /app) | 56 | alert-banner | 0 | 11 / 1 | — | n/a |
 | NavDrawer | `nav-drawer` | app | `@kuraykaraaslan/kui-react/app` | public (npm: root + /app) | 46 | drawer | 0 | 8 / 1 | — | n/a |
-| AppShell | `app-shell` | app | `@kuraykaraaslan/kui-react/app` | public (npm: root + /app) | 93 | drawer | 0 | 4 / 2 | — | n/a |
+| AppShell | `app-shell` | app | `@kuraykaraaslan/kui-react/app` | public (npm: root + /app) | 98 | drawer | 0 | 4 / 2 | — | n/a |
 | InlineAlert | `inline-alert` | app | `@kuraykaraaslan/kui-react/app` | public (npm: root + /app) | 42 | — | 0 | 4 / 1 | — | n/a |
 | AppSidebar | `app-sidebar` | app | `@kuraykaraaslan/kui-react/app` | public (npm: root + /app) | 251 | badge | 0 | 3 / 2 | — | n/a |
 | AppCommandBar | `app-command-bar` | app | `@kuraykaraaslan/kui-react/app` | public (npm: root + /app) | 792 | alert-banner, badge, button, empty-state, modal | 0 | 2 / 1 | ✓ (3) | n/a |

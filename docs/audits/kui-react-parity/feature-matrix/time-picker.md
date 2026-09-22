@@ -1,7 +1,7 @@
 # Feature matrix — TimePicker
 
-> KuiReact `modules/ui/DateRangePicker.tsx` (`TimePicker`, 80 LOC inline beside the DateRangePicker re-export; 0 tests, 2 showcase variants) ↔ KuiNative `modules/ui/TimePicker.tsx` (added 2026-09-22 in `248e523`, panel on `Overlays/shared/AnchoredPanel`; 5 tests, used by the DateRangePicker "Time picker" demo).
-> **Status: PARITY_MINOR_GAPS**
+> KuiReact `modules/ui/DateRangePicker.tsx` (`TimePicker`, 80 LOC inline beside the DateRangePicker re-export; 0 tests, 2 showcase variants) ↔ KuiNative `modules/ui/TimePicker.tsx` (added 2026-09-22 in `248e523`, panel on `Overlays/shared/AnchoredPanel`; 5 tests; own showcase entry `time-picker` since `02d510b`, plus the DateRangePicker "Time picker" demo).
+> **Status: PARITY_COMPLETE** (was PARITY_MINOR_GAPS; showcase entry added in `02d510b`)
 
 | Feature | KuiReact | KuiNative | Status |
 | --- | --- | --- | --- |
@@ -12,4 +12,4 @@
 | Accessibility | `aria-invalid`, hint / error via `aria-describedby`, error `role="alert"` | button with value, expanded / disabled state and hint; labelled hour / minute lists of selectable buttons; error alert | Match (adapted) |
 | Close | native picker | outside tap, Android back | Adapted |
 | Tests | 0 | 5 | Native-ahead |
-| Showcase | Default, Required / error (registry `time-picker`) | not yet a showcase entry; only KuiReact's DateRangePicker "Time picker" demo is reproduced | Gap: 2 demos missing |
+| Showcase | Default, Required / error (registry `time-picker`) | `time-picker` entry with the same titles and copy (`02d510b`); KuiReact's DateRangePicker "Time picker" demo is reproduced as well | Match |

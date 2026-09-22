@@ -19,14 +19,14 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | Typography | 1 | 1 | 0 |
 | Layout | 4 | 4 | 0 |
 | Navigation | 5 | 5 | 0 |
-| Forms | 20 | 19 | 1 |
+| Forms | 20 | 20 | 0 |
 | Feedback | 6 | 6 | 0 |
 | Overlay | 6 | 6 | 0 |
-| Data Display | 8 | 7 | 1 |
-| Tables | 4 | 1 | 3 |
-| Charts | 1 | 0 | 1 |
-| Media | 3 | 1 | 2 |
-| Advanced Components | 1 | 0 | 1 |
+| Data Display | 8 | 8 | 0 |
+| Tables | 4 | 4 | 0 |
+| Charts | 1 | 1 | 0 |
+| Media | 3 | 3 | 0 |
+| Advanced Components | 1 | 1 | 0 |
 | Utility | 1 | 0 | 1 |
 | App layer (out of scope) | 40 | 0 | 0 |
 | Other (out of scope) | 3 | 0 | 0 |
@@ -69,7 +69,7 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | EmptyState | 6 | ✓ |
 | Select | 5 | ✓ |
 | AlertBanner | 5 | ✓ |
-| DataTable | 5 | ✗ |
+| DataTable | 5 | ✓ |
 | Spinner | 4 | ✓ |
 | Drawer | 4 | ✓ |
 | StarRating | 3 | ✓ |

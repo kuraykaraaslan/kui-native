@@ -2,7 +2,7 @@
 
 > KuiReact ↔ KuiNative parity audit · 2026-09-22 · generated from source (KuiReact registry v0.1.0, snapshot 2026-09-18).
 
-**10** in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart. Every one has a backlog file under [component-backlog/](component-backlog/README.md). App-layer components, domain verticals and theme demos are out of scope (see [missing-components.md](phase-2-gap-analysis/missing-components.md#scope)).
+**1** in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart. Every one has a backlog file under [component-backlog/](component-backlog/README.md). App-layer components, domain verticals and theme demos are out of scope (see [missing-components.md](phase-2-gap-analysis/missing-components.md#scope)).
 
 Details: [missing-components.md](phase-2-gap-analysis/missing-components.md) · [priority-matrix.md](phase-2-gap-analysis/priority-matrix.md) · [dependency-analysis.md](phase-2-gap-analysis/dependency-analysis.md) · [implementation-order.md](phase-2-gap-analysis/implementation-order.md)
 
@@ -12,14 +12,14 @@ Details: [missing-components.md](phase-2-gap-analysis/missing-components.md) · 
 | --- | --- |
 | Critical | 0 |
 | High | 0 |
-| Medium | 1 |
-| Low | 9 |
-| **Total** | **10** |
+| Medium | 0 |
+| Low | 1 |
+| **Total** | **1** |
 
 | Fit | Count |
 | --- | --- |
-| direct port | 1 |
-| platform adaptation | 8 |
+| direct port | 0 |
+| platform adaptation | 0 |
 | recommended exception (web-only) | 1 |
 
 ## Critical (0)
@@ -34,7 +34,7 @@ Details: [missing-components.md](phase-2-gap-analysis/missing-components.md) · 
 
 ## Medium / Low core
 
-[Chart](component-backlog/chart.md) (M/Very Large) · [AdvancedDataTable](component-backlog/advanced-data-table.md) (L/Very Large) · [BulkActionTable](component-backlog/bulk-action-table.md) (L/Medium) · [ColorPicker](component-backlog/color-picker.md) (L/Large) · [DataTable](component-backlog/data-table.md) (L/Large) · [DiffViewer](component-backlog/diff-viewer.md) (L/Large) · [MapView](component-backlog/map-view.md) (L/Very Large) · [SkipLink + LiveRegion](component-backlog/skip-link.md) (L/Small) · [TreeView](component-backlog/tree-view.md) (L/Large) · [VideoPlayer](component-backlog/video-player.md) (L/Very Large)
+[SkipLink + LiveRegion](component-backlog/skip-link.md) (L/Small)
 
 ## Out of scope
 

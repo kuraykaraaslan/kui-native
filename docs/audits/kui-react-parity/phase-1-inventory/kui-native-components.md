@@ -10,15 +10,15 @@
 | Package name | `kui-native` 0.1.0 | `package.json` |
 | Publishable | **No** — `"private": true`, `"main": "expo-router/entry"`, no `exports`, no build script | `package.json` |
 | Public import path | `@/modules/ui` (repo-internal alias only) | `modules/ui/index.ts`, `babel.config.js` |
-| Library components | 68 exports from 53 files | `modules/ui/index.ts` |
-| Type exports | 95 (`export type` names) | `modules/ui/index.ts` |
-| Hooks exported from library | `useToast`, `useToastStore` (theme hooks live in `libs/theme.ts`, not in the barrel) | `modules/ui/index.ts` |
+| Library components | 86 exports from 60 files | `modules/ui/index.ts` |
+| Type exports | 131 (`export type` names) | `modules/ui/index.ts` |
+| Hooks exported from library | `useServerTable`, `useTable`, `useToast`, `useToastStore` (theme hooks live in `libs/theme.ts`, not in the barrel) | `modules/ui/index.ts` |
 | Providers exported | `ToastProvider`, `Toaster` | `modules/ui/Toast` |
-| Tests | 52 files, 436 static `it` / `test` blocks (Jest `jest-expo` + `@testing-library/react-native`) | `git ls-tree 08c1c32` |
+| Tests | 62 files, 517 static `it` / `test` blocks (Jest `jest-expo` + `@testing-library/react-native`) | `git ls-tree 3d2d0f9` |
 
 "Public" below therefore means *exported from the `@/modules/ui` barrel*; nothing is installable by a consumer today.
 
-## Library components (68)
+## Library components (86)
 
 | Component | Category | File | Export path | Public status | LOC | Props | Depends on | Used by (repo) | a11y props used | Raw colors | KuiReact counterpart |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -29,33 +29,45 @@
 | Badge | Data Display | `modules/ui/Badge.tsx` | `@/modules/ui` | barrel export | 119 | 8 + ViewProps (omitting children) | Text | 3 | accessibilityElementsHidden, accessibilityLabel, accessibilityRole | 0 | Badge (`badge`) |
 | BrandLogo | Foundation | `modules/ui/BrandLogo.tsx` | `@/modules/ui` | barrel export | 46 | 3 | Text | 2 | — | 0 | BrandLogo (`brand-logo`) |
 | Breadcrumb | Navigation | `modules/ui/Breadcrumb.tsx` | `@/modules/ui` | barrel export | 86 | 4 | Text | 2 | accessibilityElementsHidden, accessibilityRole, aria-current, aria-label, role= | 0 | Breadcrumb (`breadcrumb`) |
-| Button | Foundation | `modules/ui/Button.tsx` | `@/modules/ui` | barrel export | 145 | 13 + PressableProps (omitting children, style) | Text | 4 | accessibilityElementsHidden, accessibilityLabel, accessibilityRole, accessibilityState, aria-label, aria-pressed | 0 | Button (`button`) |
+| BulkActionTable | Tables | `modules/ui/BulkActionTable.tsx` | `@/modules/ui` | barrel export | 157 | 13 | Text | 3 | accessibilityHint, accessibilityLabel, accessibilityRole, accessibilityState, aria-label, role= | 0 | BulkActionTable (`bulk-action-table`) |
+| Button | Foundation | `modules/ui/Button.tsx` | `@/modules/ui` | barrel export | 145 | 13 + PressableProps (omitting children, style) | Text | 6 | accessibilityElementsHidden, accessibilityLabel, accessibilityRole, accessibilityState, aria-label, aria-pressed | 0 | Button (`button`) |
 | ButtonGroup | Forms | `modules/ui/ButtonGroup.tsx` | `@/modules/ui` | barrel export | 111 | 6 | Text | 2 | accessibilityRole, accessibilityState, aria-pressed, role= | 0 | ButtonGroup (`button-group`) |
-| Card | Layout | `modules/ui/Card.tsx` | `@/modules/ui` | barrel export | 125 | 10 + ViewProps | Skeleton, Text | 2 | accessibilityLabel, accessibilityRole | 0 | Card (`card`) |
+| Card | Layout | `modules/ui/Card.tsx` | `@/modules/ui` | barrel export | 125 | 10 + ViewProps | Skeleton, Text | 4 | accessibilityLabel, accessibilityRole | 0 | Card (`card`) |
+| AreaChart | Charts | `modules/ui/Chart/index.ts` | `@/modules/ui` | barrel export | 20 | 9 | primitives, primitives, theme, types | 3 | — | 0 | Chart (`chart`) |
+| BarChart | Charts | `modules/ui/Chart/index.ts` | `@/modules/ui` | barrel export | 20 | 8 | primitives, primitives, theme, types | 3 | — | 0 | Chart (`chart`) |
+| DonutChart | Charts | `modules/ui/Chart/index.ts` | `@/modules/ui` | barrel export | 20 | 8 | primitives, primitives, theme, types | 3 | — | 0 | Chart (`chart`) |
+| LineChart | Charts | `modules/ui/Chart/index.ts` | `@/modules/ui` | barrel export | 20 | 9 | primitives, primitives, theme, types | 3 | — | 0 | Chart (`chart`) |
+| PieChart | Charts | `modules/ui/Chart/index.ts` | `@/modules/ui` | barrel export | 20 | 8 | primitives, primitives, theme, types | 3 | — | 0 | Chart (`chart`) |
+| ScatterChart | Charts | `modules/ui/Chart/index.ts` | `@/modules/ui` | barrel export | 20 | 8 | primitives, primitives, theme, types | 2 | — | 0 | Chart (`chart`) |
+| SparkLine | Charts | `modules/ui/Chart/index.ts` | `@/modules/ui` | barrel export | 20 | 10 | primitives, primitives, theme, types | 3 | — | 0 | Chart (`chart`) |
 | Checkbox | Forms | `modules/ui/Checkbox.tsx` | `@/modules/ui` | barrel export | 90 | 9 | Text | 2 | accessibilityHint, accessibilityLabel, accessibilityLiveRegion, accessibilityRole, accessibilityState | 0 | Checkbox (`checkbox`) |
 | CheckboxGroup | Forms | `modules/ui/CheckboxGroup.tsx` | `@/modules/ui` | barrel export | 76 | 7 | Text | 2 | accessibilityElementsHidden, accessibilityLabel, accessibilityRole, accessibilityState, aria-label, role= | 0 | CheckboxGroup (`checkbox-group`) |
+| ColorPicker | Forms | `modules/ui/ColorPicker/index.tsx` | `@/modules/ui` | barrel export | 238 | 17 | types, types | 3 | accessibilityLabel, accessibilityRole, accessibilityState, accessibilityValue | 35 | ColorPicker (`color-picker`) |
+| DEFAULT_COLOR_SWATCHES | Forms | `modules/ui/ColorPicker/index.tsx` | `@/modules/ui` | barrel export | 238 | ? | types, types | 1 | accessibilityLabel, accessibilityRole, accessibilityState, accessibilityValue | 35 | ColorPicker (`color-picker`) |
 | ComboBox | Forms | `modules/ui/ComboBox/index.tsx` | `@/modules/ui` | barrel export | 170 | 17 | types, types | 3 | accessibilityRole | 0 | ComboBox (`combo-box`) |
 | ContentScoreBar | Data Display | `modules/ui/ContentScoreBar.tsx` | `@/modules/ui` | barrel export | 106 | 4 | Text | 2 | accessibilityHint, accessibilityLabel, accessibilityRole, accessibilityValue | 0 | ContentScoreBar (`content-score-bar`) |
 | DatePicker | Forms | `modules/ui/DatePicker/index.tsx` | `@/modules/ui` | barrel export | 307 | 17 | types, types | 3 | accessibilityLabel, accessibilityRole | 0 | DatePicker (`date-picker`) |
 | DateRangePicker | Forms | `modules/ui/DatePicker/index.tsx` | `@/modules/ui` | barrel export | 307 | 17 | types, types | 3 | accessibilityLabel, accessibilityRole | 0 | DateRangePicker (`date-range-picker`) |
 | DateTimePicker | Forms | `modules/ui/DatePicker/index.tsx` | `@/modules/ui` | barrel export | 307 | 17 | types, types | 1 | accessibilityLabel, accessibilityRole | 0 | DatePicker (`date-picker`) |
-| Drawer | Overlay | `modules/ui/Drawer.tsx` | `@/modules/ui` | barrel export | 118 | 9 | Text | 4 | accessibilityLabel, accessibilityRole, accessibilityViewIsModal | 0 | Drawer (`drawer`) |
-| DropdownMenu | Overlay | `modules/ui/DropdownMenu.tsx` | `@/modules/ui` | barrel export | 120 | 5 | Text | 3 | accessibilityElementsHidden, accessibilityHint, accessibilityLabel, accessibilityRole, accessibilityState, accessibilityViewIsModal, aria-expanded, aria-haspopup | 0 | DropdownMenu (`dropdown-menu`) |
+| DiffViewer | Advanced Components | `modules/ui/DiffViewer/index.tsx` | `@/modules/ui` | barrel export | 175 | 7 | types, types | 2 | accessibilityLabel, accessibilityRole, accessibilityState | 0 | DiffViewer (`diff-viewer`) |
+| Drawer | Overlay | `modules/ui/Drawer.tsx` | `@/modules/ui` | barrel export | 118 | 9 | Text | 5 | accessibilityLabel, accessibilityRole, accessibilityViewIsModal | 0 | Drawer (`drawer`) |
+| DropdownMenu | Overlay | `modules/ui/DropdownMenu.tsx` | `@/modules/ui` | barrel export | 120 | 5 | Text | 4 | accessibilityElementsHidden, accessibilityHint, accessibilityLabel, accessibilityRole, accessibilityState, accessibilityViewIsModal, aria-expanded, aria-haspopup | 0 | DropdownMenu (`dropdown-menu`) |
 | EmptyState | Feedback | `modules/ui/EmptyState.tsx` | `@/modules/ui` | barrel export | 74 | 7 | Button, Text | 3 | accessibilityElementsHidden | 0 | EmptyState (`empty-state`) |
 | FileInput | Forms | `modules/ui/FileInput.tsx` | `@/modules/ui` | barrel export | 270 | 17 | Label, Text | 2 | accessibilityHint, accessibilityLabel, accessibilityLiveRegion, accessibilityRole, accessibilityState, aria-label, role= | 0 | FileInput (`file-input`) |
-| Label | Typography | `modules/ui/Label.tsx` | `@/modules/ui` | barrel export | 47 | 5 | Text | 10 | accessibilityLabel, accessibilityRole | 0 | Label (`label`) |
+| Label | Typography | `modules/ui/Label.tsx` | `@/modules/ui` | barrel export | 47 | 5 | Text | 11 | accessibilityLabel, accessibilityRole | 0 | Label (`label`) |
+| MapView | Media | `modules/ui/MapView/index.tsx` | `@/modules/ui` | barrel export | 186 | 12 | types, types, types | 3 | accessibilityLabel | 0 | MapView (`map-view`) |
 | Modal | Overlay | `modules/ui/Modal.tsx` | `@/modules/ui` | barrel export | 146 | 12 | Text | 6 | accessibilityLabel, accessibilityRole, accessibilityViewIsModal | 0 | Modal (`modal`) |
 | MultiSelect | Forms | `modules/ui/MultiSelect.tsx` | `@/modules/ui` | barrel export | 248 | 14 | Label, Skeleton, Text | 2 | accessibilityElementsHidden, accessibilityHint, accessibilityLabel, accessibilityLiveRegion, accessibilityRole, accessibilityState, accessibilityValue | 0 | MultiSelect (`multi-select`) |
 | PageHeader | Layout | `modules/ui/PageHeader.tsx` | `@/modules/ui` | barrel export | 85 | 5 | Text | 2 | accessibilityRole, accessibilityState | 0 | PageHeader (`page-header`) |
-| Pagination | Navigation | `modules/ui/Pagination.tsx` | `@/modules/ui` | barrel export | 150 | 7 | Text | 2 | accessibilityLabel, accessibilityRole, accessibilityState, aria-current, aria-label, role= | 0 | Pagination (`pagination`) |
-| Popconfirm | Overlay | `modules/ui/Popconfirm.tsx` | `@/modules/ui` | barrel export | 105 | 10 | Button, Text | 2 | accessibilityElementsHidden, accessibilityState, accessibilityViewIsModal, aria-label, role= | 0 | Popconfirm (`popconfirm`) |
+| Pagination | Navigation | `modules/ui/Pagination.tsx` | `@/modules/ui` | barrel export | 150 | 7 | Text | 3 | accessibilityLabel, accessibilityRole, accessibilityState, aria-current, aria-label, role= | 0 | Pagination (`pagination`) |
+| Popconfirm | Overlay | `modules/ui/Popconfirm.tsx` | `@/modules/ui` | barrel export | 111 | 10 | Button, Text | 2 | accessibilityElementsHidden, accessibilityState, accessibilityViewIsModal, aria-label, role= | 0 | Popconfirm (`popconfirm`) |
 | Popover | Overlay | `modules/ui/Popover.tsx` | `@/modules/ui` | barrel export | 52 | 5 | — | 3 | accessibilityState, accessibilityViewIsModal | 0 | Popover (`popover`) |
 | Progress | Feedback | `modules/ui/Progress.tsx` | `@/modules/ui` | barrel export | 125 | 7 + ViewProps (omitting children) | Text | 2 | accessibilityLabel, accessibilityRole, accessibilityValue | 0 | Progress (`progress`) |
 | RadioGroup | Forms | `modules/ui/RadioGroup.tsx` | `@/modules/ui` | barrel export | 126 | 11 | Text | 2 | accessibilityHint, accessibilityLabel, accessibilityLiveRegion, accessibilityRole, accessibilityState | 0 | RadioGroup (`radio-group`) |
 | RangeSlider | Forms | `modules/ui/RangeSlider.tsx` | `@/modules/ui` | barrel export | 197 | 0 + SingleProps \| RangeProps | Text | 2 | accessibilityActions, accessibilityHint, accessibilityLabel, accessibilityRole, accessibilityState, accessibilityValue, aria-valuetext | 0 | RangeSlider (`range-slider`) |
 | ScrollArea | Layout | `modules/ui/ScrollArea.tsx` | `@/modules/ui` | barrel export | 45 | 3 + ScrollViewProps (omitting horizontal, children) | — | 2 | — | 0 | ScrollArea (`scroll-area`) |
-| SearchBar | Forms | `modules/ui/SearchBar.tsx` | `@/modules/ui` | barrel export | 85 | 7 | — | 2 | accessibilityElementsHidden, accessibilityLabel, accessibilityRole, role= | 0 | SearchBar (`search-bar`) |
-| Select | Forms | `modules/ui/Select.tsx` | `@/modules/ui` | barrel export | 187 | 12 | Label, Text | 4 | accessibilityElementsHidden, accessibilityHint, accessibilityLabel, accessibilityLiveRegion, accessibilityRole, accessibilityState, accessibilityValue | 0 | Select (`select`) |
+| SearchBar | Forms | `modules/ui/SearchBar.tsx` | `@/modules/ui` | barrel export | 85 | 7 | — | 3 | accessibilityElementsHidden, accessibilityLabel, accessibilityRole, role= | 0 | SearchBar (`search-bar`) |
+| Select | Forms | `modules/ui/Select.tsx` | `@/modules/ui` | barrel export | 187 | 12 | Label, Text | 6 | accessibilityElementsHidden, accessibilityHint, accessibilityLabel, accessibilityLiveRegion, accessibilityRole, accessibilityState, accessibilityValue | 0 | Select (`select`) |
 | Separator | Layout | `modules/ui/Separator.tsx` | `@/modules/ui` | barrel export | 47 | 4 + ViewProps | Text | 2 | accessibilityElementsHidden, accessibilityRole | 0 | Separator (`separator`) |
 | SkeletonAvatar | Feedback | `modules/ui/Skeleton.tsx` | `@/modules/ui` | barrel export | 154 | 3 | — | 3 | accessibilityLabel, accessibilityRole, accessibilityState | 0 | Skeleton (`skeleton`) |
 | SkeletonCard | Feedback | `modules/ui/Skeleton.tsx` | `@/modules/ui` | barrel export | 154 | 1 | — | 3 | accessibilityLabel, accessibilityRole, accessibilityState | 0 | Skeleton (`skeleton`) |
@@ -63,20 +75,26 @@
 | SkeletonText | Feedback | `modules/ui/Skeleton.tsx` | `@/modules/ui` | barrel export | 154 | 3 | — | 3 | accessibilityLabel, accessibilityRole, accessibilityState | 0 | Skeleton (`skeleton`) |
 | Slider | Media | `modules/ui/Slider.tsx` | `@/modules/ui` | barrel export | 234 | 10 | — | 2 | accessibilityElementsHidden, accessibilityLabel, accessibilityRole, accessibilityState, aria-label, role= | 8 | Slider (`slider`) |
 | releaseStep | Media | `modules/ui/Slider.tsx` | `@/modules/ui` | barrel export | 234 | 0 + number | — | 1 | accessibilityElementsHidden, accessibilityLabel, accessibilityRole, accessibilityState, aria-label, role= | 8 | Slider (`slider`) |
-| Spinner | Feedback | `modules/ui/Spinner.tsx` | `@/modules/ui` | barrel export | 58 | 4 | — | 3 | accessibilityLabel, accessibilityRole | 0 | Spinner (`spinner`) |
+| Spinner | Feedback | `modules/ui/Spinner.tsx` | `@/modules/ui` | barrel export | 58 | 4 | — | 4 | accessibilityLabel, accessibilityRole | 0 | Spinner (`spinner`) |
 | Switch | Forms | `modules/ui/Toggle.tsx` | `@/modules/ui` | barrel export | 110 | 8 | Text | 1 | accessibilityHint, accessibilityLabel, accessibilityRole, accessibilityState | 0 | Toggle (`toggle`) |
 | Toggle | Forms | `modules/ui/Toggle.tsx` | `@/modules/ui` | barrel export | 110 | 8 | Text | 3 | accessibilityHint, accessibilityLabel, accessibilityRole, accessibilityState | 0 | Toggle (`toggle`) |
 | TabButton | Navigation | `modules/ui/TabButton.tsx` | `@/modules/ui` | barrel export | 59 | 5 | Text | 2 | accessibilityRole, accessibilityState | 0 | TabButton (`tab-button`) |
-| Table | Tables | `modules/ui/Table/index.tsx` | `@/modules/ui` | barrel export | 21 | 7 | Table, Table, types | 3 | — | 0 | Table (`table`) |
-| TagInput | Forms | `modules/ui/TagInput.tsx` | `@/modules/ui` | barrel export | 195 | 9 | Label, Text | 2 | accessibilityHint, accessibilityLabel, accessibilityRole | 0 | TagInput (`tag-input`) |
+| AdvancedDataTable | Tables | `modules/ui/Table/index.tsx` | `@/modules/ui` | barrel export | 31 | 8 | Table, Table, DataTable, AdvancedDataTable, AdvancedDataTable, DataTable, types, types | 4 | — | 0 | AdvancedDataTable (`advanced-data-table`) |
+| DataTable | Tables | `modules/ui/Table/index.tsx` | `@/modules/ui` | barrel export | 31 | 18 | Table, Table, DataTable, AdvancedDataTable, AdvancedDataTable, DataTable, types, types | 4 | — | 0 | DataTable (`data-table`) |
+| Table | Tables | `modules/ui/Table/index.tsx` | `@/modules/ui` | barrel export | 31 | 7 | Table, Table, DataTable, AdvancedDataTable, AdvancedDataTable, DataTable, types, types | 6 | — | 0 | Table (`table`) |
+| useServerTable | Hooks | `modules/ui/Table/index.tsx` | `@/modules/ui` | barrel export | 31 | 6 | Table, Table, DataTable, AdvancedDataTable, AdvancedDataTable, DataTable, types, types | 3 | — | 0 | DataTable (`data-table`) |
+| useTable | Hooks | `modules/ui/Table/index.tsx` | `@/modules/ui` | barrel export | 31 | 6 | Table, Table, DataTable, AdvancedDataTable, AdvancedDataTable, DataTable, types, types | 3 | — | 0 | DataTable (`data-table`) |
+| TagInput | Forms | `modules/ui/TagInput.tsx` | `@/modules/ui` | barrel export | 202 | 9 | Label, Text | 2 | accessibilityHint, accessibilityLabel, accessibilityRole | 0 | TagInput (`tag-input`) |
 | TabGroup | Navigation | `modules/ui/TabGroup.tsx` | `@/modules/ui` | barrel export | 100 | 5 | Text | 2 | accessibilityElementsHidden, accessibilityLabel, accessibilityRole, accessibilityState, role= | 0 | TabGroup (`tab-group`) |
-| Text | Typography | `modules/ui/Text.tsx` | `@/modules/ui` | barrel export | 73 | 3 + TextProps | — | 54 | accessibilityRole | 0 | none (native-only) |
+| Text | Typography | `modules/ui/Text.tsx` | `@/modules/ui` | barrel export | 73 | 3 + TextProps | — | 63 | accessibilityRole | 0 | none (native-only) |
 | StarRating | Forms | `modules/ui/StarRating.tsx` | `@/modules/ui` | barrel export | 110 | 7 | Text | 2 | accessibilityLabel, accessibilityState, aria-label, role= | 0 | StarRating (`star-rating`) |
 | StatCard | Data Display | `modules/ui/StatCard.tsx` | `@/modules/ui` | barrel export | 30 | 4 | Text | 2 | — | 0 | StatCard (`stat-card`) |
 | Statistic | Data Display | `modules/ui/Statistic.tsx` | `@/modules/ui` | barrel export | 71 | 9 + ViewProps (omitting children) | Skeleton, Text | 2 | accessibilityElementsHidden, accessibilityState | 0 | Statistic (`statistic`) |
 | Stepper | Navigation | `modules/ui/Stepper.tsx` | `@/modules/ui` | barrel export | 108 | 3 | Text | 2 | accessibilityLabel, role= | 0 | Stepper (`stepper`) |
 | Tooltip | Overlay | `modules/ui/Tooltip.tsx` | `@/modules/ui` | barrel export | 153 | 7 | Text | 3 | accessibilityElementsHidden, accessibilityHint, aria-describedby | 0 | Tooltip (`tooltip`) |
 | Timeline | Data Display | `modules/ui/Timeline.tsx` | `@/modules/ui` | barrel export | 124 | 6 | Text | 2 | accessibilityElementsHidden, accessibilityRole, role= | 0 | Timeline (`timeline`) |
+| TreeView | Data Display | `modules/ui/TreeView/index.tsx` | `@/modules/ui` | barrel export | 115 | 15 | types, types | 2 | accessibilityRole, aria-label, role= | 0 | TreeView (`tree-view`) |
+| VideoPlayer | Media | `modules/ui/VideoPlayer/index.tsx` | `@/modules/ui` | barrel export | 248 | 18 | format, types, types, format | 2 | accessibilityLabel, accessibilityRole | 0 | VideoPlayer (`video-player`) |
 | ViewToggle | Forms | `modules/ui/ViewToggle.tsx` | `@/modules/ui` | barrel export | 51 | 5 | Text | 2 | accessibilityRole, accessibilityState, aria-label, role= | 0 | ViewToggle (`view-toggle`) |
 | TimePicker | Forms | `modules/ui/TimePicker.tsx` | `@/modules/ui` | barrel export | 143 | 10 | Label, Text | 2 | accessibilityHint, accessibilityLabel, accessibilityRole, accessibilityState, accessibilityValue | 0 | TimePicker (`time-picker`) |
 | Toast | Feedback | `modules/ui/Toast/index.tsx` | `@/modules/ui` | barrel export | 238 | 5 | ToastCard, types, useToastStore, types, useToastStore | 4 | — | 0 | Toast (`toast`) |
@@ -89,7 +107,7 @@
 | useToastStore | Hooks | `modules/ui/Toast/index.tsx` | `@/modules/ui` | barrel export | 238 | ? | ToastCard, types, useToastStore, types, useToastStore | 3 | — | 0 | none (native-only) |
 | Textarea | Forms | `modules/ui/Textarea.tsx` | `@/modules/ui` | barrel export | 87 | 8 + TextInputProps (omitting multiline) | Label, Text | 3 | accessibilityHint, accessibilityLabel, accessibilityLiveRegion, accessibilityRole, accessibilityState | 0 | Textarea (`textarea`) |
 | Input | Forms | `modules/ui/Input.tsx` | `@/modules/ui` | barrel export | 208 | 19 + TextInputProps (omitting secureTextEntry) | Text | 3 | accessibilityHint, accessibilityLabel, accessibilityLiveRegion, accessibilityRole, accessibilityState | 0 | Input (`input`) |
-| TextInput | Forms | `modules/ui/TextInput.tsx` | `@/modules/ui` | barrel export | 8 | ? | Input, Input | 9 | — | 0 | Input (`input`) |
+| TextInput | Forms | `modules/ui/TextInput.tsx` | `@/modules/ui` | barrel export | 8 | ? | Input, Input | 10 | — | 0 | Input (`input`) |
 
 ## Props per component (parsed)
 
@@ -170,6 +188,24 @@ Extends: `ViewProps (omitting children)`
 | maxItems | `number` | no | — |
 | className | `string` | no | — |
 
+### BulkActionTable
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| columns | `Column<T>[]` | **yes** | — |
+| rows | `T[]` | **yes** | — |
+| rowId | `(row: T) => Id` | **yes** | — |
+| selected | `readonly Id[]` | **yes** | — |
+| onSelectedChange | `(ids: Id[]) => void` | **yes** | — |
+| actions | `BulkAction<Id>[]` | no | `[]` |
+| totalMatching | `number` | no | — |
+| onSelectAllMatching | `() => void` | no | — |
+| isRowSelectable | `(row: T) => string \| true` | no | — |
+| caption | `string` | no | — |
+| emptyMessage | `string` | no | — |
+| className | `string` | no | — |
+| labels | `Partial<typeof DEFAULT_LABELS>` | no | — |
+
 ### Button
 
 | Prop | Type | Required | Default |
@@ -218,6 +254,101 @@ Extends: `PressableProps (omitting children, style)`
 
 Extends: `ViewProps`
 
+### AreaChart
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| series | `Series[]` | **yes** | — |
+| height | `number` | no | — |
+| showLegend | `boolean` | no | — |
+| showGrid | `boolean` | no | — |
+| showTooltip | `boolean` | no | — |
+| ariaLabel | `string` | no | — |
+| className | `string` | no | — |
+| smooth | `boolean` | no | `true` |
+| fillOpacity | `number` | no | `0.2` |
+
+### BarChart
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| series | `Series[]` | **yes** | — |
+| height | `number` | no | — |
+| showLegend | `boolean` | no | — |
+| showGrid | `boolean` | no | — |
+| showTooltip | `boolean` | no | — |
+| ariaLabel | `string` | no | — |
+| className | `string` | no | — |
+| radius | `number` | no | `4` |
+
+### DonutChart
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| series | `Series[]` | **yes** | — |
+| height | `number` | no | — |
+| showLegend | `boolean` | no | — |
+| showGrid | `boolean` | no | — |
+| showTooltip | `boolean` | no | — |
+| ariaLabel | `string` | no | — |
+| className | `string` | no | — |
+| innerRadius | `number` | no | `0.6` |
+
+### LineChart
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| series | `Series[]` | **yes** | — |
+| height | `number` | no | — |
+| showLegend | `boolean` | no | — |
+| showGrid | `boolean` | no | — |
+| showTooltip | `boolean` | no | — |
+| ariaLabel | `string` | no | — |
+| className | `string` | no | — |
+| smooth | `boolean` | no | `true` |
+| strokeWidth | `number` | no | `2` |
+
+### PieChart
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| series | `Series[]` | **yes** | — |
+| height | `number` | no | `240` |
+| showLegend | `boolean` | no | `true` |
+| showGrid | `boolean` | no | — |
+| showTooltip | `boolean` | no | `true` |
+| ariaLabel | `string` | no | — |
+| className | `string` | no | — |
+| innerRadius | `number` | no | `0` |
+
+### ScatterChart
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| series | `Series[]` | **yes** | — |
+| height | `number` | no | `240` |
+| showLegend | `boolean` | no | `true` |
+| showGrid | `boolean` | no | `true` |
+| showTooltip | `boolean` | no | `true` |
+| ariaLabel | `string` | no | — |
+| className | `string` | no | — |
+| pointRadius | `number` | no | `4` |
+
+### SparkLine
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| series | `Series[]` | no | — |
+| values | `number[]` | no | — |
+| width | `number` | no | `80` |
+| height | `number` | no | `24` |
+| strokeWidth | `number` | no | `1.5` |
+| smooth | `boolean` | no | `true` |
+| filled | `boolean` | no | `false` |
+| color | `string` | no | — |
+| className | `string` | no | — |
+| ariaLabel | `string` | no | `"Sparkline"` |
+
 ### Checkbox
 
 | Prop | Type | Required | Default |
@@ -243,6 +374,32 @@ Extends: `ViewProps`
 | disabled | `boolean` | no | — |
 | error | `string` | no | — |
 | className | `string` | no | — |
+
+### ColorPicker
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| id | `string` | no | — |
+| label | `string` | no | — |
+| value | `ColorValue` | no | — |
+| onChange | `(color: ColorValue) => void` | **yes** | — |
+| swatches | `string[]` | no | `DEFAULT_COLOR_SWATCHES` |
+| showHexInput | `boolean` | no | `true` |
+| showNativePicker | `boolean` | no | `true` |
+| showNoColor | `boolean` | no | `false` |
+| align | `"left" \| "right"` | no | `"left"` |
+| triggerLabel | `string` | no | — |
+| className | `string` | no | — |
+| popoverClassName | `string` | no | — |
+| disabled | `boolean` | no | `false` |
+| iconOnly | `boolean` | no | `false` |
+| icon | `IconDefinition` | no | — |
+| showFormatSwitcher | `boolean` | no | `false` |
+| defaultFormat | `ColorFormat` | no | `"hex"` |
+
+### DEFAULT_COLOR_SWATCHES
+
+_no props parsed_
 
 ### ComboBox
 
@@ -341,6 +498,18 @@ Extends: `ViewProps`
 | value | `DateValue` | **yes** | — |
 | onChange | `(d: Date \| null) => void` | **yes** | — |
 
+### DiffViewer
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| oldText | `string` | no | `""` |
+| newText | `string` | no | `""` |
+| mode | `DiffMode` | no | `"unified"` |
+| context | `number` | no | `3` |
+| collapsible | `boolean` | no | `false` |
+| language | `string` | no | — |
+| className | `string` | no | — |
+
 ### Drawer
 
 | Prop | Type | Required | Default |
@@ -407,6 +576,23 @@ Extends: `ViewProps`
 | required | `boolean` | no | — |
 | disabled | `boolean` | no | — |
 | onPress | `(e: GestureResponderEvent) => void` | no | — |
+| className | `string` | no | — |
+
+### MapView
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| provider | `MapProviderId` | no | — |
+| apiKey | `string` | no | — |
+| center | `[number, number]` | no | `[39.9334, 32.8597]` |
+| zoom | `number` | no | `6` |
+| markers | `MapMarker[]` | no | `[]` |
+| zones | `MapZone[]` | no | `[]` |
+| routes | `MapRoute[]` | no | `[]` |
+| fitBoundsPadding | `number` | no | — |
+| onMarkerAdd | `(position: [number, number]) => void` | no | — |
+| onMarkerClick | `(id: string) => void` | no | — |
+| height | `string \| number` | no | `480` |
 | className | `string` | no | — |
 
 ### Modal
@@ -670,6 +856,42 @@ _no props parsed_
 | count | `number` | no | — |
 | className | `string` | no | — |
 
+### AdvancedDataTable
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| columns | `Column<T>[]` | **yes** | — |
+| rows | `AdvancedDataTableRow<T>[]` | **yes** | — |
+| caption | `string` | no | — |
+| selectable | `boolean` | no | `false` |
+| stickyHeader | `boolean` | no | `false` |
+| emptyMessage | `string` | no | `"No results found."` |
+| onSelectionChange | `(selected: number[]) => void` | no | — |
+| className | `string` | no | — |
+
+### DataTable
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| columns | `Column<T>[]` | **yes** | — |
+| rows | `T[]` | no | — |
+| mode | `DataTableMode` | no | — |
+| fetchPage | `(args: DataTableFetchArgs) => Promise<DataTableFetchResult<T>>` | no | — |
+| caption | `string` | no | — |
+| searchable | `boolean` | no | — |
+| searchPlaceholder | `string` | no | — |
+| pageSize | `number` | no | — |
+| pageSizeOptions | `number[]` | no | — |
+| emptyMessage | `string` | no | — |
+| loadingMessage | `string` | no | — |
+| errorMessage | `string` | no | — |
+| state | `DataTableStateValue` | no | — |
+| onRowPress | `(row: T) => void` | no | — |
+| messages | `Partial<DataTableMessages>` | no | — |
+| initialSort | `SortState[]` | no | — |
+| className | `string` | no | — |
+| id | `string` | no | — |
+
 ### Table
 
 | Prop | Type | Required | Default |
@@ -681,6 +903,28 @@ _no props parsed_
 | defaultSortKey | `string` | no | — |
 | defaultSortDir | `SortDirection` | no | — |
 | className | `string` | no | — |
+
+### useServerTable
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| fetchPage | `(args: DataTableFetchArgs) => Promise<DataTableFetchResult<T>>` | **yes** | — |
+| initialPageSize | `number` | no | `10` |
+| initialSort | `SortState[]` | no | `[]` |
+| initialSearch | `string` | no | `""` |
+| initialFilters | `FilterState` | no | `{}` |
+| externalError | `string \| null` | no | `null` |
+
+### useTable
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| rows | `T[]` | **yes** | — |
+| columns | `Column<T>[]` | **yes** | — |
+| initialSort | `SortState[]` | no | `[]` |
+| initialPageSize | `number` | no | `10` |
+| initialFilters | `FilterState` | no | `{}` |
+| initialSearch | `string` | no | `""` |
 
 ### TagInput
 
@@ -782,6 +1026,49 @@ Extends: `ViewProps (omitting children)`
 | locale | `string` | no | — |
 | groupByDay | `boolean` | no | `true` |
 | emptyMessage | `string` | no | `"Nothing here yet."` |
+| className | `string` | no | — |
+
+### TreeView
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| nodes | `TreeNode[]` | **yes** | — |
+| selectedId | `NodeId` | no | — |
+| selectedIds | `NodeId[]` | no | — |
+| expandedIds | `NodeId[]` | no | — |
+| defaultExpandedIds | `NodeId[]` | no | — |
+| focusId | `NodeId` | no | — |
+| selectionMode | `SelectionMode` | no | `"single"` |
+| onSelect | `(id: NodeId) => void` | no | — |
+| onSelectionChange | `(ids: NodeId[]) => void` | no | — |
+| onExpand | `(id: NodeId, expanded: boolean) => void` | no | — |
+| onActivate | `(id: NodeId) => void` | no | — |
+| label | `string` | no | — |
+| className | `string` | no | — |
+| hideToolbar | `boolean` | no | `false` |
+| messages | `Partial<TreeViewMessages>` | no | — |
+
+### VideoPlayer
+
+| Prop | Type | Required | Default |
+| --- | --- | --- | --- |
+| src | `string \| VideoSource \| (string \| VideoSource)[]` | **yes** | — |
+| poster | `string` | no | — |
+| title | `string` | no | — |
+| autoPlay | `boolean` | no | `false` |
+| loop | `boolean` | no | `false` |
+| startMuted | `boolean` | no | `false` |
+| qualities | `QualityOption[]` | no | — |
+| defaultQuality | `string` | no | — |
+| subtitles | `SubtitleTrack[]` | no | — |
+| audioTracks | `AudioTrackOption[]` | no | — |
+| onQualityChange | `(value: string) => void` | no | — |
+| onAudioTrackChange | `(index: number) => void` | no | — |
+| controlsVisible | `boolean` | no | — |
+| autoHideControls | `boolean` | no | `true` |
+| onControlsVisibilityChange | `(visible: boolean) => void` | no | — |
+| enableCast | `boolean` | no | — |
+| onCastStateChange | `(state: CastState) => void` | no | — |
 | className | `string` | no | — |
 
 ### ViewToggle

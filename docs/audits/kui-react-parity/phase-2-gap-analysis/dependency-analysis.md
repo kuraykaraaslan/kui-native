@@ -29,7 +29,7 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | Card | 3 | 2 | 1 | exists as `Card` |
 | StarRating | 3 | 0 | 3 | exists as `StarRating` |
 | Calendar | 2 | 2 | 0 | excluded |
-| DataTable | 2 | 2 | 0 | missing |
+| DataTable | 2 | 2 | 0 | exists as `DataTable` + `useTable` + `useServerTable` |
 | Tooltip | 2 | 1 | 1 | exists as `Tooltip` |
 | TabGroup | 2 | 0 | 2 | exists as `TabGroup` |
 | Table | 1 | 1 | 0 | exists as `Table` |
@@ -38,7 +38,7 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | DateRangePicker | 1 | 1 | 0 | exists as `DateRangePicker` |
 | MultiSelect | 1 | 1 | 0 | exists as `MultiSelect` |
 | Breadcrumb | 1 | 1 | 0 | exists as `Breadcrumb` |
-| ColorPicker | 1 | 1 | 0 | missing |
+| ColorPicker | 1 | 1 | 0 | exists as `ColorPicker` + `DEFAULT_COLOR_SWATCHES` |
 | SkipLink + LiveRegion | 1 | 1 | 0 | missing |
 | ThemeSwitcher | 1 | 0 | 1 | excluded |
 | Toggle | 1 | 0 | 1 | exists as `Toggle` + `Switch` |
@@ -51,7 +51,7 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 
 ## Shared-but-incomplete primitives are dependency roots too
 
-Components that exist in KuiNative but lack parity still block ports: a domain component written against KuiReact's `<Badge variant="neutral" dot>` or `<Button variant="danger" iconRight>` cannot be ported mechanically until the shared component's API matches. Fan-in of shared ids: Button 60, Card 3, Avatar 25, Badge 68, Input 14, Checkbox 0, Toggle 1, Spinner 4, EmptyState 5, Skeleton 0, Modal 5, Label 0, Separator 0, AlertBanner 6, RadioGroup 1, Textarea 5, TabGroup 2, Progress 0, Select 3, Drawer 3, Toast 0, Popover 0, DropdownMenu 6, Tooltip 2, Accordion 0, ButtonGroup 1, CheckboxGroup 0, SearchBar 4, Pagination 3, Stepper 1, Breadcrumb 1, PageHeader 0, MultiSelect 1, RangeSlider 0, DatePicker 0, DateRangePicker 1, TimePicker 0, BrandLogo 1, Popconfirm 0, StarRating 3, StatCard 1, Statistic 0, TabButton 0, Timeline 0, TagInput 3, ComboBox 0, FileInput 0, Table 1, Slider 0, ContentScoreBar 0, ViewToggle 0, ScrollArea 0.
+Components that exist in KuiNative but lack parity still block ports: a domain component written against KuiReact's `<Badge variant="neutral" dot>` or `<Button variant="danger" iconRight>` cannot be ported mechanically until the shared component's API matches. Fan-in of shared ids: Button 60, Card 3, Avatar 25, Badge 68, Input 14, Checkbox 0, Toggle 1, Spinner 4, EmptyState 5, Skeleton 0, Modal 5, Label 0, Separator 0, AlertBanner 6, RadioGroup 1, Textarea 5, TabGroup 2, Progress 0, Select 3, Drawer 3, Toast 0, Popover 0, DropdownMenu 6, Tooltip 2, Accordion 0, ButtonGroup 1, CheckboxGroup 0, SearchBar 4, Pagination 3, Stepper 1, Breadcrumb 1, PageHeader 0, MultiSelect 1, RangeSlider 0, DatePicker 0, DateRangePicker 1, TimePicker 0, BrandLogo 1, Popconfirm 0, StarRating 3, StatCard 1, Statistic 0, TabButton 0, Timeline 0, TagInput 3, ComboBox 0, FileInput 0, Table 1, Slider 0, ContentScoreBar 0, ViewToggle 0, ScrollArea 0, TreeView 0, ColorPicker 1, DataTable 2, BulkActionTable 0, AdvancedDataTable 0, DiffViewer 0, Chart 0, MapView 0, VideoPlayer 0.
 
 ## Core missing components — dependencies
 
@@ -59,16 +59,7 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
 
 | Component | Priority | KuiReact composes | Blocked by | Unblocks | RN libraries |
 | --- | --- | --- | --- | --- | --- |
-| [Chart](../component-backlog/chart.md) | Medium | — | — | — | victory-native or react-native-gifted-charts |
-| [AdvancedDataTable](../component-backlog/advanced-data-table.md) | Low | DataTable, Pagination ✓, SearchBar ✓, Spinner ✓ | data-table, R-spinner | — | — |
-| [BulkActionTable](../component-backlog/bulk-action-table.md) | Low | Table ✓ | — | — | — |
-| [ColorPicker](../component-backlog/color-picker.md) | Low | — | — | — | react-native-gesture-handler, react-native-svg |
-| [DataTable](../component-backlog/data-table.md) | Low | Pagination ✓ | — | advanced-data-table | — |
-| [DiffViewer](../component-backlog/diff-viewer.md) | Low | — | — | — | — |
-| [MapView](../component-backlog/map-view.md) | Low | Button ✓, Card ✓ | R-button, R-card | — | react-native-maps |
 | [SkipLink + LiveRegion](../component-backlog/skip-link.md) | Low | — | — | — | — |
-| [TreeView](../component-backlog/tree-view.md) | Low | — | — | — | — |
-| [VideoPlayer](../component-backlog/video-player.md) | Low | — | — | — | expo-video |
 
 ## Remediation items referenced above
 
@@ -88,7 +79,7 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
 | R-avatar | Avatar parity (status dot, lg/xl sizes, `?` fallback) + AvatarGroup rewrite | High | — | ✓ done (`599c8a1`) |
 | R-checkbox | Checkbox parity (hint, error, uncontrolled `defaultChecked`) | High | R-field-shell | ✓ done (`75edb0c`) |
 | R-toggle | Switch → Toggle parity (name, checked/onChange, description, size, label press) | High | — | ✓ done (`5f484a8`) |
-| R-skeleton | Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion | High | — | partial: Line / Avatar / Text since `048ebed`; Table primitive landed (`b83d87f`) but SkeletonTableRow is still missing |
+| R-skeleton | Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion | High | — | partial: Line / Avatar / Text since `048ebed`; Table (`b83d87f`) and DataTable (`da93014`) landed but SkeletonTableRow is still missing |
 | R-spinner | Spinner parity (xs–xl, two-tone ring, md ≠ sm) | Medium | — | partial: sizes fixed in `4ebda43`; two-tone ring still missing |
 | R-empty-state | EmptyState parity (`action: ReactNode`, optional icon, KuiReact spacing) | Medium | — | ✓ done (`7ca2284`) |
 | R-shadow | Shadow/elevation token strategy (shadow-sm/md/xl → iOS shadow + Android elevation) | Medium | — | ✓ done (`048ebed`: shadow classes + Android elevation) |

@@ -1,6 +1,6 @@
 # Feature matrix — Table
 
-> KuiReact `modules/ui/Table/Table.tsx` (158 LOC + `core/columnHelpers`, `types.ts`; 0 tests, 3 showcase variants) ↔ KuiNative `modules/ui/Table/` (added 2026-09-22 in `b83d87f`: `Table.tsx`, `types.ts` ported whole, `index.tsx`; 6 tests, 3 demos). Only the `<Table />` primitive is ported; `DataTable`, `ServerDataTable` and the paginated / server modes are still on the backlog ([data-table.md](../component-backlog/data-table.md)).
+> KuiReact `modules/ui/Table/Table.tsx` (158 LOC + `core/columnHelpers`, `types.ts`; 0 tests, 3 showcase variants) ↔ KuiNative `modules/ui/Table/` (added 2026-09-22 in `b83d87f`: `Table.tsx`, `types.ts` ported whole, `index.tsx`; 6 tests, 3 demos). This matrix covers the `<Table />` primitive; `DataTable` (static / paginated / server modes, `da93014`), `AdvancedDataTable` (`172a657`) and `BulkActionTable` (`10af451`) build on it and have their own matrices ([data-table.md](data-table.md), [advanced-data-table.md](advanced-data-table.md), [bulk-action-table.md](bulk-action-table.md)); KuiReact's deprecated `ServerDataTable` shim is not ported.
 > **Status: PARITY_COMPLETE**
 
 | Feature | KuiReact | KuiNative | Status |
