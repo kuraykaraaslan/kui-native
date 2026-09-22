@@ -30,6 +30,8 @@ export { Label } from "./Label";
 export type { LabelProps } from "./Label";
 export { Modal } from "./Modal";
 export type { ModalProps } from "./Modal";
+export { PageHeader } from "./PageHeader";
+export type { PageHeaderAction, PageHeaderProps } from "./PageHeader";
 export { Pagination } from "./Pagination";
 export type { PaginationProps } from "./Pagination";
 export { Popover } from "./Popover";

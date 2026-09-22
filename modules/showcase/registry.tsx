@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faHeading,
   faShoePrints,
   faListOl,
   faAnglesRight,
@@ -79,6 +80,7 @@ import {
   Pagination,
   Breadcrumb,
   Stepper,
+  PageHeader,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1680,6 +1682,57 @@ export const REGISTRY: ShowcaseEntry[] = [
             ]}
             maxItems={3}
           />
+        ),
+      },
+    ],
+  },
+  {
+    id: "page-header",
+    title: "PageHeader",
+    category: "Atoms",
+    icon: faHeading,
+    description: "Page title + subtitle + optional badge + action buttons. Supports 5 button variants (primary/secondary/outline/danger/ghost); href actions navigate.",
+    usage: `<PageHeader title="Users" subtitle="Manage your team." actions={[{ label: "Export", variant: "outline" }]} />`,
+    preview: () => <PageHeader className="w-full" title="Users" actions={[{ label: "Invite" }]} />,
+    // Mirrors KuiReact's PageHeader showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "With actions",
+        Demo: () => (
+          <View className="w-full">
+            <PageHeader
+              title="Users"
+              subtitle="Manage your team members and their permissions."
+              badge={<Badge variant="info">48 members</Badge>}
+              actions={[
+                { label: "Export", variant: "outline" },
+                { label: "+ Invite user", variant: "primary" },
+              ]}
+            />
+          </View>
+        ),
+      },
+      {
+        title: "Danger action",
+        Demo: () => (
+          <View className="w-full">
+            <PageHeader
+              title="Danger Zone"
+              subtitle="Irreversible actions. Proceed with caution."
+              actions={[
+                { label: "Archive", variant: "outline" },
+                { label: "Delete project", variant: "danger" },
+              ]}
+            />
+          </View>
+        ),
+      },
+      {
+        title: "Minimal",
+        Demo: () => (
+          <View className="w-full">
+            <PageHeader title="Settings" subtitle="Configure your workspace preferences." />
+          </View>
         ),
       },
     ],
