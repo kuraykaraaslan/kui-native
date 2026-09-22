@@ -52,5 +52,7 @@ export type {
 export type { TextProps } from "./Text";
 export { Textarea } from "./Textarea";
 export type { TextareaProps } from "./Textarea";
+export { Input } from "./Input";
+export type { InputProps } from "./Input";
 export { TextInput } from "./TextInput";
 export type { TextInputProps } from "./TextInput";

@@ -17,9 +17,8 @@ export type LabelProps = {
 };
 
 /**
- * Form-field label — mirrors KuiReact's `Label`. Every KuiNative field
- * (Textarea, Select, TextInput, Checkbox, Toggle) can compose it instead of an ad-hoc label
- * `Text`; this is the shared primitive they should compose instead.
+ * Form-field label — mirrors KuiReact's `Label`. The shared primitive form
+ * fields (Textarea, Select, …) compose instead of an ad-hoc label `Text`.
  */
 export function Label({ children, required, disabled, onPress, className }: LabelProps) {
   const text = (

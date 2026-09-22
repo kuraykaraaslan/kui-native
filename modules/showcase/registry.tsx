@@ -15,6 +15,7 @@ import {
   faIdCard,
   faInbox,
   faKeyboard,
+  faMagnifyingGlass,
   faBell,
   faListUl,
   faTableColumns,
@@ -42,6 +43,7 @@ import {
   Checkbox,
   Drawer,
   EmptyState,
+  Input,
   Label,
   Modal,
   Progress,
@@ -56,7 +58,6 @@ import {
   TabGroup,
   Text,
   Textarea,
-  TextInput,
   toast,
   Toggle,
 } from "@/modules/ui";
@@ -276,18 +277,31 @@ function BadgeDismissibleDemo() {
     </View>
   );
 }
-function TextInputDemo() {
-  const [value, setValue] = useState("");
+// Mirrors KuiReact's Input showcase variants 1:1 (same titles and copy).
+function SearchIcon() {
+  const t = useThemeTokens();
+  return <FontAwesomeIcon icon={faMagnifyingGlass} size={14} color={t["text-disabled"]} />;
+}
+function InputClearableDemo() {
+  const [v, setV] = useState("");
+  return <Input label="Label" value={v} onChangeText={setV} clearable onClear={() => setV("")} />;
+}
+function InputCounterDemo() {
+  const [v, setV] = useState("");
+  return <Input label="Bio" value={v} onChangeText={setV} maxLength={50} showCount />;
+}
+function InputPasswordDemo() {
+  const [v, setV] = useState("");
+  return <Input label="Password" type="password" value={v} onChangeText={setV} />;
+}
+function InputStepperDemo() {
+  const [v, setV] = useState("1");
+  return <Input label="Quantity" type="number" value={v} onChangeText={setV} min={0} max={99} />;
+}
+function InputLoadingDemo() {
+  const [v, setV] = useState("johndoe");
   return (
-    <TextInput
-      label="Email"
-      hint="We'll never share your email."
-      value={value}
-      onChangeText={setValue}
-      placeholder="you@example.com"
-      keyboardType="email-address"
-      autoCapitalize="none"
-    />
+    <Input label="Username" value={v} onChangeText={setV} suffixIcon={<Spinner size="xs" />} hint="Checking availability…" />
   );
 }
 // Mirrors KuiReact's Toast showcase variants 1:1 (same titles and copy — KuiReact's
@@ -774,11 +788,11 @@ export const REGISTRY: ShowcaseEntry[] = [
           <View className="gap-3">
             <View>
               <Label>Bio</Label>
-              <TextInput multiline numberOfLines={2} />
+              <Input multiline numberOfLines={2} />
             </View>
             <View>
               <Label disabled>Handle (disabled)</Label>
-              <TextInput editable={false} placeholder="@handle" />
+              <Input disabled placeholder="@handle" />
             </View>
           </View>
         ),
@@ -786,30 +800,53 @@ export const REGISTRY: ShowcaseEntry[] = [
     ],
   },
   {
-    id: "text-input",
-    title: "TextInput",
+    id: "input",
+    title: "Input",
     category: "Forms",
     icon: faKeyboard,
-    description: "Labeled text field with hint, error, and focus states.",
-    usage: `<TextInput label="Email" value={v} onChangeText={setV} />`,
-    preview: () => <TextInput placeholder="Type…" containerClassName="w-44" />,
-    // Mirrors KuiReact's Input showcase variants that KuiNative can render
-    // today (same titles and copy). Prefix/suffix icon, Clearable, Success
-    // state, Read only, Character counter, Password toggle, Number stepper,
-    // Prefix/suffix text and Loading state need Input props not yet ported
-    // (tracked as R-input, Wave 1).
+    description: "Labelled text field with hint, error, success, icons, clear, counter, password and number modes.",
+    usage: `<Input label="Email" value={v} onChangeText={setV} />`,
+    preview: () => <Input placeholder="Type…" className="w-44" />,
     variants: [
-      { title: "Default", Demo: TextInputDemo },
+      {
+        title: "Default",
+        Demo: () => <Input label="Email" type="email" placeholder="you@example.com" hint="We'll never share your email." />,
+      },
       {
         title: "Error",
+        Demo: () => <Input label="Email" type="email" error="A valid email address is required." required />,
+      },
+      { title: "Disabled", Demo: () => <Input label="Email" type="email" placeholder="you@example.com" disabled /> },
+      {
+        title: "Prefix / suffix icon",
         Demo: () => (
-          <TextInput label="Email" keyboardType="email-address" error="A valid email address is required." />
+          <View className="gap-4">
+            <Input label="Search" prefixIcon={<SearchIcon />} placeholder="Search…" />
+            <Input label="Amount" suffixIcon={<Text className="text-text-disabled">$</Text>} type="number" />
+          </View>
         ),
       },
+      { title: "Clearable", Demo: InputClearableDemo },
+      { title: "Success state", Demo: () => <Input label="Username" value="johndoe" success="Username is available!" /> },
+      { title: "Read only", Demo: () => <Input label="API Key" value="sk-abc123xyz" readOnly /> },
+      { title: "Character counter", Demo: InputCounterDemo },
+      { title: "Password with eye toggle", Demo: InputPasswordDemo },
+      { title: "Number stepper", Demo: InputStepperDemo },
       {
-        title: "Disabled",
-        Demo: () => <TextInput label="Email" placeholder="you@example.com" editable={false} />,
+        title: "Prefix / suffix text",
+        Demo: () => (
+          <View className="gap-4">
+            <Input
+              label="Website"
+              prefixIcon={<Text className="font-mono text-xs text-text-secondary">https://</Text>}
+              placeholder="yoursite.com"
+            />
+            <Input label="Twitter handle" prefixIcon={<Text className="text-text-secondary">@</Text>} placeholder="username" />
+            <Input label="Price" suffixIcon={<Text className="text-text-secondary">USD</Text>} type="number" />
+          </View>
+        ),
       },
+      { title: "Loading state", Demo: InputLoadingDemo },
     ],
   },
   {

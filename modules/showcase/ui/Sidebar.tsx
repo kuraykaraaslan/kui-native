@@ -28,7 +28,7 @@ const ABBR: Record<string, string> = {
   badge: "Bg",
   separator: "Se",
   label: "Lb",
-  "text-input": "In",
+  input: "In",
   select: "Sl",
   textarea: "Ta",
   "radio-group": "Rg",
