@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faMapLocationDot,
   faChartLine,
   faCodeCompare,
   faTableColumns as faAdvancedTable,
@@ -142,6 +143,10 @@ import {
   PieChart,
   DonutChart,
   SparkLine,
+  MapView,
+  type MapMarker,
+  type MapRoute,
+  type MapZone,
   type Series,
   type DataTableFetchArgs,
   type DataTableFetchResult,
@@ -424,6 +429,120 @@ function ChartFrame({ title, children }: { title: string; children: ReactNode })
     </View>
   );
 }
+
+// KuiReact's MapView sample data (verbatim).
+const MAP_ISTANBUL_CENTER: [number, number] = [41.015, 28.979];
+
+const MAP_CITIES: MapMarker[] = [
+  {
+    id: 'istanbul',
+    position: [41.015, 28.979],
+    variant: 'primary',
+    tooltip: {
+      title: 'İstanbul',
+      description: 'Türkiye\'nin en kalabalık şehri',
+      fields: [
+        { label: 'Nüfus', value: '15.8 M' },
+        { label: 'Alan',  value: '5.461 km²' },
+      ],
+    },
+  },
+  {
+    id: 'ankara',
+    position: [39.925, 32.836],
+    variant: 'success',
+    tooltip: {
+      title: 'Ankara',
+      description: 'Türkiye\'nin başkenti',
+      fields: [
+        { label: 'Nüfus', value: '5.6 M' },
+        { label: 'İl',    value: 'Ankara' },
+      ],
+    },
+  },
+  {
+    id: 'izmir',
+    position: [38.423, 27.143],
+    variant: 'info',
+    tooltip: {
+      title: 'İzmir',
+      description: 'Ege\'nin incisi',
+      fields: [
+        { label: 'Nüfus', value: '4.4 M' },
+        { label: 'Liman', value: 'Alsancak' },
+      ],
+    },
+  },
+  {
+    id: 'bursa',
+    position: [40.182, 29.067],
+    variant: 'warning',
+    tooltip: {
+      title: 'Bursa',
+      description: 'Yeşil Bursa',
+      fields: [
+        { label: 'Nüfus', value: '3.1 M' },
+      ],
+    },
+  },
+];
+
+const MAP_ZONES: MapZone[] = [
+  {
+    id: 'marmara',
+    label: 'Marmara Bölgesi',
+    variant: 'primary',
+    positions: [
+      [41.8, 26.3],
+      [41.5, 30.8],
+      [40.0, 31.0],
+      [39.8, 26.5],
+    ],
+    fillOpacity: 0.15,
+  },
+  {
+    id: 'ege',
+    label: 'Ege Bölgesi',
+    variant: 'info',
+    positions: [
+      [39.8, 26.5],
+      [40.0, 31.0],
+      [37.5, 30.5],
+      [37.2, 26.3],
+    ],
+    fillOpacity: 0.15,
+  },
+];
+
+const MAP_ROUTES: MapRoute[] = [
+  {
+    id: 'route-ist-ank',
+    label: 'İstanbul → Ankara (TEM)',
+    positions: [
+      [41.015, 28.979],
+      [40.85, 29.9],
+      [40.78, 31.2],
+      [40.5, 32.0],
+      [39.925, 32.836],
+    ],
+    color: '#3b82f6',
+    weight: 3,
+  },
+  {
+    id: 'route-ist-izm',
+    label: 'İstanbul → İzmir (E87)',
+    positions: [
+      [41.015, 28.979],
+      [40.5, 27.9],
+      [39.9, 27.5],
+      [38.9, 27.2],
+      [38.423, 27.143],
+    ],
+    color: '#06b6d4',
+    weight: 3,
+    dashed: true,
+  },
+];
 
 const COMBO_OPTIONS: ComboBoxOption[] = [
   { value: "nextjs", label: "Next.js", description: "App Router framework" },
@@ -3298,6 +3417,72 @@ export const REGISTRY: ShowcaseEntry[] = [
             </View>
           </ChartFrame>
         ),
+      },
+    ],
+  },
+  {
+    id: "map-view",
+    title: "MapView",
+    category: "Atoms",
+    icon: faMapLocationDot,
+    description: "Interactive map with variant-coloured markers and callouts, zones, routes, tap-to-add markers and layer toggles. Native map with CartoDB tiles; a notice on web.",
+    usage: `<MapView center={[41.015, 28.979]} zoom={6} markers={markers} zones={zones} routes={routes} />`,
+    preview: () => (
+      <View className="h-16 w-full items-center justify-center rounded-md bg-surface-sunken">
+        <FontAwesomeIcon icon={faMapLocationDot} size={22} color="#9ca3af" />
+      </View>
+    ),
+    // Mirrors KuiReact's MapView showcase variants 1:1 (same titles, data and Turkish copy).
+    variants: [
+      {
+        title: "Tam özellik — işaretçi + zone + rota",
+        Demo: function FullDemo() {
+          const [log, setLog] = useState("—");
+          return (
+            <View className="w-full gap-2">
+              <MapView center={MAP_ISTANBUL_CENTER} zoom={6} markers={MAP_CITIES} zones={MAP_ZONES} routes={MAP_ROUTES} onMarkerClick={(id) => setLog(`Tıklanan: ${id}`)} height={420} />
+              <Text className="text-xs text-text-secondary">
+                <Text className="text-xs font-semibold text-text-primary">Son event:</Text> {log}
+              </Text>
+            </View>
+          );
+        },
+      },
+      {
+        title: "Tıkla-ekle işaretçi modu",
+        Demo: function AddMarkerDemo() {
+          const [markers, setMarkers] = useState<MapMarker[]>([
+            { id: "default", position: [41.015, 28.979], variant: "success", tooltip: { title: "Varsayılan işaretçi", description: "\"İşaretçi Ekle\" butonuna tıklayın" } },
+          ]);
+          return (
+            <View className="w-full gap-2">
+              <MapView
+                center={[39.5, 35.0]}
+                zoom={5}
+                markers={markers}
+                height={380}
+                onMarkerAdd={(pos) =>
+                  setMarkers((prev) => [
+                    ...prev,
+                    {
+                      id: `m-${Date.now()}`,
+                      position: pos,
+                      variant: "warning",
+                      tooltip: { title: "Yeni İşaretçi", fields: [{ label: "Enlem", value: pos[0].toFixed(5) }, { label: "Boylam", value: pos[1].toFixed(5) }] },
+                    },
+                  ])
+                }
+              />
+              <Text className="text-xs text-text-secondary">
+                Toplam işaretçi: <Text className="text-xs font-semibold text-text-primary">{markers.length}</Text>
+              </Text>
+            </View>
+          );
+        },
+      },
+      {
+        title: "Yalnız zone ve rota",
+        Demo: () => <MapView center={[39.5, 35.0]} zoom={5} zones={MAP_ZONES} routes={MAP_ROUTES} height={380} />,
       },
     ],
   },

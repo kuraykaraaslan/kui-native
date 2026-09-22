@@ -47,6 +47,7 @@ const ABBR: Record<string, string> = {
   "dropdown-menu": "Dm",
   tooltip: "Tt",
   accordion: "Ac",
+  "map-view": "Mp",
   chart: "Ch",
   "diff-viewer": "Dv",
   "advanced-data-table": "At",

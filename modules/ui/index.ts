@@ -64,6 +64,8 @@ export { FileInput } from "./FileInput";
 export type { FileEntry, FileInputMessages, FileInputProps, PickedFile, UploadState } from "./FileInput";
 export { Label } from "./Label";
 export type { LabelProps } from "./Label";
+export { MapView } from "./MapView";
+export type { MapMarker, MapRoute, MapTooltipData, MapVariant, MapViewProps, MapZone } from "./MapView";
 export { Modal } from "./Modal";
 export type { ModalProps } from "./Modal";
 export { MultiSelect } from "./MultiSelect";
