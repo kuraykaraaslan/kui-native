@@ -28,6 +28,8 @@ export { Spinner } from "./Spinner";
 export type { SpinnerProps } from "./Spinner";
 export { Switch } from "./Switch";
 export type { SwitchProps } from "./Switch";
+export { TabGroup } from "./TabGroup";
+export type { Tab, TabGroupProps } from "./TabGroup";
 export { Text } from "./Text";
 export type { TextProps } from "./Text";
 export { Textarea } from "./Textarea";

@@ -15,6 +15,9 @@ import {
   faInbox,
   faKeyboard,
   faAlignLeft,
+  faArrowTrendUp,
+  faChartBar,
+  faFolderOpen,
   faRocket,
   faSpinner,
   faSquareCheck,
@@ -43,6 +46,7 @@ import {
   SkeletonText,
   Spinner,
   Switch,
+  TabGroup,
   Text,
   Textarea,
   TextInput,
@@ -116,6 +120,10 @@ function SwitchDescriptionDemo() {
 function RocketIcon() {
   const t = useThemeTokens();
   return <FontAwesomeIcon icon={faRocket} size={16} color={t["info-fg"]} />;
+}
+function TabIcon({ icon, active }: { icon: IconDefinition; active?: boolean }) {
+  const t = useThemeTokens();
+  return <FontAwesomeIcon icon={icon} size={14} color={active ? t.primary : t["text-secondary"]} />;
 }
 const SETTINGS_ROWS = [
   { key: "notifications", label: "Push notifications", desc: "Alerts for new activity" },
@@ -833,6 +841,68 @@ export const REGISTRY: ShowcaseEntry[] = [
       },
       // KuiReact's "Table rows" and "Dashboard layout" variants use
       // SkeletonTableRow, which is not ported (KuiNative has no Table yet).
+    ],
+  },
+  {
+    id: "tab-group",
+    title: "TabGroup",
+    category: "Atoms",
+    icon: faFolderOpen,
+    description: "In-screen tabs with icons, badges, disabled tabs and lazy panels.",
+    usage: `<TabGroup label="Account settings" tabs={[{ id: "profile", label: "Profile", content: <Profile /> }]} />`,
+    preview: () => (
+      <TabGroup
+        tabs={[
+          { id: "a", label: "Profile", content: null },
+          { id: "b", label: "Security", content: null },
+        ]}
+      />
+    ),
+    // Mirrors KuiReact's TabGroup showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Default",
+        Demo: () => (
+          <TabGroup
+            label="Account settings"
+            tabs={[
+              { id: "profile", label: "Profile", content: <Text variant="bodySm">Profile settings</Text> },
+              { id: "security", label: "Security", content: <Text variant="bodySm">Security settings</Text> },
+              { id: "billing", label: "Billing", content: <Text variant="bodySm">Billing settings</Text> },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "Icons + badge + disabled",
+        Demo: () => (
+          <TabGroup
+            tabs={[
+              { id: "overview", label: "Overview", icon: <TabIcon icon={faChartBar} />, content: <Text variant="bodySm">Overview</Text> },
+              {
+                id: "analytics",
+                label: "Analytics",
+                icon: <TabIcon icon={faArrowTrendUp} />,
+                badge: <Badge label="New" />,
+                content: <Text variant="bodySm">Analytics</Text>,
+              },
+              { id: "settings", label: "Settings", disabled: true, content: <Text variant="bodySm">Settings</Text> },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "Lazy panels",
+        Demo: () => (
+          <TabGroup
+            lazy
+            tabs={[
+              { id: "light", label: "Light", content: <Text variant="bodySm">Rendered immediately.</Text> },
+              { id: "heavy", label: "Heavy", content: <Text variant="bodySm">Rendered on first activation.</Text> },
+            ]}
+          />
+        ),
+      },
     ],
   },
   {

@@ -37,6 +37,7 @@ const ABBR: Record<string, string> = {
   "alert-banner": "Ab",
   "empty-state": "Es",
   skeleton: "Sk",
+  "tab-group": "Tg",
   modal: "Md",
 };
 
