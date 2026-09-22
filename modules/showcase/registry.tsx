@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faHashtag as faTagsInput,
   faTimeline,
   faStar,
   faChartSimple,
@@ -104,6 +105,7 @@ import {
   Statistic,
   TabButton,
   Timeline,
+  TagInput,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1198,6 +1200,40 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: function DateRangeValueDemo() {
           const [range, setRange] = useState<DateRange>({ start: new Date("2026-06-01"), end: new Date("2026-06-15") });
           return <DateRangePicker id="dr-val" label="Booking window" value={range} onChange={setRange} locale="en" />;
+        },
+      },
+    ],
+  },
+  {
+    id: "tag-input",
+    title: "TagInput",
+    category: "Forms",
+    icon: faTagsInput,
+    description: "Free-text input that creates chips. Add tags with Enter or comma, double-tap to edit, Backspace to delete. Duplicates are ignored.",
+    usage: `<TagInput id="tags" label="Tags" value={tags} onChange={setTags} hint="Press Enter or comma to add." />`,
+    preview: () => <TagInput id="ti-preview" label="Tags" value={["react"]} onChange={() => {}} hint=" " />,
+    // Mirrors KuiReact's TagInput showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Default",
+        Demo: function TagInputDemo() {
+          const [tags, setTags] = useState<string[]>(["next.js", "react"]);
+          return (
+            <View className="w-full max-w-sm">
+              <TagInput id="sc-ti-default" label="Tags" value={tags} onChange={setTags} hint="Press Enter or comma to add. Double-click to edit." />
+            </View>
+          );
+        },
+      },
+      {
+        title: "Empty / Error",
+        Demo: function TagInputErrorDemo() {
+          const [tags, setTags] = useState<string[]>([]);
+          return (
+            <View className="w-full max-w-sm">
+              <TagInput id="sc-ti-err" label="Required tags" value={tags} onChange={setTags} error="At least one tag is required." />
+            </View>
+          );
         },
       },
     ],
