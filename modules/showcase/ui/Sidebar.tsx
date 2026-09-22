@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react";
 import type * as React from "react";
 import { router, usePathname } from "expo-router";
-import { Pressable, ScrollView, TextInput, View } from "react-native";
+import { Pressable, ScrollView, TextInput, View, type ViewStyle } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronDown, faHouse, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useThemeTokens } from "@/libs/theme";
+import { FONTS } from "@/libs/utils/typography";
 import { Text } from "@/modules/ui";
 
 import {
@@ -92,6 +93,20 @@ const ABBR: Record<string, string> = {
  * class below is the web class of the same element there. Change all three
  * together.
  */
+
+// Web text below 12px inherits line-height 1.5 from its parent (15px at
+// 10px); RN has no inheritance, so those lines set leading-[15px] explicitly.
+
+/** FontAwesome's web box: `.svg-inline--fa` renders 1.25em x 1em (20x16 at
+ *  16px) and wins over the w-3/w-4 utilities in KuiReact, so every chrome
+ *  icon there is a 16px glyph centred in a 20x16 box. */
+function FaBox({ children, style }: { children: React.ReactNode; style?: ViewStyle }) {
+  return (
+    <View style={style} className="h-4 w-5 items-center justify-center">
+      {children}
+    </View>
+  );
+}
 
 /** Icon slot: KuiReact's `shrink-0 w-5` span. The 24px abbr badge inside it
  *  overflows 4px into the gap on the web, so the label starts 30px in. */
@@ -186,7 +201,10 @@ export function Sidebar() {
           hitSlop={6}
           className="rounded p-1.5 active:bg-surface-overlay"
         >
-          <FontAwesomeIcon icon={faXmark} size={16} color={t["text-secondary"]} />
+          {/* KuiReact's inline svg sits 1px above the bar's centre (baseline + vertical-align). */}
+          <FaBox style={{ transform: [{ translateY: -1 }] }}>
+            <FontAwesomeIcon icon={faXmark} size={16} color={t["text-secondary"]} />
+          </FaBox>
         </Pressable>
       </View>
 
@@ -194,7 +212,9 @@ export function Sidebar() {
       <View className="border-b border-border px-3 py-2">
         <View className="relative justify-center">
           <View pointerEvents="none" className="absolute left-2.5 z-10">
-            <FontAwesomeIcon icon={faMagnifyingGlass} size={12} color={t["text-disabled"]} />
+            <FaBox>
+              <FontAwesomeIcon icon={faMagnifyingGlass} size={16} color={t["text-disabled"]} />
+            </FaBox>
           </View>
           <TextInput
             value={query}
@@ -207,6 +227,7 @@ export function Sidebar() {
             autoCapitalize="none"
             autoCorrect={false}
             accessibilityLabel="Search navigation"
+            style={{ fontFamily: FONTS.sans }}
             className="w-full rounded-md border border-border bg-surface-base py-1.5 pl-7 pr-3 text-xs text-text-primary"
           />
         </View>
@@ -224,7 +245,7 @@ export function Sidebar() {
           onPress={() => go("/")}
           icon={
             <View className="w-5 items-center">
-              <FontAwesomeIcon icon={faHouse} size={14} color={homeActive ? t.primary : t["text-secondary"]} />
+              <FontAwesomeIcon icon={faHouse} size={17} color={homeActive ? t.primary : t["text-secondary"]} />
             </View>
           }
         />
@@ -241,19 +262,19 @@ export function Sidebar() {
                 className="mb-1 w-full flex-row items-center justify-between rounded-md px-3 py-1"
               >
                 <Text
-                  className={`text-[10px] font-semibold uppercase tracking-widest ${
+                  className={`text-[10px] leading-[15px] font-semibold uppercase tracking-widest ${
                     hasActive ? "text-text-primary" : "text-text-disabled"
                   }`}
                 >
                   {group.category}
                 </Text>
-                <View style={{ transform: [{ rotate: expanded ? "0deg" : "-90deg" }] }}>
+                <FaBox style={{ transform: [{ rotate: expanded ? "0deg" : "-90deg" }] }}>
                   <FontAwesomeIcon
                     icon={faChevronDown}
-                    size={12}
+                    size={16}
                     color={hasActive ? t["text-primary"] : t["text-disabled"]}
                   />
-                </View>
+                </FaBox>
               </Pressable>
               {expanded ? (
                 <View className="gap-0.5">
@@ -283,7 +304,7 @@ export function Sidebar() {
             <View style={{ opacity: 0.4 }}>
               <FontAwesomeIcon icon={faMagnifyingGlass} size={20} color={t["text-secondary"]} />
             </View>
-            <Text className="text-sm font-normal text-text-secondary">No results for "{query}"</Text>
+            <Text className="text-sm font-normal text-text-secondary">{`No results for "${query}"`}</Text>
           </View>
         ) : null}
       </ScrollView>
@@ -298,7 +319,7 @@ export function Sidebar() {
             <Text numberOfLines={1} className="text-xs font-semibold text-text-primary">
               Developer
             </Text>
-            <Text numberOfLines={1} className="text-[10px] font-normal text-text-secondary">
+            <Text numberOfLines={1} className="text-[10px] leading-[15px] font-normal text-text-secondary">
               Component Library
             </Text>
           </View>

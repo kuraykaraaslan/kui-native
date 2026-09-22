@@ -1,14 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { Animated, Dimensions, Pressable, View } from "react-native";
 
+import { useThemeTokens } from "@/libs/theme";
+
 import { useDrawer } from "./drawer.store";
 import { Sidebar } from "./Sidebar";
 
-const PANEL_WIDTH = Math.min(320, Math.round(Dimensions.get("window").width * 0.84));
+// KuiReact AppShell drawer: `w-72 max-w-full` (288px).
+const PANEL_WIDTH = Math.min(288, Dimensions.get("window").width);
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 /** Slide-in navigation drawer overlay, rendered above the screen stack. */
 export function AppDrawer() {
+  const t = useThemeTokens();
   const open = useDrawer((s) => s.open);
   const close = useDrawer((s) => s.close);
   const [mounted, setMounted] = useState(open);
@@ -19,7 +23,7 @@ export function AppDrawer() {
       setMounted(true);
       Animated.timing(progress, { toValue: 1, duration: 200, useNativeDriver: true }).start();
     } else {
-      Animated.timing(progress, { toValue: 0, duration: 180, useNativeDriver: true }).start(
+      Animated.timing(progress, { toValue: 0, duration: 200, useNativeDriver: true }).start(
         ({ finished }) => {
           if (finished) setMounted(false);
         },
@@ -47,7 +51,7 @@ export function AppDrawer() {
           right: 0,
           bottom: 0,
           opacity: progress,
-          backgroundColor: "rgba(0,0,0,0.55)",
+          backgroundColor: "rgba(0,0,0,0.5)",
         }}
       />
       <Animated.View
@@ -58,8 +62,19 @@ export function AppDrawer() {
           bottom: 0,
           width: PANEL_WIDTH,
           transform: [{ translateX }],
+          // `border-r border-border bg-surface-raised` — inline, since NativeWind
+          // classes don't reach an Animated.View.
+          borderRightWidth: 1,
+          borderRightColor: t.border,
+          backgroundColor: t["surface-raised"],
+          // shadow-xl
+          shadowColor: "#000",
+          shadowOpacity: 0.1,
+          shadowRadius: 25,
+          shadowOffset: { width: 0, height: 20 },
+          elevation: 16,
         }}
-        className="border-r border-border bg-surface-raised"
+
       >
         <Sidebar />
       </Animated.View>
