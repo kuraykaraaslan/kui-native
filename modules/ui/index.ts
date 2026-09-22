@@ -42,6 +42,8 @@ export type { DropdownItem, DropdownMenuProps } from "./DropdownMenu";
 export type { DrawerProps } from "./Drawer";
 export { EmptyState } from "./EmptyState";
 export type { EmptyStateProps } from "./EmptyState";
+export { FileInput } from "./FileInput";
+export type { FileEntry, FileInputMessages, FileInputProps, PickedFile, UploadState } from "./FileInput";
 export { Label } from "./Label";
 export type { LabelProps } from "./Label";
 export { Modal } from "./Modal";

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faFileArrowUp,
   faListUl as faComboBox,
   faHashtag as faTagsInput,
   faTimeline,
@@ -109,6 +110,7 @@ import {
   TagInput,
   ComboBox,
   type ComboBoxOption,
+  FileInput,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1335,6 +1337,48 @@ export const REGISTRY: ShowcaseEntry[] = [
             </View>
           );
         },
+      },
+    ],
+  },
+  {
+    id: "file-input",
+    title: "FileInput",
+    category: "Forms",
+    icon: faFileArrowUp,
+    description: "File picker with MIME / extension validation, size and count limits, a selected-files list and an optional upload action.",
+    usage: `<FileInput id="photo" label="Profile photo" accept="image/*" maxSizeBytes={2 * 1024 * 1024} />`,
+    preview: () => <FileInput id="fi-preview" />,
+    // Mirrors KuiReact's FileInput showcase variants 1:1 (same titles and
+    // copy). KuiReact's "Paste from clipboard" variant needs clipboard file
+    // paste, which has no RN equivalent, so it isn't reproduced.
+    variants: [
+      {
+        title: "Single file",
+        Demo: () => <FileInput id="fi-single" label="Profile photo" hint="PNG or JPG, max 2 MB" accept="image/*" maxSizeBytes={2 * 1024 * 1024} />,
+      },
+      {
+        title: "Multiple files",
+        Demo: () => <FileInput id="fi-multi" label="Attachments" multiple hint="Up to 5 MB each" maxSizeBytes={5 * 1024 * 1024} />,
+      },
+      {
+        title: "With upload action",
+        Demo: () => (
+          <FileInput
+            id="fi-upload"
+            label="Project attachments"
+            multiple
+            hint="Up to 5 MB each"
+            maxSizeBytes={5 * 1024 * 1024}
+            onUpload={async () => {
+              await new Promise((res) => setTimeout(res, 800));
+            }}
+            uploadLabel="Upload"
+          />
+        ),
+      },
+      {
+        title: "Disabled",
+        Demo: () => <FileInput id="fi-disabled" label="Disabled upload" disabled />,
       },
     ],
   },
