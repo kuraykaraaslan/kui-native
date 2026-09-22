@@ -57,6 +57,20 @@ describe("Text", () => {
     expect(style.fontWeight).toBe("400");
   });
 
+  it("an explicit font-weight class wins over the variant weight (no inline fontWeight is set)", async () => {
+    await render(
+      <Text variant="body" className="font-semibold">
+        Semibold
+      </Text>,
+    );
+    expect(styleOf(screen.getByText("Semibold")).fontWeight).toBeUndefined();
+  });
+
+  it("an explicit font-family class wins over the variant family", async () => {
+    await render(<Text className="font-mono">Code</Text>);
+    expect(styleOf(screen.getByText("Code")).fontFamily).toBeUndefined();
+  });
+
   it("forwards other RNText props such as numberOfLines", async () => {
     await render(<Text numberOfLines={1}>Truncated</Text>);
     expect(screen.getByText("Truncated").props.numberOfLines).toBe(1);

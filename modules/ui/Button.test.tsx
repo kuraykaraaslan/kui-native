@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 
+import { Text as RNText } from "react-native";
+
 import { Button } from "./Button";
 
 function classNameOf(el: ReturnType<typeof screen.getByRole>) {
@@ -89,6 +91,78 @@ describe("Button", () => {
   it("fullWidth adds w-full", async () => {
     await render(<Button label="x" fullWidth />);
     expect(classNameOf(screen.getByRole("button"))).toContain("w-full");
+  });
+
+  it("renders string children (KuiReact API) with the label style", async () => {
+    await render(<Button>Save</Button>);
+    expect(screen.getByRole("button", { name: "Save" })).toBeTruthy();
+    const cls = screen.getByText("Save").props.className;
+    expect(Array.isArray(cls) ? cls.join(" ") : cls).toContain("font-medium");
+  });
+
+  it("renders node children as-is", async () => {
+    await render(
+      <Button accessibilityLabel="Custom">
+        <RNText>node child</RNText>
+      </Button>,
+    );
+    expect(screen.getByText("node child")).toBeTruthy();
+  });
+
+  it("danger is KuiReact's name for the error variant (destructive kept as an alias)", async () => {
+    const danger = await render(<Button variant="danger">x</Button>);
+    expect(classNameOf(danger.getByRole("button"))).toContain("bg-error");
+    const legacy = await render(<Button variant="destructive">y</Button>);
+    expect(classNameOf(legacy.getByRole("button"))).toContain("bg-error");
+  });
+
+  it("iconOnly uses KuiReact's square padding map", async () => {
+    await render(
+      <Button iconOnly accessibilityLabel="Delete item" size="md">
+        <RNText>✕</RNText>
+      </Button>,
+    );
+    const cls = classNameOf(screen.getByRole("button", { name: "Delete item" }));
+    expect(cls).toContain("p-2");
+    expect(cls).not.toContain("px-4");
+  });
+
+  it("renders iconLeft and iconRight, and hides them while loading (spinner instead)", async () => {
+    const idle = await render(
+      <Button iconLeft={<RNText>L</RNText>} iconRight={<RNText>R</RNText>}>
+        Next
+      </Button>,
+    );
+    expect(idle.getByText("L", { hidden: true } as never)).toBeTruthy();
+    expect(idle.getByText("R", { hidden: true } as never)).toBeTruthy();
+    const busy = await render(
+      <Button loading iconLeft={<RNText>L2</RNText>} iconRight={<RNText>R2</RNText>}>
+        Next
+      </Button>,
+    );
+    expect(busy.queryByText("L2", { hidden: true } as never)).toBeNull();
+    expect(busy.queryByText("R2", { hidden: true } as never)).toBeNull();
+  });
+
+  it("selected sets accessibilityState.selected and a focus ring; not selected by default", async () => {
+    const on = await render(<Button selected>Toggle</Button>);
+    const button = on.getByRole("button");
+    expect(button.props.accessibilityState.selected).toBe(true);
+    const style = Array.isArray(button.props.style) ? Object.assign({}, ...button.props.style) : button.props.style;
+    expect(style.outlineWidth).toBe(2);
+    const off = await render(<Button>Plain</Button>);
+    expect(off.getByRole("button").props.accessibilityState.selected).toBe(false);
+  });
+
+  it("forwards rest props such as testID and onLongPress", async () => {
+    const onLongPress = jest.fn();
+    await render(
+      <Button testID="save-btn" onLongPress={onLongPress}>
+        Save
+      </Button>,
+    );
+    await fireEvent(screen.getByTestId("save-btn"), "longPress");
+    expect(onLongPress).toHaveBeenCalled();
   });
 
   it("merges a custom className", async () => {

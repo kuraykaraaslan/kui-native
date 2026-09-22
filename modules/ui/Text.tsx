@@ -44,8 +44,18 @@ export type TextProps = RNTextProps & {
   ref?: React.Ref<RNText>;
 };
 
+const WEIGHT_CLASS = /(^|\s)font-(thin|extralight|light|normal|medium|semibold|bold|extrabold|black)(\s|$)/;
+const FAMILY_CLASS = /(^|\s)font-(sans|serif|mono)(\s|$)/;
+
 /** Typography primitive — semantic variants on the shared token palette. */
 export function Text({ variant = "body", className, style, accessibilityRole, children, ...rest }: TextProps) {
+  // The variant's weight/family are inline styles, which win over NativeWind
+  // classes — so when the caller passes an explicit `font-*` weight or family
+  // class (e.g. <Text className="font-semibold">), leave that property to it.
+  const base: { fontFamily?: string; fontWeight?: (typeof FONT_WEIGHTS)[keyof typeof FONT_WEIGHTS] } = {};
+  if (!className || !FAMILY_CLASS.test(className)) base.fontFamily = FONTS.sans;
+  if (!className || !WEIGHT_CLASS.test(className)) base.fontWeight = variantWeight[variant];
+
   return (
     <RNText
       // Headings default to the "header" role so screen readers announce
@@ -53,7 +63,7 @@ export function Text({ variant = "body", className, style, accessibilityRole, ch
       // elements); callers can still override via accessibilityRole.
       accessibilityRole={accessibilityRole ?? (headingVariants.has(variant) ? "header" : undefined)}
       className={cn(variantCls[variant], className)}
-      style={[{ fontFamily: FONTS.sans, fontWeight: variantWeight[variant] }, style]}
+      style={[base, style]}
       {...rest}
     >
       {children}

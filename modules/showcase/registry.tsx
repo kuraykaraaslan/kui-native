@@ -359,7 +359,7 @@ function ModalConfirmDemo() {
         footer={
           <>
             <Button label="Cancel" variant="outline" onPress={() => setOpen(false)} />
-            <Button label="Delete" variant="destructive" onPress={() => setOpen(false)} />
+            <Button label="Delete" variant="danger" onPress={() => setOpen(false)} />
           </>
         }
       >
@@ -441,37 +441,76 @@ export const REGISTRY: ShowcaseEntry[] = [
     category: "Atoms",
     icon: faHandPointer,
     description: "Pressable action with variants, sizes, and a loading state.",
-    usage: `<Button label="Save" onPress={save} />`,
+    usage: `<Button onPress={save}>Save</Button>`,
     preview: () => <Button label="Button" size="sm" />,
     // Mirrors KuiReact's Button showcase variants 1:1 (same titles and copy).
-    // KuiReact's `danger` variant is still `destructive` here, and "Icon
-    // left / right" shows only the left icon — iconRight, "Icon only" and
-    // "Selected / active state" need props not yet ported (R-button, Wave 1).
+    // KuiReact's text-glyph icons (⬇ → ✕) are kept as-is, as in its demos.
     variants: [
-      { title: "Primary", Demo: () => <Button label="Primary" variant="primary" /> },
-      { title: "Secondary", Demo: () => <Button label="Secondary" variant="secondary" /> },
-      { title: "Ghost", Demo: () => <Button label="Ghost" variant="ghost" /> },
-      { title: "Danger", Demo: () => <Button label="Danger" variant="destructive" /> },
-      { title: "Outline", Demo: () => <Button label="Outline" variant="outline" /> },
-      { title: "Disabled", Demo: () => <Button label="Disabled" variant="primary" disabled /> },
+      { title: "Primary", Demo: () => <Button variant="primary">Primary</Button> },
+      { title: "Secondary", Demo: () => <Button variant="secondary">Secondary</Button> },
+      { title: "Ghost", Demo: () => <Button variant="ghost">Ghost</Button> },
+      { title: "Danger", Demo: () => <Button variant="danger">Danger</Button> },
+      { title: "Outline", Demo: () => <Button variant="outline">Outline</Button> },
+      {
+        title: "Disabled",
+        Demo: () => (
+          <Button variant="primary" disabled>
+            Disabled
+          </Button>
+        ),
+      },
       {
         title: "Sizes",
         Demo: () => (
           <View className="flex-row flex-wrap items-center gap-2">
-            <Button label="XS" size="xs" />
-            <Button label="SM" size="sm" />
-            <Button label="MD" size="md" />
-            <Button label="LG" size="lg" />
-            <Button label="XL" size="xl" />
+            <Button size="xs">XS</Button>
+            <Button size="sm">SM</Button>
+            <Button size="md">MD</Button>
+            <Button size="lg">LG</Button>
+            <Button size="xl">XL</Button>
           </View>
         ),
       },
       {
         title: "Icon left / right",
-        Demo: () => <Button label="Download" iconLeft={<Text className="text-primary-fg">⬇</Text>} />,
+        Demo: () => (
+          <View className="flex-row flex-wrap items-center gap-2">
+            <Button iconLeft={<Text className="text-primary-fg">⬇</Text>}>Download</Button>
+            <Button variant="outline" iconRight={<Text className="text-text-primary">→</Text>}>
+              Next
+            </Button>
+          </View>
+        ),
       },
-      { title: "Full width", Demo: () => <Button label="Full-width" fullWidth /> },
-      { title: "Loading state", Demo: () => <Button label="Saving…" variant="primary" loading /> },
+      {
+        title: "Icon only",
+        Demo: () => (
+          <View className="flex-row">
+            <Button iconOnly accessibilityLabel="Delete item">
+              <Text className="text-sm text-primary-fg">✕</Text>
+            </Button>
+          </View>
+        ),
+      },
+      { title: "Full width", Demo: () => <Button fullWidth>Full-width</Button> },
+      {
+        title: "Selected / active state",
+        Demo: () => (
+          <View className="flex-row">
+            <Button variant="outline" selected>
+              Selected
+            </Button>
+          </View>
+        ),
+      },
+      {
+        title: "Loading state",
+        Demo: () => (
+          <Button variant="primary" loading>
+            Saving…
+          </Button>
+        ),
+      },
     ],
   },
   {
@@ -527,7 +566,7 @@ export const REGISTRY: ShowcaseEntry[] = [
             footer={
               <View className="flex-row gap-2">
                 <Button label="Cancel" variant="outline" size="sm" />
-                <Button label="Delete" variant="destructive" size="sm" />
+                <Button label="Delete" variant="danger" size="sm" />
               </View>
             }
           >
