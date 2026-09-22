@@ -15,6 +15,7 @@ import {
   faIdCard,
   faInbox,
   faKeyboard,
+  faBell,
   faListUl,
   faTableColumns,
   faBarsProgress,
@@ -57,6 +58,7 @@ import {
   Text,
   Textarea,
   TextInput,
+  toast,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -277,6 +279,24 @@ function TextInputDemo() {
       keyboardType="email-address"
       autoCapitalize="none"
     />
+  );
+}
+// Mirrors KuiReact's Toast showcase variants 1:1 (same titles and copy — KuiReact's
+// Toast demos are written in Turkish, so the strings are kept verbatim).
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+const fetchData = () => wait(1500).then(() => ({ name: "Rapor" }));
+const fetchUser = () => wait(1500).then(() => ({ name: "Kuray", id: 42 }));
+const fetchBroken = () =>
+  wait(1500).then(() => {
+    throw new Error("503 Service Unavailable");
+  });
+function ToastButtons({ items }: { items: { label: string; run: () => void }[] }) {
+  return (
+    <View className="flex-row flex-wrap gap-2">
+      {items.map((i) => (
+        <Button key={i.label} label={i.label} variant="outline" size="sm" onPress={i.run} />
+      ))}
+    </View>
   );
 }
 // Mirrors KuiReact's Drawer showcase variants 1:1 (same titles and copy).
@@ -846,6 +866,107 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "In a Button",
         Demo: () => <Button label="Saving…" loading />,
+      },
+    ],
+  },
+  {
+    id: "toast",
+    title: "Toast",
+    category: "Feedback",
+    icon: faBell,
+    description: "Imperative toast() notifications with variants, actions, loading and promise flows.",
+    usage: `toast.success("Kaydedildi.")`,
+    preview: () => <Button label="toast.success()" size="sm" variant="outline" />,
+    variants: [
+      {
+        title: "Variants",
+        Demo: () => (
+          <ToastButtons
+            items={[
+              { label: "success", run: () => toast.success("Kaydedildi.") },
+              { label: "info", run: () => toast.info("Güncelleme mevcut.") },
+              { label: "warning", run: () => toast.warning("Oturum sona eriyor.") },
+              { label: "error", run: () => toast.error("Sunucu hatası.") },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "Title + Message",
+        Demo: () => (
+          <ToastButtons
+            items={[
+              { label: "success", run: () => toast.success("Dosya yüklendi.", { title: "Yükleme tamamlandı" }) },
+              { label: "error", run: () => toast.error("Sunucuya bağlanılamadı.", { title: "Bağlantı hatası" }) },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "Actions",
+        Demo: () => (
+          <ToastButtons
+            items={[
+              {
+                label: "info + actions",
+                run: () =>
+                  toast.info("Öğe silindi.", {
+                    title: "Silindi",
+                    actions: [
+                      { label: "Geri Al", onPress: (dismiss) => dismiss() },
+                      { label: "Kalıcı sil", onPress: (d) => d(), variant: "danger" },
+                    ],
+                  }),
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "Loading & Promise",
+        Demo: () => (
+          <ToastButtons
+            items={[
+              { label: "loading", run: () => toast.loading("İşleniyor...") },
+              {
+                label: "promise",
+                run: () =>
+                  toast.promise(fetchData(), {
+                    loading: "Yükleniyor...",
+                    success: (data) => `${data.name} hazır.`,
+                    error: "Yüklenemedi.",
+                  }),
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "toast.promise() API",
+        Demo: () => (
+          <ToastButtons
+            items={[
+              {
+                label: "success path",
+                run: () =>
+                  toast.promise(fetchUser(), {
+                    loading: "Kullanıcı yükleniyor...",
+                    success: (u) => `${u.name} (#${u.id}) yüklendi.`,
+                    error: (e) => `Hata: ${(e as Error).message}`,
+                  }),
+              },
+              {
+                label: "error path",
+                run: () =>
+                  toast.promise(fetchBroken(), {
+                    loading: "İstek gönderiliyor...",
+                    success: "Tamamlandı!",
+                    error: (e) => `Başarısız: ${(e as Error).message}`,
+                  }),
+              },
+            ]}
+          />
+        ),
       },
     ],
   },

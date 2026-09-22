@@ -10,6 +10,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { themes, useResolvedScheme } from "@/libs/theme";
 import { AppDrawer } from "@/modules/showcase/ui/AppDrawer";
+import { Toaster } from "@/modules/ui";
 
 function ThemedRoot() {
   const scheme = useResolvedScheme();
@@ -24,6 +25,8 @@ function ThemedRoot() {
       <StatusBar style={scheme === "dark" ? "light" : "dark"} />
       <Stack screenOptions={{ headerShown: false }} />
       <AppDrawer />
+      {/* Mounted last so toasts draw above screens and the drawer. */}
+      <Toaster />
     </View>
   );
 }
