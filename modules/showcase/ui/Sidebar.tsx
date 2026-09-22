@@ -25,6 +25,7 @@ import { useDrawer } from "./drawer.store";
  * badges match KuiReact's 1:1. `text` has no KuiReact counterpart. */
 const ABBR: Record<string, string> = {
   button: "Bt",
+  "skip-link": "Sl",
   text: "Tx",
   card: "Ca",
   avatar: "Av",
@@ -180,7 +181,7 @@ export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop"
   const pathname = usePathname();
   const close = useDrawer((s) => s.close);
   const railCollapsed = useDrawer((s) => s.collapsed);
-  const setCollapsed = useDrawer((s) => s.setCollapsed);
+  const setRailCollapsed = useDrawer((s) => s.setCollapsed);
   const desktop = variant === "desktop";
   const rail = desktop && railCollapsed;
   const [query, setQuery] = useState("");
@@ -246,7 +247,7 @@ export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop"
         // KuiReact AppSidebar: `hidden lg:flex items-center px-2 py-2 border-b` collapse toggle.
         <View className={cn("flex-row items-center border-b border-border px-2 py-2", rail ? "justify-center" : "justify-end")}>
           <Pressable
-            onPress={() => setCollapsed(!railCollapsed)}
+            onPress={() => setRailCollapsed(!railCollapsed)}
             accessibilityRole="button"
             accessibilityLabel={railCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             className="rounded p-1.5 active:bg-surface-overlay"

@@ -94,6 +94,8 @@ export { Separator } from "./Separator";
 export type { SeparatorProps } from "./Separator";
 export { SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonTableRow, SkeletonText } from "./Skeleton";
 export type { SkeletonCardProps } from "./Skeleton";
+export { Announcer, LiveRegion, SkipLink } from "./SkipLink";
+export type { LiveRegionProps, SkipLinkProps } from "./SkipLink";
 export { Slider, releaseStep } from "./Slider";
 export type { Slide, SliderProps } from "./Slider";
 export { Spinner } from "./Spinner";

@@ -68,6 +68,7 @@ import {
   faSquareCheck,
   faTag,
   faToggleOn,
+  faUniversalAccess,
   faUser,
   faWindowMaximize,
 } from "@fortawesome/free-solid-svg-icons";
@@ -95,6 +96,7 @@ import {
   SkeletonCard,
   SkeletonLine,
   SkeletonText,
+  SkipLink,
   Spinner,
   TabGroup,
   Text,
@@ -154,9 +156,30 @@ import {
   type DataTableFetchResult,
   type ScoreRule,
   type ViewOrientation,
+  LiveRegion,
 } from "@/modules/ui";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { useThemeTokens } from "@/libs/theme";
+
+function LiveRegionDemo() {
+  const [msg, setMsg] = useState("");
+  const [count, setCount] = useState(0);
+  const announce = () => {
+    const n = count + 1;
+    setCount(n);
+    setMsg("");
+    setTimeout(() => setMsg(`Announcement #${n} sent`), 50);
+  };
+  return (
+    <View className="gap-3">
+      <View className="flex-row">
+        <Button label="Send announcement" variant="outline" size="sm" onPress={announce} />
+      </View>
+      {msg ? <Text className="text-xs text-text-secondary">(screen reader hears: "{msg}")</Text> : null}
+      <LiveRegion message={msg} />
+    </View>
+  );
+}
 
 export type ShowcaseCategory = "Atoms" | "Forms" | "Feedback" | "Overlays";
 export const CATEGORY_ORDER: ShowcaseCategory[] = ["Atoms", "Forms", "Feedback", "Overlays"];
@@ -1948,6 +1971,38 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "In a Button",
         Demo: () => <Button label="Saving…" loading />,
+      },
+    ],
+  },
+  {
+    id: "skip-link",
+    title: "SkipLink + LiveRegion",
+    category: "Atoms",
+    icon: faUniversalAccess,
+    description:
+      "SkipLink is visually hidden until focused, enabling keyboard users to bypass navigation. LiveRegion announces dynamic content to screen readers.",
+    usage: `<LiveRegion message={msg} />`,
+    preview: () => <LiveRegionDemo />,
+    variants: [
+      {
+        title: "SkipLink (focus to reveal)",
+        // Web only: native apps have no skip-navigation concept (VoiceOver / TalkBack
+        // navigate by headings), so SkipLink renders nothing on iOS / Android.
+        Demo: () => (
+          <View className="gap-2">
+            <Text className="text-xs text-text-secondary">Tab into the area below to reveal the skip link:</Text>
+            <View className="gap-2 rounded-md border border-dashed border-border p-4">
+              <SkipLink href="#demo-main" />
+              <Text nativeID="demo-main" className="text-sm text-text-primary">
+                Main content area
+              </Text>
+            </View>
+          </View>
+        ),
+      },
+      {
+        title: "LiveRegion",
+        Demo: () => <LiveRegionDemo />,
       },
     ],
   },
