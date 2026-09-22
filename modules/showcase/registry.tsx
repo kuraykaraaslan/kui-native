@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faTimeline,
   faStar,
   faChartSimple,
   faHashtag,
@@ -102,6 +103,7 @@ import {
   StatCard,
   Statistic,
   TabButton,
+  Timeline,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -2134,6 +2136,48 @@ export const REGISTRY: ShowcaseEntry[] = [
             <TabButton active={false} onPress={() => {}}>
               Default
             </TabButton>
+          </View>
+        ),
+      },
+    ],
+  },
+  {
+    id: "timeline",
+    title: "Timeline",
+    category: "Atoms",
+    icon: faTimeline,
+    description: "Chronological activity feed grouped by the viewer's local day, with tone-coloured markers, inline detail and optional meta.",
+    usage: `<Timeline items={[{ id: "1", at: "2026-08-25T09:12:00Z", title: "Email sent", tone: "info" }]} />`,
+    preview: () => <Timeline groupByDay={false} items={[{ id: "1", at: "2026-08-25T09:12:00Z", title: "Email sent", tone: "info" }]} />,
+    // Mirrors KuiReact's Timeline showcase variants 1:1 (same titles, copy and timestamps).
+    variants: [
+      {
+        title: "Grouped by day",
+        Demo: () => (
+          <View className="w-full max-w-lg">
+            <Timeline
+              items={[
+                { id: "1", at: "2026-08-25T09:12:00Z", title: "Email sent", body: "Re: shipping integration", tone: "info" },
+                { id: "2", at: "2026-08-25T14:40:00Z", title: "Reply received", body: "“Interesting — can you send details?”", tone: "success" },
+                { id: "3", at: "2026-08-24T16:05:00Z", title: "Call completed", body: "4m 12s · reached the right person", tone: "default" },
+                { id: "4", at: "2026-08-24T10:00:00Z", title: "Enriched", body: "18 employees · logistics software", tone: "default" },
+              ]}
+            />
+          </View>
+        ),
+      },
+      {
+        title: "Empty, and ungrouped",
+        Demo: () => (
+          <View className="w-full max-w-lg flex-col gap-6">
+            <Timeline items={[]} emptyMessage="No activity on this company yet." />
+            <Timeline
+              groupByDay={false}
+              items={[
+                { id: "1", at: "2026-08-25T09:12:00Z", title: "Bounced", tone: "error" },
+                { id: "2", at: "2026-08-25T08:00:00Z", title: "Queued", tone: "warning" },
+              ]}
+            />
           </View>
         ),
       },
