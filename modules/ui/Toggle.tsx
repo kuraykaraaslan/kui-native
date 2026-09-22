@@ -5,7 +5,7 @@ import { cn } from "@/libs/utils/cn";
 
 import { Text } from "./Text";
 
-type SwitchSize = "sm" | "md" | "lg";
+type ToggleSize = "sm" | "md" | "lg";
 
 // Pixel-for-pixel with KuiReact's Toggle (modules/ui/Toggle.tsx):
 // sm track h-4 w-7 / thumb h-3 w-3 / on translate-x-3.5 (14px)
@@ -13,36 +13,37 @@ type SwitchSize = "sm" | "md" | "lg";
 // lg track h-6 w-11 / thumb h-4 w-4 / on translate-x-5 (20px)
 // Thumb sits at top-0.5 left-0.5. The OS Switch used previously cannot be
 // sized or restyled, so it never matched KuiReact's look on either platform.
-const sizes: Record<SwitchSize, { track: string; thumb: string; on: number }> = {
+const sizes: Record<ToggleSize, { track: string; thumb: string; on: number }> = {
   sm: { track: "h-4 w-7", thumb: "h-3 w-3", on: 14 },
   md: { track: "h-5 w-9", thumb: "h-3.5 w-3.5", on: 16 },
   lg: { track: "h-6 w-11", thumb: "h-4 w-4", on: 20 },
 };
 
-export type SwitchProps = {
-  value: boolean;
-  onValueChange?: (next: boolean) => void;
+export type ToggleProps = {
+  checked: boolean;
+  onChange?: (checked: boolean) => void;
   label?: string;
-  /** Secondary line under the label (KuiReact's `description`). */
-  description?: string;
   /** Accessible name when the visible label lives elsewhere, e.g. a
    * settings row (KuiReact's `ariaLabel`). */
-  accessibilityLabel?: string;
-  size?: SwitchSize;
+  ariaLabel?: string;
+  /** Secondary line under the label. */
+  description?: string;
+  size?: ToggleSize;
   disabled?: boolean;
   className?: string;
 };
 
-export function Switch({
-  value,
-  onValueChange,
+/** Pixel-for-pixel with KuiReact's Toggle (modules/ui/Toggle.tsx). */
+export function Toggle({
+  checked: value,
+  onChange: onValueChange,
   label,
+  ariaLabel: accessibilityLabel,
   description,
-  accessibilityLabel,
   size = "md",
   disabled = false,
   className,
-}: SwitchProps) {
+}: ToggleProps) {
   const { track, thumb, on } = sizes[size];
   const progress = useRef(new Animated.Value(value ? 1 : 0)).current;
 
@@ -93,4 +94,16 @@ export function Switch({
       ) : null}
     </Pressable>
   );
+}
+
+/** @deprecated Use `Toggle` (KuiReact's name) with `checked` / `onChange` / `ariaLabel`. */
+export type SwitchProps = Omit<ToggleProps, "checked" | "onChange" | "ariaLabel"> & {
+  value: boolean;
+  onValueChange?: (next: boolean) => void;
+  accessibilityLabel?: string;
+};
+
+/** @deprecated Use `Toggle` (KuiReact's name). */
+export function Switch({ value, onValueChange, accessibilityLabel, ...rest }: SwitchProps) {
+  return <Toggle checked={value} onChange={onValueChange} ariaLabel={accessibilityLabel} {...rest} />;
 }

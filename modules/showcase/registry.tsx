@@ -53,12 +53,12 @@ import {
   SkeletonLine,
   SkeletonText,
   Spinner,
-  Switch,
   TabGroup,
   Text,
   Textarea,
   TextInput,
   toast,
+  Toggle,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -110,20 +110,20 @@ function CheckboxSelectAllDemo() {
   );
 }
 // Mirrors KuiReact's Toggle showcase variants 1:1 (same titles and copy).
-function SwitchSizesDemo() {
+function ToggleSizesDemo() {
   const [enabled, setEnabled] = useState(true);
   return (
     <View className="gap-3">
-      <Switch value={enabled} onValueChange={setEnabled} label="Enable notifications" size="sm" />
-      <Switch value={enabled} onValueChange={setEnabled} label="Enable notifications" size="md" />
-      <Switch value={enabled} onValueChange={setEnabled} label="Enable notifications" size="lg" />
+      <Toggle checked={enabled} onChange={setEnabled} label="Enable notifications" size="sm" />
+      <Toggle checked={enabled} onChange={setEnabled} label="Enable notifications" size="md" />
+      <Toggle checked={enabled} onChange={setEnabled} label="Enable notifications" size="lg" />
     </View>
   );
 }
-function SwitchDescriptionDemo() {
+function ToggleDescriptionDemo() {
   const [value, setValue] = useState(false);
   return (
-    <Switch value={value} onValueChange={setValue} label="Marketing emails" description="Receive weekly updates." />
+    <Toggle checked={value} onChange={setValue} label="Marketing emails" description="Receive weekly updates." />
   );
 }
 function RocketIcon() {
@@ -138,7 +138,7 @@ const SETTINGS_ROWS = [
   { key: "notifications", label: "Push notifications", desc: "Alerts for new activity" },
   { key: "marketing", label: "Marketing emails", desc: "Product news and offers" },
 ] as const;
-function SwitchSettingsListDemo() {
+function ToggleSettingsListDemo() {
   const [s, setS] = useState<Record<string, boolean>>({ notifications: true, marketing: false });
   return (
     // KuiReact: "divide-y border rounded-lg" with "px-4 py-3" rows.
@@ -154,11 +154,7 @@ function SwitchSettingsListDemo() {
             </Text>
             <Text variant="caption">{desc}</Text>
           </View>
-          <Switch
-            accessibilityLabel={label}
-            value={s[key]}
-            onValueChange={() => setS((p) => ({ ...p, [key]: !p[key] }))}
-          />
+          <Toggle ariaLabel={label} checked={s[key]} onChange={() => setS((p) => ({ ...p, [key]: !p[key] }))} />
         </View>
       ))}
     </View>
@@ -904,18 +900,18 @@ export const REGISTRY: ShowcaseEntry[] = [
     ],
   },
   {
-    id: "switch",
-    title: "Switch",
+    id: "toggle",
+    title: "Toggle",
     category: "Forms",
     icon: faToggleOn,
     description: "On/off switch with a themed track.",
-    usage: `<Switch value={on} onValueChange={setOn} label="Wifi" />`,
-    preview: () => <Switch value onValueChange={() => {}} />,
+    usage: `<Toggle checked={on} onChange={setOn} label="Enable notifications" />`,
+    preview: () => <Toggle checked onChange={() => {}} />,
     variants: [
-      { title: "Sizes", Demo: SwitchSizesDemo },
-      { title: "With description", Demo: SwitchDescriptionDemo },
-      { title: "Disabled", Demo: () => <Switch value disabled label="Disabled" /> },
-      { title: "Settings list (controlled)", Demo: SwitchSettingsListDemo },
+      { title: "Sizes", Demo: ToggleSizesDemo },
+      { title: "With description", Demo: ToggleDescriptionDemo },
+      { title: "Disabled", Demo: () => <Toggle checked disabled label="Disabled" onChange={() => {}} /> },
+      { title: "Settings list (controlled)", Demo: ToggleSettingsListDemo },
     ],
   },
   {

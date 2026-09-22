@@ -32,8 +32,8 @@ export { SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonText } from "./Skel
 export type { SkeletonCardProps } from "./Skeleton";
 export { Spinner } from "./Spinner";
 export type { SpinnerProps } from "./Spinner";
-export { Switch } from "./Switch";
-export type { SwitchProps } from "./Switch";
+export { Switch, Toggle } from "./Toggle";
+export type { SwitchProps, ToggleProps } from "./Toggle";
 export { TabGroup } from "./TabGroup";
 export type { Tab, TabGroupProps } from "./TabGroup";
 export { Text } from "./Text";

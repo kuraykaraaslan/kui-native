@@ -33,7 +33,7 @@ const ABBR: Record<string, string> = {
   textarea: "Ta",
   "radio-group": "Rg",
   checkbox: "Cb",
-  switch: "Tg",
+  toggle: "Tg",
   spinner: "Sp",
   toast: "To",
   progress: "Pr",
