@@ -1,7 +1,6 @@
 import { View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faInbox } from "@fortawesome/free-solid-svg-icons";
 
 import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
@@ -20,7 +19,7 @@ export type EmptyStateProps = {
 
 /** Placeholder for empty lists/screens — use as FlatList's ListEmptyComponent. */
 export function EmptyState({
-  icon = faInbox,
+  icon,
   title,
   description,
   actionLabel,
@@ -29,11 +28,23 @@ export function EmptyState({
 }: EmptyStateProps) {
   const t = useThemeTokens();
   return (
-    <View className={cn("items-center justify-center px-6 py-12", className)}>
-      <View className="mb-4 h-14 w-14 items-center justify-center rounded-full bg-surface-sunken">
-        <FontAwesomeIcon icon={icon} size={24} color={t["text-secondary"]} />
-      </View>
-      <Text variant="h4" className="text-center">
+    // KuiReact: "flex flex-col items-center justify-center text-center py-16 px-6"
+    <View className={cn("items-center justify-center px-6 py-16", className)}>
+      {/* KuiReact: 48px (h-12 w-12) circle, text-disabled icon, and no circle at
+          all when `icon` is omitted (its "Minimal" variant). A prior pass here
+          used 56px, text-secondary, and always defaulted to an inbox icon. */}
+      {icon ? (
+        <View
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          className="mb-4 h-12 w-12 items-center justify-center rounded-full bg-surface-sunken"
+        >
+          <FontAwesomeIcon icon={icon} size={24} color={t["text-disabled"]} />
+        </View>
+      ) : null}
+      {/* KuiReact's title is "text-sm font-semibold", not the h4 (text-lg)
+          scale; `titleSm` also defaults to the "header" accessibility role. */}
+      <Text variant="titleSm" className="text-center">
         {title}
       </Text>
       {description ? (

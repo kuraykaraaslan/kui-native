@@ -28,9 +28,10 @@ export function TextInput({
   const [focused, setFocused] = useState(false);
 
   return (
-    <View className={cn("w-full", containerClassName)}>
+    // KuiReact wraps label+field+hint in "space-y-1" (4px between each).
+    <View className={cn("w-full gap-1", containerClassName)}>
       {label ? (
-        <Text variant="label" className="mb-1.5 font-medium">
+        <Text variant="label" className="font-medium">
           {label}
         </Text>
       ) : null}
@@ -47,16 +48,21 @@ export function TextInput({
         }}
         accessibilityLabel={label}
         className={cn(
-          "rounded-lg border bg-surface-base px-3 py-2.5 text-base text-text-primary",
-          error ? "border-error" : focused ? "border-border-focus" : "border-border",
+          // Pixel-for-pixel with KuiReact's Input (modules/ui/Input.tsx):
+          // rounded-md, py-2, text-sm — a prior pass here used
+          // rounded-lg/py-2.5/text-base, one step off KuiReact's actual look.
+          "rounded-md border bg-surface-base px-3 py-2 text-sm text-text-primary",
+          error ? "border-error bg-error-subtle" : focused ? "border-border-focus" : "border-border",
+          // KuiReact: "disabled:opacity-50 disabled:bg-surface-sunken".
+          rest.editable === false && "opacity-50 bg-surface-sunken",
           className,
         )}
         {...rest}
       />
       {error ? (
-        <Text className="mt-1 text-xs text-error">{error}</Text>
+        <Text className="text-xs text-error">{error}</Text>
       ) : hint ? (
-        <Text variant="caption" className="mt-1">
+        <Text variant="caption">
           {hint}
         </Text>
       ) : null}

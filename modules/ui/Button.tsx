@@ -5,7 +5,7 @@ import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "destructive";
-type ButtonSize = "sm" | "md" | "lg";
+type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 const containerVariant: Record<ButtonVariant, string> = {
   primary: "bg-primary",
@@ -23,16 +23,23 @@ const labelVariant: Record<ButtonVariant, string> = {
   destructive: "text-text-inverse",
 };
 
+// Pixel-for-pixel with KuiReact's Button size ladder (modules/ui/Button.tsx):
+// xs px-2 py-1 text-xs · sm px-3 py-1.5 text-sm · md px-4 py-2 text-sm ·
+// lg px-5 py-2.5 text-base · xl px-6 py-3 text-lg.
 const sizeContainer: Record<ButtonSize, string> = {
+  xs: "px-2 py-1",
   sm: "px-3 py-1.5",
-  md: "px-4 py-2.5",
-  lg: "px-5 py-3",
+  md: "px-4 py-2",
+  lg: "px-5 py-2.5",
+  xl: "px-6 py-3",
 };
 
 const sizeLabel: Record<ButtonSize, string> = {
+  xs: "text-xs",
   sm: "text-sm",
   md: "text-sm",
   lg: "text-base",
+  xl: "text-lg",
 };
 
 export type ButtonProps = {
@@ -70,7 +77,10 @@ export function Button({
       accessibilityLabel={label}
       accessibilityState={{ disabled: isDisabled, busy: loading }}
       className={cn(
-        "flex-row items-center justify-center gap-2 rounded-lg active:opacity-80",
+        // rounded-md + font-medium below match KuiReact's Button exactly
+        // (KuiReact: "rounded-md ... font-medium"); a prior pass here used
+        // rounded-lg/font-semibold, one step off KuiReact's actual look.
+        "flex-row items-center justify-center gap-2 rounded-md active:opacity-80",
         containerVariant[variant],
         sizeContainer[size],
         fullWidth && "w-full",
@@ -83,7 +93,7 @@ export function Button({
       ) : (
         iconLeft
       )}
-      <Text className={cn("font-semibold", labelVariant[variant], sizeLabel[size])}>{label}</Text>
+      <Text className={cn("font-medium", labelVariant[variant], sizeLabel[size])}>{label}</Text>
     </Pressable>
   );
 }

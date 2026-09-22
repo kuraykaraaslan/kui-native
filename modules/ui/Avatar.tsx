@@ -8,51 +8,83 @@ import { cn } from "@/libs/utils/cn";
 import { Text } from "./Text";
 
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
+type AvatarStatus = "online" | "offline" | "away" | "busy";
 
+// Pixel-for-pixel with KuiReact's Avatar (modules/ui/Avatar.tsx). A prior
+// pass here used lg=56px/xl=80px and lg/xl text sizes one step too large —
+// KuiReact's lg is 48px and xl is 64px.
 const sizeCls: Record<AvatarSize, string> = {
   xs: "w-6 h-6",
   sm: "w-8 h-8",
   md: "w-10 h-10",
-  lg: "w-14 h-14",
-  xl: "w-20 h-20",
+  lg: "w-12 h-12",
+  xl: "w-16 h-16",
 };
 
-const sizePx: Record<AvatarSize, number> = { xs: 24, sm: 32, md: 40, lg: 56, xl: 80 };
+const sizePx: Record<AvatarSize, number> = { xs: 24, sm: 32, md: 40, lg: 48, xl: 64 };
 
 const textSize: Record<AvatarSize, string> = {
   xs: "text-xs",
   sm: "text-xs",
   md: "text-sm",
-  lg: "text-lg",
-  xl: "text-2xl",
+  lg: "text-base",
+  xl: "text-lg",
+};
+
+const statusColorCls: Record<AvatarStatus, string> = {
+  online: "bg-success",
+  offline: "bg-text-disabled",
+  away: "bg-warning",
+  busy: "bg-error",
+};
+
+const statusDotCls: Record<AvatarSize, string> = {
+  xs: "h-1.5 w-1.5",
+  sm: "h-2 w-2",
+  md: "h-2.5 w-2.5",
+  lg: "h-3 w-3",
+  xl: "h-4 w-4",
 };
 
 function initials(name: string): string {
-  return name
+  const value = name
     .trim()
     .split(/\s+/)
     .slice(0, 2)
     .map((p) => p[0]?.toUpperCase() ?? "")
     .join("");
+  // KuiReact falls back to "?" for an empty/blank name; a prior pass here
+  // rendered an empty circle instead.
+  return value || "?";
 }
 
 export type AvatarProps = {
   name: string;
   src?: string;
   size?: AvatarSize;
+  status?: AvatarStatus;
   className?: string;
 };
 
-export function Avatar({ name, src, size = "md", className }: AvatarProps) {
+export function Avatar({ name, src, size = "md", status, className }: AvatarProps) {
   const [errored, setErrored] = useState(false);
   const showImage = Boolean(src) && !errored;
 
-  return (
+  const avatar = (
     <View
+      // `accessible` is required for a plain View's accessibilityRole to be
+      // exposed to assistive tech at all (RN treats a View with a role but
+      // no `accessible` as invisible to VoiceOver/TalkBack and to role-based
+      // queries) — see docs/audits/kui-react-parity, same defect fixed on Spinner.
+      accessible
       accessibilityRole="image"
       accessibilityLabel={name}
       className={cn(
-        "items-center justify-center overflow-hidden rounded-full bg-primary-subtle",
+        "items-center justify-center overflow-hidden rounded-full shrink-0",
+        // KuiReact borders the image with `border-border` and the initials
+        // fallback with `border-primary-subtle` (a border the same color as
+        // its own fill, giving a subtle ring rather than a visible edge).
+        showImage ? "border border-border" : "bg-primary-subtle border border-primary-subtle",
         sizeCls[size],
         className,
       )}
@@ -68,6 +100,18 @@ export function Avatar({ name, src, size = "md", className }: AvatarProps) {
       ) : (
         <Text className={cn("font-semibold text-primary", textSize[size])}>{initials(name)}</Text>
       )}
+    </View>
+  );
+
+  if (!status) return avatar;
+
+  return (
+    <View className="relative shrink-0">
+      {avatar}
+      <View
+        accessibilityLabel={status}
+        className={cn("absolute bottom-0 right-0 rounded-full border-2 border-surface-base", statusColorCls[status], statusDotCls[size])}
+      />
     </View>
   );
 }

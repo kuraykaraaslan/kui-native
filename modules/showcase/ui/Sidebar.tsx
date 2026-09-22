@@ -17,19 +17,23 @@ import {
 } from "../registry";
 import { useDrawer } from "./drawer.store";
 
-/** Two-letter codes for the abbr badge (KUIREACT style). */
+/** Two-letter codes for the abbr badge — taken verbatim from KuiReact's
+ * registry `abbr` field (public/registry/components.json) so the sidebar
+ * badges match KuiReact's 1:1. `text` has no KuiReact counterpart. */
 const ABBR: Record<string, string> = {
   button: "Bt",
   text: "Tx",
-  card: "Cd",
+  card: "Ca",
   avatar: "Av",
   badge: "Bg",
+  separator: "Se",
+  label: "Lb",
   "text-input": "In",
   checkbox: "Cb",
-  switch: "Sw",
+  switch: "Tg",
   spinner: "Sp",
   "empty-state": "Es",
-  "skeleton-card": "Sk",
+  skeleton: "Sk",
   modal: "Md",
 };
 
