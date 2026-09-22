@@ -87,8 +87,10 @@ export type { SpinnerProps } from "./Spinner";
 export { Switch, Toggle } from "./Toggle";
 export type { SwitchProps, ToggleProps } from "./Toggle";
 export { TabButton } from "./TabButton";
-export { DataTable, Table, useServerTable, useTable } from "./Table";
+export { AdvancedDataTable, DataTable, Table, useServerTable, useTable } from "./Table";
 export type {
+  AdvancedDataTableProps,
+  AdvancedDataTableRow,
   Column,
   DataTableFetchArgs,
   DataTableFetchResult,

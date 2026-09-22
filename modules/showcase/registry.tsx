@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faTableColumns as faAdvancedTable,
   faListCheck as faBulkRows,
   faTableCellsColumnLock,
   faClock,
@@ -131,6 +132,7 @@ import {
   ColorPicker,
   DataTable,
   BulkActionTable,
+  AdvancedDataTable,
   type DataTableFetchArgs,
   type DataTableFetchResult,
   type ScoreRule,
@@ -3078,6 +3080,56 @@ export const REGISTRY: ShowcaseEntry[] = [
             </View>
           );
         },
+      },
+    ],
+  },
+  {
+    id: "advanced-data-table",
+    title: "AdvancedDataTable",
+    category: "Atoms",
+    icon: faAdvancedTable,
+    description: "Enhanced table with row selection (with indeterminate header), expandable rows, and optional sticky header.",
+    usage: `<AdvancedDataTable columns={columns} rows={rows} selectable caption="Team members" />`,
+    preview: () => <AdvancedDataTable columns={[{ key: "name", header: "Name" }]} rows={[{ name: "Alice" }]} selectable />,
+    // Mirrors KuiReact's AdvancedDataTable showcase variants 1:1 (same titles and data).
+    variants: [
+      {
+        title: "Selectable + Expandable",
+        Demo: () => {
+          const rows = [
+            { name: "Alice", role: "Admin", status: "Active", _expanded: <Text className="text-sm text-text-secondary">Joined 2023-01-15 · Last active 2 days ago</Text> },
+            { name: "Bob", role: "Editor", status: "Inactive", _expanded: <Text className="text-sm text-text-secondary">Joined 2022-06-10 · Last active 30 days ago</Text> },
+            { name: "Carol", role: "Viewer", status: "Active" },
+            { name: "Dave", role: "Editor", status: "Active", _expanded: <Text className="text-sm text-text-secondary">Joined 2024-03-01 · Last active today</Text> },
+          ];
+          return (
+            <View className="w-full">
+              <AdvancedDataTable
+                columns={[
+                  { key: "name", header: "Name" },
+                  { key: "role", header: "Role" },
+                  { key: "status", header: "Status" },
+                ]}
+                rows={rows}
+                selectable
+                caption="Team members"
+              />
+            </View>
+          );
+        },
+      },
+      {
+        title: "Sticky Header",
+        Demo: () => (
+          <View className="w-full">
+            <AdvancedDataTable
+              columns={[{ key: "n", header: "Name" }, { key: "v", header: "Value" }]}
+              rows={Array.from({ length: 10 }, (_, i) => ({ n: `Row ${i + 1}`, v: i * 10 }))}
+              stickyHeader
+              caption="Sticky header table"
+            />
+          </View>
+        ),
       },
     ],
   },

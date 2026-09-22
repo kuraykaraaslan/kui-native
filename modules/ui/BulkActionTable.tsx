@@ -1,13 +1,11 @@
 import { useMemo, type ReactNode } from "react";
 import { Pressable, View } from "react-native";
-import { faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
 import { Text } from "./Text";
 import { Table } from "./Table/Table";
+import { SelectBox } from "./Table/parts/SelectBox";
 import type { Column } from "./Table/types";
 
 export type BulkAction<Id> = {
@@ -48,26 +46,6 @@ export type BulkActionTableProps<T extends Record<string, unknown>, Id extends s
   className?: string;
   labels?: Partial<typeof DEFAULT_LABELS>;
 };
-
-// KuiReact's native "h-4 w-4 rounded border-border-strong accent-[var(--primary)]" checkbox.
-function SelectBox({ checked, mixed, disabled, label, hint, onPress }: { checked: boolean; mixed?: boolean; disabled?: boolean; label: string; hint?: string; onPress: () => void }) {
-  const t = useThemeTokens();
-  const on = checked || mixed;
-  return (
-    <Pressable
-      accessibilityRole="checkbox"
-      accessibilityLabel={label}
-      accessibilityHint={hint}
-      accessibilityState={{ checked: mixed ? "mixed" : checked, disabled: Boolean(disabled) }}
-      disabled={disabled}
-      hitSlop={10}
-      onPress={onPress}
-      className={cn("h-4 w-4 items-center justify-center rounded border", on ? "border-primary bg-primary" : "border-border-strong bg-surface-base", disabled && "opacity-40")}
-    >
-      {on ? <FontAwesomeIcon icon={mixed ? faMinus : faCheck} size={10} color={t["primary-fg"]} /> : null}
-    </Pressable>
-  );
-}
 
 /**
  * Pixel-for-pixel with KuiReact's BulkActionTable: a <Table /> with an
