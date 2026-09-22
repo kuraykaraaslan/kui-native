@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faImages,
   faTable,
   faFileArrowUp,
   faListUl as faComboBox,
@@ -114,7 +115,9 @@ import {
   FileInput,
   Table,
   TimePicker,
+  Slider,
 } from "@/modules/ui";
+import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { useThemeTokens } from "@/libs/theme";
 
 export type ShowcaseCategory = "Atoms" | "Forms" | "Feedback" | "Overlays";
@@ -270,6 +273,25 @@ const PLANS = [
   { value: "pro", label: "Pro" },
   { value: "team", label: "Team" },
 ];
+// KuiReact's "bg-gradient-to-br from-X to-Y" slide tiles (NativeWind can't draw gradients).
+function GradientTile({ from, to, label }: { from: string; to: string; label: string }) {
+  const t = useThemeTokens();
+  const id = `g-${from}-${to}`;
+  return (
+    <View className="h-40 items-center justify-center overflow-hidden rounded-xl">
+      <Svg width="100%" height="100%" style={{ position: "absolute" }}>
+        <Defs>
+          <LinearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+            <Stop offset="0" stopColor={t[from]} />
+            <Stop offset="1" stopColor={t[to]} />
+          </LinearGradient>
+        </Defs>
+        <Rect width="100%" height="100%" fill={`url(#${id})`} />
+      </Svg>
+      <Text className="text-lg font-semibold text-white">{label}</Text>
+    </View>
+  );
+}
 const COMBO_OPTIONS: ComboBoxOption[] = [
   { value: "nextjs", label: "Next.js", description: "App Router framework" },
   { value: "react", label: "React", description: "UI library for components" },
@@ -2426,6 +2448,85 @@ export const REGISTRY: ShowcaseEntry[] = [
               { name: "Bob Lee", email: "bob@example.com", role: "Viewer" },
             ]}
           />
+        ),
+      },
+    ],
+  },
+  {
+    id: "slider",
+    title: "Slider",
+    category: "Atoms",
+    icon: faImages,
+    description: "Swipeable carousel with per-slide labels, autoplay, arrows and dot navigation, velocity momentum and edge resistance.",
+    usage: `<Slider slides={[<Card key="a" />, <Card key="b" />]} autoPlay />`,
+    preview: () => <Slider className="w-full" showArrows={false} slides={[<View key="a" className="h-16 rounded-xl bg-primary-subtle" />, <View key="b" className="h-16 rounded-xl bg-success-subtle" />]} />,
+    // Mirrors KuiReact's Slider showcase variants 1:1 (same titles and copy;
+    // gradient tiles are drawn with react-native-svg).
+    variants: [
+      {
+        title: "Default",
+        Demo: () => (
+          <View className="w-full max-w-md">
+            <Slider
+              slides={[
+                <View key="a" className="h-40 items-center justify-center rounded-xl bg-primary-subtle"><Text className="text-lg font-semibold text-primary">Slide 1</Text></View>,
+                <View key="b" className="h-40 items-center justify-center rounded-xl bg-success-subtle"><Text className="text-lg font-semibold text-success-fg">Slide 2</Text></View>,
+                <View key="c" className="h-40 items-center justify-center rounded-xl bg-warning-subtle"><Text className="text-lg font-semibold text-warning">Slide 3</Text></View>,
+              ]}
+            />
+          </View>
+        ),
+      },
+      {
+        title: "Auto-play",
+        Demo: () => (
+          <View className="w-full max-w-md">
+            <Slider
+              autoPlay
+              autoPlayInterval={2000}
+              slides={[
+                <View key="a" className="h-36 items-center justify-center rounded-xl bg-primary"><Text className="text-base font-semibold text-white">Auto A</Text></View>,
+                <View key="b" className="h-36 items-center justify-center rounded-xl bg-secondary"><Text className="text-base font-semibold text-white">Auto B</Text></View>,
+                <View key="c" className="h-36 items-center justify-center rounded-xl bg-error"><Text className="text-base font-semibold text-white">Auto C</Text></View>,
+              ]}
+            />
+          </View>
+        ),
+      },
+      {
+        title: "Touch swipe + momentum",
+        // A drag past dragThreshold (50px) advances one slide; every 0.5 px/ms
+        // of release velocity adds another. Without loop the track
+        // rubber-bands (×0.4) at the first and last slide.
+        Demo: () => (
+          <View className="w-full max-w-md">
+            <Slider
+              loop={false}
+              dragThreshold={50}
+              slides={[
+                <GradientTile key="a" from="primary" to="secondary" label="Swipe me" />,
+                <GradientTile key="b" from="success" to="info" label="Flick fast" />,
+                <GradientTile key="c" from="warning" to="error" label="Multi-skip" />,
+                <GradientTile key="d" from="info" to="primary" label="Edge bounce" />,
+              ]}
+            />
+          </View>
+        ),
+      },
+      {
+        title: "No arrows / no loop",
+        Demo: () => (
+          <View className="w-full max-w-md">
+            <Slider
+              loop={false}
+              showArrows={false}
+              slides={[
+                <View key="a" className="h-32 items-center justify-center rounded-xl bg-surface-sunken"><Text className="text-sm text-text-secondary">Slide 1 — dots only, no loop</Text></View>,
+                <View key="b" className="h-32 items-center justify-center rounded-xl bg-surface-sunken"><Text className="text-sm text-text-secondary">Slide 2</Text></View>,
+                <View key="c" className="h-32 items-center justify-center rounded-xl bg-surface-sunken"><Text className="text-sm text-text-secondary">Slide 3</Text></View>,
+              ]}
+            />
+          </View>
         ),
       },
     ],
