@@ -18,6 +18,8 @@ export { Label } from "./Label";
 export type { LabelProps } from "./Label";
 export { Modal } from "./Modal";
 export type { ModalProps } from "./Modal";
+export { RadioGroup } from "./RadioGroup";
+export type { RadioGroupProps, RadioOption } from "./RadioGroup";
 export { Separator } from "./Separator";
 export type { SeparatorProps } from "./Separator";
 export { SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonText } from "./Skeleton";

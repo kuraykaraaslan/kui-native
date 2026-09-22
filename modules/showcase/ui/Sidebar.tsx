@@ -29,6 +29,7 @@ const ABBR: Record<string, string> = {
   separator: "Se",
   label: "Lb",
   "text-input": "In",
+  "radio-group": "Rg",
   checkbox: "Cb",
   switch: "Tg",
   spinner: "Sp",

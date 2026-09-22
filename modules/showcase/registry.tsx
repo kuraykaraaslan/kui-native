@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
+  faCircleDot,
   faCircleExclamation,
   faFolder,
   faFont,
@@ -33,6 +34,7 @@ import {
   EmptyState,
   Label,
   Modal,
+  RadioGroup,
   Separator,
   SkeletonAvatar,
   SkeletonCard,
@@ -141,6 +143,37 @@ function SwitchSettingsListDemo() {
         </View>
       ))}
     </View>
+  );
+}
+// Mirrors KuiReact's RadioGroup showcase variants 1:1 (same titles and copy).
+const NOTIFY_OPTIONS = [
+  { value: "email", label: "Email" },
+  { value: "sms", label: "SMS" },
+  { value: "none", label: "None" },
+];
+function RadioDefaultDemo() {
+  const [v, setV] = useState<string>();
+  return <RadioGroup name="notify" legend="Notification preference" options={NOTIFY_OPTIONS} value={v} onChange={setV} />;
+}
+function RadioCardDemo() {
+  const [v, setV] = useState("pro");
+  const plans = [
+    { value: "free", label: "Free", hint: "$0/mo · 3 projects" },
+    { value: "pro", label: "Pro", hint: "$12/mo · Unlimited" },
+    { value: "team", label: "Team", hint: "$49/mo · 10 seats" },
+  ];
+  // KuiReact's demo hand-rolls "gap-3 px-4 py-3" option rows; optionClassName
+  // reproduces that spacing on top of the card variant.
+  return (
+    <RadioGroup
+      name="plan"
+      legend="Choose plan"
+      options={plans}
+      value={v}
+      onChange={setV}
+      variant="card"
+      optionClassName="gap-3 px-4 py-3"
+    />
   );
 }
 function TextInputDemo() {
@@ -556,6 +589,25 @@ export const REGISTRY: ShowcaseEntry[] = [
         title: "Disabled",
         Demo: () => <TextInput label="Email" placeholder="you@example.com" editable={false} />,
       },
+    ],
+  },
+  {
+    id: "radio-group",
+    title: "RadioGroup",
+    category: "Forms",
+    icon: faCircleDot,
+    description: "Mutually-exclusive choice with a legend, hints, card style and error state.",
+    usage: `<RadioGroup name="notify" legend="Notification preference" options={options} value={v} onChange={setV} />`,
+    preview: () => <RadioGroup name="p" legend="Plan" options={NOTIFY_OPTIONS.slice(0, 2)} value="email" />,
+    variants: [
+      { title: "Default", Demo: RadioDefaultDemo },
+      {
+        title: "Disabled",
+        Demo: () => (
+          <RadioGroup name="notify" legend="Notification preference" options={NOTIFY_OPTIONS} value="email" disabled />
+        ),
+      },
+      { title: "Card style", Demo: RadioCardDemo },
     ],
   },
   {
