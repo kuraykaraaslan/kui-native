@@ -26,7 +26,7 @@ export default function ComponentDetail() {
       <SafeAreaView edges={["bottom"]} className="flex-1">
         <ScrollView contentContainerClassName="p-4 gap-5" keyboardShouldPersistTaps="handled">
           <View className="gap-2">
-            <Badge label={entry.category} variant="primary" />
+            <Badge variant="primary">{entry.category}</Badge>
             <Text variant="body">{entry.description}</Text>
             <CodeBlock code={entry.usage} />
           </View>

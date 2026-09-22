@@ -267,6 +267,19 @@ function SelectSearchableDemo() {
     />
   );
 }
+function BadgeDismissibleDemo() {
+  const [tags, setTags] = useState(["React"]);
+  return (
+    <View className="flex-row flex-wrap gap-2">
+      {tags.map((tag) => (
+        <Badge key={tag} variant="primary" dismissible onDismiss={() => setTags(tags.filter((t) => t !== tag))}>
+          {tag}
+        </Badge>
+      ))}
+      {tags.length === 0 ? <Button variant="ghost" size="xs" onPress={() => setTags(["React"])}>Reset</Button> : null}
+    </View>
+  );
+}
 function TextInputDemo() {
   const [value, setValue] = useState("");
   return (
@@ -552,7 +565,7 @@ export const REGISTRY: ShowcaseEntry[] = [
         // KuiReact showcase (Card.showcase): title + subtitle + headerRight badge
         title: "Raised",
         Demo: () => (
-          <Card title="User profile" subtitle="Manage your account" headerRight={<Badge label="Active" variant="success" />}>
+          <Card title="User profile" subtitle="Manage your account" headerRight={<Badge variant="success">Active</Badge>}>
             <Text variant="bodySm">Card body content goes here.</Text>
           </Card>
         ),
@@ -658,27 +671,45 @@ export const REGISTRY: ShowcaseEntry[] = [
     category: "Atoms",
     icon: faTag,
     description: "Compact status/label pill in semantic colors.",
-    usage: `<Badge label="New" variant="success" />`,
+    usage: `<Badge variant="success">Active</Badge>`,
     preview: () => (
       <View className="flex-row gap-1.5">
-        <Badge label="New" variant="primary" />
-        <Badge label="OK" variant="success" />
+        <Badge variant="primary">New</Badge>
+        <Badge variant="success">OK</Badge>
       </View>
     ),
+    // Mirrors KuiReact's Badge showcase variants 1:1 (same titles and copy).
     variants: [
+      { title: "Success", Demo: () => <Badge variant="success">Active</Badge> },
+      { title: "Error", Demo: () => <Badge variant="error">Inactive</Badge> },
+      { title: "Warning", Demo: () => <Badge variant="warning">Pending</Badge> },
+      { title: "Info", Demo: () => <Badge variant="info">New</Badge> },
+      { title: "Neutral", Demo: () => <Badge variant="neutral">Design</Badge> },
+      { title: "Primary", Demo: () => <Badge variant="primary">Frontend</Badge> },
       {
-        title: "Variants",
+        title: "Sizes",
         Demo: () => (
-          <View className="flex-row flex-wrap gap-2">
-            <Badge label="Default" />
-            <Badge label="Primary" variant="primary" />
-            <Badge label="Success" variant="success" />
-            <Badge label="Warning" variant="warning" />
-            <Badge label="Error" variant="error" />
-            <Badge label="Info" variant="info" />
+          <View className="flex-row flex-wrap items-center gap-2">
+            <Badge size="sm">Small</Badge>
+            <Badge size="md">Medium</Badge>
+            <Badge size="lg">Large</Badge>
           </View>
         ),
       },
+      {
+        title: "Dot badge",
+        Demo: () => (
+          <View className="flex-row flex-wrap items-center gap-2">
+            <Badge variant="success" dot>
+              Online
+            </Badge>
+            <Badge variant="warning" dot>
+              Away
+            </Badge>
+          </View>
+        ),
+      },
+      { title: "Dismissible", Demo: BadgeDismissibleDemo },
     ],
   },
   {
@@ -1209,7 +1240,7 @@ export const REGISTRY: ShowcaseEntry[] = [
                 id: "analytics",
                 label: "Analytics",
                 icon: <TabIcon icon={faArrowTrendUp} />,
-                badge: <Badge label="New" />,
+                badge: <Badge>New</Badge>,
                 content: <Text variant="bodySm">Analytics</Text>,
               },
               { id: "settings", label: "Settings", disabled: true, content: <Text variant="bodySm">Settings</Text> },
