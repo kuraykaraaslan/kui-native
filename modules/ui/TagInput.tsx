@@ -119,7 +119,14 @@ export function TagInput({
           !disabled && (focused ? "border-border-focus" : "border-border"),
           error && "border-error bg-error-subtle",
         )}
-        style={focused && !error ? { outlineWidth: 2, outlineColor: t["border-focus"], outlineStyle: "solid" } : undefined}
+        // KuiReact: focus-within:ring-2 ring-border-focus; the error state adds ring-1 ring-error.
+        style={
+          error
+            ? { outlineWidth: 1, outlineColor: t.error, outlineStyle: "solid" }
+            : focused
+              ? { outlineWidth: 2, outlineColor: t["border-focus"], outlineStyle: "solid" }
+              : undefined
+        }
       >
         {value.map((tag, i) =>
           editingIdx === i ? (

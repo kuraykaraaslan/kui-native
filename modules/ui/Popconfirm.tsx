@@ -1,6 +1,6 @@
 import type * as React from "react";
-import { useState } from "react";
-import { Platform, View } from "react-native";
+import { useRef, useState } from "react";
+import { AccessibilityInfo, Platform, View } from "react-native";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -48,6 +48,12 @@ export function Popconfirm({
   const t = useThemeTokens();
   const [open, setOpen] = useState(false);
   const { ref, rect, measure } = useAnchor<View>();
+  const cancelRef = useRef<View>(null);
+
+  // KuiReact's focus trap moves focus to Cancel on open.
+  function focusCancel() {
+    if (cancelRef.current) AccessibilityInfo.sendAccessibilityEvent(cancelRef.current, "focus");
+  }
 
   function toggle() {
     if (!open) measure();
@@ -65,7 +71,7 @@ export function Popconfirm({
   return (
     <>
       <Trigger anchorRef={ref} trigger={trigger} onToggle={toggle} extraProps={{ accessibilityState: { expanded: open } }} />
-      <AnchoredPanel open={open} onClose={() => setOpen(false)} anchor={rect} placement={placement} align="start" gap={8}>
+      <AnchoredPanel open={open} onClose={() => setOpen(false)} anchor={rect} placement={placement} align="start" gap={8} onShow={focusCancel}>
         <View
           testID="popconfirm-panel"
           role="alertdialog"
@@ -90,7 +96,7 @@ export function Popconfirm({
             </View>
           </View>
           <View className="mt-3 flex-row justify-end gap-2">
-            <Button variant="ghost" size="sm" onPress={handleCancel}>
+            <Button ref={cancelRef} variant="ghost" size="sm" onPress={handleCancel}>
               {cancelLabel}
             </Button>
             <Button variant={danger ? "danger" : "primary"} size="sm" onPress={handleConfirm}>

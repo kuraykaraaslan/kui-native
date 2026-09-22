@@ -60,8 +60,14 @@ export function Trigger({
         disabled && "bg-surface-sunken opacity-50",
         className,
       )}
-      // KuiReact: focus-within:ring-2 ring-border-focus while the popover's trigger has focus.
-      style={open && !invalid ? { outlineWidth: 2, outlineColor: t["border-focus"], outlineStyle: "solid" } : undefined}
+      // KuiReact: focus-within:ring-2 ring-border-focus; the error state adds ring-1 ring-error.
+      style={
+        invalid
+          ? { outlineWidth: 1, outlineColor: t.error, outlineStyle: "solid" }
+          : open
+            ? { outlineWidth: 2, outlineColor: t["border-focus"], outlineStyle: "solid" }
+            : undefined
+      }
     >
       <Pressable
         testID={testId}

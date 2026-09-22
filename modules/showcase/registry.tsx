@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faClock,
   faPalette,
   faSitemap,
   faGauge,
@@ -1461,6 +1462,32 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: function ColorPickerFormatSwitcherDemo() {
           const [c, setC] = useState<string | null>("#3b82f6");
           return <ColorPicker label="Theme color" value={c} onChange={setC} showFormatSwitcher defaultFormat="hex" showHexInput={false} showNativePicker />;
+        },
+      },
+    ],
+  },
+  {
+    id: "time-picker",
+    title: "TimePicker",
+    category: "Forms",
+    icon: faClock,
+    description: "Time field with label/hint/error slots, matching the Input/DatePicker pattern. Hour/minute only.",
+    usage: `<TimePicker id="time" label="Meeting time" value={t} onChange={setT} hint="24-hour format" />`,
+    preview: () => <TimePicker id="tp-preview" label="Time" value="09:00" onChange={() => {}} />,
+    // Mirrors KuiReact's TimePicker showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Default",
+        Demo: function TimePickerDemo() {
+          const [t, setT] = useState("09:00");
+          return <TimePicker id="tp-standalone" label="Meeting time" value={t} onChange={setT} hint="24-hour format" />;
+        },
+      },
+      {
+        title: "Required / error",
+        Demo: function TimePickerErrorDemo() {
+          const [t, setT] = useState("");
+          return <TimePicker id="tp-error" label="Pickup time" required error="Pickup time is required." value={t} onChange={setT} />;
         },
       },
     ],

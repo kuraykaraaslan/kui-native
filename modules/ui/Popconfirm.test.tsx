@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
+import { AccessibilityInfo } from "react-native";
 
 import { Button } from "./Button";
 import { Popconfirm } from "./Popconfirm";
@@ -25,6 +26,16 @@ describe("Popconfirm", () => {
     expect(panel()?.props.role).toBe("alertdialog");
     expect(panel()?.props.accessibilityViewIsModal).toBe(true);
     expect(screen.getByText("Delete this item?")).toBeTruthy();
+  });
+
+  it("moves screen-reader focus to Cancel once shown", async () => {
+    const spy = jest.spyOn(AccessibilityInfo, "sendAccessibilityEvent").mockImplementation(() => {});
+    await render(<Popconfirm trigger={<Button>Delete</Button>} title="Delete this item?" onConfirm={() => {}} />);
+    await fireEvent.press(screen.getByRole("button", { name: "Delete" }));
+    const modal = screen.container.queryAll((n) => typeof n.props.onShow === "function")[0];
+    await fireEvent(modal, "show");
+    expect(spy).toHaveBeenCalledWith(expect.anything(), "focus");
+    spy.mockRestore();
   });
 
   it("Android back closes the panel (KuiReact: Escape)", async () => {

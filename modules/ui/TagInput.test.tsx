@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 
+import { StyleSheet } from "react-native";
+
 import { TagInput } from "./TagInput";
 
 function classNameOf(el: { props: { className?: string | string[] } }) {
@@ -79,6 +81,7 @@ describe("TagInput", () => {
     await r.rerender(<TagInput id="t" label="Tags" value={[]} onChange={() => {}} error="At least one tag is required." />);
     expect(screen.getByRole("alert")).toHaveTextContent("At least one tag is required.");
     expect(classNameOf(screen.getByTestId("taginput-t"))).toContain("border-error");
+    expect(StyleSheet.flatten(screen.getByTestId("taginput-t").props.style).outlineWidth).toBe(1);
   });
 
   it("disabled: no input and no remove buttons", async () => {

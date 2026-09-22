@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
+import { StyleSheet } from "react-native";
 
 import { buildMonthGrid, formatDate, isDisabled } from "./hooks/useDateFns";
 import { DatePicker, DateRangePicker } from "./index";
@@ -115,7 +116,9 @@ describe("DatePicker", () => {
     await render(<DatePicker id="d" label="Due date" value={null} onChange={() => {}} hint="Pick one" error="Please select a date." />);
     expect(screen.queryByText("Pick one")).toBeNull();
     expect(screen.getByRole("alert")).toHaveTextContent("Please select a date.");
-    expect(classNameOf(screen.getByTestId("datepicker-d-trigger").parent as never)).toContain("border-error");
+    const shell = screen.getByTestId("datepicker-d-trigger").parent as never as { props: { style: unknown; className?: string } };
+    expect(classNameOf(shell)).toContain("border-error");
+    expect(StyleSheet.flatten(shell.props.style as never).outlineWidth).toBe(1);
   });
 
   it("uses KuiReact's popover and selected-day classes", async () => {
