@@ -23,7 +23,6 @@ Working branch: `feature/wave1-parity`. Scope: KuiReact ui-layer atoms, molecule
 | `2ae6209` | TabGroup |
 | `12b56f3` | Progress |
 | `7ca2284` | Docs refresh: regenerated inventories/backlog (44 missing), feature matrices for the 7 new components, Update blocks on the original 11, status matrix, re-scoring (34 → 56), README corrections; Avatar `src: null`, EmptyState `action` node + ReactNode `icon` |
-
 | `d8af042` | Select (inline listbox panel, as KuiReact); `countries-list` added for the 1:1 demos |
 | `27def3b` | Overlay core (`Overlays/shared`: usePresence, Backdrop, useFocusOnOpen) + Drawer; Modal refactored onto it |
 | `55f2d1b` | Toast suite (`toast()` API, Toaster, cards), `<Toaster />` mounted in the app root |
