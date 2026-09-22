@@ -96,6 +96,8 @@ export type { StepItem, StepperProps } from "./Stepper";
 export { Tooltip } from "./Tooltip";
 export type { TooltipProps } from "./Tooltip";
 export { Timeline } from "./Timeline";
+export { TimePicker } from "./TimePicker";
+export type { TimePickerProps } from "./TimePicker";
 export type { TimelineItem, TimelineProps } from "./Timeline";
 export { Toast, ToastProvider, ToastRegion, Toaster, getEffectiveDuration, toast, useToast, useToastStore } from "./Toast";
 export type {

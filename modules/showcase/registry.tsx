@@ -113,6 +113,7 @@ import {
   type ComboBoxOption,
   FileInput,
   Table,
+  TimePicker,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1198,9 +1199,7 @@ export const REGISTRY: ShowcaseEntry[] = [
     usage: `<DateRangePicker id="range" label="Select date range" value={range} onChange={setRange} />`,
     preview: () => <DateRangePicker id="dr-preview" value={null} onChange={() => {}} locale="en" />,
     // Mirrors KuiReact's DateRangePicker showcase variants 1:1 (same titles,
-    // copy and dates). KuiReact's third variant, "Time picker", renders
-    // TimePicker (a native time input), which isn't ported yet — see the
-    // roadmap's TimePicker item.
+    // copy and dates), including its "Time picker" variant.
     variants: [
       {
         title: "Date range",
@@ -1214,6 +1213,13 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: function DateRangeValueDemo() {
           const [range, setRange] = useState<DateRange>({ start: new Date("2026-06-01"), end: new Date("2026-06-15") });
           return <DateRangePicker id="dr-val" label="Booking window" value={range} onChange={setRange} locale="en" />;
+        },
+      },
+      {
+        title: "Time picker",
+        Demo: function TimePickerDemo() {
+          const [t, setT] = useState("09:00");
+          return <TimePicker id="tp-demo" label="Meeting time" value={t} onChange={setT} hint="24-hour format" />;
         },
       },
     ],
