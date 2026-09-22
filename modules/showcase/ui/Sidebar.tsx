@@ -42,6 +42,9 @@ const ABBR: Record<string, string> = {
   skeleton: "Sk",
   "tab-group": "Tg",
   drawer: "Dr",
+  popover: "Po",
+  "dropdown-menu": "Dm",
+  tooltip: "Tt",
   modal: "Md",
 };
 

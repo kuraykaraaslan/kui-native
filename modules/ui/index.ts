@@ -13,6 +13,8 @@ export type { CardProps } from "./Card";
 export { Checkbox } from "./Checkbox";
 export type { CheckboxProps } from "./Checkbox";
 export { Drawer } from "./Drawer";
+export { DropdownMenu } from "./DropdownMenu";
+export type { DropdownItem, DropdownMenuProps } from "./DropdownMenu";
 export type { DrawerProps } from "./Drawer";
 export { EmptyState } from "./EmptyState";
 export type { EmptyStateProps } from "./EmptyState";
@@ -20,6 +22,8 @@ export { Label } from "./Label";
 export type { LabelProps } from "./Label";
 export { Modal } from "./Modal";
 export type { ModalProps } from "./Modal";
+export { Popover } from "./Popover";
+export type { PopoverProps } from "./Popover";
 export { Progress } from "./Progress";
 export type { ProgressProps } from "./Progress";
 export { RadioGroup } from "./RadioGroup";
@@ -37,6 +41,8 @@ export type { SwitchProps, ToggleProps } from "./Toggle";
 export { TabGroup } from "./TabGroup";
 export type { Tab, TabGroupProps } from "./TabGroup";
 export { Text } from "./Text";
+export { Tooltip } from "./Tooltip";
+export type { TooltipProps } from "./Tooltip";
 export { Toast, ToastProvider, ToastRegion, Toaster, getEffectiveDuration, toast, useToast, useToastStore } from "./Toast";
 export type {
   ToastAction,

@@ -15,6 +15,9 @@ import {
   faIdCard,
   faInbox,
   faKeyboard,
+  faEllipsisVertical,
+  faMessage,
+  faCommentDots,
   faMagnifyingGlass,
   faBell,
   faListUl,
@@ -42,10 +45,12 @@ import {
   Card,
   Checkbox,
   Drawer,
+  DropdownMenu,
   EmptyState,
   Input,
   Label,
   Modal,
+  Popover,
   Progress,
   RadioGroup,
   Select,
@@ -60,6 +65,7 @@ import {
   Textarea,
   toast,
   Toggle,
+  Tooltip,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1337,6 +1343,141 @@ export const REGISTRY: ShowcaseEntry[] = [
       { title: "Right drawer", Demo: DrawerRightDemo },
       { title: "Left drawer", Demo: DrawerLeftDemo },
       { title: "Route-aware close (M6 stub)", Demo: DrawerRouteAwareDemo },
+    ],
+  },
+  {
+    id: "popover",
+    title: "Popover",
+    category: "Overlays",
+    icon: faCommentDots,
+    description: "Anchored panel toggled by its trigger; tap outside or Android back to close.",
+    usage: `<Popover trigger={<Button variant="outline">Open</Button>}>{content}</Popover>`,
+    preview: () => <Button variant="outline" size="sm">Open</Button>,
+    // Mirrors KuiReact's Popover showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Bottom (default)",
+        Demo: () => (
+          <Popover trigger={<Button variant="outline">Open</Button>} placement="bottom">
+            <View className="p-4">
+              <Text className="text-sm font-semibold text-text-primary">Title</Text>
+              <Text className="text-xs text-text-secondary">Content goes here.</Text>
+            </View>
+          </Popover>
+        ),
+      },
+      {
+        title: "Placements",
+        Demo: () => (
+          <View className="flex-row flex-wrap gap-2">
+            <Popover placement="top" trigger={<Button>Top</Button>}>
+              <View className="p-4">
+                <Text variant="bodySm">…</Text>
+              </View>
+            </Popover>
+            <Popover placement="right" trigger={<Button>Right</Button>}>
+              <View className="p-4">
+                <Text variant="bodySm">…</Text>
+              </View>
+            </Popover>
+          </View>
+        ),
+      },
+      {
+        title: "Focus trap inside Popover",
+        Demo: () => (
+          <Popover focusTrap placement="bottom" trigger={<Button>Quick edit</Button>}>
+            <View className="w-64 gap-3 p-4">
+              <Input placeholder="Title" />
+              <Input placeholder="Tag" />
+              <Button>Save</Button>
+            </View>
+          </Popover>
+        ),
+      },
+    ],
+  },
+  {
+    id: "dropdown-menu",
+    title: "DropdownMenu",
+    category: "Overlays",
+    icon: faEllipsisVertical,
+    description: "Action menu with icons, separators, danger and disabled items.",
+    usage: `<DropdownMenu trigger={<Button variant="outline" size="sm">Actions ▾</Button>} items={items} />`,
+    preview: () => <Button variant="outline" size="sm">Actions ▾</Button>,
+    // Mirrors KuiReact's DropdownMenu showcase variants 1:1 (same titles, glyphs and copy).
+    variants: [
+      {
+        title: "Default",
+        Demo: () => (
+          <DropdownMenu
+            trigger={<Button variant="outline" size="sm">Actions ▾</Button>}
+            items={[
+              { label: "Edit", icon: "✏" },
+              { label: "Duplicate", icon: "⧉" },
+              { type: "separator" },
+              { label: "Delete", icon: "🗑", danger: true },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "Right-aligned",
+        Demo: () => (
+          <View className="items-end">
+            <DropdownMenu
+              align="right"
+              trigger={<Button variant="ghost" size="sm">⋮</Button>}
+              items={[{ label: "View details" }, { label: "Remove", danger: true }]}
+            />
+          </View>
+        ),
+      },
+    ],
+  },
+  {
+    id: "tooltip",
+    title: "Tooltip",
+    category: "Overlays",
+    icon: faMessage,
+    description: "Short hint shown on long-press (hover/focus on web), with themes, arrow and delay.",
+    usage: `<Tooltip content="Help text"><Button variant="outline" size="sm">Hover me</Button></Tooltip>`,
+    preview: () => <Button variant="outline" size="sm">Hover me</Button>,
+    // Mirrors KuiReact's Tooltip showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Placements",
+        Demo: () => (
+          <View className="pt-8">
+            <Tooltip content="Help text" placement="top">
+              <Button variant="outline" size="sm">Hover me</Button>
+            </Tooltip>
+          </View>
+        ),
+      },
+      {
+        title: "Themes",
+        Demo: () => (
+          <View className="pt-8">
+            <Tooltip content="Dark theme" theme="dark">
+              <Button>Dark</Button>
+            </Tooltip>
+          </View>
+        ),
+      },
+      {
+        title: "Arrow + Delay",
+        Demo: () => (
+          <View className="flex-row gap-2 pt-8">
+            <Tooltip content="With arrow" arrow placement="top">
+              <Button>Arrow</Button>
+            </Tooltip>
+            <Tooltip content="500ms delay" delay={500}>
+              <Button>Delayed</Button>
+            </Tooltip>
+          </View>
+        ),
+      },
     ],
   },
   {
