@@ -1,5 +1,6 @@
 import { useState, type ComponentType } from "react";
 import { View } from "react-native";
+import { countries, getEmojiFlag, type TCountryCode } from "countries-list";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -14,6 +15,7 @@ import {
   faIdCard,
   faInbox,
   faKeyboard,
+  faListUl,
   faBarsProgress,
   faAlignLeft,
   faArrowTrendUp,
@@ -41,6 +43,7 @@ import {
   Modal,
   Progress,
   RadioGroup,
+  Select,
   Separator,
   SkeletonAvatar,
   SkeletonCard,
@@ -199,6 +202,65 @@ function TextareaCounterDemo() {
         {MAX - v.length} characters remaining
       </Text>
     </View>
+  );
+}
+// Mirrors KuiReact's Select showcase variants 1:1 (same titles, data and copy).
+const ROLES = [
+  { value: "admin", label: "Admin" },
+  { value: "editor", label: "Editor" },
+  { value: "viewer", label: "Viewer" },
+];
+const PLANS = [
+  { value: "free", label: "Free" },
+  { value: "pro", label: "Pro" },
+  { value: "team", label: "Team" },
+];
+const COUNTRY_OPTIONS = Object.entries(countries)
+  .map(([code, data]) => ({ value: code, label: `${getEmojiFlag(code as TCountryCode)} ${data.name}` }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+function StatusDot({ color }: { color: string }) {
+  return <Text className={color}>●</Text>;
+}
+const STATUSES = [
+  { value: "active", label: "Active", icon: <StatusDot color="text-success" /> },
+  { value: "inactive", label: "Inactive", icon: <StatusDot color="text-text-disabled" /> },
+  { value: "pending", label: "Pending", icon: <StatusDot color="text-warning" /> },
+];
+function SelectControlledDemo() {
+  const [role, setRole] = useState("editor");
+  return <Select id="role" label="Role" options={ROLES} value={role} onChange={setRole} />;
+}
+function SelectIconsDemo() {
+  const [status, setStatus] = useState("active");
+  return <Select id="status" label="Status" options={STATUSES} value={status} onChange={setStatus} />;
+}
+function SelectCountriesDemo() {
+  const [val, setVal] = useState<string>();
+  return (
+    <Select
+      id="country"
+      label="Country"
+      placeholder="Select a country…"
+      options={COUNTRY_OPTIONS}
+      value={val}
+      onChange={setVal}
+      hint="Powered by countries-list."
+    />
+  );
+}
+function SelectSearchableDemo() {
+  const [val, setVal] = useState<string>();
+  return (
+    <Select
+      id="country"
+      label="Country"
+      placeholder="Select a country…"
+      searchable
+      options={COUNTRY_OPTIONS}
+      value={val}
+      onChange={setVal}
+      hint="Type to filter the list."
+    />
   );
 }
 function TextInputDemo() {
@@ -614,6 +676,30 @@ export const REGISTRY: ShowcaseEntry[] = [
         title: "Disabled",
         Demo: () => <TextInput label="Email" placeholder="you@example.com" editable={false} />,
       },
+    ],
+  },
+  {
+    id: "select",
+    title: "Select",
+    category: "Forms",
+    icon: faListUl,
+    description: "Single-select field with icons, search, placeholder, validation and disabled states.",
+    usage: `<Select id="role" label="Role" options={ROLES} value={role} onChange={setRole} />`,
+    preview: () => <Select id="p" label="Role" options={ROLES} value="editor" className="w-44" />,
+    variants: [
+      { title: "Controlled", Demo: SelectControlledDemo },
+      { title: "With icons", Demo: SelectIconsDemo },
+      {
+        title: "Validation states",
+        Demo: () => (
+          <View className="gap-4">
+            <Select id="plan" label="Plan" placeholder="Select a plan" required error="Please select a plan." options={PLANS} />
+            <Select id="plan" label="Plan" disabled options={PLANS} value="pro" />
+          </View>
+        ),
+      },
+      { title: "With countries", Demo: SelectCountriesDemo },
+      { title: "Searchable", Demo: SelectSearchableDemo },
     ],
   },
   {

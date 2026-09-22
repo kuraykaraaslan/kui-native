@@ -22,6 +22,8 @@ export { Progress } from "./Progress";
 export type { ProgressProps } from "./Progress";
 export { RadioGroup } from "./RadioGroup";
 export type { RadioGroupProps, RadioOption } from "./RadioGroup";
+export { Select } from "./Select";
+export type { SelectOption, SelectProps } from "./Select";
 export { Separator } from "./Separator";
 export type { SeparatorProps } from "./Separator";
 export { SkeletonAvatar, SkeletonCard, SkeletonLine, SkeletonText } from "./Skeleton";

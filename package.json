@@ -20,6 +20,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-native-fontawesome": "^0.3.2",
     "clsx": "^2.1.1",
+    "countries-list": "^3.4.1",
     "expo": "^56.0.9",
     "expo-constants": "~56.0.17",
     "expo-image": "~56.0.10",
