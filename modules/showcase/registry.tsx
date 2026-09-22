@@ -889,12 +889,18 @@ export const REGISTRY: ShowcaseEntry[] = [
     variants: [
       { title: "Default", Demo: CheckboxDefaultDemo },
       {
+        title: "With hint",
+        Demo: () => <Checkbox label="Subscribe to newsletter" hint="We send weekly updates, no spam." />,
+      },
+      {
+        title: "Error",
+        Demo: () => <Checkbox label="I agree to the Terms of Service" error="You must accept the terms." />,
+      },
+      {
         title: "Disabled",
-        Demo: () => <Checkbox checked disabled label="Checked and disabled" />,
+        Demo: () => <Checkbox defaultChecked disabled label="Checked and disabled" />,
       },
       { title: "Indeterminate (select all)", Demo: CheckboxSelectAllDemo },
-      // KuiReact's "With hint" and "Error" variants need the `hint`/`error`
-      // props, not yet ported (tracked as R-checkbox, Wave 2).
     ],
   },
   {

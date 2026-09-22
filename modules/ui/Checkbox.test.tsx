@@ -50,12 +50,36 @@ describe("Checkbox", () => {
     expect(screen.getByRole("checkbox").props.accessibilityState.checked).toBe("mixed");
   });
 
-  it("disabled prevents interaction and applies opacity-50", async () => {
+  it("disabled prevents interaction, dims only the box and greys the label (KuiReact)", async () => {
     const onChange = jest.fn();
     await render(<Checkbox checked={false} onChange={onChange} disabled label="x" />);
     const checkbox = screen.getByRole("checkbox");
-    expect(classNameOf(checkbox)).toContain("opacity-50");
+    expect(classNameOf(checkbox)).not.toContain("opacity-50");
+    expect(classNameOf(checkbox.children[0] as never)).toContain("opacity-50");
+    expect(classNameOf(screen.getByText("x"))).toContain("text-text-disabled");
     await fireEvent.press(checkbox);
     expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("hint renders under the label and is exposed as the accessibility hint", async () => {
+    await render(<Checkbox checked={false} label="Subscribe to newsletter" hint="We send weekly updates, no spam." />);
+    expect(screen.getByText("We send weekly updates, no spam.")).toBeTruthy();
+    expect(screen.getByRole("checkbox").props.accessibilityHint).toBe("We send weekly updates, no spam.");
+  });
+
+  it("error replaces the hint, reddens the box border and is announced", async () => {
+    await render(<Checkbox checked={false} label="Terms" hint="h" error="You must accept the terms." />);
+    expect(screen.queryByText("h")).toBeNull();
+    expect(screen.getByRole("alert")).toBeTruthy();
+    expect(classNameOf(screen.getByRole("checkbox").children[0] as never)).toContain("border-error");
+  });
+
+  it("works uncontrolled with defaultChecked", async () => {
+    const onChange = jest.fn();
+    await render(<Checkbox defaultChecked label="Remember me" onChange={onChange} />);
+    expect(screen.getByRole("checkbox").props.accessibilityState.checked).toBe(true);
+    await fireEvent.press(screen.getByRole("checkbox"));
+    expect(onChange).toHaveBeenCalledWith(false);
+    expect(screen.getByRole("checkbox").props.accessibilityState.checked).toBe(false);
   });
 });
