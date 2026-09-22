@@ -34,6 +34,8 @@ export { Progress } from "./Progress";
 export type { ProgressProps } from "./Progress";
 export { RadioGroup } from "./RadioGroup";
 export type { RadioGroupProps, RadioOption } from "./RadioGroup";
+export { SearchBar } from "./SearchBar";
+export type { SearchBarProps } from "./SearchBar";
 export { Select } from "./Select";
 export type { SelectOption, SelectProps } from "./Select";
 export { Separator } from "./Separator";

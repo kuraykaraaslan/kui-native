@@ -1,4 +1,4 @@
-import { useState, type ComponentType } from "react";
+import { useRef, useState, type ComponentType } from "react";
 import { View } from "react-native";
 import { countries, getEmojiFlag, type TCountryCode } from "countries-list";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -72,6 +72,7 @@ import {
   Accordion,
   ButtonGroup,
   CheckboxGroup,
+  SearchBar,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -883,6 +884,87 @@ export const REGISTRY: ShowcaseEntry[] = [
         ),
       },
       { title: "Loading state", Demo: InputLoadingDemo },
+    ],
+  },
+  {
+    id: "search-bar",
+    title: "SearchBar",
+    category: "Forms",
+    icon: faMagnifyingGlass,
+    description: "Searchbox with search icon and clear button. Works in controlled and uncontrolled modes.",
+    usage: `<SearchBar placeholder="Search components…" value={q} onChange={setQ} />`,
+    preview: () => <SearchBar className="w-full" placeholder="Search components…" />,
+    // Mirrors KuiReact's SearchBar showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Default",
+        Demo: () => (
+          <View className="w-full max-w-xs">
+            <SearchBar placeholder="Search components…" />
+          </View>
+        ),
+      },
+      {
+        title: "With value",
+        Demo: () => (
+          <View className="w-full max-w-xs">
+            <SearchBar value="Button" onChange={() => {}} />
+          </View>
+        ),
+      },
+      {
+        title: "Loading state",
+        Demo: function SearchLoadingDemo() {
+          const [q, setQ] = useState("react");
+          const [loading, setLoading] = useState(false);
+          const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+          function handleChange(v: string) {
+            setQ(v);
+            setLoading(true);
+            if (timerRef.current) clearTimeout(timerRef.current);
+            timerRef.current = setTimeout(() => setLoading(false), 800);
+          }
+          return (
+            <View className="w-full max-w-xs gap-2">
+              <SearchBar value={q} onChange={handleChange} placeholder="Search…" />
+              {loading ? (
+                <View className="flex-row items-center gap-1.5">
+                  <Spinner size="xs" />
+                  <Text className="text-xs text-text-secondary">Searching…</Text>
+                </View>
+              ) : q ? (
+                <Text className="text-xs text-text-secondary">Found 24 results for “{q}”</Text>
+              ) : null}
+            </View>
+          );
+        },
+      },
+      {
+        title: "With results count",
+        Demo: function ResultsSearchDemo() {
+          const ITEMS = ["Button", "Badge", "Avatar", "Card", "Input", "Select", "Textarea", "Tooltip", "Modal", "Drawer"];
+          const [q, setQ] = useState("");
+          const filtered = q ? ITEMS.filter((n) => n.toLowerCase().includes(q.toLowerCase())) : ITEMS;
+          return (
+            <View className="w-full max-w-xs gap-2">
+              <SearchBar value={q} onChange={setQ} placeholder="Filter components…" />
+              <Text className="text-xs text-text-secondary">
+                {filtered.length} of {ITEMS.length} components
+              </Text>
+              <View className="gap-1">
+                {filtered.slice(0, 4).map((name) => (
+                  <Text key={name} className="rounded px-2 py-1 text-sm text-text-primary">
+                    {name}
+                  </Text>
+                ))}
+                {filtered.length > 4 ? (
+                  <Text className="px-2 text-xs text-text-secondary">+{filtered.length - 4} more…</Text>
+                ) : null}
+              </View>
+            </View>
+          );
+        },
+      },
     ],
   },
   {
