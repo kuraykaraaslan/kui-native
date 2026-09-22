@@ -12,6 +12,8 @@ export { BrandLogo } from "./BrandLogo";
 export type { BrandLogoProps } from "./BrandLogo";
 export { Breadcrumb } from "./Breadcrumb";
 export type { BreadcrumbItem, BreadcrumbProps } from "./Breadcrumb";
+export { BulkActionTable } from "./BulkActionTable";
+export type { BulkAction, BulkActionTableProps } from "./BulkActionTable";
 export { Button } from "./Button";
 export { ButtonGroup } from "./ButtonGroup";
 export type { ButtonGroupItem, ButtonGroupProps } from "./ButtonGroup";

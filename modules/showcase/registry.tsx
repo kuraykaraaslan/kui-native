@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faListCheck as faBulkRows,
   faTableCellsColumnLock,
   faClock,
   faPalette,
@@ -129,6 +130,7 @@ import {
   TreeView,
   ColorPicker,
   DataTable,
+  BulkActionTable,
   type DataTableFetchArgs,
   type DataTableFetchResult,
   type ScoreRule,
@@ -2994,6 +2996,88 @@ export const REGISTRY: ShowcaseEntry[] = [
             />
           </View>
         ),
+      },
+    ],
+  },
+  {
+    id: "bulk-action-table",
+    title: "BulkActionTable",
+    category: "Atoms",
+    icon: faBulkRows,
+    description: "Table with id-keyed row selection and a bulk-action bar. The header checkbox selects only the visible rows; selecting every matching row is an explicit offer.",
+    usage: `<BulkActionTable rows={rows} rowId={(r) => r.id} selected={sel} onSelectedChange={setSel} columns={columns} actions={actions} />`,
+    preview: () => (
+      <BulkActionTable<{ id: string; name: string }, string>
+        rows={[{ id: "a", name: "Northwind Traders" }]}
+        rowId={(r) => r.id}
+        selected={["a"]}
+        onSelectedChange={() => {}}
+        columns={[{ key: "name", header: "Company" }]}
+      />
+    ),
+    // Mirrors KuiReact's BulkActionTable showcase variants 1:1 (same titles and data).
+    variants: [
+      {
+        title: "Selection and actions",
+        Demo: function Demo() {
+          type Row = { id: string; company: string; country: string; stage: string; [key: string]: unknown };
+          const ROWS: Row[] = [
+            { id: "c1", company: "Northwind Traders", country: "DE", stage: "new" },
+            { id: "c2", company: "Contoso Ltd", country: "GB", stage: "contacted" },
+            { id: "c3", company: "Fabrikam", country: "NL", stage: "replied" },
+            { id: "c4", company: "Adventure Works", country: "TR", stage: "new" },
+          ];
+          const [selected, setSelected] = useState<string[]>(["c1"]);
+          return (
+            <View className="w-full">
+              <BulkActionTable<Row, string>
+                rows={ROWS}
+                rowId={(r) => r.id}
+                selected={selected}
+                onSelectedChange={setSelected}
+                columns={[
+                  { key: "company", header: "Company" },
+                  { key: "country", header: "Country" },
+                  { key: "stage", header: "Stage" },
+                ]}
+                actions={[
+                  { key: "enrich", label: "Enrich", onAction: () => undefined },
+                  { key: "remove", label: "Remove", destructive: true, onAction: () => setSelected([]) },
+                ]}
+              />
+            </View>
+          );
+        },
+      },
+      {
+        title: "Unselectable rows, and select-all-matching",
+        Demo: function Demo() {
+          type Row = { id: string; company: string; reason: string; [key: string]: unknown };
+          const ROWS: Row[] = [
+            { id: "c1", company: "Northwind Traders", reason: "" },
+            { id: "c2", company: "Contoso Ltd", reason: "Suppressed \u2014 replied \"stop\"" },
+            { id: "c3", company: "Fabrikam", reason: "" },
+          ];
+          const [selected, setSelected] = useState<string[]>([]);
+          return (
+            <View className="w-full">
+              <BulkActionTable<Row, string>
+                rows={ROWS}
+                rowId={(r) => r.id}
+                selected={selected}
+                onSelectedChange={setSelected}
+                isRowSelectable={(r) => (r.reason ? r.reason : true)}
+                totalMatching={1240}
+                onSelectAllMatching={() => undefined}
+                columns={[
+                  { key: "company", header: "Company" },
+                  { key: "reason", header: "Why not selectable" },
+                ]}
+                actions={[{ key: "email", label: "Email", onAction: () => undefined }]}
+              />
+            </View>
+          );
+        },
       },
     ],
   },

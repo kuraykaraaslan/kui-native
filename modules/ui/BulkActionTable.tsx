@@ -1,0 +1,178 @@
+import { useMemo, type ReactNode } from "react";
+import { Pressable, View } from "react-native";
+import { faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import { useThemeTokens } from "@/libs/theme";
+import { cn } from "@/libs/utils/cn";
+
+import { Text } from "./Text";
+import { Table } from "./Table/Table";
+import type { Column } from "./Table/types";
+
+export type BulkAction<Id> = {
+  /** Stable key, used for React and for telemetry. */
+  key: string;
+  label: string;
+  icon?: ReactNode;
+  /** Rendered in a way that reads as destructive. */
+  destructive?: boolean;
+  onAction: (ids: Id[]) => void;
+  /** Disable for the current selection, with a reason (announced as the hint). */
+  disabled?: (ids: Id[]) => string | false;
+};
+
+const DEFAULT_LABELS = {
+  selectRow: "Select row",
+  selectAllOnPage: "Select all rows on this page",
+  selectedCount: (n: number) => `${n} selected`,
+  selectAllMatching: (n: number) => `Select all ${n} matching`,
+  clear: "Clear selection",
+};
+
+export type BulkActionTableProps<T extends Record<string, unknown>, Id extends string | number> = {
+  columns: Column<T>[];
+  rows: T[];
+  /** Stable identity for a row. Never the array index. */
+  rowId: (row: T) => Id;
+  selected: readonly Id[];
+  onSelectedChange: (ids: Id[]) => void;
+  actions?: BulkAction<Id>[];
+  /** Total rows matching the current filter; turns on "select all N matching". */
+  totalMatching?: number;
+  onSelectAllMatching?: () => void;
+  /** Rows that cannot be selected, with the reason announced on the checkbox. */
+  isRowSelectable?: (row: T) => string | true;
+  caption?: string;
+  emptyMessage?: string;
+  className?: string;
+  labels?: Partial<typeof DEFAULT_LABELS>;
+};
+
+// KuiReact's native "h-4 w-4 rounded border-border-strong accent-[var(--primary)]" checkbox.
+function SelectBox({ checked, mixed, disabled, label, hint, onPress }: { checked: boolean; mixed?: boolean; disabled?: boolean; label: string; hint?: string; onPress: () => void }) {
+  const t = useThemeTokens();
+  const on = checked || mixed;
+  return (
+    <Pressable
+      accessibilityRole="checkbox"
+      accessibilityLabel={label}
+      accessibilityHint={hint}
+      accessibilityState={{ checked: mixed ? "mixed" : checked, disabled: Boolean(disabled) }}
+      disabled={disabled}
+      hitSlop={10}
+      onPress={onPress}
+      className={cn("h-4 w-4 items-center justify-center rounded border", on ? "border-primary bg-primary" : "border-border-strong bg-surface-base", disabled && "opacity-40")}
+    >
+      {on ? <FontAwesomeIcon icon={mixed ? faMinus : faCheck} size={10} color={t["primary-fg"]} /> : null}
+    </Pressable>
+  );
+}
+
+/**
+ * Pixel-for-pixel with KuiReact's BulkActionTable: a <Table /> with an
+ * id-keyed selection column and, once something is selected, a
+ * `rounded-lg border bg-surface-overlay px-3 py-2` bar showing the count,
+ * an explicit "Select all N matching" offer when more rows match than are
+ * shown, the actions (destructive ones in `bg-error`) and "Clear
+ * selection". The header checkbox only (de)selects the visible rows, so a
+ * selection made on another page survives. Disabled reasons (KuiReact's
+ * `title` tooltips) are announced as accessibility hints.
+ */
+export function BulkActionTable<T extends Record<string, unknown>, Id extends string | number>({
+  columns,
+  rows,
+  rowId,
+  selected,
+  onSelectedChange,
+  actions = [],
+  totalMatching,
+  onSelectAllMatching,
+  isRowSelectable,
+  caption,
+  emptyMessage,
+  className,
+  labels: labelOverrides,
+}: BulkActionTableProps<T, Id>) {
+  const labels = { ...DEFAULT_LABELS, ...labelOverrides };
+  const selectedSet = useMemo(() => new Set<Id>(selected), [selected]);
+  const selectableRows = useMemo(() => rows.filter((row) => (isRowSelectable ? isRowSelectable(row) === true : true)), [rows, isRowSelectable]);
+
+  const visibleSelectedCount = selectableRows.filter((r) => selectedSet.has(rowId(r))).length;
+  const allVisibleSelected = selectableRows.length > 0 && visibleSelectedCount === selectableRows.length;
+  const someVisibleSelected = visibleSelectedCount > 0 && !allVisibleSelected;
+
+  function toggleRow(id: Id) {
+    const next = new Set(selectedSet);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    onSelectedChange([...next]);
+  }
+
+  function toggleAllVisible() {
+    const next = new Set(selectedSet);
+    // Deselect only what is visible: a selection made on another page must survive.
+    if (allVisibleSelected) for (const row of selectableRows) next.delete(rowId(row));
+    else for (const row of selectableRows) next.add(rowId(row));
+    onSelectedChange([...next]);
+  }
+
+  const selectionColumn: Column<T> = {
+    key: "__selection",
+    header: (
+      <SelectBox checked={allVisibleSelected} mixed={someVisibleSelected} disabled={selectableRows.length === 0} label={labels.selectAllOnPage} onPress={toggleAllVisible} />
+    ),
+    width: 48,
+    render: (row) => {
+      const id = rowId(row);
+      const selectable = isRowSelectable ? isRowSelectable(row) : true;
+      const reason = selectable === true ? undefined : selectable;
+      return <SelectBox checked={selectedSet.has(id)} disabled={reason !== undefined} hint={reason} label={`${labels.selectRow} ${String(id)}`} onPress={() => toggleRow(id)} />;
+    },
+  };
+
+  const hasMoreMatching = typeof totalMatching === "number" && totalMatching > rows.length && onSelectAllMatching;
+
+  return (
+    <View className={cn("flex-col gap-3", className)}>
+      {selected.length > 0 ? (
+        <View role="region" aria-label="Bulk actions" className="flex-row flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-overlay px-3 py-2">
+          <Text className="text-sm font-medium text-text-primary">{labels.selectedCount(selected.length)}</Text>
+          {hasMoreMatching ? (
+            <Pressable accessibilityRole="button" onPress={onSelectAllMatching}>
+              {({ pressed }) => <Text className={cn("text-sm text-primary", pressed && "underline")}>{labels.selectAllMatching(totalMatching)}</Text>}
+            </Pressable>
+          ) : null}
+          <View className="ml-auto flex-row flex-wrap items-center gap-2">
+            {actions.map((action) => {
+              const disabledReason = action.disabled?.([...selected]);
+              return (
+                <Pressable
+                  key={action.key}
+                  accessibilityRole="button"
+                  accessibilityLabel={action.label}
+                  accessibilityHint={disabledReason || undefined}
+                  accessibilityState={{ disabled: Boolean(disabledReason) }}
+                  disabled={Boolean(disabledReason)}
+                  onPress={() => action.onAction([...selected])}
+                  className={cn(
+                    "flex-row items-center gap-2 rounded-md px-3 py-1.5",
+                    action.destructive ? "bg-error active:opacity-90" : "bg-primary active:bg-primary-hover",
+                    disabledReason && "opacity-50",
+                  )}
+                >
+                  {action.icon}
+                  <Text className={cn("text-sm", action.destructive ? "text-white" : "text-primary-fg")}>{action.label}</Text>
+                </Pressable>
+              );
+            })}
+            <Pressable accessibilityRole="button" onPress={() => onSelectedChange([])}>
+              {({ pressed }) => <Text className={cn("text-sm", pressed ? "text-text-primary" : "text-text-secondary")}>{labels.clear}</Text>}
+            </Pressable>
+          </View>
+        </View>
+      ) : null}
+      <Table<T> columns={[selectionColumn, ...columns]} rows={rows} caption={caption} emptyMessage={emptyMessage} />
+    </View>
+  );
+}
