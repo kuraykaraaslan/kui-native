@@ -287,6 +287,9 @@ const SHARED = {
   label: ["Label"], separator: ["Separator"], "alert-banner": ["AlertBanner"], "radio-group": ["RadioGroup"],
   textarea: ["Textarea"], "tab-group": ["TabGroup"], progress: ["Progress"],
   select: ["Select"], drawer: ["Drawer"], toast: ["Toaster", "Toast", "ToastProvider", "ToastRegion"],
+  popover: ["Popover"], "dropdown-menu": ["DropdownMenu"], tooltip: ["Tooltip"], accordion: ["Accordion"],
+  "button-group": ["ButtonGroup"], "checkbox-group": ["CheckboxGroup"], "search-bar": ["SearchBar"], pagination: ["Pagination"],
+  stepper: ["Stepper"], breadcrumb: ["Breadcrumb"], "page-header": ["PageHeader"], "multi-select": ["MultiSelect"], "range-slider": ["RangeSlider"],
 };
 
 const entries = reg.components.map((c) => ({ ...c, source: undefined, registry: true }));
@@ -517,7 +520,12 @@ function analyse(e) {
 const facts = entries.map(analyse);
 
 // ---------------------------------------------------------------- KuiNative side
-const knBarrel = read(path.join(KN, "modules/ui/index.ts"));
+// KN_REV (env) pins the KuiNative side to a commit so work landing during a
+// refresh is not half-counted; defaults to HEAD. Sources are still read from
+// the checkout, which matches the pinned commit for already-committed files.
+const KN_REV = process.env.KN_REV || "HEAD";
+const gitKN = (args) => require("child_process").execSync(`git ${args}`, { cwd: KN, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+const knBarrel = gitKN(`show ${KN_REV}:modules/ui/index.ts`);
 const knExports = [...knBarrel.matchAll(/export\s+\{([^}]*)\}\s*from\s*["']\.\/(\w+)["']/g)].flatMap((m) => m[1].split(",").map((n) => ({ name: n.trim(), file: fs.existsSync(path.join(KN, `modules/ui/${m[2]}.tsx`)) ? `modules/ui/${m[2]}.tsx` : `modules/ui/${m[2]}/index.tsx` })));
 const knFacts = knExports.map((x) => {
   const p = extractComponent(path.join(KN, x.file), x.name, KN);
@@ -536,6 +544,17 @@ const knFacts = knExports.map((x) => {
   };
 });
 
+// KuiNative quality metadata (tests, showcase, type exports)
+// Tracked files only, so work in progress in the checkout is not counted.
+const knTestFiles = gitKN(`ls-tree -r --name-only ${KN_REV}`).split(/\r?\n/).filter((f) => /\.test\.tsx?$/.test(f)).sort();
+const knMeta = {
+  testFiles: knTestFiles,
+  rev: gitKN(`rev-parse --short ${KN_REV}`).trim(),
+  testCases: knTestFiles.reduce((a, f) => a + (gitKN(`show ${KN_REV}:${f}`).match(/^\s*(it|test)(\.each\([^)]*\))?\(/gm) || []).length, 0),
+  showcaseEntries: (gitKN(`show ${KN_REV}:modules/showcase/registry.tsx`).match(/^    id: "/gm) || []).length,
+  typeExports: [...knBarrel.matchAll(/export\s+type\s+\{([^}]*)\}/g)].flatMap((m) => m[1].split(",").map((n) => n.trim()).filter(Boolean)).length,
+};
+
 // token comparison
 const krCss = read(path.join(KR, "app/globals.css"));
 const krLight = {}, krDark = {};
@@ -550,7 +569,7 @@ for (const k of new Set([...Object.keys(krLight), ...Object.keys(knLight)])) {
   tokenDiff.push({ token: k, krLight: krLight[k] || null, knLight: knLight[k] || null, krDark: krDark[k] || null, knDark: knDark[k] || null });
 }
 
-fs.writeFileSync(path.join(__dirname, "facts.json"), JSON.stringify({ facts, knFacts, tokenDiff, SHARED, knLight, knDark, generatedAt: new Date().toISOString(), registryGeneratedAt: reg.generatedAt, registryVersion: reg.version }, null, 1));
+fs.writeFileSync(path.join(__dirname, "facts.json"), JSON.stringify({ facts, knFacts, knMeta, tokenDiff, SHARED, knLight, knDark, generatedAt: new Date().toISOString(), registryGeneratedAt: reg.generatedAt, registryVersion: reg.version }, null, 1));
 
 // summary to stdout
 const miss = facts.filter((f) => !SHARED[f.id] && f.layer !== "library");
@@ -558,6 +577,7 @@ console.log("entries", facts.length, "missing", miss.length);
 console.log("props extracted", facts.filter((f) => f.props && f.props.members.length).length, "/", facts.length);
 console.log("no props:", facts.filter((f) => !f.props || !f.props.members.length).map((f) => f.id).join(", "));
 console.log("tokenDiff mismatches:", tokenDiff.filter((t) => t.krLight !== t.knLight || t.krDark !== t.knDark).map((t) => t.token).join(", ") || "none");
+console.log("knMeta:", knMeta.testFiles.length, knMeta.testCases, knMeta.showcaseEntries, knMeta.typeExports);
 console.log("knFacts:", knFacts.map((k) => `${k.name}:${k.props ? k.props.members.length : "x"}:${k.krCounterpart}`).join(" "));
 for (const id of ["button", "input", "modal", "card", "toggle", "badge", "select", "toast", "drawer", "chart"]) {
   const f = facts.find((x) => x.id === id);

@@ -1,7 +1,7 @@
 # Missing components
 
 > KuiReact ↔ KuiNative parity audit · 2026-09-22 · generated from source (KuiReact registry v0.1.0, snapshot 2026-09-18).
-> 41 in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart.
+> 28 in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart.
 
 ## Scope
 
@@ -26,22 +26,12 @@ KuiNative development is scoped to KuiReact's core **ui-layer atoms, molecules a
 - **Fit** — `direct` mechanical port · `adapt` needs a platform-idiomatic redesign (sheet instead of popover, etc.) · `web-only` recommended parity exception.
 - **Wave** — roadmap wave (see [08-roadmap.md](../08-roadmap.md)).
 
-## Core components (ui-layer Atom/Molecule/Organism) — 41
+## Core components (ui-layer Atom/Molecule/Organism) — 28
 
 | Component | Category | Priority | Complexity | Wave | Fit | Reason |
 | --- | --- | --- | --- | --- | --- | --- |
-| [PageHeader](../component-backlog/page-header.md) | Layout | High | Small | W2 | direct | Screen title + subtitle + actions; every screen uses one. |
-| [Stepper](../component-backlog/stepper.md) | Navigation | High | Small | W2 | direct | Step indicator used by wizards/checkout. |
-| [ButtonGroup](../component-backlog/button-group.md) | Forms | High | Small | W2 | direct | Segmented control pattern (options/selected/onChange); very common on mobile. |
-| [CheckboxGroup](../component-backlog/checkbox-group.md) | Forms | High | Small | W2 | direct | Composes Checkbox; needed for multi-choice forms and filter panels. |
 | [DatePicker](../component-backlog/date-picker.md) | Forms | High | Large | W2 | adapt | Date entry is a core form control; KuiReact ships a 1.4k-LOC calendar popover. |
-| [MultiSelect](../component-backlog/multi-select.md) | Forms | High | Medium | W2 | adapt | Multi-value selection used by filters and forms. |
-| [RangeSlider](../component-backlog/range-slider.md) | Forms | High | Medium | W2 | direct | Numeric range input used by filters and settings. |
-| [SearchBar](../component-backlog/search-bar.md) | Forms | High | Small | W2 | direct | Search is ubiquitous on mobile lists; KuiReact exposes value/onChange/onClear. |
-| [DropdownMenu](../component-backlog/dropdown-menu.md) | Overlay | High | Medium | W2 | adapt | Action menus (items/danger/disabled/separator) are needed for list rows and headers. |
-| [Accordion](../component-backlog/accordion.md) | Data Display | High | Small | W2 | direct | Collapsible sections (FAQ, settings); common on mobile. |
 | [BrandLogo](../component-backlog/brand-logo.md) | Foundation | Medium | Small | W2 | direct | Used by AppShell/AppFooter/SplashScreen; blocks those ports. |
-| [Pagination](../component-backlog/pagination.md) | Navigation | Medium | Small | W2 | adapt | Page controls; mobile lists usually use infinite scroll, but tables/search results still need it. |
 | [TabButton](../component-backlog/tab-button.md) | Navigation | Medium | Small | W2 | direct | Single tab button with count badge; building block of TabGroup. |
 | [ComboBox](../component-backlog/combo-box.md) | Forms | Medium | Large | W2 | adapt | Async-searchable single select; needed for large option sets. |
 | [DateRangePicker](../component-backlog/date-range-picker.md) | Forms | Medium | Large | W2 | adapt | Range selection for filters/bookings; shares DatePicker internals. |
@@ -50,7 +40,6 @@ KuiNative development is scoped to KuiReact's core **ui-layer atoms, molecules a
 | [TagInput](../component-backlog/tag-input.md) | Forms | Medium | Medium | W2 | direct | Chip entry with suggestions; composes Badge(dismissible). |
 | [TimePicker](../component-backlog/time-picker.md) | Forms | Medium | Medium | W2 | adapt | Time entry companion to DatePicker. |
 | [Popconfirm](../component-backlog/popconfirm.md) | Overlay | Medium | Small | W2 | adapt | Inline confirmation for destructive actions. |
-| [Popover](../component-backlog/popover.md) | Overlay | Medium | Medium | W2 | adapt | Anchored floating panel; basis for Tooltip, DropdownMenu, Popconfirm. |
 | [StatCard](../component-backlog/stat-card.md) | Data Display | Medium | Small | W2 | direct | Card-wrapped KPI. |
 | [Statistic](../component-backlog/statistic.md) | Data Display | Medium | Small | W2 | direct | Numeric KPI with trend/prefix/suffix; used in dashboards. |
 | [Timeline](../component-backlog/timeline.md) | Data Display | Medium | Small | W2 | direct | Activity timeline grouped by day; used by domain feeds. |
@@ -58,10 +47,8 @@ KuiNative development is scoped to KuiReact's core **ui-layer atoms, molecules a
 | [Chart](../component-backlog/chart.md) | Charts | Medium | Very Large | W3 | adapt | KuiReact wraps Chart.js (1.8k LOC); canvas is not available on RN. |
 | [Slider](../component-backlog/slider.md) | Media | Medium | Medium | W2 | direct | Accessible carousel (autoPlay, dots, arrows, loop). |
 | [ScrollArea](../component-backlog/scroll-area.md) | Layout | Low | Small | W3 | adapt | Styled-scrollbar container; on RN `ScrollView` is already the primitive. |
-| [Breadcrumb](../component-backlog/breadcrumb.md) | Navigation | Low | Small | W3 | adapt | Breadcrumbs are uncommon on mobile but required for tablet/web targets of RN. |
 | [ColorPicker](../component-backlog/color-picker.md) | Forms | Low | Large | W3 | adapt | Niche input; large (1.2k LOC). |
 | [ViewToggle](../component-backlog/view-toggle.md) | Forms | Low | Small | W3 | direct | List/grid switch; small. |
-| [Tooltip](../component-backlog/tooltip.md) | Overlay | Low | Small | W3 | adapt | Hover-driven on web; on touch devices only long-press makes sense. |
 | [ContentScoreBar](../component-backlog/content-score-bar.md) | Data Display | Low | Small | W3 | direct | SEO/content-quality meter; niche. |
 | [TreeView](../component-backlog/tree-view.md) | Data Display | Low | Large | W3 | direct | Recursive tree; niche on mobile. |
 | [AdvancedDataTable](../component-backlog/advanced-data-table.md) | Tables | Low | Very Large | W3 | adapt | Selectable table with row actions (2k LOC). |

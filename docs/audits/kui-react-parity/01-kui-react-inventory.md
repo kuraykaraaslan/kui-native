@@ -17,12 +17,12 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | --- | --- | --- | --- |
 | Foundation | 2 | 1 | 1 |
 | Typography | 1 | 1 | 0 |
-| Layout | 4 | 2 | 2 |
-| Navigation | 5 | 1 | 4 |
-| Forms | 20 | 6 | 14 |
+| Layout | 4 | 3 | 1 |
+| Navigation | 5 | 4 | 1 |
+| Forms | 20 | 11 | 9 |
 | Feedback | 6 | 6 | 0 |
-| Overlay | 6 | 2 | 4 |
-| Data Display | 8 | 2 | 6 |
+| Overlay | 6 | 5 | 1 |
+| Data Display | 8 | 3 | 5 |
 | Tables | 4 | 0 | 4 |
 | Charts | 1 | 0 | 1 |
 | Media | 3 | 0 | 3 |
@@ -57,14 +57,14 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | Button | 137 | ✓ |
 | Badge | 109 | ✓ |
 | Avatar | 41 | ✓ |
-| Breadcrumb | 26 | ✗ |
+| Breadcrumb | 26 | ✓ |
 | Input | 23 | ✓ |
 | SkipLink + LiveRegion | 16 | ✗ |
-| SearchBar | 14 | ✗ |
+| SearchBar | 14 | ✓ |
 | Modal | 11 | ✓ |
 | Textarea | 9 | ✓ |
 | Card | 9 | ✓ |
-| DropdownMenu | 7 | ✗ |
+| DropdownMenu | 7 | ✓ |
 | BrandLogo | 6 | ✗ |
 | EmptyState | 6 | ✓ |
 | Select | 5 | ✓ |

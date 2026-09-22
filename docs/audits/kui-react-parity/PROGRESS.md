@@ -33,11 +33,23 @@ Working branch: `feature/wave1-parity`. Scope: KuiReact ui-layer atoms, molecule
 | `92af9a3` | TextInput → Input with KuiReact's full feature set (TextInput kept as alias) |
 | `dbdbdbd` | Card onPress / hoverable / loading |
 | `599c8a1` | AvatarGroup rewritten to KuiReact's data-driven API |
-| (this commit) | Docs refresh: Select / Drawer / Toast matrices, API-parity Update blocks, status matrix (16 complete, 7 minor, 0 major), re-scoring 56 → 66 |
+| `eacef99` | Docs refresh: Select / Drawer / Toast matrices, API-parity Update blocks, status matrix (16 complete, 7 minor, 0 major), re-scoring 56 → 66 |
+| `68ce86d` | Anchored overlay core (`Overlays/shared/AnchoredPanel`: useAnchor, computePosition, AnchoredPanel; `useTrigger`) + Popover, DropdownMenu, Tooltip |
+| `6798bc6` | Accordion |
+| `98242aa` | ButtonGroup |
+| `859211c` | CheckboxGroup |
+| `ed7a0e5` | SearchBar |
+| `729f8ad` | Pagination (KuiReact tests ported) |
+| `3bdedc4` | Stepper + Breadcrumb (href → expo-router) |
+| `1f19759` | PageHeader |
+| `6e76a56` | MultiSelect on KuiReact's ported ComboBox hooks (filter, async, load-more) |
+| `0770214` | RangeSlider (single + dual handle) |
+| (this commit) | Docs refresh pinned to `0770214`: 13 feature matrices, backlog pruned (28 left), status matrix (26 complete, 10 minor, 0 major), re-scoring 66 → 71; tooling gains `KN_REV` and remediation status |
 
 ## Next
 
-1. **Remaining roadmap components** in order (DropdownMenu, Popover, Tooltip, Accordion, ButtonGroup, CheckboxGroup, SearchBar, Pagination, Stepper, Breadcrumb, …), each pixel-perfect with 1:1 showcase demos. Popover / Tooltip / DropdownMenu should build on `Overlays/shared`.
-2. **Infra:** packaging + `KuiProvider`, ESLint config, Font Awesome 7, Geist, CI.
-3. **Minor gaps:** Spinner two-tone ring, Select outside-tap close, Modal `ref`, Label rest props, `SkeletonTableRow` (with Table).
-4. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), re-run both scripts, delete the now-stale backlog files, write feature matrices, update status matrix and scores.
+1. **Refresh the docs for the DatePicker suite** (`97f78b5`, landed after this refresh's `KN_REV=0770214` cutoff) and anything after it.
+2. **Remaining roadmap components** in order: BrandLogo, Popconfirm, StarRating, StatCard, Statistic, TabButton, Timeline, FileInput, Slider, Table, TagInput, TimePicker, ComboBox, DateRangePicker, then Wave 3 (Chart, ContentScoreBar, ScrollArea, ViewToggle, the tables, ColorPicker, DiffViewer, TreeView, MapView, VideoPlayer; SkipLink as an exception). Each pixel-perfect with 1:1 showcase demos.
+3. **Infra:** packaging + `KuiProvider`, ESLint config, Font Awesome 7, Geist, CI.
+4. **Minor gaps:** focus move / restore for the anchored overlays (Popover, DropdownMenu; reuse `useFocusOnOpen`), MultiSelect error `ring-1`, Spinner two-tone ring, Select outside-tap close, Modal `ref`, Label rest props, `SkeletonTableRow` (with Table).
+5. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), run `KN_REV=<commit> node extract.js` then `node generate.js`, delete the now-stale backlog files, write feature matrices, update status matrix and scores, and mark finished `R-*` items in `REM_STATUS`.

@@ -108,7 +108,7 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 - Button — exists as `Button`
 - useFocusTrap — excluded
 
-**Blocked by (roadmap):** `R-overlay-core`, `R-button`, `popover`
+**Blocked by (roadmap):** `R-overlay-core`, `R-button`
 
 **Third-party:** `@fortawesome/react-fontawesome` → @fortawesome/react-native-fontawesome, `@fortawesome/free-solid-svg-icons`
 

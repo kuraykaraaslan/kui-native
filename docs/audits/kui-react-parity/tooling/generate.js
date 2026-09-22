@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 const OUT = "C:/Users/kuray/Documents/Projects/KUInative/docs/audits/kui-react-parity";
-const { facts, knFacts, SHARED, knLight, knDark, registryGeneratedAt, registryVersion } = require("./facts.json");
+const { facts, knFacts, knMeta, SHARED, knLight, knDark, registryGeneratedAt, registryVersion } = require("./facts.json");
 const { rows, domainPolicy, domainOverrides } = require("./curated.js");
 const AUDIT_DATE = "2026-09-22";
 
@@ -19,9 +19,10 @@ const code = (s) => "`" + String(s).replace(/`/g, "'") + "`";
 const trunc = (s, n = 90) => (s && s.length > n ? s.slice(0, n - 1) + "…" : s || "");
 const table = (head, body) => [`| ${head.join(" | ")} |`, `| ${head.map(() => "---").join(" | ")} |`, ...body.map((r) => `| ${r.map(esc).join(" | ")} |`)].join("\n");
 const byId = Object.fromEntries(facts.map((f) => [f.id, f]));
+const knComponentFiles = new Set(knFacts.map((k) => k.file)).size;
 
 // ---------------------------------------------------------------- classification
-const SHARED_CATEGORY = { button: "Foundation", badge: "Data Display", avatar: "Data Display", spinner: "Feedback", skeleton: "Feedback", input: "Forms", checkbox: "Forms", toggle: "Forms", card: "Layout", "empty-state": "Feedback", modal: "Overlay", label: "Typography", separator: "Layout", "alert-banner": "Feedback", "radio-group": "Forms", textarea: "Forms", "tab-group": "Navigation", progress: "Feedback", select: "Forms", drawer: "Overlay", toast: "Feedback" };
+const SHARED_CATEGORY = { button: "Foundation", badge: "Data Display", avatar: "Data Display", spinner: "Feedback", skeleton: "Feedback", input: "Forms", checkbox: "Forms", toggle: "Forms", card: "Layout", "empty-state": "Feedback", modal: "Overlay", label: "Typography", separator: "Layout", "alert-banner": "Feedback", "radio-group": "Forms", textarea: "Forms", "tab-group": "Navigation", progress: "Feedback", select: "Forms", drawer: "Overlay", toast: "Feedback", popover: "Overlay", "dropdown-menu": "Overlay", tooltip: "Overlay", accordion: "Data Display", "button-group": "Forms", "checkbox-group": "Forms", "search-bar": "Forms", pagination: "Navigation", stepper: "Navigation", breadcrumb: "Navigation", "page-header": "Layout", "multi-select": "Forms", "range-slider": "Forms" };
 const cur = Object.fromEntries(rows.map(([id, category, priority, complexity, wave, fit, reason, rnNotes, rnDeps]) => [id, { category, priority, complexity, wave, fit, reason, rnNotes, rnDeps }]));
 const VERT = { common: "Common", blog: "Blog", event: "Event", "api-doc": "API Doc", landing: "Landing", jobs: "Jobs", fintech: "Fintech", commerce: "Commerce", media: "Media", forum: "Forum", "real-estate": "Real Estate", food: "Food", travel: "Travel", ai: "AI", social: "Social", iot: "IoT", nft: "NFT", reviews: "Reviews" };
 
@@ -69,7 +70,7 @@ function nativeStatus(id) {
 
 // ---------------------------------------------------------------- remediation (shared components + infra)
 const REMEDIATION = [
-  { id: "R-infra-test", title: "Test harness: Jest + @testing-library/react-native + CI", priority: "Critical", complexity: "Medium", wave: 1, deps: [], why: "KuiNative has zero tests; KuiReact has 18 unit-test files + 739 visual snapshots. Every later item's acceptance criteria require tests." },
+  { id: "R-infra-test", title: "Test harness: Jest + @testing-library/react-native + CI", priority: "Critical", complexity: "Medium", wave: 1, deps: [], why: "At audit time KuiNative had zero tests; KuiReact has 18 unit-test files + 739 visual snapshots. Every later item's acceptance criteria require tests." },
   { id: "R-infra-package", title: "Make KuiNative a consumable library (exports map, build, peer deps, NativeWind preset)", priority: "Critical", complexity: "Large", wave: 1, deps: [], why: "`package.json` is `private: true` with `main: expo-router/entry`; the library cannot be installed. KuiReact ships `@kuraykaraaslan/kui-react` with `./ui`, `./app`, `./common` entries." },
   { id: "R-theme-provider", title: "Export a `KuiProvider` (token `vars()` + scheme resolution) from the library", priority: "Critical", complexity: "Small", wave: 1, deps: ["R-infra-package"], why: "Theme wiring lives in the showcase `app/_layout.tsx`; a consumer gets unthemed components." },
   { id: "R-typography", title: "Fix `Text` weights/fonts (Geist, real bold/semibold) and align scale to KuiReact usage", priority: "Critical", complexity: "Small", wave: 1, deps: [], why: "Heading variants set `fontFamily: 'System'` with no `fontWeight`, so h1–h4 render regular-weight on iOS/web; README claims Inter while KuiReact uses Geist." },
@@ -92,6 +93,18 @@ const REMEDIATION = [
   { id: "R-infra-parity", title: "Parity contract: `parity.exceptions.json`, generated parity matrix, component registry", priority: "High", complexity: "Medium", wave: 2, deps: ["R-infra-test"], why: "Makes this audit repeatable and CI-enforced (mirrors KuiReact ADR 0003)." },
 ];
 const remById = Object.fromEntries(REMEDIATION.map((r) => [r.id, r]));
+// Progress on remediation items since the audit (see PROGRESS.md). "partial" keeps the item open.
+const REM_STATUS = {
+  "R-infra-test": ["partial", "Jest + RNTL harness since `4ebda43`; CI still missing"],
+  "R-button": ["done", "`2866e66`"], "R-input": ["done", "`92af9a3`"], "R-overlay-core": ["done", "`27def3b`, anchored panels `68ce86d`"],
+  "R-modal": ["done", "`27def3b`"], "R-badge": ["done", "`3e48fad`"], "R-card": ["done", "`dbdbdbd`"], "R-avatar": ["done", "`599c8a1`"],
+  "R-checkbox": ["done", "`75edb0c`"], "R-toggle": ["done", "`5f484a8`"], "R-empty-state": ["done", "`7ca2284`"], "R-shadow": ["done", "`048ebed`: shadow classes + Android elevation"],
+  "R-skeleton": ["partial", "Line / Avatar / Text since `048ebed`; SkeletonTableRow waits for Table"],
+  "R-spinner": ["partial", "sizes fixed in `4ebda43`; two-tone ring still missing"],
+  "R-typography": ["partial", "weights fixed (`048ebed`, `2866e66`); Geist not bundled"],
+};
+const isDone = (it) => it.kind === "remediation" && REM_STATUS[it.id] && REM_STATUS[it.id][0] === "done";
+const remMark = (id) => REM_STATUS[id] ? (REM_STATUS[id][0] === "done" ? ` — ✓ done (${REM_STATUS[id][1]})` : ` — partial: ${REM_STATUS[id][1]}`) : "";
 
 // Items (missing + remediation) with dependencies for ordering
 const OVERLAY_USERS = new Set(["drawer", "popover", "select", "multi-select", "combo-box", "dropdown-menu", "date-picker", "date-range-picker", "time-picker", "popconfirm", "tooltip", "context-menu", "share-dialog"]);
@@ -189,7 +202,7 @@ const knShowcasePrivate = [
   ["CodeBlock", "modules/showcase/ui/CodeBlock.tsx", "Data Display", "—"],
   ["useDrawer (zustand store)", "modules/showcase/ui/drawer.store.ts", "Hooks", "—"],
 ];
-const KN_CATEGORY = { Button: "Foundation", Text: "Typography", Card: "Layout", Avatar: "Data Display", AvatarGroup: "Data Display", Badge: "Data Display", TextInput: "Forms", Input: "Forms", Toggle: "Forms", Checkbox: "Forms", Switch: "Forms", Spinner: "Feedback", EmptyState: "Feedback", SkeletonCard: "Feedback", Modal: "Overlay", Label: "Typography", Separator: "Layout", AlertBanner: "Feedback", RadioGroup: "Forms", Textarea: "Forms", TabGroup: "Navigation", Progress: "Feedback", SkeletonLine: "Feedback", SkeletonAvatar: "Feedback", SkeletonText: "Feedback", Select: "Forms", Drawer: "Overlay", Toaster: "Feedback", Toast: "Feedback", ToastProvider: "Feedback", ToastRegion: "Feedback" };
+const KN_CATEGORY = { Button: "Foundation", Text: "Typography", Card: "Layout", Avatar: "Data Display", AvatarGroup: "Data Display", Badge: "Data Display", TextInput: "Forms", Input: "Forms", Toggle: "Forms", Checkbox: "Forms", Switch: "Forms", Spinner: "Feedback", EmptyState: "Feedback", SkeletonCard: "Feedback", Modal: "Overlay", Label: "Typography", Separator: "Layout", AlertBanner: "Feedback", RadioGroup: "Forms", Textarea: "Forms", TabGroup: "Navigation", Progress: "Feedback", SkeletonLine: "Feedback", SkeletonAvatar: "Feedback", SkeletonText: "Feedback", Select: "Forms", Drawer: "Overlay", Toaster: "Feedback", Toast: "Feedback", ToastProvider: "Feedback", ToastRegion: "Feedback", toast: "Feedback", useToast: "Hooks", useToastStore: "Hooks", getEffectiveDuration: "Feedback", Popover: "Overlay", DropdownMenu: "Overlay", Tooltip: "Overlay", Accordion: "Data Display", ButtonGroup: "Forms", CheckboxGroup: "Forms", SearchBar: "Forms", Pagination: "Navigation", Stepper: "Navigation", Breadcrumb: "Navigation", PageHeader: "Layout", MultiSelect: "Forms", RangeSlider: "Forms" };
 {
   const rel = "phase-1-inventory/kui-native-components.md";
   const deps = (k) => { const src = fs.readFileSync(path.join("C:/Users/kuray/Documents/Projects/KUInative", k.file), "utf8"); return [...src.matchAll(/from\s+["']\.\/(\w+)["']/g)].map((m) => m[1]).join(", ") || "—"; };
@@ -202,10 +215,10 @@ const KN_CATEGORY = { Button: "Foundation", Text: "Typography", Card: "Layout", 
 | Publishable | **No** — \`"private": true\`, \`"main": "expo-router/entry"\`, no \`exports\`, no build script | \`package.json\` |
 | Public import path | \`@/modules/ui\` (repo-internal alias only) | \`modules/ui/index.ts\`, \`babel.config.js\` |
 | Library components | ${knFacts.length} exports from ${new Set(knFacts.map((k) => k.file)).size} files | \`modules/ui/index.ts\` |
-| Type exports | ${knFacts.length - 1} \`*Props\` types (\`AvatarGroup\` has no exported props type) | \`modules/ui/index.ts\` |
-| Hooks exported from library | 0 (theme hooks live in \`libs/theme.ts\`, not in the barrel) | — |
-| Providers exported | 0 | — |
-| Tests | 0 files | \`git ls-files\` |
+| Type exports | ${knMeta.typeExports} (\`export type\` names) | \`modules/ui/index.ts\` |
+| Hooks exported from library | ${knFacts.filter((k) => /^use[A-Z]/.test(k.name)).map((k) => code(k.name)).join(", ")} (theme hooks live in \`libs/theme.ts\`, not in the barrel) | \`modules/ui/index.ts\` |
+| Providers exported | \`ToastProvider\`, \`Toaster\` | \`modules/ui/Toast\` |
+| Tests | ${knMeta.testFiles.length} files, ${knMeta.testCases} static \`it\` / \`test\` blocks (Jest \`jest-expo\` + \`@testing-library/react-native\`) | \`git ls-tree ${knMeta.rev}\` |
 
 "Public" below therefore means *exported from the \`@/modules/ui\` barrel*; nothing is installable by a consumer today.
 
@@ -304,8 +317,8 @@ const summaryTable = table(["Category", "KuiReact", "Shared with KuiNative", "Mi
 | KuiReact audited entries (total) | ${facts.length} |
 | KuiReact in-scope (ui-layer Atom/Molecule/Organism) | ${coreFacts.length} |
 | KuiReact out of scope (app layer, domains, hooks, external library, other ui categories) | ${facts.length - coreFacts.length} |
-| KuiNative library exports | ${knFacts.length} (12 components; \`AvatarGroup\` counted with \`Avatar\`) |
-| Shared components (counterpart exists) | ${Object.keys(SHARED).length} KuiReact ids ↔ 12 KuiNative exports |
+| KuiNative library exports | ${knFacts.length} from ${knComponentFiles} component modules (the \`toast()\` API and its hooks count as exports) |
+| Shared components (counterpart exists) | ${Object.keys(SHARED).length} KuiReact ids ↔ ${Object.values(SHARED).flat().length} KuiNative exports |
 | KuiNative-only components | 1 (\`Text\`) |
 | Missing from KuiNative (in scope) | ${missing.length} |
 | In-scope coverage | ${Object.keys(SHARED).length} / ${coreFacts.length} = **${(100 * Object.keys(SHARED).length / coreFacts.length).toFixed(1)} %** |
@@ -357,15 +370,15 @@ Full table: [phase-1-inventory/kui-native-components.md](phase-1-inventory/kui-n
 
 - **Stack:** Expo SDK 56 (\`expo ^56.0.9\`, README still says SDK 55) · React Native 0.85 · React 19.2 · NativeWind 4 + Tailwind 3.4 · Font Awesome **6.7.2** · zustand · expo-image · reanimated 4 (installed, unused by the library).
 - **Layers:** \`modules/ui\` only. No app layer, no domains, no providers.
-- **Catalog:** ${knFacts.length} exports (Avatar, AvatarGroup, Badge, Button, Card, Checkbox, EmptyState, Modal, SkeletonCard, Spinner, Switch, Text, TextInput) + theme utilities in \`libs/theme.ts\`.
-- **Quality infrastructure:** a Jest (\`jest-expo\`) + \`@testing-library/react-native\` harness is configured and verified (\`jest.config.js\`, \`npm test\`), with one passing suite (Spinner, 8 cases) as of this audit; still no ESLint config, no CI, no registry, no ADRs. A showcase app (Expo Router) with 12 entries is the only documentation besides the README.
+- **Catalog:** ${knFacts.length} exports from ${knComponentFiles} component modules (${knFacts.filter((k) => /^[A-Z]/.test(k.name)).map((k) => k.name).join(", ")}, plus the \`toast()\` API and its hooks) + theme utilities in \`libs/theme.ts\`.
+- **Quality infrastructure:** a Jest (\`jest-expo\`) + \`@testing-library/react-native\` harness (\`jest.config.js\`, \`npm test\`) with ${knMeta.testFiles.length} test files (${knMeta.testCases} static \`it\` / \`test\` blocks) at commit \`${knMeta.rev}\`; still no ESLint config, no CI, no registry, no ADRs. A showcase app (Expo Router) with ${knMeta.showcaseEntries} entries, 1:1 with KuiReact showcase variants, is the only documentation besides the README.
 - **Packaging:** not publishable (\`private: true\`, \`main: expo-router/entry\`).
 
 ## Components
 
 ${table(["Component", "Category", "LOC", "KuiReact counterpart"], knFacts.map((k) => [k.name, KN_CATEGORY[k.name], k.loc, k.krCounterpart ? byId[k.krCounterpart].name : "— (native-only)"]))}
 
-Total library source: ${knFacts.filter((k, i, a) => a.findIndex((x) => x.file === k.file) === i).reduce((a, k) => a + k.loc, 0)} lines across 12 files (KuiReact's equivalent 11 components: ${Object.keys(SHARED).reduce((a, id) => a + byId[id].loc, 0)} lines).
+Total library source: ${knFacts.filter((k, i, a) => a.findIndex((x) => x.file === k.file) === i).reduce((a, k) => a + k.loc, 0)} lines across ${knComponentFiles} entry files (KuiReact's ${Object.keys(SHARED).length} shared components: ${Object.keys(SHARED).reduce((a, id) => a + byId[id].loc, 0)} lines in their entry files).
 `);
 }
 
@@ -438,7 +451,7 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
   })));
   dep.push(`## Remediation items referenced above
 
-` + table(["id", "Item", "Priority", "Blocked by"], REMEDIATION.map((r) => [r.id, r.title, r.priority, r.deps.join(", ") || "—"])));
+` + table(["id", "Item", "Priority", "Blocked by", "Status"], REMEDIATION.map((r) => [r.id, r.title, r.priority, r.deps.join(", ") || "—", remMark(r.id).replace(/^ — /, "") || "open"])));
   dep.push(`## Third-party dependencies KuiReact relies on and their RN story
 
 ` + (() => { const m = {}; for (const f of facts) for (const t of f.third) (m[t] = m[t] || []).push(f.name); return table(["Package", "Used by (count)", "Examples", "RN strategy"], Object.entries(m).sort((a, b) => b[1].length - a[1].length).map(([p, l]) => [p, l.length, trunc(l.slice(0, 5).join(", "), 60), ({ "react-dom": "no DOM portals — root host or RN Modal", "@fortawesome/react-fontawesome": "@fortawesome/react-native-fontawesome (already used)", "@fortawesome/free-solid-svg-icons": "same package (align to v7)", "@fortawesome/fontawesome-svg-core": "same package (align to v7)", "@fortawesome/free-brands-svg-icons": "same package", "@fortawesome/free-regular-svg-icons": "same package", "next/link": "expo-router Link", "next/image": "expo-image", "next/navigation": "expo-router hooks", "next/dynamic": "not needed", "chart.js": "victory-native / gifted-charts", "react-chartjs-2": "victory-native / gifted-charts", quill: "WebView editor", leaflet: "react-native-maps", "react-leaflet": "react-native-maps", zustand: "unchanged", zod: "unchanged", "react-hook-form": "unchanged (Controller)", "countries-list": "unchanged", "iso-639-1": "unchanged", "country-flag-icons": "react-native-svg or emoji" })[p] || "evaluate"])); })());
@@ -446,7 +459,7 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
 
   // implementation order (phase 2 view — dependency-driven)
   const io = [header("Implementation order (dependency-driven)", "Topologically sorted by wave → priority → dependency. Domain components follow once their primitives exist and are not listed individually.")];
-  io.push(table(["#", "Item", "Kind", "Priority", "Complexity", "Wave", "Blocked by"], ordered.map((it) => [it.order, it.kind === "missing" ? `[${it.f.name}](${linkFrom("phase-2-gap-analysis/implementation-order.md", it.f)})` : `${it.id}: ${it.title}`, it.kind === "missing" ? "new component" : "remediation", it.priority, it.complexity, `W${it.wave}${it.pulledForward ? " (pulled forward)" : ""}`, it.deps.join(", ") || "—"])));
+  io.push(table(["#", "Item", "Kind", "Priority", "Complexity", "Wave", "Blocked by"], ordered.map((it) => [it.order, it.kind === "missing" ? `[${it.f.name}](${linkFrom("phase-2-gap-analysis/implementation-order.md", it.f)})` : `${it.id}: ${it.title}${remMark(it.id)}`, it.kind === "missing" ? "new component" : "remediation", it.priority, it.complexity, `W${it.wave}${it.pulledForward ? " (pulled forward)" : ""}`, it.deps.join(", ") || "—"])));
   write("phase-2-gap-analysis/implementation-order.md", io.join("\n\n"));
 
   // 03
@@ -625,12 +638,12 @@ ${table(["Component", "Category", "Priority", "Complexity", "Wave", "Fit"], [...
 // =====================================================================
 // PHASE 5 — roadmap (waves are data-driven)
 // =====================================================================
-const itemLink = (it, fromRel) => it.kind === "missing" ? `[${it.f.name}](${linkFrom(fromRel, it.f)})` : `**${it.id}** ${it.title}`;
+const itemLink = (it, fromRel) => it.kind === "missing" ? `[${it.f.name}](${linkFrom(fromRel, it.f)})` : `**${it.id}** ${it.title}${remMark(it.id)}`;
 function waveDoc(w, title, intro, rel) {
   const items = ordered.filter((it) => it.wave === w);
   const [lo, hi] = sumEffort(items);
   const parts = [header(title), intro];
-  parts.push(`## Totals\n\n| | |\n| --- | --- |\n| Items | ${items.length} (${items.filter((i) => i.kind === "remediation").length} remediation of shared components/infra, ${items.filter((i) => i.kind === "missing").length} new components) |\n| Estimated effort | ${lo}–${hi} engineer-days (${(lo / 5).toFixed(1)}–${(hi / 5).toFixed(1)} engineer-weeks) |\n| By priority | ${PRI.map((p) => `${p} ${items.filter((i) => i.priority === p).length}`).join(" · ")} |`);
+  parts.push(`## Totals\n\n| | |\n| --- | --- |\n| Items | ${items.length} (${items.filter((i) => i.kind === "remediation").length} remediation of shared components/infra, ${items.filter((i) => i.kind === "missing").length} new components) |\n| Estimated effort | ${lo}–${hi} engineer-days (${(lo / 5).toFixed(1)}–${(hi / 5).toFixed(1)} engineer-weeks) |\n| Remaining (excluding done items) | ${items.filter((i) => !isDone(i)).length} items, ${sumEffort(items.filter((i) => !isDone(i))).join("–")} engineer-days |\n| By priority | ${PRI.map((p) => `${p} ${items.filter((i) => i.priority === p).length}`).join(" · ")} |`);
   parts.push(`## Items in recommended order\n\n` + table(["Order", "Item", "Priority", "Complexity", "Dependencies", "Estimated effort", "Why"], items.map((it) => [it.order, itemLink(it, rel), it.priority, it.complexity, it.deps.join(", ") || "—", effortStr(it.complexity), trunc(it.why, 140) + (it.pulledForward ? ` _(pulled into this wave because ${it.pulledForward.join(", ")} depends on it)_` : "")])));
   return parts.join("\n\n");
 }
@@ -650,27 +663,29 @@ ${table(["#", "Wave", "Item", "Priority", "Complexity", "Blocked by", "Effort"],
 
 After #${ordered.length}: domain verticals per [wave-3-advanced.md](wave-3-advanced.md).
 `);
-const waveTotals = [1, 2, 3].map((w) => { const it = ordered.filter((i) => i.wave === w); return [w, it.length, ...sumEffort(it)]; });
+const waveTotals = [1, 2, 3].map((w) => { const it = ordered.filter((i) => i.wave === w); const rest = it.filter((i) => !isDone(i)); return [w, it.length, ...sumEffort(it), rest.length, ...sumEffort(rest)]; });
 write("08-roadmap.md", `${header("08 · Roadmap")}
 Detail: [wave-1-critical.md](phase-5-roadmap/wave-1-critical.md) · [wave-2-core-completion.md](phase-5-roadmap/wave-2-core-completion.md) · [wave-3-advanced.md](phase-5-roadmap/wave-3-advanced.md) · [implementation-order.md](phase-5-roadmap/implementation-order.md)
 
 ## Summary
 
-| Wave | Goal | Items | Effort (engineer-days) |
-| --- | --- | --- | --- |
-| 1 — Critical | Installable, themed, tested library; Button/Input/Modal at parity; baseline form, feedback, overlay and navigation primitives | ${waveTotals[0][1]} | ${waveTotals[0][2]}–${waveTotals[0][3]} |
-| 2 — Core completion | All shared components at parity; parity contract in CI; remaining ui-layer primitives | ${waveTotals[1][1]} | ${waveTotals[1][2]}–${waveTotals[1][3]} |
-| 3 — Advanced | Heavy organisms, desktop-web patterns (mostly exceptions) | ${waveTotals[2][1]} | ${waveTotals[2][2]}–${waveTotals[2][3]} |
+| Wave | Goal | Items | Effort (engineer-days) | Remaining items | Remaining effort |
+| --- | --- | --- | --- | --- | --- |
+| 1 — Critical | Installable, themed, tested library; Button/Input/Modal at parity; baseline form, feedback, overlay and navigation primitives | ${waveTotals[0][1]} | ${waveTotals[0][2]}–${waveTotals[0][3]} | ${waveTotals[0][4]} | ${waveTotals[0][5]}–${waveTotals[0][6]} |
+| 2 — Core completion | All shared components at parity; parity contract in CI; remaining ui-layer primitives | ${waveTotals[1][1]} | ${waveTotals[1][2]}–${waveTotals[1][3]} | ${waveTotals[1][4]} | ${waveTotals[1][5]}–${waveTotals[1][6]} |
+| 3 — Advanced | Heavy organisms, desktop-web patterns (mostly exceptions) | ${waveTotals[2][1]} | ${waveTotals[2][2]}–${waveTotals[2][3]} | ${waveTotals[2][4]} | ${waveTotals[2][5]}–${waveTotals[2][6]} |
+
+New components leave the roadmap once they land (their backlog file is deleted); remediation items stay listed and are marked ✓ done or partial.
 
 Estimates assume one engineer familiar with both codebases, Small 0.5–1 d · Medium 2–3 d · Large 5–8 d · Very Large 10–20 d, including tests and a showcase entry. Scope is KuiReact's ui-layer atoms, molecules and organisms only — app-layer components, domain verticals and theme demos are excluded by decision (see [missing-components.md](phase-2-gap-analysis/missing-components.md#scope)).
 
 ## Wave 1 in order
 
-${ordered.filter((i) => i.wave === 1).map((it) => `${it.order}. ${it.kind === "missing" ? `[${it.f.name}](${backlogPath(it.f)})` : `**${it.id}** — ${it.title}`} (${it.priority}, ${it.complexity}${it.deps.length ? `; after ${it.deps.join(", ")}` : ""})`).join("\n")}
+${ordered.filter((i) => i.wave === 1).map((it) => `${it.order}. ${it.kind === "missing" ? `[${it.f.name}](${backlogPath(it.f)})` : `**${it.id}** — ${it.title}${remMark(it.id)}`} (${it.priority}, ${it.complexity}${it.deps.length ? `; after ${it.deps.join(", ")}` : ""})`).join("\n")}
 
 ## Wave 2 in order
 
-${ordered.filter((i) => i.wave === 2).map((it) => `${it.order}. ${it.kind === "missing" ? `[${it.f.name}](${backlogPath(it.f)})` : `**${it.id}** — ${it.title}`} (${it.priority}, ${it.complexity})`).join("\n")}
+${ordered.filter((i) => i.wave === 2).map((it) => `${it.order}. ${it.kind === "missing" ? `[${it.f.name}](${backlogPath(it.f)})` : `**${it.id}** — ${it.title}${remMark(it.id)}`} (${it.priority}, ${it.complexity})`).join("\n")}
 
 ## Wave 3
 

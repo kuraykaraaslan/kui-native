@@ -9,8 +9,8 @@
 | --- | --- | --- |
 | npm package | `@kuraykaraaslan/kui-react` 1.0.1 (ESM + CJS + d.ts via tsup) | none (`private: true`) |
 | Entry points | `.`, `./ui`, `./app`, `./common`, `./styles` | `@/modules/ui` (repo alias) |
-| ui barrel value exports | 78 | 35 |
-| ui barrel type exports | 35 | 34 |
+| ui barrel value exports | 78 | 48 |
+| ui barrel type exports | 35 | 47 |
 | app barrel value exports | 43 | 0 |
 | common barrel value exports | 52 | 0 |
 | Hooks (public) | `useToastStore`, `useAnnounce`, `useDirection` (+ internal `useBreakpoint`, `useFocusTrap`, `useA11yCheck`) | 0 in barrel (`useThemeMode`, `useResolvedScheme`, `useThemeTokens` in `libs/theme.ts`) |
@@ -24,7 +24,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 
 | Export | KuiNative |
 | --- | --- |
-| Accordion | ✗ |
+| Accordion | ✓ same name |
 | Avatar | ✓ same name |
 | AvatarGroup | ✓ same name |
 | Badge | ✓ same name |
@@ -36,7 +36,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | Input | ✓ same name |
 | Label | ✓ same name |
 | Progress | ✓ same name |
-| RangeSlider | ✗ |
+| RangeSlider | ✓ same name |
 | ScrollArea | ✗ |
 | Select | ✓ same name |
 | Separator | ✓ same name |
@@ -51,27 +51,27 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | Toggle | ✓ same name |
 | AdvancedDataTable | ✗ |
 | AlertBanner | ✓ same name |
-| Breadcrumb | ✗ |
-| ButtonGroup | ✗ |
+| Breadcrumb | ✓ same name |
+| ButtonGroup | ✓ same name |
 | Card | ✓ same name |
-| CheckboxGroup | ✗ |
+| CheckboxGroup | ✓ same name |
 | ComboBox | ✗ |
 | ContentScoreBar | ✗ |
 | DataTable | ✗ |
 | DateRangePicker | ✗ |
 | TimePicker | ✗ |
 | Drawer | ✓ same name |
-| DropdownMenu | ✗ |
+| DropdownMenu | ✓ same name |
 | EmptyState | ✓ same name |
 | MapView | ✗ |
 | Modal | ✓ same name |
-| MultiSelect | ✗ |
-| PageHeader | ✗ |
-| Pagination | ✗ |
+| MultiSelect | ✓ same name |
+| PageHeader | ✓ same name |
+| Pagination | ✓ same name |
 | Popconfirm | ✗ |
-| Popover | ✗ |
+| Popover | ✓ same name |
 | RadioGroup | ✓ same name |
-| SearchBar | ✗ |
+| SearchBar | ✓ same name |
 | ServerDataTable | ✗ |
 | SkeletonLine | ✓ same name |
 | SkeletonAvatar | ✓ same name |
@@ -79,7 +79,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | SkeletonCard | ✓ same name |
 | SkeletonTableRow | ✗ |
 | Slider | ✗ |
-| Stepper | ✗ |
+| Stepper | ✓ same name |
 | TabButton | ✗ |
 | TabGroup | ✓ same name |
 | Table | ✗ |
@@ -87,7 +87,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | Toast | ✓ same name |
 | ToastProvider | ✓ same name |
 | ToastRegion | ✓ same name |
-| Tooltip | ✗ |
+| Tooltip | ✓ same name |
 | TreeView | ✗ |
 | VideoPlayer | ✗ |
 | ViewToggle | ✗ |
@@ -183,7 +183,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | FocusTrap | ✗ |
 | LiveRegion | ✗ |
 | SkipLink | ✗ |
-| Tooltip | ✗ |
+| Tooltip | ✓ same name |
 | useAnnounce | ✗ |
 | MaintenancePage | ✗ |
 | ShareDialog | ✗ |
@@ -197,23 +197,34 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 
 All ✗ in KuiNative.
 
-## KuiNative `modules/ui/index.ts` (35 values, 34 types)
+## KuiNative `modules/ui/index.ts` (48 values, 47 types)
 
 | Export | Props type exported | KuiReact export |
 | --- | --- | --- |
+| Accordion | ✓ AccordionProps | ✓ Accordion |
 | AlertBanner | ✓ AlertBannerProps | ✓ AlertBanner |
 | Avatar | ✓ AvatarProps | ✓ Avatar |
 | AvatarGroup | ✗ | ≈ Avatar |
 | Badge | ✓ BadgeProps | ✓ Badge |
+| Breadcrumb | ✓ BreadcrumbProps | ✓ Breadcrumb |
 | Button | ✓ ButtonProps | ✓ Button |
+| ButtonGroup | ✓ ButtonGroupProps | ✓ ButtonGroup |
 | Card | ✓ CardProps | ✓ Card |
 | Checkbox | ✓ CheckboxProps | ✓ Checkbox |
+| CheckboxGroup | ✓ CheckboxGroupProps | ✓ CheckboxGroup |
 | Drawer | ✓ DrawerProps | ✓ Drawer |
+| DropdownMenu | ✓ DropdownMenuProps | ✓ DropdownMenu |
 | EmptyState | ✓ EmptyStateProps | ✓ EmptyState |
 | Label | ✓ LabelProps | ✓ Label |
 | Modal | ✓ ModalProps | ✓ Modal |
+| MultiSelect | ✓ MultiSelectProps | ✓ MultiSelect |
+| PageHeader | ✓ PageHeaderProps | ✓ PageHeader |
+| Pagination | ✓ PaginationProps | ✓ Pagination |
+| Popover | ✓ PopoverProps | ✓ Popover |
 | Progress | ✓ ProgressProps | ✓ Progress |
 | RadioGroup | ✓ RadioGroupProps | ✓ RadioGroup |
+| RangeSlider | ✓ RangeSliderProps | ✓ RangeSlider |
+| SearchBar | ✓ SearchBarProps | ✓ SearchBar |
 | Select | ✓ SelectProps | ✓ Select |
 | Separator | ✓ SeparatorProps | ✓ Separator |
 | SkeletonAvatar | ✓ SkeletonAvatarProps | ≈ Skeleton |
@@ -225,6 +236,8 @@ All ✗ in KuiNative.
 | Toggle | ✓ ToggleProps | ✓ Toggle |
 | TabGroup | ✓ TabGroupProps | ✓ TabGroup |
 | Text | ✓ TextProps | ✗ (no KuiReact Text component) |
+| Stepper | ✓ StepperProps | ✓ Stepper |
+| Tooltip | ✓ TooltipProps | ✓ Tooltip |
 | Toast | ✓ ToastProps | ✓ Toast |
 | ToastProvider | ✓ ToastProviderProps | ≈ Toast |
 | ToastRegion | ✓ ToastRegionProps | ≈ Toast |

@@ -17,7 +17,7 @@ Enhanced table with row selection (with indeterminate header), expandable rows, 
 | Public export | `@kuraykaraaslan/kui-react/ui` — public (npm: root + /ui) |
 | Registry | yes · status `beta` · since 2025-03 |
 | Showcase variants | Selectable + Expandable, Sticky Header |
-| Composes | DataTable (missing), Pagination (missing), SearchBar (missing), Spinner (exists as `Spinner`) |
+| Composes | DataTable (missing), Pagination (exists as `Pagination`), SearchBar (exists as `SearchBar`), Spinner (exists as `Spinner`) |
 | Used by (registry) | — |
 | Usage frequency | imported by 0 production file(s), 1 showcase file(s) |
 | Third-party imports | `@fortawesome/react-fontawesome`, `@fortawesome/free-solid-svg-icons` |
@@ -118,11 +118,11 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 **KuiReact components it composes:**
 
 - DataTable — missing → [backlog](data-table.md)
-- Pagination — missing → [backlog](pagination.md)
-- SearchBar — missing → [backlog](search-bar.md)
+- Pagination — exists as `Pagination`
+- SearchBar — exists as `SearchBar`
 - Spinner — exists as `Spinner`
 
-**Blocked by (roadmap):** `data-table`, `pagination`, `search-bar`, `R-spinner`, `dropdown-menu`
+**Blocked by (roadmap):** `data-table`, `R-spinner`
 
 **Third-party:** `@fortawesome/react-fontawesome` → @fortawesome/react-native-fontawesome, `@fortawesome/free-solid-svg-icons`
 

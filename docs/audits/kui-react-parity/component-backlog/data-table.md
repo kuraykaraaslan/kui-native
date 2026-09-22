@@ -17,7 +17,7 @@ Unified table with `mode="static" | "paginated" | "server"`. Multi-column sort (
 | Public export | `@kuraykaraaslan/kui-react/ui` — public (npm: root + /ui) |
 | Registry | yes · status `stable` · since 2025-03 |
 | Showcase variants | Full example, Sortable columns, Server mode (mode="server") |
-| Composes | Pagination (missing) |
+| Composes | Pagination (exists as `Pagination`) |
 | Used by (registry) | — |
 | Usage frequency | imported by 5 production file(s), 1 showcase file(s) |
 | Third-party imports | `@fortawesome/react-fontawesome`, `@fortawesome/free-solid-svg-icons` |
@@ -153,9 +153,9 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 
 **KuiReact components it composes:**
 
-- Pagination — missing → [backlog](pagination.md)
+- Pagination — exists as `Pagination`
 
-**Blocked by (roadmap):** `pagination`, `table`, `search-bar`
+**Blocked by (roadmap):** `table`
 
 **Third-party:** `@fortawesome/react-fontawesome` → @fortawesome/react-native-fontawesome, `@fortawesome/free-solid-svg-icons`
 
