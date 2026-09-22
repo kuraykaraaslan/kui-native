@@ -11,16 +11,26 @@
       "supportsTablet": true
     },
     "android": {
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0f172a"
+      }
     },
     "web": {
       "bundler": "metro",
-      "output": "static"
+      "output": "static",
+      "favicon": "./public/favicon.png",
+      "name": "KUInative",
+      "shortName": "kui native",
+      "themeColor": "#3b82f6",
+      "backgroundColor": "#0f172a"
     },
     "plugins": [
       "expo-router",
       "expo-image",
       "expo-status-bar"
-    ]
+    ],
+    "icon": "./assets/icon.png"
   }
 }

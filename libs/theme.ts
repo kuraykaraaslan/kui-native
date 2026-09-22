@@ -46,6 +46,10 @@ const light: TokenMap = {
   info: "#06b6d4",
   "info-subtle": "#ecfeff",
   "info-fg": "#164e63",
+  // Brand-mark domain tokens, on top of the family contract (see
+  // libs/brand/geometry.ts): the native kit's second tone and the family tile.
+  "brand-native": "#f97316",
+  "brand-tile": "#0f172a",
 };
 
 const dark: TokenMap = {
@@ -82,6 +86,8 @@ const dark: TokenMap = {
   info: "#22d3ee",
   "info-subtle": "#083344",
   "info-fg": "#cffafe",
+  "brand-native": "#f97316",
+  "brand-tile": "#0f172a",
 };
 
 function toVars(map: TokenMap) {

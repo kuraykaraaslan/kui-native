@@ -22,7 +22,9 @@ import { useThemeTokens } from "@/libs/theme";
 import { FONTS } from "@/libs/utils/typography";
 import { REGISTRY, type ShowcaseCategory } from "@/modules/showcase/registry";
 import { useDrawer } from "@/modules/showcase/ui/drawer.store";
+import { BrandMark } from "@/modules/showcase/ui/BrandMark";
 import { Header } from "@/modules/showcase/ui/Header";
+import { SiteHead } from "@/modules/showcase/ui/SiteHead";
 import { Text } from "@/modules/ui";
 
 const REPO_URL = "https://github.com/kuraykaraaslan/kui-native";
@@ -98,15 +100,14 @@ export default function Home() {
 
   return (
     <View className="flex-1 bg-surface-base">
+      <SiteHead />
       <Header title="KUInative" />
       <SafeAreaView edges={["bottom"]} className="flex-1">
         <ScrollView contentContainerClassName="p-4 gap-6" showsVerticalScrollIndicator={false}>
           {/* Hero */}
           <View className="gap-3">
             <View className="flex-row items-center gap-3">
-              <View className="h-12 w-12 items-center justify-center rounded-2xl bg-primary">
-                <Text className="text-xl font-bold text-primary-fg">K</Text>
-              </View>
+              <BrandMark size={48} />
               <View className="flex-1">
                 <Text variant="h1">KUInative</Text>
                 <Text variant="bodySm">Minimal React Native component library</Text>

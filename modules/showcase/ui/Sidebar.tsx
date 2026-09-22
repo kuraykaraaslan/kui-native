@@ -15,6 +15,7 @@ import {
   type ShowcaseCategory,
   type ShowcaseEntry,
 } from "../registry";
+import { BrandMark } from "./BrandMark";
 import { useDrawer } from "./drawer.store";
 
 /** Two-letter codes for the abbr badge — taken verbatim from KuiReact's
@@ -152,9 +153,7 @@ export function Sidebar() {
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-surface-raised">
       {/* Brand header */}
       <View className="h-14 flex-row items-center gap-2.5 border-b border-border px-4">
-        <View className="h-7 w-7 items-center justify-center rounded-lg bg-primary">
-          <Text className="text-sm font-bold text-primary-fg">K</Text>
-        </View>
+        <BrandMark size={28} />
         <View>
           <Text variant="label" className="font-semibold leading-tight">
             KUInative

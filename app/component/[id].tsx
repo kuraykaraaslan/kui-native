@@ -2,10 +2,16 @@ import { useLocalSearchParams } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { getEntry } from "@/modules/showcase/registry";
+import { getEntry, REGISTRY } from "@/modules/showcase/registry";
 import { CodeBlock } from "@/modules/showcase/ui/CodeBlock";
 import { Header } from "@/modules/showcase/ui/Header";
+import { SiteHead } from "@/modules/showcase/ui/SiteHead";
 import { Badge, EmptyState, Text } from "@/modules/ui";
+
+// Pre-render one HTML page per component for the static web export.
+export function generateStaticParams(): { id: string }[] {
+  return REGISTRY.map((entry) => ({ id: entry.id }));
+}
 
 export default function ComponentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -14,6 +20,7 @@ export default function ComponentDetail() {
   if (!entry) {
     return (
       <View className="flex-1 bg-surface-base">
+        <SiteHead title="404 — Not Found" absolute />
         <Header title="Not found" />
         <EmptyState title="Not found" description={`No component "${id}".`} />
       </View>
@@ -22,6 +29,7 @@ export default function ComponentDetail() {
 
   return (
     <View className="flex-1 bg-surface-base">
+      <SiteHead title={entry.title} description={entry.description} path={`/component/${entry.id}`} />
       <Header title={entry.title} />
       <SafeAreaView edges={["bottom"]} className="flex-1">
         <ScrollView contentContainerClassName="p-4 gap-5" keyboardShouldPersistTaps="handled">
