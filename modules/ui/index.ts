@@ -42,6 +42,8 @@ export { Progress } from "./Progress";
 export type { ProgressProps } from "./Progress";
 export { RadioGroup } from "./RadioGroup";
 export type { RadioGroupProps, RadioOption } from "./RadioGroup";
+export { RangeSlider } from "./RangeSlider";
+export type { RangeSliderProps } from "./RangeSlider";
 export { SearchBar } from "./SearchBar";
 export type { SearchBarProps } from "./SearchBar";
 export { Select } from "./Select";

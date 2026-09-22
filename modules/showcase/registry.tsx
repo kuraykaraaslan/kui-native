@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faSliders,
   faTags,
   faHeading,
   faShoePrints,
@@ -83,6 +84,7 @@ import {
   Stepper,
   PageHeader,
   MultiSelect,
+  RangeSlider,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1056,6 +1058,32 @@ export const REGISTRY: ShowcaseEntry[] = [
               hint="Type to filter the list."
             />
           );
+        },
+      },
+    ],
+  },
+  {
+    id: "range-slider",
+    title: "RangeSlider",
+    category: "Forms",
+    icon: faSliders,
+    description: "Numeric range input. Single-handle by default, or `range` for a dual-handle min/max selector.",
+    usage: `<RangeSlider label="Volume" value={v} onChange={setV} />`,
+    preview: () => <RangeSlider className="w-full" value={40} onChange={() => {}} showValue={false} />,
+    // Mirrors KuiReact's RangeSlider showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Single value",
+        Demo: function RangeSliderSingleDemo() {
+          const [v, setV] = useState(40);
+          return <RangeSlider label="Volume" value={v} onChange={setV} className="w-full max-w-xs" />;
+        },
+      },
+      {
+        title: "Dual handle (range)",
+        Demo: function RangeSliderDualDemo() {
+          const [v, setV] = useState<[number, number]>([20, 70]);
+          return <RangeSlider range label="Price range" value={v} onChange={setV} min={0} max={100} className="w-full max-w-xs" />;
         },
       },
     ],
