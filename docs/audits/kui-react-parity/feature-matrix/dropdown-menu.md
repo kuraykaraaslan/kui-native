@@ -1,7 +1,7 @@
 # Feature matrix — DropdownMenu
 
 > KuiReact `modules/ui/DropdownMenu.tsx` (112 LOC + `useFocusTrap`; 11 tests, 2 showcase variants) ↔ KuiNative `modules/ui/DropdownMenu.tsx` (added 2026-09-22 in `68ce86d`, on `Overlays/shared/AnchoredPanel` + `useTrigger`; 9 tests, 2 demos).
-> **Status: PARITY_MINOR_GAPS**
+> **Status: PARITY_COMPLETE** (was PARITY_MINOR_GAPS; initial focus added in `5630391`)
 
 | Feature | KuiReact | KuiNative | Status |
 | --- | --- | --- | --- |
@@ -16,6 +16,6 @@
 | Separator | `my-1 border-t border-border`, `role="separator"` | same look; no role (RN has none) | Match (adapted) |
 | Close | select, outside mousedown, Escape | select, outside tap, Android back | Match (adapted) |
 | Roles | `menu` / `menuitem` | `menu` / `menuitem` + disabled state | Match |
-| Focus | focus moved to the first item on open, returned to the trigger on Escape, Tab wraps (disabled items skipped) | `accessibilityViewIsModal`; no focus move / return; Tab wrap not ported | Gap: focus management; Tab wrap is a desktop keyboard pattern |
-| Tests | 11 | 9 (the 3 keyboard-focus cases are N/A; expanded state and class checks added) | Match |
+| Focus | focus moved to the first item on open, returned to the trigger on Escape, Tab wraps (disabled items skipped) | `accessibilityViewIsModal`; screen-reader focus sent to the first enabled item once the window is shown (`AnchoredPanel onShow`, `5630391`); not explicitly returned to the trigger; Tab wrap not ported | Match (adapted; return-to-trigger and Tab wrap are keyboard patterns) |
+| Tests | 11 | 10 (initial-focus case added in `5630391`; the keyboard-only cases are N/A; expanded state and class checks added) | Match |
 | Showcase | Default, Right-aligned | same titles and copy | Match |

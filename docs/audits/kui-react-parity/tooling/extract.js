@@ -290,6 +290,10 @@ const SHARED = {
   popover: ["Popover"], "dropdown-menu": ["DropdownMenu"], tooltip: ["Tooltip"], accordion: ["Accordion"],
   "button-group": ["ButtonGroup"], "checkbox-group": ["CheckboxGroup"], "search-bar": ["SearchBar"], pagination: ["Pagination"],
   stepper: ["Stepper"], breadcrumb: ["Breadcrumb"], "page-header": ["PageHeader"], "multi-select": ["MultiSelect"], "range-slider": ["RangeSlider"],
+  "date-picker": ["DatePicker", "DateTimePicker"], "date-range-picker": ["DateRangePicker"], "time-picker": ["TimePicker"], "brand-logo": ["BrandLogo"],
+  popconfirm: ["Popconfirm"], "star-rating": ["StarRating"], "stat-card": ["StatCard"], statistic: ["Statistic"], "tab-button": ["TabButton"],
+  timeline: ["Timeline"], "tag-input": ["TagInput"], "combo-box": ["ComboBox"], "file-input": ["FileInput"], table: ["Table"], slider: ["Slider", "releaseStep"],
+  "content-score-bar": ["ContentScoreBar"], "view-toggle": ["ViewToggle"], "scroll-area": ["ScrollArea"],
 };
 
 const entries = reg.components.map((c) => ({ ...c, source: undefined, registry: true }));
@@ -553,6 +557,7 @@ const knMeta = {
   testCases: knTestFiles.reduce((a, f) => a + (gitKN(`show ${KN_REV}:${f}`).match(/^\s*(it|test)(\.each\([^)]*\))?\(/gm) || []).length, 0),
   showcaseEntries: (gitKN(`show ${KN_REV}:modules/showcase/registry.tsx`).match(/^    id: "/gm) || []).length,
   typeExports: [...knBarrel.matchAll(/export\s+type\s+\{([^}]*)\}/g)].flatMap((m) => m[1].split(",").map((n) => n.trim()).filter(Boolean)).length,
+  typeNames: [...knBarrel.matchAll(/export\s+type\s+\{([^}]*)\}/g)].flatMap((m) => m[1].split(",").map((n) => n.trim()).filter(Boolean)),
 };
 
 // token comparison

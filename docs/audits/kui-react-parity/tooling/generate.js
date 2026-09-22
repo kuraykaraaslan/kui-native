@@ -22,7 +22,7 @@ const byId = Object.fromEntries(facts.map((f) => [f.id, f]));
 const knComponentFiles = new Set(knFacts.map((k) => k.file)).size;
 
 // ---------------------------------------------------------------- classification
-const SHARED_CATEGORY = { button: "Foundation", badge: "Data Display", avatar: "Data Display", spinner: "Feedback", skeleton: "Feedback", input: "Forms", checkbox: "Forms", toggle: "Forms", card: "Layout", "empty-state": "Feedback", modal: "Overlay", label: "Typography", separator: "Layout", "alert-banner": "Feedback", "radio-group": "Forms", textarea: "Forms", "tab-group": "Navigation", progress: "Feedback", select: "Forms", drawer: "Overlay", toast: "Feedback", popover: "Overlay", "dropdown-menu": "Overlay", tooltip: "Overlay", accordion: "Data Display", "button-group": "Forms", "checkbox-group": "Forms", "search-bar": "Forms", pagination: "Navigation", stepper: "Navigation", breadcrumb: "Navigation", "page-header": "Layout", "multi-select": "Forms", "range-slider": "Forms" };
+const SHARED_CATEGORY = { button: "Foundation", badge: "Data Display", avatar: "Data Display", spinner: "Feedback", skeleton: "Feedback", input: "Forms", checkbox: "Forms", toggle: "Forms", card: "Layout", "empty-state": "Feedback", modal: "Overlay", label: "Typography", separator: "Layout", "alert-banner": "Feedback", "radio-group": "Forms", textarea: "Forms", "tab-group": "Navigation", progress: "Feedback", select: "Forms", drawer: "Overlay", toast: "Feedback", popover: "Overlay", "dropdown-menu": "Overlay", tooltip: "Overlay", accordion: "Data Display", "button-group": "Forms", "checkbox-group": "Forms", "search-bar": "Forms", pagination: "Navigation", stepper: "Navigation", breadcrumb: "Navigation", "page-header": "Layout", "multi-select": "Forms", "range-slider": "Forms", "date-picker": "Forms", "date-range-picker": "Forms", "time-picker": "Forms", "brand-logo": "Foundation", popconfirm: "Overlay", "star-rating": "Forms", "stat-card": "Data Display", statistic: "Data Display", "tab-button": "Navigation", timeline: "Data Display", "tag-input": "Forms", "combo-box": "Forms", "file-input": "Forms", table: "Tables", slider: "Media", "content-score-bar": "Data Display", "view-toggle": "Forms", "scroll-area": "Layout" };
 const cur = Object.fromEntries(rows.map(([id, category, priority, complexity, wave, fit, reason, rnNotes, rnDeps]) => [id, { category, priority, complexity, wave, fit, reason, rnNotes, rnDeps }]));
 const VERT = { common: "Common", blog: "Blog", event: "Event", "api-doc": "API Doc", landing: "Landing", jobs: "Jobs", fintech: "Fintech", commerce: "Commerce", media: "Media", forum: "Forum", "real-estate": "Real Estate", food: "Food", travel: "Travel", ai: "AI", social: "Social", iot: "IoT", nft: "NFT", reviews: "Reviews" };
 
@@ -99,7 +99,7 @@ const REM_STATUS = {
   "R-button": ["done", "`2866e66`"], "R-input": ["done", "`92af9a3`"], "R-overlay-core": ["done", "`27def3b`, anchored panels `68ce86d`"],
   "R-modal": ["done", "`27def3b`"], "R-badge": ["done", "`3e48fad`"], "R-card": ["done", "`dbdbdbd`"], "R-avatar": ["done", "`599c8a1`"],
   "R-checkbox": ["done", "`75edb0c`"], "R-toggle": ["done", "`5f484a8`"], "R-empty-state": ["done", "`7ca2284`"], "R-shadow": ["done", "`048ebed`: shadow classes + Android elevation"],
-  "R-skeleton": ["partial", "Line / Avatar / Text since `048ebed`; SkeletonTableRow waits for Table"],
+  "R-skeleton": ["partial", "Line / Avatar / Text since `048ebed`; Table primitive landed (`b83d87f`) but SkeletonTableRow is still missing"],
   "R-spinner": ["partial", "sizes fixed in `4ebda43`; two-tone ring still missing"],
   "R-typography": ["partial", "weights fixed (`048ebed`, `2866e66`); Geist not bundled"],
 };
@@ -202,7 +202,7 @@ const knShowcasePrivate = [
   ["CodeBlock", "modules/showcase/ui/CodeBlock.tsx", "Data Display", "—"],
   ["useDrawer (zustand store)", "modules/showcase/ui/drawer.store.ts", "Hooks", "—"],
 ];
-const KN_CATEGORY = { Button: "Foundation", Text: "Typography", Card: "Layout", Avatar: "Data Display", AvatarGroup: "Data Display", Badge: "Data Display", TextInput: "Forms", Input: "Forms", Toggle: "Forms", Checkbox: "Forms", Switch: "Forms", Spinner: "Feedback", EmptyState: "Feedback", SkeletonCard: "Feedback", Modal: "Overlay", Label: "Typography", Separator: "Layout", AlertBanner: "Feedback", RadioGroup: "Forms", Textarea: "Forms", TabGroup: "Navigation", Progress: "Feedback", SkeletonLine: "Feedback", SkeletonAvatar: "Feedback", SkeletonText: "Feedback", Select: "Forms", Drawer: "Overlay", Toaster: "Feedback", Toast: "Feedback", ToastProvider: "Feedback", ToastRegion: "Feedback", toast: "Feedback", useToast: "Hooks", useToastStore: "Hooks", getEffectiveDuration: "Feedback", Popover: "Overlay", DropdownMenu: "Overlay", Tooltip: "Overlay", Accordion: "Data Display", ButtonGroup: "Forms", CheckboxGroup: "Forms", SearchBar: "Forms", Pagination: "Navigation", Stepper: "Navigation", Breadcrumb: "Navigation", PageHeader: "Layout", MultiSelect: "Forms", RangeSlider: "Forms" };
+const KN_CATEGORY = { Button: "Foundation", Text: "Typography", Card: "Layout", Avatar: "Data Display", AvatarGroup: "Data Display", Badge: "Data Display", TextInput: "Forms", Input: "Forms", Toggle: "Forms", Checkbox: "Forms", Switch: "Forms", Spinner: "Feedback", EmptyState: "Feedback", SkeletonCard: "Feedback", Modal: "Overlay", Label: "Typography", Separator: "Layout", AlertBanner: "Feedback", RadioGroup: "Forms", Textarea: "Forms", TabGroup: "Navigation", Progress: "Feedback", SkeletonLine: "Feedback", SkeletonAvatar: "Feedback", SkeletonText: "Feedback", Select: "Forms", Drawer: "Overlay", Toaster: "Feedback", Toast: "Feedback", ToastProvider: "Feedback", ToastRegion: "Feedback", toast: "Feedback", useToast: "Hooks", useToastStore: "Hooks", getEffectiveDuration: "Feedback", Popover: "Overlay", DropdownMenu: "Overlay", Tooltip: "Overlay", Accordion: "Data Display", ButtonGroup: "Forms", CheckboxGroup: "Forms", SearchBar: "Forms", Pagination: "Navigation", Stepper: "Navigation", Breadcrumb: "Navigation", PageHeader: "Layout", MultiSelect: "Forms", RangeSlider: "Forms", BrandLogo: "Foundation", ComboBox: "Forms", DatePicker: "Forms", DateRangePicker: "Forms", DateTimePicker: "Forms", FileInput: "Forms", Popconfirm: "Overlay", Slider: "Media", releaseStep: "Media", TabButton: "Navigation", Table: "Tables", TagInput: "Forms", StarRating: "Forms", StatCard: "Data Display", Statistic: "Data Display", Timeline: "Data Display", TimePicker: "Forms", ContentScoreBar: "Data Display", ViewToggle: "Forms", ScrollArea: "Layout" };
 {
   const rel = "phase-1-inventory/kui-native-components.md";
   const deps = (k) => { const src = fs.readFileSync(path.join("C:/Users/kuray/Documents/Projects/KUInative", k.file), "utf8"); return [...src.matchAll(/from\s+["']\.\/(\w+)["']/g)].map((m) => m[1]).join(", ") || "—"; };
@@ -266,7 +266,7 @@ These live under \`modules/showcase/ui/\`, are **not** exported from the library
 | npm package | \`@kuraykaraaslan/kui-react\` 1.0.1 (ESM + CJS + d.ts via tsup) | none (\`private: true\`) |
 | Entry points | \`.\`, \`./ui\`, \`./app\`, \`./common\`, \`./styles\` | \`@/modules/ui\` (repo alias) |
 | ui barrel value exports | ${ui.v.length} | ${knFacts.length} |
-| ui barrel type exports | ${ui.t.length} | ${knFacts.length - 1} |
+| ui barrel type exports | ${ui.t.length} | ${knMeta.typeExports} |
 | app barrel value exports | ${app.v.length} | 0 |
 | common barrel value exports | ${common.v.length} | 0 |
 | Hooks (public) | \`useToastStore\`, \`useAnnounce\`, \`useDirection\` (+ internal \`useBreakpoint\`, \`useFocusTrap\`, \`useA11yCheck\`) | 0 in barrel (\`useThemeMode\`, \`useResolvedScheme\`, \`useThemeTokens\` in \`libs/theme.ts\`) |
@@ -294,9 +294,9 @@ ${root.v.map(code).join(", ")}
 
 All ✗ in KuiNative.
 
-## KuiNative \`modules/ui/index.ts\` (${knFacts.length} values, ${knFacts.length - 1} types)
+## KuiNative \`modules/ui/index.ts\` (${knFacts.length} values, ${knMeta.typeExports} types)
 
-` + table(["Export", "Props type exported", "KuiReact export"], knFacts.map((k) => [k.name, k.name === "AvatarGroup" ? "✗" : `✓ ${k.name}Props`, k.krCounterpart ? (byId[k.krCounterpart].name === k.name || (k.name === "SkeletonCard") ? `✓ ${k.name}` : `≈ ${byId[k.krCounterpart].name}`) : "✗ (no KuiReact Text component)"])));
+` + table(["Export", "Props type exported", "KuiReact export"], knFacts.map((k) => [k.name, (knMeta.typeNames || []).includes(`${k.name}Props`) ? `✓ ${k.name}Props` : "✗", k.krCounterpart ? (byId[k.krCounterpart].name === k.name || (k.name === "SkeletonCard") ? `✓ ${k.name}` : `≈ ${byId[k.krCounterpart].name}`) : "✗ (no KuiReact Text component)"])));
   write(rel, parts.join("\n\n"));
 }
 
@@ -650,7 +650,7 @@ function waveDoc(w, title, intro, rel) {
 write("phase-5-roadmap/wave-1-critical.md", waveDoc(1, "Wave 1 — Critical", `Required before serious production adoption. Wave 1 fixes the foundations (packaging, theme provider, typography, tests), brings the three most-used shared components (Button, Input, Modal) to parity, and adds the primitives no app can ship without (Select, Textarea, RadioGroup, Toast, Drawer/sheet, TabGroup, AlertBanner, Progress, Label, Separator, loading/error states).
 
 **Exit criteria:** KuiNative installs as a package; a consumer can build a themed, accessible login + settings + list screen without reaching for another UI library; every Wave 1 component has tests and a showcase entry.`, "phase-5-roadmap/wave-1-critical.md"));
-write("phase-5-roadmap/wave-2-core-completion.md", waveDoc(2, "Wave 2 — Core completion", `Required for strong parity. Finishes the remaining shared-component remediation (Badge, Card, Avatar/AvatarGroup, Checkbox, Toggle, Skeleton, Spinner, EmptyState, shadows), adds the parity contract tooling, and ports the remaining commonly-used ui-layer primitives.
+write("phase-5-roadmap/wave-2-core-completion.md", waveDoc(2, "Wave 2 — Core completion", `Required for strong parity. Finishes the remaining shared-component remediation (Badge, Card, Avatar/AvatarGroup, Checkbox, Toggle, Skeleton, Spinner, EmptyState, shadows), adds the parity contract tooling, and ports the remaining commonly-used ui-layer primitives. Those primitives have all landed (the last of them in \`08c1c32\`, so they have left this list); what remains is remediation and tooling.
 
 **Exit criteria:** every shared component is PARITY_COMPLETE; every KuiReact ui-layer component with fit \`direct\`/\`adapt\` and priority ≥ Medium exists; \`parity.exceptions.json\` lists every deliberate gap and CI fails on an unexplained one.`, "phase-5-roadmap/wave-2-core-completion.md"));
 write("phase-5-roadmap/wave-3-advanced.md", waveDoc(3, "Wave 3 — Advanced", `Nice-to-have: heavy organisms (tables, charts, calendar, media), desktop-web patterns and recommended exceptions. Items with fit \`web-only\` should be closed by adding an exception entry, not by implementation.

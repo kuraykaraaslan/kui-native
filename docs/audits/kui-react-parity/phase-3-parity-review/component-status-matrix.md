@@ -1,6 +1,6 @@
 # Component status matrix
 
-> Every KuiNative library export classified against its KuiReact counterpart. Re-classified 2026-09-22 through commit `0770214` (pixel-perfect pass, Wave 1 components, API parity on the original components, then Popover, DropdownMenu, Tooltip, Accordion, ButtonGroup, CheckboxGroup, SearchBar, Pagination, Stepper, Breadcrumb, PageHeader, MultiSelect and RangeSlider). Earlier classifications are in git history.
+> Every KuiNative library export classified against its KuiReact counterpart. Re-classified 2026-09-22 through commit `08c1c32` (pixel-perfect pass, Wave 1 components, API parity on the original components, the anchored-overlay batch through `0770214`, then the DatePicker suite, TimePicker, BrandLogo, Popconfirm, StarRating, StatCard, Statistic, TabButton, Timeline, TagInput, ComboBox, FileInput, Table, Slider, ContentScoreBar, ViewToggle and ScrollArea, plus the `5630391` fixes for DropdownMenu and MultiSelect). Earlier classifications are in git history.
 
 ## Rubric
 
@@ -15,8 +15,8 @@
 
 | Status | Count | Components |
 | --- | --- | --- |
-| PARITY_COMPLETE | 26 | Button, Card, Avatar, AvatarGroup, Badge, Input, Checkbox, Toggle, EmptyState, Separator, AlertBanner, RadioGroup, Textarea, Progress, Drawer, Toast, Tooltip, Accordion, ButtonGroup, CheckboxGroup, SearchBar, Pagination, Stepper, Breadcrumb, PageHeader, RangeSlider |
-| PARITY_MINOR_GAPS | 10 | Spinner, Text (native-only), Skeleton, Modal, Label, TabGroup, Select, Popover, DropdownMenu, MultiSelect |
+| PARITY_COMPLETE | 41 | Button, Card, Avatar, AvatarGroup, Badge, Input, Checkbox, Toggle, EmptyState, Separator, AlertBanner, RadioGroup, Textarea, Progress, Drawer, Toast, Tooltip, Accordion, ButtonGroup, CheckboxGroup, SearchBar, Pagination, Stepper, Breadcrumb, PageHeader, RangeSlider, DropdownMenu, MultiSelect, BrandLogo, StarRating, StatCard, Statistic, TabButton, Timeline, ComboBox, FileInput, Table, Slider, ContentScoreBar, ViewToggle, ScrollArea |
+| PARITY_MINOR_GAPS | 13 | Spinner, Text (native-only), Skeleton, Modal, Label, TabGroup, Select, Popover, DatePicker (+ DateTimePicker), DateRangePicker, TimePicker, Popconfirm, TagInput |
 | PARITY_MAJOR_GAPS | 0 | — |
 | REQUIRES_REWRITE | 0 | — |
 
@@ -28,15 +28,19 @@ Deprecated aliases keep older KuiNative call sites working: `Button label` / `de
 | --- | --- | --- |
 | Spinner | OS activity indicator instead of KuiReact's two-tone rotating ring | Visual only; sizes, label and colour match |
 | Text | Geist not bundled (system font) | Native-only primitive; needs font assets |
-| Skeleton | No `SkeletonTableRow` | Waits for Table |
+| Skeleton | No `SkeletonTableRow` | The Table primitive landed in `b83d87f`; the row skeleton is still to do |
 | Modal | No `closeOnRouteChange`, no panel `ref` | KuiReact's own `closeOnRouteChange` is a stub |
 | Label | No rest props; `htmlFor` adapted to `onPress` | No id-based label linking on RN |
 | TabGroup | No arrow / Home / End keyboard navigation | Desktop keyboard pattern |
 | Select | No close-on-outside-tap for the inline panel; plain mode uses the custom panel | RN has no `<select>` |
 | Popover | Focus is not moved into the panel on open or returned to the trigger on close (screen-reader focus is kept inside via `accessibilityViewIsModal`) | Drawer / Modal already do this with `useFocusOnOpen`; the anchored panel does not yet |
-| DropdownMenu | Same focus gap as Popover; Tab wrap not ported | Tab wrap is a desktop keyboard pattern |
-| MultiSelect | Error state lacks KuiReact's `ring-1 ring-error` | Visual only; border and background match |
+| Popconfirm | Same focus gap as Popover (KuiReact's `useFocusTrap` moves focus in and back) | Contained by `accessibilityViewIsModal`; `AnchoredPanel onShow` (added for DropdownMenu in `5630391`) is the hook to use |
+| DatePicker / DateRangePicker | Shared trigger lacks the error `ring-1 ring-error` | Visual only; border and background match |
+| TagInput | Error state lacks `ring-1 ring-error` | Visual only; border and background match |
+| TimePicker | KuiReact's own two demos (Default, Required / error) are not a showcase entry yet; only the DateRangePicker "Time picker" demo is reproduced | Showcase only; the component itself matches |
 
-Common RN adaptations in the new components (not counted as gaps): hover → pressed state, `divide-*` → `border-t` / `border-l`, `bg-primary/20` computed from the hex token, Tooltip on long-press, anchored panels in a transparent RN `Modal` with outside-tap close, Escape → Android back, `href` → expo-router `router.push`, `onClick` → `onPress`.
+Common RN adaptations in the new components (not counted as gaps): hover → pressed state, `divide-*` → `border-t` / `border-l`, `bg-primary/20` computed from the hex token, Tooltip on long-press, anchored panels in a transparent RN `Modal` with outside-tap close, Escape → Android back, `href` → expo-router `router.push`, `onClick` → `onPress`; in the latest batch also: native `<input type="time">` → hour / minute column panel, file drag-and-drop / paste → system document picker, sticky day headings → plain rows, auto table layout → equal flex columns with horizontal scroll, pointer drag → `PanResponder`, styled scrollbars → platform indicators.
+
+Closed since the previous refresh (`5630391`): DropdownMenu now sends screen-reader focus to its first enabled item when the panel opens, and MultiSelect draws the error `ring-1`. Both are PARITY_COMPLETE.
 
 Per-component detail: [feature-matrix/](../feature-matrix/README.md).

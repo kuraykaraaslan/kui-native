@@ -44,12 +44,25 @@ Working branch: `feature/wave1-parity`. Scope: KuiReact ui-layer atoms, molecule
 | `1f19759` | PageHeader |
 | `6e76a56` | MultiSelect on KuiReact's ported ComboBox hooks (filter, async, load-more) |
 | `0770214` | RangeSlider (single + dual handle) |
-| (this commit) | Docs refresh pinned to `0770214`: 13 feature matrices, backlog pruned (28 left), status matrix (26 complete, 10 minor, 0 major), re-scoring 66 → 71; tooling gains `KN_REV` and remediation status |
+| `6fcde20` | Docs refresh pinned to `0770214`: 13 feature matrices, backlog pruned (28 left), status matrix (26 complete, 10 minor, 0 major), re-scoring 66 → 71; tooling gains `KN_REV` and remediation status |
+| `97f78b5` | DatePicker suite (DatePicker, DateRangePicker, DateTimePicker stub); Calendar gets the merged `messages` (KuiReact's `today` override never applies) |
+| `44cdca3` | BrandLogo + Popconfirm (KuiReact tests ported) |
+| `e024908` | StarRating, StatCard, Statistic, TabButton |
+| `586b14a` | Timeline (connector stops at the last item, per KuiReact's documented intent) |
+| `77ce794` | TagInput (double-tap / long-press edit) |
+| `5630391` | Audit gaps closed: DropdownMenu initial screen-reader focus (`AnchoredPanel onShow`), MultiSelect error `ring-1` |
+| `1fe3d56` | ComboBox (`modules/ui/ComboBox/`, shared hooks, windowed list) |
+| `6265440` | FileInput on `expo-document-picker` (paste variant not reproduced) |
+| `b83d87f` | Table primitive (`modules/ui/Table/`; DataTable still to do) |
+| `248e523` | TimePicker (hour / minute columns) + KuiReact's DateRangePicker "Time picker" demo |
+| `cd76c65` | Slider carousel (swipe momentum, edge resistance, autoplay) |
+| `08c1c32` | ContentScoreBar, ViewToggle, ScrollArea |
+| (this commit) | Docs refresh pinned to `08c1c32`: 18 feature matrices, DropdownMenu / MultiSelect matrices closed, backlog pruned (10 left), status matrix (41 complete, 13 minor, 0 major), re-scoring 71 → 75; public-exports reads `*Props` types from the barrel |
 
 ## Next
 
-1. **Refresh the docs for the DatePicker suite** (`97f78b5`, landed after this refresh's `KN_REV=0770214` cutoff) and anything after it.
-2. **Remaining roadmap components** in order: BrandLogo, Popconfirm, StarRating, StatCard, Statistic, TabButton, Timeline, FileInput, Slider, Table, TagInput, TimePicker, ComboBox, DateRangePicker, then Wave 3 (Chart, ContentScoreBar, ScrollArea, ViewToggle, the tables, ColorPicker, DiffViewer, TreeView, MapView, VideoPlayer; SkipLink as an exception). Each pixel-perfect with 1:1 showcase demos.
-3. **Infra:** packaging + `KuiProvider`, ESLint config, Font Awesome 7, Geist, CI.
-4. **Minor gaps:** focus move / restore for the anchored overlays (Popover, DropdownMenu; reuse `useFocusOnOpen`), MultiSelect error `ring-1`, Spinner two-tone ring, Select outside-tap close, Modal `ref`, Label rest props, `SkeletonTableRow` (with Table).
-5. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), run `KN_REV=<commit> node extract.js` then `node generate.js`, delete the now-stale backlog files, write feature matrices, update status matrix and scores, and mark finished `R-*` items in `REM_STATUS`.
+0. **Refresh the docs for TreeView (`9aafffe`) and ColorPicker (`17c8796`)**, which landed after this refresh's `KN_REV=08c1c32` cutoff.
+1. **Remaining Wave 3 components** in roadmap order: Chart, SkipLink + LiveRegion (record as a parity exception rather than build), BulkActionTable, ColorPicker, DataTable (on the ported `Table/types.ts`), DiffViewer, TreeView, AdvancedDataTable, MapView, VideoPlayer. Each pixel-perfect with 1:1 showcase demos.
+2. **Infra:** packaging + `KuiProvider`, ESLint config, Font Awesome 7, Geist, CI.
+3. **Minor gaps:** focus move / restore for Popover and Popconfirm (use `AnchoredPanel onShow`, as DropdownMenu does), error `ring-1` on the DatePicker / DateRangePicker trigger and TagInput, a `time-picker` showcase entry with KuiReact's Default and Required / error demos, `SkeletonTableRow`, Spinner two-tone ring, Select outside-tap close, Modal `ref`, Label rest props.
+4. After each batch: add the new ids to `SHARED` in `tooling/extract.js` (and the category maps in `generate.js`), run `KN_REV=<commit> node extract.js` then `node generate.js`, delete the now-stale backlog files, write feature matrices, update status matrix and scores, and mark finished `R-*` items in `REM_STATUS`.

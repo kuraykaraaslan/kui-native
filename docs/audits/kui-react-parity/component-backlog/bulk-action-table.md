@@ -17,7 +17,7 @@ Table with **id-keyed** row selection and a bulk-action bar. `DataTable`’s own
 | Public export | `@kuraykaraaslan/kui-react/ui` — public (npm: root + /ui) |
 | Registry | yes · status `stable` · since 2026-08 |
 | Showcase variants | Selection and actions, Unselectable rows, and select-all-matching |
-| Composes | Table (missing) |
+| Composes | Table (exists as `Table`) |
 | Used by (registry) | — |
 | Usage frequency | imported by 0 production file(s), 1 showcase file(s) |
 | Third-party imports | — |
@@ -120,9 +120,9 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 
 **KuiReact components it composes:**
 
-- Table — missing → [backlog](table.md)
+- Table — exists as `Table`
 
-**Blocked by (roadmap):** `table`
+**Blocked by (roadmap):** nothing
 
 **Third-party:** none
 

@@ -19,7 +19,7 @@
 | Component | id | Layer | Export path | Public status | LOC | Composes | Used by | Imports (prod / showcase) | Tests | KuiNative |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Button | `button` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 91 | — | 9 | 137 / 13 | ✓ (12) | ✓ Button |
-| BrandLogo | `brand-logo` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 27 | — | 0 | 6 / 2 | — | ✗ [backlog](../component-backlog/brand-logo.md) |
+| BrandLogo | `brand-logo` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 27 | — | 0 | 6 / 2 | — | ✓ BrandLogo |
 
 ## Typography (1)
 
@@ -33,7 +33,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Card | `card` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 84 | — | 0 | 9 / 1 | — | ✓ Card |
 | PageHeader | `page-header` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 85 | — | 0 | 2 / 1 | — | ✓ PageHeader |
-| ScrollArea | `scroll-area` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 36 | — | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/scroll-area.md) |
+| ScrollArea | `scroll-area` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 36 | — | 0 | 0 / 1 | — | ✓ ScrollArea |
 | Separator | `separator` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 34 | — | 0 | 0 / 1 | — | ✓ Separator |
 
 ## Navigation (5)
@@ -44,7 +44,7 @@
 | Pagination | `pagination` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 169 | — | 0 | 2 / 1 | ✓ (9) | ✓ Pagination |
 | TabGroup | `tab-group` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 106 | — | 0 | 2 / 1 | ✓ (11) | ✓ TabGroup |
 | Stepper | `stepper` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 127 | — | 0 | 1 / 1 | — | ✓ Stepper |
-| TabButton | `tab-button` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 39 | — | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/tab-button.md) |
+| TabButton | `tab-button` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 39 | — | 0 | 1 / 1 | — | ✓ TabButton |
 
 ## Forms (20)
 
@@ -54,22 +54,22 @@
 | SearchBar | `search-bar` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 75 | — | 0 | 14 / 1 | — | ✓ SearchBar |
 | Textarea | `textarea` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 69 | — | 2 | 9 / 3 | — | ✓ Textarea |
 | Select | `select` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 226 | — | 1 | 5 / 2 | ✓ (10) | ✓ Select |
-| StarRating | `star-rating` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 138 | — | 3 | 3 / 1 | — | ✗ [backlog](../component-backlog/star-rating.md) |
-| TagInput | `tag-input` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 150 | — | 0 | 3 / 1 | — | ✗ [backlog](../component-backlog/tag-input.md) |
+| StarRating | `star-rating` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 138 | — | 3 | 3 / 1 | — | ✓ StarRating |
+| TagInput | `tag-input` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 150 | — | 0 | 3 / 1 | — | ✓ TagInput |
 | ColorPicker | `color-picker` | ui | `@/modules/ui/ColorPicker/index` | source-only (not exported from a barrel) | 1190 | — | 0 | 2 / 1 | — | ✗ [backlog](../component-backlog/color-picker.md) |
 | RadioGroup | `radio-group` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 121 | — | 0 | 2 / 1 | — | ✓ RadioGroup |
 | Toggle | `toggle` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 81 | — | 0 | 2 / 2 | ✓ (6) | ✓ Toggle + Switch |
 | ButtonGroup | `button-group` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 96 | — | 0 | 1 / 1 | — | ✓ ButtonGroup |
 | Checkbox | `checkbox` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 65 | — | 1 | 1 / 1 | ✓ (6) | ✓ Checkbox |
-| DatePicker | `date-picker` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1421 | calendar | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/date-picker.md) |
-| DateRangePicker | `date-range-picker` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1421 | calendar | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/date-range-picker.md) |
+| DatePicker | `date-picker` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1421 | calendar | 0 | 1 / 1 | — | ✓ DatePicker + DateTimePicker |
+| DateRangePicker | `date-range-picker` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1421 | calendar | 0 | 1 / 1 | — | ✓ DateRangePicker |
 | MultiSelect | `multi-select` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 284 | — | 0 | 1 / 2 | — | ✓ MultiSelect |
-| ViewToggle | `view-toggle` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 52 | — | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/view-toggle.md) |
+| ViewToggle | `view-toggle` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 52 | — | 0 | 1 / 1 | — | ✓ ViewToggle |
 | CheckboxGroup | `checkbox-group` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 67 | — | 0 | 0 / 1 | — | ✓ CheckboxGroup |
-| ComboBox | `combo-box` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 738 | — | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/combo-box.md) |
-| FileInput | `file-input` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 391 | — | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/file-input.md) |
+| ComboBox | `combo-box` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 738 | — | 0 | 0 / 1 | — | ✓ ComboBox |
+| FileInput | `file-input` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 391 | — | 0 | 0 / 1 | — | ✓ FileInput |
 | RangeSlider | `range-slider` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 113 | — | 0 | 0 / 1 | — | ✓ RangeSlider |
-| TimePicker | `time-picker` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 80 | — | 0 | 0 / 2 | — | ✗ [backlog](../component-backlog/time-picker.md) |
+| TimePicker | `time-picker` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 80 | — | 0 | 0 / 2 | — | ✓ TimePicker |
 
 ## Feedback (6)
 
@@ -90,7 +90,7 @@
 | DropdownMenu | `dropdown-menu` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 113 | use-focus-trap | 0 | 7 / 1 | ✓ (11) | ✓ DropdownMenu |
 | Drawer | `drawer` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 120 | use-focus-trap | 0 | 4 / 2 | ✓ (8) | ✓ Drawer |
 | Tooltip | `tooltip` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 105 | — | 0 | 2 / 1 | ✓ (6) | ✓ Tooltip |
-| Popconfirm | `popconfirm` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 94 | button, use-focus-trap | 0 | 0 / 1 | ✓ (6) | ✗ [backlog](../component-backlog/popconfirm.md) |
+| Popconfirm | `popconfirm` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 94 | button, use-focus-trap | 0 | 0 / 1 | ✓ (6) | ✓ Popconfirm |
 | Popover | `popover` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 74 | use-focus-trap | 0 | 0 / 2 | ✓ (5) | ✓ Popover |
 
 ## Data Display (8)
@@ -99,19 +99,19 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Badge | `badge` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 87 | — | 3 | 109 / 8 | — | ✓ Badge |
 | Avatar | `avatar` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 124 | — | 5 | 41 / 2 | — | ✓ Avatar + AvatarGroup |
-| StatCard | `stat-card` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 19 | — | 0 | 3 / 1 | — | ✗ [backlog](../component-backlog/stat-card.md) |
+| StatCard | `stat-card` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 19 | — | 0 | 3 / 1 | — | ✓ StatCard |
 | TreeView | `tree-view` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 849 | — | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/tree-view.md) |
 | Accordion | `accordion` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 85 | — | 0 | 0 / 1 | — | ✓ Accordion |
-| ContentScoreBar | `content-score-bar` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 107 | — | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/content-score-bar.md) |
-| Statistic | `statistic` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 66 | — | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/statistic.md) |
-| Timeline | `timeline` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 170 | — | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/timeline.md) |
+| ContentScoreBar | `content-score-bar` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 107 | — | 0 | 0 / 1 | — | ✓ ContentScoreBar |
+| Statistic | `statistic` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 66 | — | 0 | 0 / 1 | — | ✓ Statistic |
+| Timeline | `timeline` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 170 | — | 0 | 0 / 1 | — | ✓ Timeline |
 
 ## Tables (4)
 
 | Component | id | Layer | Export path | Public status | LOC | Composes | Used by | Imports (prod / showcase) | Tests | KuiNative |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | DataTable | `data-table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 808 | pagination | 0 | 5 / 1 | — | ✗ [backlog](../component-backlog/data-table.md) |
-| Table | `table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 158 | — | 0 | 3 / 1 | — | ✗ [backlog](../component-backlog/table.md) |
+| Table | `table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 158 | — | 0 | 3 / 1 | — | ✓ Table |
 | AdvancedDataTable | `advanced-data-table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1999 | data-table, pagination, search-bar, spinner | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/advanced-data-table.md) |
 | BulkActionTable | `bulk-action-table` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 236 | table | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/bulk-action-table.md) |
 
@@ -125,7 +125,7 @@
 
 | Component | id | Layer | Export path | Public status | LOC | Composes | Used by | Imports (prod / showcase) | Tests | KuiNative |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Slider | `slider` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 644 | — | 0 | 3 / 2 | — | ✗ [backlog](../component-backlog/slider.md) |
+| Slider | `slider` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 644 | — | 0 | 3 / 2 | — | ✓ Slider + releaseStep |
 | VideoPlayer | `video-player` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 1487 | — | 0 | 1 / 1 | — | ✗ [backlog](../component-backlog/video-player.md) |
 | MapView | `map-view` | ui | `@kuraykaraaslan/kui-react/ui` | public (npm: root + /ui) | 796 | button, card | 0 | 0 / 1 | — | ✗ [backlog](../component-backlog/map-view.md) |
 

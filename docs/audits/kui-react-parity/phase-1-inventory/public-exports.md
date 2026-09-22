@@ -9,8 +9,8 @@
 | --- | --- | --- |
 | npm package | `@kuraykaraaslan/kui-react` 1.0.1 (ESM + CJS + d.ts via tsup) | none (`private: true`) |
 | Entry points | `.`, `./ui`, `./app`, `./common`, `./styles` | `@/modules/ui` (repo alias) |
-| ui barrel value exports | 78 | 48 |
-| ui barrel type exports | 35 | 47 |
+| ui barrel value exports | 78 | 68 |
+| ui barrel type exports | 35 | 95 |
 | app barrel value exports | 43 | 0 |
 | common barrel value exports | 52 | 0 |
 | Hooks (public) | `useToastStore`, `useAnnounce`, `useDirection` (+ internal `useBreakpoint`, `useFocusTrap`, `useA11yCheck`) | 0 in barrel (`useThemeMode`, `useResolvedScheme`, `useThemeTokens` in `libs/theme.ts`) |
@@ -28,25 +28,25 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | Avatar | ✓ same name |
 | AvatarGroup | ✓ same name |
 | Badge | ✓ same name |
-| BrandLogo | ✗ |
+| BrandLogo | ✓ same name |
 | Button | ✓ same name |
 | Checkbox | ✓ same name |
-| DatePicker | ✗ |
-| FileInput | ✗ |
+| DatePicker | ✓ same name |
+| FileInput | ✓ same name |
 | Input | ✓ same name |
 | Label | ✓ same name |
 | Progress | ✓ same name |
 | RangeSlider | ✓ same name |
-| ScrollArea | ✗ |
+| ScrollArea | ✓ same name |
 | Select | ✓ same name |
 | Separator | ✓ same name |
 | SkipLink | ✗ |
 | LiveRegion | ✗ |
 | Announcer | ✗ |
 | Spinner | ✓ same name |
-| StarRating | ✗ |
-| StatCard | ✗ |
-| Statistic | ✗ |
+| StarRating | ✓ same name |
+| StatCard | ✓ same name |
+| Statistic | ✓ same name |
 | Textarea | ✓ same name |
 | Toggle | ✓ same name |
 | AdvancedDataTable | ✗ |
@@ -55,11 +55,11 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | ButtonGroup | ✓ same name |
 | Card | ✓ same name |
 | CheckboxGroup | ✓ same name |
-| ComboBox | ✗ |
-| ContentScoreBar | ✗ |
+| ComboBox | ✓ same name |
+| ContentScoreBar | ✓ same name |
 | DataTable | ✗ |
-| DateRangePicker | ✗ |
-| TimePicker | ✗ |
+| DateRangePicker | ✓ same name |
+| TimePicker | ✓ same name |
 | Drawer | ✓ same name |
 | DropdownMenu | ✓ same name |
 | EmptyState | ✓ same name |
@@ -68,7 +68,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | MultiSelect | ✓ same name |
 | PageHeader | ✓ same name |
 | Pagination | ✓ same name |
-| Popconfirm | ✗ |
+| Popconfirm | ✓ same name |
 | Popover | ✓ same name |
 | RadioGroup | ✓ same name |
 | SearchBar | ✓ same name |
@@ -78,19 +78,19 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | SkeletonText | ✓ same name |
 | SkeletonCard | ✓ same name |
 | SkeletonTableRow | ✗ |
-| Slider | ✗ |
+| Slider | ✓ same name |
 | Stepper | ✓ same name |
-| TabButton | ✗ |
+| TabButton | ✓ same name |
 | TabGroup | ✓ same name |
-| Table | ✗ |
-| TagInput | ✗ |
+| Table | ✓ same name |
+| TagInput | ✓ same name |
 | Toast | ✓ same name |
 | ToastProvider | ✓ same name |
 | ToastRegion | ✓ same name |
 | Tooltip | ✓ same name |
 | TreeView | ✗ |
 | VideoPlayer | ✗ |
-| ViewToggle | ✗ |
+| ViewToggle | ✓ same name |
 | LazyDataTable | ✗ |
 | LazyAdvancedDataTable | ✗ |
 | LazyServerDataTable | ✗ |
@@ -101,7 +101,7 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 | toast | ✓ same name |
 | getEffectiveDuration | ✓ same name |
 | BulkActionTable | ✗ |
-| Timeline | ✗ |
+| Timeline | ✓ same name |
 
 ## KuiReact `modules/ui/index.ts` — type exports (35)
 
@@ -197,55 +197,75 @@ Type-export parity note: KuiNative exports a `*Props` type for every component; 
 
 All ✗ in KuiNative.
 
-## KuiNative `modules/ui/index.ts` (48 values, 47 types)
+## KuiNative `modules/ui/index.ts` (68 values, 95 types)
 
 | Export | Props type exported | KuiReact export |
 | --- | --- | --- |
 | Accordion | ✓ AccordionProps | ✓ Accordion |
 | AlertBanner | ✓ AlertBannerProps | ✓ AlertBanner |
 | Avatar | ✓ AvatarProps | ✓ Avatar |
-| AvatarGroup | ✗ | ≈ Avatar |
+| AvatarGroup | ✓ AvatarGroupProps | ≈ Avatar |
 | Badge | ✓ BadgeProps | ✓ Badge |
+| BrandLogo | ✓ BrandLogoProps | ✓ BrandLogo |
 | Breadcrumb | ✓ BreadcrumbProps | ✓ Breadcrumb |
 | Button | ✓ ButtonProps | ✓ Button |
 | ButtonGroup | ✓ ButtonGroupProps | ✓ ButtonGroup |
 | Card | ✓ CardProps | ✓ Card |
 | Checkbox | ✓ CheckboxProps | ✓ Checkbox |
 | CheckboxGroup | ✓ CheckboxGroupProps | ✓ CheckboxGroup |
+| ComboBox | ✓ ComboBoxProps | ✓ ComboBox |
+| ContentScoreBar | ✓ ContentScoreBarProps | ✓ ContentScoreBar |
+| DatePicker | ✓ DatePickerProps | ✓ DatePicker |
+| DateRangePicker | ✓ DateRangePickerProps | ✓ DateRangePicker |
+| DateTimePicker | ✓ DateTimePickerProps | ≈ DatePicker |
 | Drawer | ✓ DrawerProps | ✓ Drawer |
 | DropdownMenu | ✓ DropdownMenuProps | ✓ DropdownMenu |
 | EmptyState | ✓ EmptyStateProps | ✓ EmptyState |
+| FileInput | ✓ FileInputProps | ✓ FileInput |
 | Label | ✓ LabelProps | ✓ Label |
 | Modal | ✓ ModalProps | ✓ Modal |
 | MultiSelect | ✓ MultiSelectProps | ✓ MultiSelect |
 | PageHeader | ✓ PageHeaderProps | ✓ PageHeader |
 | Pagination | ✓ PaginationProps | ✓ Pagination |
+| Popconfirm | ✓ PopconfirmProps | ✓ Popconfirm |
 | Popover | ✓ PopoverProps | ✓ Popover |
 | Progress | ✓ ProgressProps | ✓ Progress |
 | RadioGroup | ✓ RadioGroupProps | ✓ RadioGroup |
 | RangeSlider | ✓ RangeSliderProps | ✓ RangeSlider |
+| ScrollArea | ✓ ScrollAreaProps | ✓ ScrollArea |
 | SearchBar | ✓ SearchBarProps | ✓ SearchBar |
 | Select | ✓ SelectProps | ✓ Select |
 | Separator | ✓ SeparatorProps | ✓ Separator |
-| SkeletonAvatar | ✓ SkeletonAvatarProps | ≈ Skeleton |
+| SkeletonAvatar | ✗ | ≈ Skeleton |
 | SkeletonCard | ✓ SkeletonCardProps | ✓ SkeletonCard |
-| SkeletonLine | ✓ SkeletonLineProps | ≈ Skeleton |
-| SkeletonText | ✓ SkeletonTextProps | ≈ Skeleton |
+| SkeletonLine | ✗ | ≈ Skeleton |
+| SkeletonText | ✗ | ≈ Skeleton |
+| Slider | ✓ SliderProps | ✓ Slider |
+| releaseStep | ✗ | ≈ Slider |
 | Spinner | ✓ SpinnerProps | ✓ Spinner |
 | Switch | ✓ SwitchProps | ≈ Toggle |
 | Toggle | ✓ ToggleProps | ✓ Toggle |
+| TabButton | ✓ TabButtonProps | ✓ TabButton |
+| Table | ✓ TableProps | ✓ Table |
+| TagInput | ✓ TagInputProps | ✓ TagInput |
 | TabGroup | ✓ TabGroupProps | ✓ TabGroup |
 | Text | ✓ TextProps | ✗ (no KuiReact Text component) |
+| StarRating | ✓ StarRatingProps | ✓ StarRating |
+| StatCard | ✓ StatCardProps | ✓ StatCard |
+| Statistic | ✓ StatisticProps | ✓ Statistic |
 | Stepper | ✓ StepperProps | ✓ Stepper |
 | Tooltip | ✓ TooltipProps | ✓ Tooltip |
-| Toast | ✓ ToastProps | ✓ Toast |
-| ToastProvider | ✓ ToastProviderProps | ≈ Toast |
-| ToastRegion | ✓ ToastRegionProps | ≈ Toast |
+| Timeline | ✓ TimelineProps | ✓ Timeline |
+| ViewToggle | ✓ ViewToggleProps | ✓ ViewToggle |
+| TimePicker | ✓ TimePickerProps | ✓ TimePicker |
+| Toast | ✗ | ✓ Toast |
+| ToastProvider | ✗ | ≈ Toast |
+| ToastRegion | ✗ | ≈ Toast |
 | Toaster | ✓ ToasterProps | ≈ Toast |
-| getEffectiveDuration | ✓ getEffectiveDurationProps | ✗ (no KuiReact Text component) |
-| toast | ✓ toastProps | ✗ (no KuiReact Text component) |
-| useToast | ✓ useToastProps | ✗ (no KuiReact Text component) |
-| useToastStore | ✓ useToastStoreProps | ✗ (no KuiReact Text component) |
+| getEffectiveDuration | ✗ | ✗ (no KuiReact Text component) |
+| toast | ✗ | ✗ (no KuiReact Text component) |
+| useToast | ✗ | ✗ (no KuiReact Text component) |
+| useToastStore | ✗ | ✗ (no KuiReact Text component) |
 | Textarea | ✓ TextareaProps | ✓ Textarea |
 | Input | ✓ InputProps | ✓ Input |
 | TextInput | ✓ TextInputProps | ≈ Input |

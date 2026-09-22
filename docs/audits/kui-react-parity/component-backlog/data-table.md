@@ -155,7 +155,7 @@ Use NativeWind classes (`bg-border`, …); only props that cannot take `classNam
 
 - Pagination — exists as `Pagination`
 
-**Blocked by (roadmap):** `table`
+**Blocked by (roadmap):** nothing
 
 **Third-party:** `@fortawesome/react-fontawesome` → @fortawesome/react-native-fontawesome, `@fortawesome/free-solid-svg-icons`
 

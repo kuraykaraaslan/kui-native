@@ -25,17 +25,17 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | Pagination | 3 | 3 | 0 | exists as `Pagination` |
 | Drawer | 3 | 3 | 0 | exists as `Drawer` |
 | Select | 3 | 1 | 2 | exists as `Select` |
-| TagInput | 3 | 1 | 2 | missing |
+| TagInput | 3 | 1 | 2 | exists as `TagInput` |
 | Card | 3 | 2 | 1 | exists as `Card` |
-| StarRating | 3 | 0 | 3 | missing |
+| StarRating | 3 | 0 | 3 | exists as `StarRating` |
 | Calendar | 2 | 2 | 0 | excluded |
 | DataTable | 2 | 2 | 0 | missing |
 | Tooltip | 2 | 1 | 1 | exists as `Tooltip` |
 | TabGroup | 2 | 0 | 2 | exists as `TabGroup` |
-| Table | 1 | 1 | 0 | missing |
+| Table | 1 | 1 | 0 | exists as `Table` |
 | ContextMenu | 1 | 1 | 0 | excluded |
 | NavDrawer | 1 | 1 | 0 | excluded |
-| DateRangePicker | 1 | 1 | 0 | missing |
+| DateRangePicker | 1 | 1 | 0 | exists as `DateRangePicker` |
 | MultiSelect | 1 | 1 | 0 | exists as `MultiSelect` |
 | Breadcrumb | 1 | 1 | 0 | exists as `Breadcrumb` |
 | ColorPicker | 1 | 1 | 0 | missing |
@@ -43,15 +43,15 @@ Counts are KuiReact components whose source imports the primitive. A missing pri
 | ThemeSwitcher | 1 | 0 | 1 | excluded |
 | Toggle | 1 | 0 | 1 | exists as `Toggle` + `Switch` |
 | RadioGroup | 1 | 0 | 1 | exists as `RadioGroup` |
-| BrandLogo | 1 | 0 | 1 | missing |
+| BrandLogo | 1 | 0 | 1 | exists as `BrandLogo` |
 | ButtonGroup | 1 | 0 | 1 | exists as `ButtonGroup` |
-| StatCard | 1 | 0 | 1 | missing |
+| StatCard | 1 | 0 | 1 | exists as `StatCard` |
 | CodeEditor | 1 | 0 | 1 | excluded |
 | Stepper | 1 | 1 | 0 | exists as `Stepper` |
 
 ## Shared-but-incomplete primitives are dependency roots too
 
-Components that exist in KuiNative but lack parity still block ports: a domain component written against KuiReact's `<Badge variant="neutral" dot>` or `<Button variant="danger" iconRight>` cannot be ported mechanically until the shared component's API matches. Fan-in of shared ids: Button 60, Card 3, Avatar 25, Badge 68, Input 14, Checkbox 0, Toggle 1, Spinner 4, EmptyState 5, Skeleton 0, Modal 5, Label 0, Separator 0, AlertBanner 6, RadioGroup 1, Textarea 5, TabGroup 2, Progress 0, Select 3, Drawer 3, Toast 0, Popover 0, DropdownMenu 6, Tooltip 2, Accordion 0, ButtonGroup 1, CheckboxGroup 0, SearchBar 4, Pagination 3, Stepper 1, Breadcrumb 1, PageHeader 0, MultiSelect 1, RangeSlider 0.
+Components that exist in KuiNative but lack parity still block ports: a domain component written against KuiReact's `<Badge variant="neutral" dot>` or `<Button variant="danger" iconRight>` cannot be ported mechanically until the shared component's API matches. Fan-in of shared ids: Button 60, Card 3, Avatar 25, Badge 68, Input 14, Checkbox 0, Toggle 1, Spinner 4, EmptyState 5, Skeleton 0, Modal 5, Label 0, Separator 0, AlertBanner 6, RadioGroup 1, Textarea 5, TabGroup 2, Progress 0, Select 3, Drawer 3, Toast 0, Popover 0, DropdownMenu 6, Tooltip 2, Accordion 0, ButtonGroup 1, CheckboxGroup 0, SearchBar 4, Pagination 3, Stepper 1, Breadcrumb 1, PageHeader 0, MultiSelect 1, RangeSlider 0, DatePicker 0, DateRangePicker 1, TimePicker 0, BrandLogo 1, Popconfirm 0, StarRating 3, StatCard 1, Statistic 0, TabButton 0, Timeline 0, TagInput 3, ComboBox 0, FileInput 0, Table 1, Slider 0, ContentScoreBar 0, ViewToggle 0, ScrollArea 0.
 
 ## Core missing components — dependencies
 
@@ -59,34 +59,16 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
 
 | Component | Priority | KuiReact composes | Blocked by | Unblocks | RN libraries |
 | --- | --- | --- | --- | --- | --- |
-| [DatePicker](../component-backlog/date-picker.md) | High | Calendar | R-overlay-core, R-field-shell | date-range-picker | @react-native-community/datetimepicker |
-| [BrandLogo](../component-backlog/brand-logo.md) | Medium | — | — | — | expo-image |
 | [Chart](../component-backlog/chart.md) | Medium | — | — | — | victory-native or react-native-gifted-charts |
-| [ComboBox](../component-backlog/combo-box.md) | Medium | — | R-overlay-core, R-field-shell | — | bottom sheet |
-| [DateRangePicker](../component-backlog/date-range-picker.md) | Medium | Calendar | date-picker, R-overlay-core, R-field-shell | — | — |
-| [FileInput](../component-backlog/file-input.md) | Medium | — | R-field-shell | — | expo-document-picker, expo-image-picker |
-| [Popconfirm](../component-backlog/popconfirm.md) | Medium | Button ✓, useFocusTrap | R-overlay-core, R-button | — | — |
-| [Slider](../component-backlog/slider.md) | Medium | — | — | — | react-native-reanimated |
-| [StarRating](../component-backlog/star-rating.md) | Medium | — | — | — | — |
-| [StatCard](../component-backlog/stat-card.md) | Medium | — | — | — | — |
-| [Statistic](../component-backlog/statistic.md) | Medium | — | — | — | — |
-| [TabButton](../component-backlog/tab-button.md) | Medium | — | — | — | — |
-| [Table](../component-backlog/table.md) | Medium | — | — | data-table, bulk-action-table | — |
-| [TagInput](../component-backlog/tag-input.md) | Medium | — | R-field-shell | — | — |
-| [Timeline](../component-backlog/timeline.md) | Medium | — | — | — | — |
-| [TimePicker](../component-backlog/time-picker.md) | Medium | — | R-overlay-core, R-field-shell | — | @react-native-community/datetimepicker |
 | [AdvancedDataTable](../component-backlog/advanced-data-table.md) | Low | DataTable, Pagination ✓, SearchBar ✓, Spinner ✓ | data-table, R-spinner | — | — |
-| [BulkActionTable](../component-backlog/bulk-action-table.md) | Low | Table | table | — | — |
+| [BulkActionTable](../component-backlog/bulk-action-table.md) | Low | Table ✓ | — | — | — |
 | [ColorPicker](../component-backlog/color-picker.md) | Low | — | — | — | react-native-gesture-handler, react-native-svg |
-| [ContentScoreBar](../component-backlog/content-score-bar.md) | Low | — | — | — | — |
-| [DataTable](../component-backlog/data-table.md) | Low | Pagination ✓ | table | advanced-data-table | — |
+| [DataTable](../component-backlog/data-table.md) | Low | Pagination ✓ | — | advanced-data-table | — |
 | [DiffViewer](../component-backlog/diff-viewer.md) | Low | — | — | — | — |
 | [MapView](../component-backlog/map-view.md) | Low | Button ✓, Card ✓ | R-button, R-card | — | react-native-maps |
-| [ScrollArea](../component-backlog/scroll-area.md) | Low | — | — | — | — |
 | [SkipLink + LiveRegion](../component-backlog/skip-link.md) | Low | — | — | — | — |
 | [TreeView](../component-backlog/tree-view.md) | Low | — | — | — | — |
 | [VideoPlayer](../component-backlog/video-player.md) | Low | — | — | — | expo-video |
-| [ViewToggle](../component-backlog/view-toggle.md) | Low | — | — | — | — |
 
 ## Remediation items referenced above
 
@@ -106,7 +88,7 @@ Components that exist in KuiNative but lack parity still block ports: a domain c
 | R-avatar | Avatar parity (status dot, lg/xl sizes, `?` fallback) + AvatarGroup rewrite | High | — | ✓ done (`599c8a1`) |
 | R-checkbox | Checkbox parity (hint, error, uncontrolled `defaultChecked`) | High | R-field-shell | ✓ done (`75edb0c`) |
 | R-toggle | Switch → Toggle parity (name, checked/onChange, description, size, label press) | High | — | ✓ done (`5f484a8`) |
-| R-skeleton | Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion | High | — | partial: Line / Avatar / Text since `048ebed`; SkeletonTableRow waits for Table |
+| R-skeleton | Skeleton family (Line, Avatar, Text, TableRow) + SkeletonCard layout + reduced motion | High | — | partial: Line / Avatar / Text since `048ebed`; Table primitive landed (`b83d87f`) but SkeletonTableRow is still missing |
 | R-spinner | Spinner parity (xs–xl, two-tone ring, md ≠ sm) | Medium | — | partial: sizes fixed in `4ebda43`; two-tone ring still missing |
 | R-empty-state | EmptyState parity (`action: ReactNode`, optional icon, KuiReact spacing) | Medium | — | ✓ done (`7ca2284`) |
 | R-shadow | Shadow/elevation token strategy (shadow-sm/md/xl → iOS shadow + Android elevation) | Medium | — | ✓ done (`048ebed`: shadow classes + Android elevation) |

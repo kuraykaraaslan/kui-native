@@ -11,28 +11,28 @@
 | KuiReact audited entries (total) | 325 |
 | KuiReact in-scope (ui-layer Atom/Molecule/Organism) | 62 |
 | KuiReact out of scope (app layer, domains, hooks, external library, other ui categories) | 263 |
-| KuiNative library exports | 48 from 36 component modules (the `toast()` API and its hooks count as exports) |
-| Shared components (counterpart exists) | 34 KuiReact ids ↔ 43 KuiNative exports |
+| KuiNative library exports | 68 from 53 component modules (the `toast()` API and its hooks count as exports) |
+| Shared components (counterpart exists) | 52 KuiReact ids ↔ 63 KuiNative exports |
 | KuiNative-only components | 1 (`Text`) |
-| Missing from KuiNative (in scope) | 28 |
-| In-scope coverage | 34 / 62 = **54.8 %** |
+| Missing from KuiNative (in scope) | 10 |
+| In-scope coverage | 52 / 62 = **83.9 %** |
 | Color tokens | 33 / 33 names and light+dark values identical |
 
 ## By category
 
 | Category | KuiReact | Shared with KuiNative | Missing in KuiNative |
 | --- | --- | --- | --- |
-| Foundation | 2 | 1 | 1 |
+| Foundation | 2 | 2 | 0 |
 | Typography | 1 | 1 | 0 |
-| Layout | 4 | 3 | 1 |
-| Navigation | 5 | 4 | 1 |
-| Forms | 20 | 11 | 9 |
+| Layout | 4 | 4 | 0 |
+| Navigation | 5 | 5 | 0 |
+| Forms | 20 | 19 | 1 |
 | Feedback | 6 | 6 | 0 |
-| Overlay | 6 | 5 | 1 |
-| Data Display | 8 | 3 | 5 |
-| Tables | 4 | 0 | 4 |
+| Overlay | 6 | 6 | 0 |
+| Data Display | 8 | 7 | 1 |
+| Tables | 4 | 1 | 3 |
 | Charts | 1 | 0 | 1 |
-| Media | 3 | 0 | 3 |
+| Media | 3 | 1 | 2 |
 | Advanced Components | 1 | 0 | 1 |
 | Utility | 1 | 0 | 1 |
 | App layer (out of scope) | 40 | 0 | 0 |
@@ -74,22 +74,22 @@ Usage frequency = distinct files under `modules/**` and `app/theme/**` importing
 | 9 | Textarea | 9 | 3 | ✓ Textarea |
 | 10 | Card | 9 | 1 | ✓ Card |
 | 11 | DropdownMenu | 7 | 1 | ✓ DropdownMenu |
-| 12 | BrandLogo | 6 | 2 | ✗ |
+| 12 | BrandLogo | 6 | 2 | ✓ BrandLogo |
 | 13 | EmptyState | 6 | 1 | ✓ EmptyState |
 | 14 | Select | 5 | 2 | ✓ Select |
 | 15 | AlertBanner | 5 | 2 | ✓ AlertBanner |
 | 16 | DataTable | 5 | 1 | ✗ |
 | 17 | Spinner | 4 | 2 | ✓ Spinner |
 | 18 | Drawer | 4 | 2 | ✓ Drawer |
-| 19 | StarRating | 3 | 1 | ✗ |
-| 20 | TagInput | 3 | 1 | ✗ |
-| 21 | Slider | 3 | 2 | ✗ |
-| 22 | StatCard | 3 | 1 | ✗ |
-| 23 | Table | 3 | 1 | ✗ |
+| 19 | StarRating | 3 | 1 | ✓ StarRating |
+| 20 | TagInput | 3 | 1 | ✓ TagInput |
+| 21 | Slider | 3 | 2 | ✓ Slider + releaseStep |
+| 22 | StatCard | 3 | 1 | ✓ StatCard |
+| 23 | Table | 3 | 1 | ✓ Table |
 | 24 | RadioGroup | 2 | 1 | ✓ RadioGroup |
 | 25 | Toggle | 2 | 2 | ✓ Toggle + Switch |
 
-Of the 25 most-used KuiReact components, KuiNative has 17. The missing heavy-hitters (SkipLink + LiveRegion, BrandLogo, DataTable, StarRating, TagInput, Slider, …) block any port of KuiReact's domain and app layers.
+Of the 25 most-used KuiReact components, KuiNative has 23. The missing heavy-hitters (SkipLink + LiveRegion, DataTable, …) block any port of KuiReact's domain and app layers.
 
 ## Hooks, providers, theme utilities
 

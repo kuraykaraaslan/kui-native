@@ -15,17 +15,17 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 
 | Category | KuiReact | Shared with KuiNative | Missing in KuiNative |
 | --- | --- | --- | --- |
-| Foundation | 2 | 1 | 1 |
+| Foundation | 2 | 2 | 0 |
 | Typography | 1 | 1 | 0 |
-| Layout | 4 | 3 | 1 |
-| Navigation | 5 | 4 | 1 |
-| Forms | 20 | 11 | 9 |
+| Layout | 4 | 4 | 0 |
+| Navigation | 5 | 5 | 0 |
+| Forms | 20 | 19 | 1 |
 | Feedback | 6 | 6 | 0 |
-| Overlay | 6 | 5 | 1 |
-| Data Display | 8 | 3 | 5 |
-| Tables | 4 | 0 | 4 |
+| Overlay | 6 | 6 | 0 |
+| Data Display | 8 | 7 | 1 |
+| Tables | 4 | 1 | 3 |
 | Charts | 1 | 0 | 1 |
-| Media | 3 | 0 | 3 |
+| Media | 3 | 1 | 2 |
 | Advanced Components | 1 | 0 | 1 |
 | Utility | 1 | 0 | 1 |
 | App layer (out of scope) | 40 | 0 | 0 |
@@ -65,17 +65,17 @@ Full per-component table: [phase-1-inventory/kui-react-components.md](phase-1-in
 | Textarea | 9 | ✓ |
 | Card | 9 | ✓ |
 | DropdownMenu | 7 | ✓ |
-| BrandLogo | 6 | ✗ |
+| BrandLogo | 6 | ✓ |
 | EmptyState | 6 | ✓ |
 | Select | 5 | ✓ |
 | AlertBanner | 5 | ✓ |
 | DataTable | 5 | ✗ |
 | Spinner | 4 | ✓ |
 | Drawer | 4 | ✓ |
-| StarRating | 3 | ✗ |
-| TagInput | 3 | ✗ |
-| Slider | 3 | ✗ |
-| StatCard | 3 | ✗ |
-| Table | 3 | ✗ |
+| StarRating | 3 | ✓ |
+| TagInput | 3 | ✓ |
+| Slider | 3 | ✓ |
+| StatCard | 3 | ✓ |
+| Table | 3 | ✓ |
 | RadioGroup | 2 | ✓ |
 | Toggle | 2 | ✓ |

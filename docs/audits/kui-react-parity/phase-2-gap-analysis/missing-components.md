@@ -1,7 +1,7 @@
 # Missing components
 
 > KuiReact ↔ KuiNative parity audit · 2026-09-22 · generated from source (KuiReact registry v0.1.0, snapshot 2026-09-18).
-> 28 in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart.
+> 10 in-scope KuiReact ui-layer components (Atom/Molecule/Organism) have no KuiNative counterpart.
 
 ## Scope
 
@@ -26,30 +26,12 @@ KuiNative development is scoped to KuiReact's core **ui-layer atoms, molecules a
 - **Fit** — `direct` mechanical port · `adapt` needs a platform-idiomatic redesign (sheet instead of popover, etc.) · `web-only` recommended parity exception.
 - **Wave** — roadmap wave (see [08-roadmap.md](../08-roadmap.md)).
 
-## Core components (ui-layer Atom/Molecule/Organism) — 28
+## Core components (ui-layer Atom/Molecule/Organism) — 10
 
 | Component | Category | Priority | Complexity | Wave | Fit | Reason |
 | --- | --- | --- | --- | --- | --- | --- |
-| [DatePicker](../component-backlog/date-picker.md) | Forms | High | Large | W2 | adapt | Date entry is a core form control; KuiReact ships a 1.4k-LOC calendar popover. |
-| [BrandLogo](../component-backlog/brand-logo.md) | Foundation | Medium | Small | W2 | direct | Used by AppShell/AppFooter/SplashScreen; blocks those ports. |
-| [TabButton](../component-backlog/tab-button.md) | Navigation | Medium | Small | W2 | direct | Single tab button with count badge; building block of TabGroup. |
-| [ComboBox](../component-backlog/combo-box.md) | Forms | Medium | Large | W2 | adapt | Async-searchable single select; needed for large option sets. |
-| [DateRangePicker](../component-backlog/date-range-picker.md) | Forms | Medium | Large | W2 | adapt | Range selection for filters/bookings; shares DatePicker internals. |
-| [FileInput](../component-backlog/file-input.md) | Forms | Medium | Medium | W2 | adapt | File selection; RN has no `<input type=file>`. |
-| [StarRating](../component-backlog/star-rating.md) | Forms | Medium | Small | W2 | direct | Rating display/input; used by reviews domain and 3 KuiReact components. |
-| [TagInput](../component-backlog/tag-input.md) | Forms | Medium | Medium | W2 | direct | Chip entry with suggestions; composes Badge(dismissible). |
-| [TimePicker](../component-backlog/time-picker.md) | Forms | Medium | Medium | W2 | adapt | Time entry companion to DatePicker. |
-| [Popconfirm](../component-backlog/popconfirm.md) | Overlay | Medium | Small | W2 | adapt | Inline confirmation for destructive actions. |
-| [StatCard](../component-backlog/stat-card.md) | Data Display | Medium | Small | W2 | direct | Card-wrapped KPI. |
-| [Statistic](../component-backlog/statistic.md) | Data Display | Medium | Small | W2 | direct | Numeric KPI with trend/prefix/suffix; used in dashboards. |
-| [Timeline](../component-backlog/timeline.md) | Data Display | Medium | Small | W2 | direct | Activity timeline grouped by day; used by domain feeds. |
-| [Table](../component-backlog/table.md) | Tables | Medium | Medium | W2 | adapt | Static data table; on phones tables need horizontal scroll or card fallback. |
 | [Chart](../component-backlog/chart.md) | Charts | Medium | Very Large | W3 | adapt | KuiReact wraps Chart.js (1.8k LOC); canvas is not available on RN. |
-| [Slider](../component-backlog/slider.md) | Media | Medium | Medium | W2 | direct | Accessible carousel (autoPlay, dots, arrows, loop). |
-| [ScrollArea](../component-backlog/scroll-area.md) | Layout | Low | Small | W3 | adapt | Styled-scrollbar container; on RN `ScrollView` is already the primitive. |
 | [ColorPicker](../component-backlog/color-picker.md) | Forms | Low | Large | W3 | adapt | Niche input; large (1.2k LOC). |
-| [ViewToggle](../component-backlog/view-toggle.md) | Forms | Low | Small | W3 | direct | List/grid switch; small. |
-| [ContentScoreBar](../component-backlog/content-score-bar.md) | Data Display | Low | Small | W3 | direct | SEO/content-quality meter; niche. |
 | [TreeView](../component-backlog/tree-view.md) | Data Display | Low | Large | W3 | direct | Recursive tree; niche on mobile. |
 | [AdvancedDataTable](../component-backlog/advanced-data-table.md) | Tables | Low | Very Large | W3 | adapt | Selectable table with row actions (2k LOC). |
 | [BulkActionTable](../component-backlog/bulk-action-table.md) | Tables | Low | Medium | W3 | adapt | Selection + bulk actions. |
