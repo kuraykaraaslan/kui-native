@@ -613,9 +613,20 @@ export const REGISTRY: ShowcaseEntry[] = [
           </Card>
         ),
       },
-      // KuiReact's "Clickable / hoverable" (onClick/hoverable) and "Loading
-      // skeleton" (loading) variants need new Card props not yet ported —
-      // tracked as the remaining scope of R-card (Wave 2).
+      {
+        title: "Clickable / hoverable",
+        Demo: () => (
+          <View className="gap-3">
+            <Card title="Clickable" onPress={() => toast.info("Card pressed")}>
+              <Text variant="bodySm">…</Text>
+            </Card>
+            <Card title="Hoverable" hoverable>
+              <Text variant="bodySm">…</Text>
+            </Card>
+          </View>
+        ),
+      },
+      { title: "Loading skeleton", Demo: () => <Card loading /> },
     ],
   },
   {

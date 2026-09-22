@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { Text as RNText } from "react-native";
 
 import { Card } from "./Card";
@@ -67,6 +67,32 @@ describe("Card", () => {
     );
     // The footer is its own bordered View; assert it renders with the footer content.
     expect(screen.getByText("Footer")).toBeTruthy();
+  });
+
+  it("onPress makes the whole card a button (KuiReact: onClick)", async () => {
+    const onPress = jest.fn();
+    await render(<Card title="Clickable" onPress={onPress}><RNText>Body</RNText></Card>);
+    await fireEvent.press(screen.getByRole("button", { name: "Clickable" }));
+    expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it("hoverable and interactive cards get KuiReact's hover look as the pressed state", async () => {
+    const h = await render(<Card testID="c" hoverable title="Hoverable" />);
+    expect(classNameOf(h.getByTestId("c"))).toContain("active:border-border-focus");
+    const plain = await render(<Card testID="p" title="Plain" />);
+    expect(classNameOf(plain.getByTestId("p"))).not.toContain("active:border-border-focus");
+  });
+
+  it("loading replaces the content with KuiReact's four-line skeleton", async () => {
+    await render(<Card loading title="Hidden"><RNText>Body</RNText></Card>);
+    expect(screen.getByRole("progressbar", { name: "Loading content" })).toBeTruthy();
+    expect(screen.queryByText("Hidden")).toBeNull();
+    expect(screen.queryByText("Body")).toBeNull();
+  });
+
+  it("a subtitle without a title is not rendered (KuiReact renders the header only for title/headerRight)", async () => {
+    await render(<Card subtitle="Orphan" />);
+    expect(screen.queryByText("Orphan")).toBeNull();
   });
 
   it("merges a custom className onto the outer container", async () => {
