@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faSitemap,
   faGauge,
   faScroll,
   faTableCells,
@@ -122,6 +123,7 @@ import {
   ContentScoreBar,
   ScrollArea,
   ViewToggle,
+  TreeView,
   type ScoreRule,
   type ViewOrientation,
 } from "@/modules/ui";
@@ -2669,6 +2671,120 @@ export const REGISTRY: ShowcaseEntry[] = [
             </View>
           </ScrollArea>
         ),
+      },
+    ],
+  },
+  {
+    id: "tree-view",
+    title: "TreeView",
+    category: "Atoms",
+    icon: faSitemap,
+    description: "Collapsible tree with selection (single or multi), expand/collapse-all toolbar and level/position announcements.",
+    usage: `<TreeView label="File tree" nodes={nodes} selectedId={sel} onSelect={setSel} />`,
+    preview: () => <TreeView hideToolbar nodes={[{ id: "src", label: "src", children: [{ id: "a", label: "App.tsx" }] }]} />,
+    // Mirrors KuiReact's TreeView showcase variants 1:1 (same titles and data).
+    // "type-ahead" in the last title is a hardware-keyboard feature that isn't
+    // ported; multi-select works with taps (toggle) and long-press (range).
+    variants: [
+      {
+        title: "File tree",
+        Demo: function TreeViewDemo() {
+          const [sel, setSel] = useState<string | undefined>();
+          return (
+            <TreeView
+              label="File tree"
+              selectedId={sel}
+              onSelect={setSel}
+              nodes={[
+                { id: "src", label: "src", children: [
+                  { id: "components", label: "components", children: [
+                    { id: "Button", label: "Button.tsx" },
+                    { id: "Input", label: "Input.tsx" },
+                  ] },
+                  { id: "utils", label: "utils", children: [{ id: "cn", label: "cn.ts" }] },
+                ] },
+                { id: "public", label: "public", children: [{ id: "logo", label: "logo.svg" }] },
+                { id: "pkg", label: "package.json" },
+              ]}
+            />
+          );
+        },
+      },
+      {
+        title: "Navigation menu",
+        Demo: function TreeViewNavDemo() {
+          const [sel, setSel] = useState<string | undefined>();
+          return (
+            <TreeView
+              label="Settings navigation"
+              selectedId={sel}
+              onSelect={setSel}
+              nodes={[
+                { id: "account", label: "Account", children: [
+                  { id: "profile", label: "Profile" },
+                  { id: "password", label: "Password" },
+                  { id: "notifications", label: "Notifications" },
+                ] },
+                { id: "workspace", label: "Workspace", children: [
+                  { id: "general", label: "General" },
+                  { id: "members", label: "Members" },
+                  { id: "billing", label: "Billing" },
+                ] },
+                { id: "integrations", label: "Integrations" },
+              ]}
+            />
+          );
+        },
+      },
+      {
+        title: "Flat list",
+        Demo: function TreeViewFlatDemo() {
+          const [sel, setSel] = useState<string>("ts");
+          return (
+            <TreeView
+              label="Language selector"
+              selectedId={sel}
+              onSelect={setSel}
+              nodes={[
+                { id: "ts", label: "TypeScript" },
+                { id: "js", label: "JavaScript" },
+                { id: "py", label: "Python" },
+                { id: "go", label: "Go" },
+                { id: "rs", label: "Rust" },
+              ]}
+            />
+          );
+        },
+      },
+      {
+        title: "Multi-select + type-ahead",
+        Demo: function TreeViewMultiSelectDemo() {
+          const [ids, setIds] = useState<string[]>(["Card"]);
+          return (
+            <TreeView
+              label="Project files (multi-select + type-ahead)"
+              selectionMode="multi"
+              selectedIds={ids}
+              onSelectionChange={setIds}
+              nodes={[
+                { id: "docs", label: "Documents", children: [
+                  { id: "spec", label: "spec.md" },
+                  { id: "roadmap", label: "roadmap.md" },
+                ] },
+                { id: "src", label: "src", children: [
+                  { id: "Button", label: "Button.tsx" },
+                  { id: "Card", label: "Card.tsx" },
+                  { id: "Drawer", label: "Drawer.tsx" },
+                  { id: "TreeView", label: "TreeView.tsx" },
+                ] },
+                { id: "tests", label: "tests", children: [
+                  { id: "unit", label: "unit" },
+                  { id: "e2e", label: "e2e" },
+                ] },
+              ]}
+            />
+          );
+        },
       },
     ],
   },

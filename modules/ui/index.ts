@@ -102,6 +102,8 @@ export type { StepItem, StepperProps } from "./Stepper";
 export { Tooltip } from "./Tooltip";
 export type { TooltipProps } from "./Tooltip";
 export { Timeline } from "./Timeline";
+export { TreeView } from "./TreeView";
+export type { NodeId, SelectionMode, TreeNode, TreeViewMessages, TreeViewProps } from "./TreeView";
 export { ViewToggle } from "./ViewToggle";
 export type { ViewOrientation, ViewToggleProps } from "./ViewToggle";
 export { TimePicker } from "./TimePicker";

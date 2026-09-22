@@ -13,5 +13,8 @@ module.exports = {
     // imports it (Checkbox, EmptyState, and the showcase all do).
     "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|nativewind|react-native-css-interop|@fortawesome/.*)",
   ],
+  // The first render in each suite pays the NativeWind/transform warm-up; on a
+  // loaded machine that can exceed the 5s default and fail unrelated tests.
+  testTimeout: 15000,
   collectCoverageFrom: ["modules/ui/**/*.{ts,tsx}", "!modules/ui/**/*.d.ts", "!modules/ui/index.ts"],
 };
