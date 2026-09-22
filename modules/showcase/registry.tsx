@@ -1,7 +1,9 @@
 import { useState, type ComponentType } from "react";
 import { View } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
+  faCircleExclamation,
   faFolder,
   faFont,
   faGripLines,
@@ -11,6 +13,7 @@ import {
   faIdCard,
   faInbox,
   faKeyboard,
+  faRocket,
   faSpinner,
   faSquareCheck,
   faTag,
@@ -20,6 +23,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
+  AlertBanner,
   Avatar,
   AvatarGroup,
   Badge,
@@ -39,6 +43,7 @@ import {
   Text,
   TextInput,
 } from "@/modules/ui";
+import { useThemeTokens } from "@/libs/theme";
 
 export type ShowcaseCategory = "Atoms" | "Forms" | "Feedback" | "Overlays";
 export const CATEGORY_ORDER: ShowcaseCategory[] = ["Atoms", "Forms", "Feedback", "Overlays"];
@@ -103,6 +108,10 @@ function SwitchDescriptionDemo() {
   return (
     <Switch value={value} onValueChange={setValue} label="Marketing emails" description="Receive weekly updates." />
   );
+}
+function RocketIcon() {
+  const t = useThemeTokens();
+  return <FontAwesomeIcon icon={faRocket} size={16} color={t["info-fg"]} />;
 }
 const SETTINGS_ROWS = [
   { key: "notifications", label: "Push notifications", desc: "Alerts for new activity" },
@@ -607,6 +616,65 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "In a Button",
         Demo: () => <Button label="Saving…" loading />,
+      },
+    ],
+  },
+  {
+    id: "alert-banner",
+    title: "AlertBanner",
+    category: "Feedback",
+    icon: faCircleExclamation,
+    description: "Inline semantic alert with optional title, action and dismiss.",
+    usage: `<AlertBanner variant="success" message="Profile updated successfully." dismissible />`,
+    preview: () => <AlertBanner variant="info" message="Heads up" className="w-44" />,
+    // Mirrors KuiReact's AlertBanner showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Info",
+        Demo: () => <AlertBanner variant="info" title="System update" message="A new version is available." dismissible />,
+      },
+      {
+        title: "Success",
+        Demo: () => <AlertBanner variant="success" message="Profile updated successfully." dismissible />,
+      },
+      {
+        title: "Warning",
+        Demo: () => (
+          <AlertBanner variant="warning" title="Maintenance window" message="The service will be unavailable from 2–4 AM UTC." />
+        ),
+      },
+      {
+        title: "Error",
+        Demo: () => (
+          <AlertBanner variant="error" title="Something went wrong" message="Unable to load the resource. Please try again." />
+        ),
+      },
+      {
+        title: "With CTA action",
+        Demo: () => (
+          <AlertBanner
+            variant="warning"
+            title="Your plan is expiring"
+            message="Upgrade before your trial ends."
+            action={{ label: "Upgrade now", onPress: () => {} }}
+            dismissible
+          />
+        ),
+      },
+      {
+        title: "Link CTA (action.href)",
+        Demo: () => (
+          <AlertBanner
+            variant="info"
+            title="Documentation updated"
+            message="New guides are available."
+            action={{ label: "Read docs", href: "https://kui-react.dev/docs/api" }}
+          />
+        ),
+      },
+      {
+        title: "Custom icon",
+        Demo: () => <AlertBanner variant="info" message="Custom icon override." icon={<RocketIcon />} />,
       },
     ],
   },

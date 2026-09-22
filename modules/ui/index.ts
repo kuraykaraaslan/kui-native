@@ -1,5 +1,7 @@
 // Explicit named barrel (KUIREACT style) — keeps tree-shaking clean.
 
+export { AlertBanner } from "./AlertBanner";
+export type { AlertAction, AlertBannerProps } from "./AlertBanner";
 export { Avatar, AvatarGroup } from "./Avatar";
 export type { AvatarProps } from "./Avatar";
 export { Badge } from "./Badge";
