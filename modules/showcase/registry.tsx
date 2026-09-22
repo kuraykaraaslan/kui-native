@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faShoePrints,
+  faListOl,
   faAnglesRight,
   faListCheck,
   faTableCellsLarge,
@@ -75,6 +77,8 @@ import {
   CheckboxGroup,
   SearchBar,
   Pagination,
+  Breadcrumb,
+  Stepper,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1579,6 +1583,104 @@ export const REGISTRY: ShowcaseEntry[] = [
           const [p, setP] = useState(5);
           return <Pagination page={p} totalPages={20} onPageChange={setP} showFirstLast showJumpTo />;
         },
+      },
+    ],
+  },
+  {
+    id: "stepper",
+    title: "Stepper",
+    category: "Atoms",
+    icon: faListOl,
+    description: "Multi-step progress indicator with complete, active, error, and pending states. Supports horizontal and vertical orientations.",
+    usage: `<Stepper steps={[{ label: "Account", state: "complete" }, { label: "Billing", state: "active" }]} />`,
+    preview: () => (
+      <Stepper className="w-full" steps={[{ label: "Account", state: "complete" }, { label: "Billing", state: "active" }, { label: "Review" }]} />
+    ),
+    // Mirrors KuiReact's Stepper showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Horizontal",
+        Demo: () => (
+          <View className="w-full">
+            <Stepper
+              steps={[
+                { label: "Account", description: "Personal info", state: "complete" },
+                { label: "Billing", description: "Payment method", state: "active" },
+                { label: "Review", state: "pending" },
+                { label: "Confirm", state: "pending" },
+              ]}
+            />
+          </View>
+        ),
+      },
+      {
+        title: "Vertical",
+        Demo: () => (
+          <Stepper
+            orientation="vertical"
+            steps={[
+              { label: "Create account", description: "Enter your email and password", state: "complete" },
+              { label: "Verify email", description: "Check your inbox", state: "error" },
+              { label: "Set up profile", state: "pending" },
+            ]}
+          />
+        ),
+      },
+    ],
+  },
+  {
+    id: "breadcrumb",
+    title: "Breadcrumb",
+    category: "Atoms",
+    icon: faShoePrints,
+    description: "Hierarchical navigation trail. The last item is the current page; separators are hidden from screen readers.",
+    usage: `<Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Breadcrumb" }]} />`,
+    preview: () => <Breadcrumb items={[{ label: "Home" }, { label: "Components" }, { label: "Breadcrumb" }]} />,
+    // Mirrors KuiReact's Breadcrumb showcase variants 1:1 (same titles, copy
+    // and hrefs — most of those routes don't exist in this app, so pressing
+    // them lands on expo-router's not-found screen).
+    variants: [
+      {
+        title: "Default",
+        Demo: () => <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Components", href: "/components" }, { label: "Breadcrumb" }]} />,
+      },
+      {
+        title: "Long path",
+        Demo: () => (
+          <Breadcrumb
+            items={[
+              { label: "Dashboard", href: "/" },
+              { label: "Users", href: "/users" },
+              { label: "Settings", href: "/users/settings" },
+              { label: "Permissions" },
+            ]}
+          />
+        ),
+      },
+      {
+        title: "Custom separator",
+        Demo: () => (
+          <Breadcrumb
+            items={[{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: "Post title" }]}
+            separator={<Text className="text-sm text-text-disabled">/</Text>}
+          />
+        ),
+      },
+      {
+        title: "Overflow / ellipsis",
+        Demo: () => (
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Products", href: "/products" },
+              { label: "Electronics", href: "/products/electronics" },
+              { label: "Computers", href: "/products/electronics/computers" },
+              { label: "Laptops", href: "/products/electronics/computers/laptops" },
+              { label: 'MacBook Pro 16"' },
+            ]}
+            maxItems={3}
+          />
+        ),
       },
     ],
   },
