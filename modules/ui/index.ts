@@ -12,6 +12,8 @@ export { Card } from "./Card";
 export type { CardProps } from "./Card";
 export { Checkbox } from "./Checkbox";
 export type { CheckboxProps } from "./Checkbox";
+export { Drawer } from "./Drawer";
+export type { DrawerProps } from "./Drawer";
 export { EmptyState } from "./EmptyState";
 export type { EmptyStateProps } from "./EmptyState";
 export { Label } from "./Label";

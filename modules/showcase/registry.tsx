@@ -16,6 +16,7 @@ import {
   faInbox,
   faKeyboard,
   faListUl,
+  faTableColumns,
   faBarsProgress,
   faAlignLeft,
   faArrowTrendUp,
@@ -38,6 +39,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Drawer,
   EmptyState,
   Label,
   Modal,
@@ -275,6 +277,52 @@ function TextInputDemo() {
       keyboardType="email-address"
       autoCapitalize="none"
     />
+  );
+}
+// Mirrors KuiReact's Drawer showcase variants 1:1 (same titles and copy).
+function DrawerRightDemo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <View className="items-start">
+      <Button label="Open Drawer" variant="outline" onPress={() => setOpen(true)} />
+      <Drawer
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Settings"
+        side="right"
+        footer={
+          <>
+            <Button label="Cancel" variant="outline" onPress={() => setOpen(false)} />
+            <Button label="Save" variant="primary" onPress={() => setOpen(false)} />
+          </>
+        }
+      >
+        <Text variant="bodySm">Drawer content goes here.</Text>
+      </Drawer>
+    </View>
+  );
+}
+function DrawerLeftDemo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <View className="items-start">
+      <Button label="Open Drawer" variant="outline" onPress={() => setOpen(true)} />
+      <Drawer open={open} onClose={() => setOpen(false)} title="Navigation" side="left">
+        <Text variant="bodySm">…</Text>
+      </Drawer>
+    </View>
+  );
+}
+function DrawerRouteAwareDemo() {
+  const [open, setOpen] = useState(false);
+  // closeOnRouteChange is accepted for parity and is a no-op, as in KuiReact (its M6 stub).
+  return (
+    <View className="items-start">
+      <Button label="Open Drawer" variant="outline" onPress={() => setOpen(true)} />
+      <Drawer open={open} onClose={() => setOpen(false)} title="Route-aware drawer" side="right" closeOnRouteChange>
+        <Text variant="bodySm">…</Text>
+      </Drawer>
+    </View>
   );
 }
 // Mirrors KuiReact's Modal showcase variants 1:1 (same titles and copy).
@@ -1021,6 +1069,20 @@ export const REGISTRY: ShowcaseEntry[] = [
           />
         ),
       },
+    ],
+  },
+  {
+    id: "drawer",
+    title: "Drawer",
+    category: "Overlays",
+    icon: faTableColumns,
+    description: "Full-height side panel with header, scrolling body and footer.",
+    usage: `<Drawer open={open} onClose={close} title="Settings" side="right">{children}</Drawer>`,
+    preview: () => <Button label="Open drawer" size="sm" variant="outline" />,
+    variants: [
+      { title: "Right drawer", Demo: DrawerRightDemo },
+      { title: "Left drawer", Demo: DrawerLeftDemo },
+      { title: "Route-aware close (M6 stub)", Demo: DrawerRouteAwareDemo },
     ],
   },
   {

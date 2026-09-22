@@ -40,6 +40,7 @@ const ABBR: Record<string, string> = {
   "empty-state": "Es",
   skeleton: "Sk",
   "tab-group": "Tg",
+  drawer: "Dr",
   modal: "Md",
 };
 
