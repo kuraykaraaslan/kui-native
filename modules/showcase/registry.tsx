@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faStar,
+  faChartSimple,
+  faHashtag,
+  faTableList,
   faCube,
   faCircleQuestion,
   faCalendarDays,
@@ -94,6 +98,10 @@ import {
   type DateRange,
   BrandLogo,
   Popconfirm,
+  StarRating,
+  StatCard,
+  Statistic,
+  TabButton,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -1987,6 +1995,145 @@ export const REGISTRY: ShowcaseEntry[] = [
             <BrandLogo size="lg" className="bg-success">
               ✓
             </BrandLogo>
+          </View>
+        ),
+      },
+    ],
+  },
+  {
+    id: "star-rating",
+    title: "StarRating",
+    category: "Atoms",
+    icon: faStar,
+    description: "Five-star rating indicator. Read-only by default with decimal/half-star rendering; pass `readonly={false}` + `onChange` for interactive whole-star selection.",
+    usage: `<StarRating value={4.5} caption="(312 reviews)" />`,
+    preview: () => <StarRating value={4.5} size="sm" />,
+    // Mirrors KuiReact's StarRating showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Readonly with decimals",
+        Demo: () => (
+          <View className="flex-col gap-2">
+            <StarRating value={4.7} size="sm" caption="(312 reviews)" />
+            <StarRating value={3.5} size="md" />
+            <StarRating value={2.2} size="lg" />
+          </View>
+        ),
+      },
+      {
+        title: "Interactive",
+        Demo: function InteractiveDemo() {
+          const [value, setValue] = useState(0);
+          return (
+            <View className="flex-col items-start gap-2">
+              <StarRating value={value} readonly={false} size="lg" onChange={setValue} aria-label="Pick a rating" />
+              <Text className="text-xs text-text-secondary">
+                Selected: <Text className="text-xs font-semibold text-text-primary">{value || "–"}</Text>
+              </Text>
+            </View>
+          );
+        },
+      },
+    ],
+  },
+  {
+    id: "stat-card",
+    title: "StatCard",
+    category: "Atoms",
+    icon: faChartSimple,
+    description: "Compact metric display card with value, label, and optional accent color.",
+    usage: `<StatCard label="Active" value={947} accent="text-success" />`,
+    preview: () => <StatCard label="Total Users" value={1284} />,
+    // Mirrors KuiReact's StatCard showcase variant 1:1 (KuiReact's grid-cols-2
+    // is a wrapping row of half-width cards).
+    variants: [
+      {
+        title: "Variants",
+        Demo: () => (
+          <View className="flex-row flex-wrap gap-3">
+            <StatCard className="min-w-[40%] flex-1" label="Total Users" value={1284} />
+            <StatCard className="min-w-[40%] flex-1" label="Active" value={947} accent="text-success" />
+            <StatCard className="min-w-[40%] flex-1" label="Transferred" value={38} accent="text-info" />
+            <StatCard className="min-w-[40%] flex-1" label="Cancelled" value={12} accent="text-error" />
+          </View>
+        ),
+      },
+    ],
+  },
+  {
+    id: "statistic",
+    title: "Statistic",
+    category: "Atoms",
+    icon: faHashtag,
+    description: "Bare numeric/text figure with a label, optional prefix/suffix, trend indicator, and loading skeleton — no card chrome (compose with Card for a bordered KPI tile).",
+    usage: `<Statistic label="Revenue" value={82400} prefix="$" trend="up" trendValue="+12.4%" />`,
+    preview: () => <Statistic label="Active users" value={1284} />,
+    // Mirrors KuiReact's Statistic showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Basic",
+        Demo: () => (
+          <View className="flex-row flex-wrap gap-8">
+            <Statistic label="Active users" value={1284} />
+            <Statistic label="Open tickets" value={12} />
+          </View>
+        ),
+      },
+      {
+        title: "Prefix / suffix / trend",
+        Demo: () => (
+          <View className="flex-row flex-wrap gap-8">
+            <Statistic label="Revenue" value={82400} prefix="$" trend="up" trendValue="+12.4%" />
+            <Statistic label="Conversion rate" value={4.2} precision={1} suffix="%" trend="down" trendValue="-0.6%" />
+            <Statistic label="Loading example" value={0} loading />
+          </View>
+        ),
+      },
+    ],
+  },
+  {
+    id: "tab-button",
+    title: "TabButton",
+    category: "Atoms",
+    icon: faTableList,
+    description: "Pill-style tab button with active/inactive coloring and an optional count badge.",
+    usage: `<TabButton active={tab === "all"} onPress={() => setTab("all")} count={42}>All</TabButton>`,
+    preview: () => (
+      <TabButton active onPress={() => {}} count={42}>
+        All
+      </TabButton>
+    ),
+    // Mirrors KuiReact's TabButton showcase variants 1:1 (same titles and copy).
+    variants: [
+      {
+        title: "Interactive",
+        Demo: function TabButtonDemo() {
+          const [tab, setTab] = useState<"all" | "active" | "archived">("all");
+          return (
+            <View className="flex-row flex-wrap items-center gap-1">
+              <TabButton active={tab === "all"} onPress={() => setTab("all")} count={42}>
+                All
+              </TabButton>
+              <TabButton active={tab === "active"} onPress={() => setTab("active")} count={18}>
+                Active
+              </TabButton>
+              <TabButton active={tab === "archived"} onPress={() => setTab("archived")} count={24}>
+                Archived
+              </TabButton>
+            </View>
+          );
+        },
+      },
+      {
+        title: "Without count",
+        Demo: () => (
+          <View className="flex-row items-center gap-1">
+            <TabButton active onPress={() => {}}>
+              Selected
+            </TabButton>
+            <TabButton active={false} onPress={() => {}}>
+              Default
+            </TabButton>
           </View>
         ),
       },
