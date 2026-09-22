@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faGauge,
+  faScroll,
+  faTableCells,
   faImages,
   faTable,
   faFileArrowUp,
@@ -116,6 +119,11 @@ import {
   Table,
   TimePicker,
   Slider,
+  ContentScoreBar,
+  ScrollArea,
+  ViewToggle,
+  type ScoreRule,
+  type ViewOrientation,
 } from "@/modules/ui";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { useThemeTokens } from "@/libs/theme";
@@ -2527,6 +2535,139 @@ export const REGISTRY: ShowcaseEntry[] = [
               ]}
             />
           </View>
+        ),
+      },
+    ],
+  },
+  {
+    id: "content-score-bar",
+    title: "ContentScoreBar",
+    category: "Feedback",
+    icon: faGauge,
+    description: "Rule-based content quality score with Good ≥70 / Fair ≥40 / Poor <40 tiers. Each rule shows as a chip with a passed/total count.",
+    usage: `<ContentScoreBar value={text} rules={rules} label="Quality score" />`,
+    preview: () => <ContentScoreBar className="w-full" value="" rules={[{ label: "Rule", check: () => true, points: 1 }]} />,
+    // Mirrors KuiReact's ContentScoreBar showcase variants 1:1 (same titles, rules and copy).
+    variants: [
+      {
+        title: "Live evaluation",
+        Demo: function Demo() {
+          const RULES: ScoreRule[] = [
+            { label: "Min 20 chars", check: (v) => v.length >= 20, points: 20 },
+            { label: "Has number", check: (v) => /\d/.test(v), points: 20 },
+            { label: "Has uppercase", check: (v) => /[A-Z]/.test(v), points: 20 },
+            { label: "Has keyword", check: (v) => /next|react|typescript/i.test(v), points: 20, hint: "Include \"Next\", \"React\", or \"TypeScript\"" },
+            { label: "Min 5 words", check: (v) => v.trim().split(/\s+/).filter(Boolean).length >= 5, points: 20 },
+          ];
+          const [text, setText] = useState("Build with Next.js and TypeScript");
+          return (
+            <View className="w-full max-w-sm gap-2">
+              <Textarea label="Content" rows={2} value={text} onChangeText={setText} placeholder="Type your content…" />
+              <ContentScoreBar value={text} rules={RULES} label="Quality score" />
+            </View>
+          );
+        },
+      },
+      {
+        title: "All tiers",
+        Demo: () => {
+          const makeRules = (pass: number, total: number): ScoreRule[] =>
+            Array.from({ length: total }, (_, i) => ({ label: `Rule ${i + 1}`, check: () => i < pass, points: 1 }));
+          return (
+            <View className="w-full max-w-sm gap-3">
+              <ContentScoreBar value="" rules={makeRules(5, 5)} label="Good (100%)" />
+              <ContentScoreBar value="" rules={makeRules(3, 5)} label="Fair (60%)" />
+              <ContentScoreBar value="" rules={makeRules(1, 5)} label="Poor (20%)" />
+            </View>
+          );
+        },
+      },
+      {
+        title: "Password strength",
+        Demo: function PwdDemo() {
+          const PWD_RULES: ScoreRule[] = [
+            { label: "Min 8 chars", check: (v) => v.length >= 8, points: 25 },
+            { label: "Uppercase", check: (v) => /[A-Z]/.test(v), points: 25 },
+            { label: "Number", check: (v) => /\d/.test(v), points: 25 },
+            { label: "Special char", check: (v) => /[^A-Za-z0-9]/.test(v), points: 25 },
+          ];
+          const [pwd, setPwd] = useState("Hello1");
+          return (
+            <View className="w-full max-w-sm gap-2">
+              <Input type="password" value={pwd} onChangeText={setPwd} placeholder="Enter password…" accessibilityLabel="Password" />
+              <ContentScoreBar value={pwd} rules={PWD_RULES} label="Password strength" />
+            </View>
+          );
+        },
+      },
+    ],
+  },
+  {
+    id: "view-toggle",
+    title: "ViewToggle",
+    category: "Atoms",
+    icon: faTableCells,
+    description: "Horizontal / vertical view toggle control; two-state icon selector.",
+    usage: `<ViewToggle value={view} onChange={setView} />`,
+    preview: () => <ViewToggle value="horizontal" onChange={() => {}} />,
+    // Mirrors KuiReact's ViewToggle showcase variants 1:1 (same titles and labels).
+    variants: [
+      {
+        title: "Default (EN labels)",
+        Demo: function ViewToggleDemo() {
+          const [view, setView] = useState<ViewOrientation>("horizontal");
+          return <ViewToggle value={view} onChange={setView} />;
+        },
+      },
+      {
+        title: "Custom labels",
+        Demo: function ViewToggleCustomDemo() {
+          const [view, setView] = useState<ViewOrientation>("vertical");
+          return <ViewToggle value={view} onChange={setView} labels={{ horizontal: "Yatay", vertical: "Dikey" }} />;
+        },
+      },
+    ],
+  },
+  {
+    id: "scroll-area",
+    title: "ScrollArea",
+    category: "Atoms",
+    icon: faScroll,
+    description: "Scrollable container for vertical, horizontal, or both-axis scrolling.",
+    usage: `<ScrollArea className="h-40">{items}</ScrollArea>`,
+    preview: () => (
+      <ScrollArea className="h-16 w-full rounded-md border border-border p-2">
+        <Text className="text-sm text-text-primary">Item 1</Text>
+      </ScrollArea>
+    ),
+    // Mirrors KuiReact's ScrollArea showcase variants 1:1 (same titles and content).
+    variants: [
+      {
+        title: "Vertical list",
+        Demo: () => (
+          <ScrollArea className="h-40 w-64 rounded-md border border-border p-3">
+            <View className="gap-2">
+              {Array.from({ length: 20 }).map((_, i) => (
+                <Text key={i} className="rounded-md bg-surface-raised px-3 py-2 text-sm text-text-primary">
+                  Item {i + 1}
+                </Text>
+              ))}
+            </View>
+          </ScrollArea>
+        ),
+      },
+      {
+        title: "Horizontal",
+        Demo: () => (
+          <ScrollArea orientation="horizontal" className="w-full rounded-md border border-border p-3">
+            <View className="flex-row gap-3">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <View key={i} className="h-16 w-24 shrink-0 items-center justify-center rounded-md bg-surface-raised">
+                  <Text className="text-sm text-text-primary">Card {i + 1}</Text>
+                </View>
+              ))}
+            </View>
+          </ScrollArea>
         ),
       },
     ],

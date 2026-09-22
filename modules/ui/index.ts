@@ -24,6 +24,8 @@ export type { CheckboxGroupProps, CheckboxOption } from "./CheckboxGroup";
 export type { CheckboxProps } from "./Checkbox";
 export { ComboBox } from "./ComboBox";
 export type { ComboBoxOption, ComboBoxProps } from "./ComboBox";
+export { ContentScoreBar } from "./ContentScoreBar";
+export type { ContentScoreBarProps, ScoreRule } from "./ContentScoreBar";
 export { DatePicker, DateRangePicker, DateTimePicker } from "./DatePicker";
 export type {
   DatePickerLocale,
@@ -64,6 +66,8 @@ export { RadioGroup } from "./RadioGroup";
 export type { RadioGroupProps, RadioOption } from "./RadioGroup";
 export { RangeSlider } from "./RangeSlider";
 export type { RangeSliderProps } from "./RangeSlider";
+export { ScrollArea } from "./ScrollArea";
+export type { ScrollAreaProps } from "./ScrollArea";
 export { SearchBar } from "./SearchBar";
 export type { SearchBarProps } from "./SearchBar";
 export { Select } from "./Select";
@@ -98,6 +102,8 @@ export type { StepItem, StepperProps } from "./Stepper";
 export { Tooltip } from "./Tooltip";
 export type { TooltipProps } from "./Tooltip";
 export { Timeline } from "./Timeline";
+export { ViewToggle } from "./ViewToggle";
+export type { ViewOrientation, ViewToggleProps } from "./ViewToggle";
 export { TimePicker } from "./TimePicker";
 export type { TimePickerProps } from "./TimePicker";
 export type { TimelineItem, TimelineProps } from "./Timeline";
