@@ -93,7 +93,7 @@ export function groupIntoHunks(changes: Change[], context: number): Hunk[] {
 
   // Cluster consecutive change indices that fall within `2 * context + 1`
   // unchanged lines of each other (keeps adjacent hunks merged).
-  const clusters: Array<{ start: number; end: number }> = [];
+  const clusters: { start: number; end: number }[] = [];
   let curStart = changeIdx[0];
   let curEnd = changeIdx[0];
   for (let k = 1; k < changeIdx.length; k++) {

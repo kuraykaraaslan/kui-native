@@ -1,5 +1,4 @@
-import { renderHook } from "@testing-library/react-native";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { fireEvent, render, renderHook, screen } from "@testing-library/react-native";
 
 import { DiffViewer, pairChanges, partitionHunk, useDiff } from "./index";
 

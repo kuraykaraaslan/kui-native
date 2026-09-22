@@ -65,7 +65,7 @@ export function xCategories(series: Series[]): string[] {
 }
 
 /** Build a smooth Catmull-Rom-ish path string for line charts. */
-export function smoothPath(points: Array<{ x: number; y: number } | null>): string {
+export function smoothPath(points: ({ x: number; y: number } | null)[]): string {
   let d = "";
   let prev: { x: number; y: number } | null = null;
   for (const p of points) {
@@ -85,7 +85,7 @@ export function smoothPath(points: Array<{ x: number; y: number } | null>): stri
 }
 
 /** Straight line path (used when smoothing is disabled). */
-export function linePath(points: Array<{ x: number; y: number } | null>): string {
+export function linePath(points: ({ x: number; y: number } | null)[]): string {
   let d = "";
   let prev = false;
   for (const p of points) {

@@ -1,5 +1,4 @@
-import { render, screen } from "@testing-library/react-native";
-import { fireEvent } from "@testing-library/react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 
 import { Label } from "./Label";
 

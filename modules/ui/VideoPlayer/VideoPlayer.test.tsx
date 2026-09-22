@@ -18,7 +18,9 @@ jest.mock("expo-video", () => {
       }
       return ref.current;
     },
-    VideoView: React.forwardRef((props: Record<string, unknown>, _ref: unknown) => React.createElement(View, props)),
+    VideoView: React.forwardRef(function VideoView(props: Record<string, unknown>, _ref: unknown) {
+      return React.createElement(View, props);
+    }),
   };
 });
 jest.mock("expo", () => ({ useEvent: (_p: unknown, _name: string, initial: unknown) => initial }));
