@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
+  faTags,
   faHeading,
   faShoePrints,
   faListOl,
@@ -81,6 +82,7 @@ import {
   Breadcrumb,
   Stepper,
   PageHeader,
+  MultiSelect,
 } from "@/modules/ui";
 import { useThemeTokens } from "@/libs/theme";
 
@@ -970,6 +972,89 @@ export const REGISTRY: ShowcaseEntry[] = [
                 ) : null}
               </View>
             </View>
+          );
+        },
+      },
+    ],
+  },
+  {
+    id: "multi-select",
+    title: "MultiSelect",
+    category: "Forms",
+    icon: faTags,
+    description: "Chip-based multi-select popover with searchable filter and disabled-option support.",
+    usage: `<MultiSelect id="tags" label="Tags" options={options} value={v} onChange={setV} />`,
+    preview: () => <MultiSelect id="ms-preview" label="Frameworks" options={[{ value: "react", label: "React" }]} value={["react"]} />,
+    // Mirrors KuiReact's MultiSelect showcase variants 1:1 (same titles and
+    // copy; country flags are emoji, as in KuiReact's own code sample).
+    variants: [
+      {
+        title: "Controlled",
+        Demo: function MultiSelectDemo() {
+          const [v, setV] = useState<string[]>([]);
+          return (
+            <MultiSelect
+              id="ms-demo"
+              label="Frameworks"
+              options={[
+                { value: "react", label: "React" },
+                { value: "vue", label: "Vue" },
+                { value: "svelte", label: "Svelte" },
+                { value: "angular", label: "Angular" },
+              ]}
+              value={v}
+              onChange={setV}
+              placeholder="Pick frameworks…"
+            />
+          );
+        },
+      },
+      {
+        title: "With error",
+        Demo: () => (
+          <MultiSelect
+            id="ms-err"
+            label="Tags"
+            options={[{ value: "a", label: "Alpha" }, { value: "b", label: "Beta" }]}
+            error="Please select at least one tag."
+          />
+        ),
+      },
+      {
+        title: "With countries",
+        Demo: function CountryMultiSelectDemo() {
+          const [v, setV] = useState<string[]>([]);
+          return (
+            <View className="w-full max-w-sm gap-1">
+              <MultiSelect
+                id="cms-demo"
+                label="Countries"
+                options={COUNTRY_OPTIONS}
+                placeholder="Select countries…"
+                value={v}
+                onChange={setV}
+                hint="Select one or more countries."
+              />
+              {v.length > 0 ? <Text className="text-xs text-text-secondary">Selected: {v.join(", ")}</Text> : null}
+            </View>
+          );
+        },
+      },
+      {
+        title: "Searchable",
+        Demo: function SearchableMultiSelectDemo() {
+          const [v, setV] = useState<string[]>([]);
+          return (
+            <MultiSelect
+              id="ms-search"
+              label="Countries"
+              searchable
+              options={COUNTRY_OPTIONS}
+              placeholder="Search and select…"
+              value={v}
+              onChange={setV}
+              hint="Type to filter the list."
+            />
           );
         },
       },

@@ -30,6 +30,8 @@ export { Label } from "./Label";
 export type { LabelProps } from "./Label";
 export { Modal } from "./Modal";
 export type { ModalProps } from "./Modal";
+export { MultiSelect } from "./MultiSelect";
+export type { MultiSelectOption, MultiSelectProps } from "./MultiSelect";
 export { PageHeader } from "./PageHeader";
 export type { PageHeaderAction, PageHeaderProps } from "./PageHeader";
 export { Pagination } from "./Pagination";

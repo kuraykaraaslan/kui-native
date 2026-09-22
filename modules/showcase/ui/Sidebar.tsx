@@ -46,6 +46,7 @@ const ABBR: Record<string, string> = {
   "dropdown-menu": "Dm",
   tooltip: "Tt",
   accordion: "Ac",
+  "multi-select": "Ms",
   "page-header": "Ph",
   stepper: "St",
   breadcrumb: "Bc",
