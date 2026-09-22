@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import { Text as RNText } from "react-native";
+import { AccessibilityInfo, Text as RNText } from "react-native";
 
 import { Button } from "./Button";
 import { DropdownMenu, type DropdownItem } from "./DropdownMenu";
@@ -74,6 +74,15 @@ describe("DropdownMenu", () => {
     await openMenu();
     await fireEvent.press(screen.getByTestId("anchored-panel-outside", { hidden: true } as never));
     expect(screen.queryByRole("menuitem")).toBeNull();
+  });
+
+  it("moves screen-reader focus to the first enabled item once shown", async () => {
+    const spy = jest.spyOn(AccessibilityInfo, "sendAccessibilityEvent").mockImplementation(() => {});
+    await openMenu();
+    const modal = screen.container.queryAll((n) => typeof n.props.onShow === "function")[0];
+    await fireEvent(modal, "show");
+    expect(spy).toHaveBeenCalledWith(expect.anything(), "focus");
+    spy.mockRestore();
   });
 
   it("renders an optional header above the items", async () => {

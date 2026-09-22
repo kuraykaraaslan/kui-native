@@ -123,6 +123,8 @@ export function MultiSelect({
             error ? "border-error bg-error-subtle" : open ? "border-border-focus bg-surface-base" : "border-border bg-surface-base",
             disabled && "bg-surface-sunken opacity-50",
           )}
+          // KuiReact: "ring-1 ring-error" on top of the error border.
+          style={error ? { outlineWidth: 1, outlineColor: t.error, outlineStyle: "solid" } : undefined}
         >
           {selected.length === 0 ? (
             <Text className="text-sm text-text-disabled">{placeholder}</Text>

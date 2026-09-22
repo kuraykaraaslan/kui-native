@@ -1,5 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react-native";
 
+import { StyleSheet } from "react-native";
+
 import { MultiSelect } from "./MultiSelect";
 
 function classNameOf(el: { props: { className?: string | string[] } }) {
@@ -87,6 +89,7 @@ describe("MultiSelect", () => {
     expect(screen.queryByText("Pick some.")).toBeNull();
     expect(screen.getByRole("alert")).toHaveTextContent("Please select at least one tag.");
     expect(classNameOf(trigger())).toContain("border-error");
+    expect(StyleSheet.flatten(trigger().props.style).outlineWidth).toBe(1);
   });
 
   describe("async search", () => {

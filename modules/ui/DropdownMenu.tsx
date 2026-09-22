@@ -1,6 +1,6 @@
 import type * as React from "react";
-import { useState } from "react";
-import { Platform, Pressable, View } from "react-native";
+import { useRef, useState } from "react";
+import { AccessibilityInfo, Platform, Pressable, View } from "react-native";
 
 import { cn } from "@/libs/utils/cn";
 
@@ -40,6 +40,13 @@ export type DropdownMenuProps = {
 export function DropdownMenu({ trigger, items, header, align = "left", className }: DropdownMenuProps) {
   const [open, setOpen] = useState(false);
   const { ref, rect, measure } = useAnchor<View>();
+  const firstItemRef = useRef<View>(null);
+  const firstEnabled = items.findIndex((it) => it.type !== "separator" && !it.disabled);
+
+  // KuiReact's focus trap moves focus to the first item on open.
+  function focusFirstItem() {
+    if (firstItemRef.current) AccessibilityInfo.sendAccessibilityEvent(firstItemRef.current, "focus");
+  }
 
   function toggle() {
     if (!open) measure();
@@ -62,6 +69,7 @@ export function DropdownMenu({ trigger, items, header, align = "left", className
         placement="bottom"
         align={align === "right" ? "end" : "start"}
         gap={4}
+        onShow={focusFirstItem}
       >
         <View
           testID="dropdown-menu"
@@ -79,6 +87,7 @@ export function DropdownMenu({ trigger, items, header, align = "left", className
             return (
               <Pressable
                 key={`${item.label}-${i}`}
+                ref={i === firstEnabled ? firstItemRef : undefined}
                 accessibilityRole="menuitem"
                 accessibilityLabel={item.label}
                 accessibilityState={{ disabled: Boolean(item.disabled) }}

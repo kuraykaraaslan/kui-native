@@ -60,6 +60,8 @@ export type AnchoredPanelProps = {
   dismissOnOutsidePress?: boolean;
   /** Pass-through for tooltips: the panel ignores touches. */
   passThrough?: boolean;
+  /** Fires once the panel's window is shown — the moment to move screen-reader focus into it. */
+  onShow?: () => void;
   children: React.ReactNode;
 };
 
@@ -72,6 +74,7 @@ export function AnchoredPanel({
   gap = 8,
   dismissOnOutsidePress = true,
   passThrough = false,
+  onShow,
   children,
 }: AnchoredPanelProps) {
   const { width: screenWidth } = useWindowDimensions();
@@ -84,7 +87,7 @@ export function AnchoredPanel({
   const { left, top } = computePosition(anchor, size, placement, align, gap, screenWidth);
 
   return (
-    <RNModal visible transparent animationType="none" statusBarTranslucent onRequestClose={onClose}>
+    <RNModal visible transparent animationType="none" statusBarTranslucent onRequestClose={onClose} onShow={onShow}>
       <View style={StyleSheet.absoluteFill} pointerEvents={passThrough ? "none" : "box-none"}>
         {dismissOnOutsidePress ? (
           <Pressable
