@@ -118,7 +118,7 @@ describe("DatePicker", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("Please select a date.");
     const shell = screen.getByTestId("datepicker-d-trigger").parent as never as { props: { style: unknown; className?: string } };
     expect(classNameOf(shell)).toContain("border-error");
-    expect(StyleSheet.flatten(shell.props.style as never).outlineWidth).toBe(1);
+    expect((StyleSheet.flatten(shell.props.style as never) as { outlineWidth?: number }).outlineWidth).toBe(1);
   });
 
   it("uses KuiReact's popover and selected-day classes", async () => {
