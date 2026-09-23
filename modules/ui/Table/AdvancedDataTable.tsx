@@ -4,8 +4,9 @@
 // and an optional sticky header. Selection is keyed by row index, as in
 // KuiReact (prefer BulkActionTable for id-keyed selection).
 //
-// RN adaptations: the sticky header is a header row above a `max-h-80`
-// vertical scroller; columns share the width like <Table />.
+// RN adaptations: the sticky header is a header row above a vertical
+// scroller, the pair capped at `max-h-80` like KuiReact's wrapper; columns
+// share the width like <Table />.
 
 import type * as React from "react";
 import { useState } from "react";
@@ -36,8 +37,16 @@ export type AdvancedDataTableProps<T extends Record<string, unknown>> = {
 };
 
 const MIN_COL_WIDTH = 120;
-const CONTROL_COL = 40; // KuiReact: w-10
-const STICKY_MAX_HEIGHT = 320; // KuiReact: max-h-80
+// KuiReact's `w-10 px-4` control cells grow to their content in the web
+// table's auto layout: the checkbox cell is 16 + 16px box + 3px checkbox
+// margin + 16, the chevron cell 16 + a 15px (1.25em) icon box + 16.
+const SELECT_COL = 51;
+const EXPAND_COL = 47;
+// A row holding the inline 16px checkbox (with its 3px margins) gets a 21px
+// line box, so selectable rows are 12 + 21 + 12 tall.
+const SELECT_ROW_MIN_HEIGHT = 45;
+const STICKY_MAX_HEIGHT = 320; // KuiReact: max-h-80 on the bordered wrapper
+const HEADER_HEIGHT = 41; // py-3 + text-xs line (16) + border-b
 const alignText = { left: "text-left", center: "text-center", right: "text-right" } as const;
 
 const colStyle = <T,>(col: Column<T>): ViewStyle => (col.width ? { width: col.width } : { flex: 1, minWidth: MIN_COL_WIDTH });
@@ -55,6 +64,7 @@ export function AdvancedDataTable<T extends Record<string, unknown>>({
   const t = useThemeTokens();
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const [headerHeight, setHeaderHeight] = useState(HEADER_HEIGHT);
 
   function toggleRow(i: number) {
     const next = new Set(selected);
@@ -80,18 +90,19 @@ export function AdvancedDataTable<T extends Record<string, unknown>>({
   const allSelected = rows.length > 0 && selected.size === rows.length;
   const someSelected = selected.size > 0 && selected.size < rows.length;
   const hasAnyExpand = rows.some((r) => r._expanded !== undefined);
-  const minWidth = columns.reduce((s, c) => s + (c.width ?? MIN_COL_WIDTH), 0) + (selectable ? CONTROL_COL : 0) + (hasAnyExpand ? CONTROL_COL : 0);
+  const minWidth = columns.reduce((s, c) => s + (c.width ?? MIN_COL_WIDTH), 0) + (selectable ? SELECT_COL : 0) + (hasAnyExpand ? EXPAND_COL : 0);
+  const selectCell = { width: SELECT_COL, minHeight: SELECT_ROW_MIN_HEIGHT };
 
   const header = (
-    <View className="flex-row border-b border-border bg-surface-sunken">
+    <View className="flex-row border-b border-border bg-surface-sunken" onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}>
       {selectable ? (
-        <View className="justify-center px-3 py-3" style={{ width: CONTROL_COL }}>
+        <View className="px-4 pt-3" style={selectCell}>
           <SelectBox checked={allSelected} mixed={someSelected} label="Select all rows" onPress={toggleAll} />
         </View>
       ) : null}
-      {hasAnyExpand ? <View style={{ width: CONTROL_COL }} accessibilityLabel="Expand" /> : null}
+      {hasAnyExpand ? <View style={{ width: EXPAND_COL }} accessibilityLabel="Expand" /> : null}
       {columns.map((col) => (
-        <View key={String(col.key)} className="px-4 py-3" style={colStyle(col)}>
+        <View key={String(col.key)} className="justify-center px-4 py-3" style={colStyle(col)}>
           {typeof col.header === "string" ? (
             <Text className={cn("text-xs font-semibold uppercase tracking-wider text-text-secondary", alignText[col.align ?? "left"])}>{col.header}</Text>
           ) : (
@@ -114,7 +125,7 @@ export function AdvancedDataTable<T extends Record<string, unknown>>({
           <View key={i} className={cn(i > 0 && "border-t border-border")}>
             <View testID="advanced-row" className={cn("flex-row", isSelected && "bg-primary-subtle")}>
               {selectable ? (
-                <View className="justify-center px-3 py-3" style={{ width: CONTROL_COL }}>
+                <View className="px-4 pt-3" style={selectCell}>
                   <SelectBox checked={isSelected} label={`Select row ${i + 1}`} onPress={() => toggleRow(i)} />
                 </View>
               ) : null}
@@ -125,12 +136,15 @@ export function AdvancedDataTable<T extends Record<string, unknown>>({
                   accessibilityState={{ expanded: isExpanded }}
                   onPress={() => toggleExpand(i)}
                   className="items-center justify-center py-3"
-                  style={{ width: CONTROL_COL }}
+                  style={{ width: EXPAND_COL }}
                 >
-                  <FontAwesomeIcon icon={isExpanded ? faChevronDown : faChevronRight} size={10} color={t["text-disabled"]} />
+                  {/* FontAwesome web icons render in a 1.25em × 1em box. */}
+                  <View className="h-3 w-[15px] items-center justify-center">
+                    <FontAwesomeIcon icon={isExpanded ? faChevronDown : faChevronRight} size={12} color={t["text-disabled"]} />
+                  </View>
                 </Pressable>
               ) : hasAnyExpand ? (
-                <View style={{ width: CONTROL_COL }} />
+                <View style={{ width: EXPAND_COL }} />
               ) : null}
               {columns.map((col) => {
                 const node = col.render ? col.render(row) : String(row[col.key as keyof T] ?? "");
@@ -159,7 +173,7 @@ export function AdvancedDataTable<T extends Record<string, unknown>>({
           <View style={{ flexGrow: 1, minWidth }}>
             {header}
             {stickyHeader ? (
-              <ScrollView testID="advanced-sticky-body" nestedScrollEnabled style={{ maxHeight: STICKY_MAX_HEIGHT }} className="bg-surface-base">
+              <ScrollView testID="advanced-sticky-body" nestedScrollEnabled style={{ maxHeight: STICKY_MAX_HEIGHT - 2 - headerHeight }} className="bg-surface-base">
                 {body}
               </ScrollView>
             ) : (

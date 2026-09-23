@@ -1,6 +1,9 @@
 import { useWindowDimensions } from "react-native";
 import { create } from "zustand";
 
+/** KuiReact's LayoutSwitcher: how ShowcaseDetail lays out each variant. */
+export type VariantLayout = "side" | "stack" | "grid";
+
 type DrawerState = {
   /** Mobile drawer (below the `lg` breakpoint). */
   open: boolean;
@@ -10,9 +13,12 @@ type DrawerState = {
   /** Desktop sidebar collapsed to its icon rail (KuiReact's `sidebarCollapsed`). */
   collapsed: boolean;
   setCollapsed: (collapsed: boolean) => void;
+  /** KuiReact's `variantLayout` (ShowcaseShell state, default "side"). */
+  variantLayout: VariantLayout;
+  setVariantLayout: (layout: VariantLayout) => void;
 };
 
-/** Controls the showcase navigation: the mobile drawer and the desktop sidebar rail. */
+/** Showcase chrome state: the mobile drawer, the desktop sidebar rail and the variant layout. */
 export const useDrawer = create<DrawerState>((set, get) => ({
   open: false,
   setOpen: (open) => set({ open }),
@@ -20,6 +26,8 @@ export const useDrawer = create<DrawerState>((set, get) => ({
   close: () => set({ open: false }),
   collapsed: false,
   setCollapsed: (collapsed) => set({ collapsed }),
+  variantLayout: "side",
+  setVariantLayout: (variantLayout) => set({ variantLayout }),
 }));
 
 /** KuiReact's `lg` breakpoint (1024px): persistent sidebar at and above it, drawer below. */

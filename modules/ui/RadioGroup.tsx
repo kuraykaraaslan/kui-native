@@ -56,9 +56,11 @@ export function RadioGroup({
   const cols = useColumnCount(columns);
 
   return (
-    // KuiReact: <fieldset className="space-y-1">
-    <View className={cn("gap-1", className)} accessibilityRole="radiogroup" accessibilityLabel={legend}>
-      {/* KuiReact legend: "mb-2 text-sm font-medium text-text-primary" (mb-2 + space-y-1 = 12px) */}
+    // KuiReact: <fieldset className="space-y-1">. Tailwind v4's space-y is a zero-specificity
+    // margin-bottom on every child but the last, so the legend's own mb-2 wins (8px, not 12),
+    // and the options' 4px collapses with the error's mt-1.
+    <View className={className} accessibilityRole="radiogroup" accessibilityLabel={legend}>
+      {/* KuiReact legend: "mb-2 text-sm font-medium text-text-primary" */}
       <Text variant="label" className="mb-2 font-medium">
         {legend}
       </Text>

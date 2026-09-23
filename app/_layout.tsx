@@ -8,9 +8,10 @@ import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { themes, useResolvedScheme } from "@/libs/theme";
+import { themes, tokenMaps, useResolvedScheme } from "@/libs/theme";
 import { AppDrawer } from "@/modules/showcase/ui/AppDrawer";
 import { useDrawer, useIsDesktop } from "@/modules/showcase/ui/drawer.store";
+import { Header } from "@/modules/showcase/ui/Header";
 import { Sidebar } from "@/modules/showcase/ui/Sidebar";
 import { Toaster } from "@/modules/ui";
 
@@ -35,8 +36,14 @@ function ThemedRoot() {
       {/* KuiReact AppShell: a persistent aside at lg (>=1024px), the drawer below it. */}
       <View className="flex-1 flex-row">
         {desktop ? <Sidebar variant="desktop" /> : null}
+        {/* KuiReact AppShell's content column: the header, then the scrolling `main`. */}
         <View className="min-w-0 flex-1">
-          <Stack screenOptions={{ headerShown: false }} />
+          <Header />
+          <View className="flex-1">
+            <Stack
+              screenOptions={{ headerShown: false, contentStyle: { backgroundColor: tokenMaps[scheme]["surface-base"] } }}
+            />
+          </View>
         </View>
       </View>
       {!desktop ? <AppDrawer /> : null}

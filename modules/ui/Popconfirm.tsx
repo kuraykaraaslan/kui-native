@@ -1,6 +1,6 @@
 import type * as React from "react";
 import { useRef, useState } from "react";
-import { AccessibilityInfo, Platform, View } from "react-native";
+import { Platform, View } from "react-native";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -8,7 +8,7 @@ import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
 import { Button } from "./Button";
-import { AnchoredPanel, useAnchor, type Placement } from "./Overlays/shared";
+import { AnchoredPanel, focusElement, useAnchor, type Placement } from "./Overlays/shared";
 import { Trigger } from "./Overlays/shared/useTrigger";
 import { Text } from "./Text";
 
@@ -52,7 +52,7 @@ export function Popconfirm({
 
   // KuiReact's focus trap moves focus to Cancel on open.
   function focusCancel() {
-    if (cancelRef.current) AccessibilityInfo.sendAccessibilityEvent(cancelRef.current, "focus");
+    focusElement(cancelRef.current);
   }
 
   function toggle() {

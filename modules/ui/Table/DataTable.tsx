@@ -19,7 +19,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 
-import { Button } from "../Button";
 import { DropdownMenu } from "../DropdownMenu";
 import { Pagination } from "../Pagination";
 import { SearchBar } from "../SearchBar";
@@ -100,7 +99,13 @@ function HeaderRow<T extends Record<string, unknown>>({ columns, ctl }: { column
             ) : (
               col.header
             )}
-            {col.sortable ? <FontAwesomeIcon icon={dir === "asc" ? faChevronUp : dir === "desc" ? faChevronDown : faSort} size={10} color={t["text-secondary"]} /> : null}
+            {col.sortable ? (
+              // KuiReact's `w-2.5 h-2.5` loses to FontAwesome's own CSS, so the
+              // web icon renders in a 1.25em × 1em box (15 × 12 at text-xs).
+              <View className="h-3 w-[15px] items-center justify-center">
+                <FontAwesomeIcon icon={dir === "asc" ? faChevronUp : dir === "desc" ? faChevronDown : faSort} size={12} color={t["text-secondary"]} />
+              </View>
+            ) : null}
             {order !== null ? (
               <View testID={`sort-order-${key}`} className="ml-0.5 h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1">
                 <Text className="text-[10px] font-bold text-primary-fg">{order}</Text>
@@ -118,13 +123,13 @@ function HeaderRow<T extends Record<string, unknown>>({ columns, ctl }: { column
             accessibilityValue={{ text: dir === "asc" ? "sorted ascending" : dir === "desc" ? "sorted descending" : "not sorted" }}
             onPress={() => ctl.toggleSort(key, false)}
             onLongPress={() => ctl.toggleSort(key, true)}
-            className={cn("px-4 py-3 active:bg-surface-overlay", col.thClass)}
+            className={cn("justify-center px-4 py-3 active:bg-surface-overlay", col.thClass)}
             style={cellStyle(col)}
           >
             {content}
           </Pressable>
         ) : (
-          <View key={key} role="columnheader" className={cn("px-4 py-3", col.thClass)} style={cellStyle(col)}>
+          <View key={key} role="columnheader" className={cn("justify-center px-4 py-3", col.thClass)} style={cellStyle(col)}>
             {content}
           </View>
         );
@@ -198,6 +203,7 @@ function Toolbar({
   onPageSize?: (n: number) => void;
   rowsPerPageLabel: string;
 }) {
+  const t = useThemeTokens();
   if (!searchable && !pageSizeOptions) return null;
   return (
     <View className="flex-row flex-wrap items-center gap-2">
@@ -208,9 +214,16 @@ function Toolbar({
           <DropdownMenu
             align="right"
             trigger={
-              <Button variant="outline" size="sm" accessibilityLabel={`${rowsPerPageLabel} ${pageSize}`}>
-                {`${pageSize} ▾`}
-              </Button>
+              // KuiReact's native <select>: `rounded-md border px-2 py-1.5 text-sm`,
+              // sized to its widest option plus the browser's chevron.
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`${rowsPerPageLabel} ${pageSize}`}
+                className="w-14 flex-row items-center rounded-md border border-border bg-surface-base py-1.5 pl-3 pr-0.5"
+              >
+                <Text className="flex-1 text-sm leading-5 text-text-primary">{String(pageSize)}</Text>
+                <FontAwesomeIcon icon={faChevronDown} size={10} color={t["text-primary"]} />
+              </Pressable>
             }
             items={pageSizeOptions.map((n) => ({ label: String(n), onPress: () => onPageSize(n) }))}
           />

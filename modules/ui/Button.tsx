@@ -1,5 +1,6 @@
 import type * as React from "react";
-import { ActivityIndicator, Pressable, View, type PressableProps, type View as RNView } from "react-native";
+import { useEffect, useRef } from "react";
+import { Animated, Easing, Pressable, View, type PressableProps, type View as RNView } from "react-native";
 
 import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
@@ -20,6 +21,17 @@ const containerVariant: Record<ButtonVariant, string> = {
   outline: "border border-border active:bg-surface-overlay",
   destructive: "bg-error active:opacity-90",
 };
+
+// Theme-token name behind each variant's text colour (KuiReact's spinner and
+// text-glyph icons use `currentColor`, i.e. this colour).
+const labelToken = {
+  primary: "primary-fg",
+  secondary: "secondary-fg",
+  ghost: "text-primary",
+  danger: "text-inverse",
+  outline: "text-primary",
+  destructive: "text-inverse",
+} as const;
 
 const labelVariant: Record<ButtonVariant, string> = {
   primary: "text-primary-fg",
@@ -56,6 +68,48 @@ const sizeLabel: Record<ButtonSize, string> = {
   lg: "text-base",
   xl: "text-lg",
 };
+
+/**
+ * KuiReact's loading indicator: "animate-spin h-4 w-4 border-2 border-current
+ * border-t-transparent rounded-full" — a 16px ring in the label colour with a
+ * transparent top, spinning at Tailwind's 1s linear rate.
+ */
+function ButtonSpinner({ color }: { color: string }) {
+  const spin = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.timing(spin, { toValue: 1, duration: 1000, easing: Easing.linear, useNativeDriver: true }),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [spin]);
+  const rotate = spin.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] });
+  return (
+    <Animated.View
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={{
+        width: 16,
+        height: 16,
+        flexShrink: 0,
+        borderRadius: 8,
+        borderWidth: 2,
+        borderColor: color,
+        borderTopColor: "transparent",
+        transform: [{ rotate }],
+      }}
+    />
+  );
+}
+
+/** KuiReact's icon <span>s inherit the button's text style, so a text glyph gets it too. */
+function IconSlot({ icon, textCls }: { icon: React.ReactNode; textCls: string }) {
+  return (
+    <View className="shrink-0" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      {typeof icon === "string" || typeof icon === "number" ? <Text className={textCls}>{icon}</Text> : icon}
+    </View>
+  );
+}
 
 export type ButtonProps = Omit<PressableProps, "children" | "style"> & {
   /** Button content (KuiReact's API). Strings are rendered in the variant's text style. */
@@ -99,7 +153,7 @@ export function Button({
   const isDisabled = disabled || loading;
   const content = children ?? label;
   const textual = typeof content === "string" || typeof content === "number";
-  const lightSpinner = variant !== "outline" && variant !== "ghost";
+  const textCls = cn("font-medium", labelVariant[variant], sizeLabel[size]);
 
   return (
     <Pressable
@@ -114,7 +168,9 @@ export function Button({
         containerVariant[variant],
         iconOnly ? iconOnlySize[size] : sizeContainer[size],
         fullWidth && "w-full",
-        isDisabled && "opacity-50",
+        // KuiReact dims only `disabled` ("disabled:opacity-50"); a loading
+        // button keeps full opacity.
+        disabled && "opacity-50",
         className,
       )}
       // KuiReact's `selected` adds "ring-2 ring-border-focus" — an outline
@@ -123,22 +179,12 @@ export function Button({
       {...rest}
     >
       {loading ? (
-        <ActivityIndicator size="small" color={lightSpinner ? t["primary-fg"] : t.primary} />
+        <ButtonSpinner color={t[labelToken[variant]]} />
       ) : iconLeft ? (
-        <View className="shrink-0" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-          {iconLeft}
-        </View>
+        <IconSlot icon={iconLeft} textCls={textCls} />
       ) : null}
-      {textual ? (
-        <Text className={cn("font-medium", labelVariant[variant], sizeLabel[size])}>{content}</Text>
-      ) : (
-        content
-      )}
-      {!loading && iconRight ? (
-        <View className="shrink-0" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-          {iconRight}
-        </View>
-      ) : null}
+      {textual ? <Text className={textCls}>{content}</Text> : content}
+      {!loading && iconRight ? <IconSlot icon={iconRight} textCls={textCls} /> : null}
     </Pressable>
   );
 }

@@ -50,7 +50,10 @@ export function FilterPopover<T extends Record<string, unknown>>({ column, value
         }}
         className="items-center justify-center rounded p-1"
       >
-        <FontAwesomeIcon icon={faFilter} size={10} color={active ? t.primary : t["text-disabled"]} />
+        {/* FontAwesome web icons render in a 1.25em × 1em box (15 × 12 at text-xs). */}
+        <View className="h-3 w-[15px] items-center justify-center">
+          <FontAwesomeIcon icon={faFilter} size={12} color={active ? t.primary : t["text-disabled"]} />
+        </View>
       </Pressable>
       <AnchoredPanel open={open} onClose={() => setOpen(false)} anchor={rect} placement="bottom" align="start" gap={4}>
         <View testID={`filter-panel-${String(column.key)}`} accessibilityLabel={`Filter ${header}`} className="min-w-[12rem] rounded-lg border border-border bg-surface-raised p-3 shadow-xl">

@@ -91,7 +91,13 @@ export function ContentScoreBar({ value, rules, label, className }: ContentScore
             accessibilityHint={r.hint}
             className={cn("flex-row items-center gap-1 rounded-full border px-2 py-0.5", r.pass ? cn(t.bg, t.border) : "border-border bg-surface-sunken")}
           >
-            {r.pass ? <FontAwesomeIcon icon={faCheck} size={10} color={theme[t.token]} /> : null}
+            {/* KuiReact's check renders in FA's web box (1.25em × 1em of text-xs =
+                15 × 12px) with an ~11px glyph, which is why its chips wrap. */}
+            {r.pass ? (
+              <View className="items-center justify-center" style={{ width: 15, height: 12 }}>
+                <FontAwesomeIcon icon={faCheck} size={13} color={theme[t.token]} />
+              </View>
+            ) : null}
             <Text className={cn("text-xs font-medium", r.pass ? t.text : "text-text-disabled")}>{r.label}</Text>
           </View>
         ))}

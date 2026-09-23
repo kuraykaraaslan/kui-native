@@ -35,6 +35,7 @@ const THUMB = 16;
 
 function Thumb({
   x,
+  top,
   label,
   value,
   min,
@@ -45,6 +46,7 @@ function Thumb({
   onStep,
 }: {
   x: number;
+  top: number;
   label: string;
   value: number;
   min: number;
@@ -86,7 +88,7 @@ function Thumb({
       }}
       hitSlop={12}
       className="absolute h-4 w-4 rounded-full border-2 border-surface-base bg-primary shadow"
-      style={{ left: x, top: (20 - THUMB) / 2, elevation: 2 }}
+      style={{ left: x, top, elevation: 2 }}
       testID="range-slider-thumb"
       aria-valuetext={String(value)}
     />
@@ -116,6 +118,11 @@ export function RangeSlider(props: RangeSliderProps) {
   const pct = (v: number) => ((v - min) / span) * 100;
 
   const values: number[] = props.range ? props.value : [props.value];
+  // Range mode: KuiReact's `relative h-5` box, track centred (10px). Single mode: a bare
+  // 6px-tall inline-block <input type="range"> sitting on the baseline of a 24px
+  // (16px / 1.5 body strut) line box, so the row is 24px with the track centred at 13px.
+  const boxHeight = props.range ? 20 : 24;
+  const trackCenter = props.range ? 10 : 13;
 
   function emit(index: number, next: number) {
     if (props.range) {
@@ -153,7 +160,8 @@ export function RangeSlider(props: RangeSliderProps) {
       ) : null}
 
       <View
-        className={cn("relative h-5 justify-center", disabled && "opacity-50")}
+        className={cn("relative", disabled && "opacity-50")}
+        style={{ height: boxHeight }}
         onLayout={(e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width)}
         accessibilityHint={hint}
       >
@@ -162,20 +170,25 @@ export function RangeSlider(props: RangeSliderProps) {
           accessible={false}
           disabled={disabled}
           onPress={(e) => onTrackPress(e.nativeEvent.locationX)}
-          className="absolute inset-0 justify-center"
+          className="absolute inset-0"
         >
-          <View className="h-1.5 w-full rounded-full bg-surface-sunken" />
+          <View className="absolute h-1.5 w-full rounded-full bg-surface-sunken" style={{ top: trackCenter - 3 }} />
         </Pressable>
         <View
           pointerEvents="none"
           testID="range-slider-fill"
           className="absolute h-1.5 rounded-full bg-primary"
-          style={props.range ? { left: `${pct(values[0])}%`, right: `${100 - pct(values[1])}%` } : { left: 0, width: `${pct(values[0])}%` }}
+          style={
+            props.range
+              ? { top: trackCenter - 3, left: `${pct(values[0])}%`, right: `${100 - pct(values[1])}%` }
+              : { top: trackCenter - 3, left: 0, width: `${pct(values[0])}%` }
+          }
         />
         {values.map((v, i) => (
           <Thumb
             key={i}
             x={toX(v)}
+            top={trackCenter - THUMB / 2}
             label={thumbLabels[i]}
             value={v}
             min={min}

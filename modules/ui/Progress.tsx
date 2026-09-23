@@ -77,7 +77,7 @@ export function Progress({
     return (
       <View
         {...a11y}
-        className={cn("relative items-center justify-center self-start", className)}
+        className={cn("relative items-center justify-center", className)}
         style={{ width: dim, height: dim }}
         {...rest}
       >

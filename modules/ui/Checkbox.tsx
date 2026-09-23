@@ -71,8 +71,9 @@ export function Checkbox({
       {label || hint || error ? (
         <View className="flex-1">
           {label ? (
-            // KuiReact: "text-sm font-medium", text-text-disabled when disabled.
-            <Text className={cn("text-sm font-medium", disabled ? "text-text-disabled" : "text-text-primary")}>
+            // KuiReact: "text-sm font-medium", text-text-disabled when disabled. The inline
+            // <label> sits in a line box set by the 16px/1.5 body strut, so the row is 24px tall.
+            <Text className={cn("text-sm leading-6 font-medium", disabled ? "text-text-disabled" : "text-text-primary")}>
               {label}
             </Text>
           ) : null}

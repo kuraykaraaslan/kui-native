@@ -78,20 +78,20 @@ export function Toggle({
           />
         </Animated.View>
       </View>
-      {label || description ? (
-        <View className="flex-1">
-          {label ? (
-            <Text variant="label" className="font-medium">
-              {label}
-            </Text>
-          ) : null}
-          {description ? (
-            <Text variant="caption" className="mt-0.5">
-              {description}
-            </Text>
-          ) : null}
-        </View>
-      ) : null}
+      {/* KuiReact always renders this <div> (so an empty label still adds the gap-3). Its
+          inline label <span> sits in a line box set by the 16px/1.5 body strut: 24px tall. */}
+      <View className={label || description ? "flex-1" : undefined}>
+        {label ? (
+          <Text variant="label" className="font-medium leading-6">
+            {label}
+          </Text>
+        ) : null}
+        {description ? (
+          <Text variant="caption" className="mt-0.5">
+            {description}
+          </Text>
+        ) : null}
+      </View>
     </Pressable>
   );
 }

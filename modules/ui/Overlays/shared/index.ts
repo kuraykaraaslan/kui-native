@@ -4,5 +4,6 @@
 export { AnchoredPanel, computePosition, useAnchor } from "./AnchoredPanel";
 export type { Align, AnchoredPanelProps, Placement, Rect } from "./AnchoredPanel";
 export { Backdrop } from "./Backdrop";
+export { focusElement } from "./focusElement";
 export { useFocusOnOpen } from "./useFocusOnOpen";
 export { usePresence } from "./usePresence";

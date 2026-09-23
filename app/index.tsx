@@ -1,258 +1,206 @@
+import { useState } from "react";
 import type * as React from "react";
-import { Linking, Pressable, ScrollView, View } from "react-native";
+import { Linking, ScrollView, View, useWindowDimensions } from "react-native";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faBell,
-  faCode,
-  faCube,
-  faDiagramProject,
-  faKeyboard,
-  faLayerGroup,
-  faMobileScreenButton,
-  faRocket,
-  faShapes,
-  faTerminal,
-  faWind,
-  faWindowMaximize,
-} from "@fortawesome/free-solid-svg-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { faCss3Alt, faJs, faNodeJs } from "@fortawesome/free-brands-svg-icons";
+import { faDiagramProject, faLayerGroup, faRocket, faTerminal } from "@fortawesome/free-solid-svg-icons";
 
+import { SITE } from "@/libs/config/site";
 import { useThemeTokens } from "@/libs/theme";
+import { cn } from "@/libs/utils/cn";
 import { FONTS } from "@/libs/utils/typography";
-import { REGISTRY, type ShowcaseCategory } from "@/modules/showcase/registry";
-import { useDrawer } from "@/modules/showcase/ui/drawer.store";
 import { BrandMark } from "@/modules/showcase/ui/BrandMark";
-import { Header } from "@/modules/showcase/ui/Header";
+import { GithubButton } from "@/modules/showcase/ui/Header";
 import { SiteHead } from "@/modules/showcase/ui/SiteHead";
 import { Text } from "@/modules/ui";
 
-const REPO_URL = "https://github.com/kuraykaraaslan/kui-native";
+/** Tailwind's `sm` (640px) and `md` (768px) breakpoints. */
+const SM = 640;
+const MD = 768;
 
-function SectionCard({
+const MONO = { fontFamily: FONTS.mono };
+
+// KuiReact HomePanel's data, with KuiNative's own stack, commands and layers.
+const STACK: { icon: IconDefinition; label: string; value: string }[] = [
+  { icon: faNodeJs, label: "Expo", value: "SDK 56" },
+  { icon: faJs, label: "React Native", value: "0.85" },
+  { icon: faJs, label: "TypeScript", value: "6" },
+  { icon: faCss3Alt, label: "NativeWind", value: "4" },
+];
+
+const SCRIPTS = [
+  { cmd: "npm run dev", desc: "development server" },
+  { cmd: "npm run build:web", desc: "production web build" },
+  { cmd: "npm test", desc: "unit tests" },
+  { cmd: "npm run lint", desc: "lint checks" },
+];
+
+const LAYERS = [
+  { num: "1", path: "modules/ui/", desc: "Primitive components — atoms, molecules & organisms", bg: "bg-info-subtle", text: "text-info-fg" },
+  { num: "2", path: "modules/showcase/", desc: "Documentation & live preview system", bg: "bg-primary-subtle", text: "text-primary" },
+  { num: "3", path: "libs/", desc: "Design tokens, theme & utilities", bg: "bg-success-subtle", text: "text-success-fg" },
+  { num: "4", path: "app/", desc: "Expo Router screens", bg: "bg-warning-subtle", text: "text-warning-fg" },
+];
+
+/** KuiReact's `rounded-xl border bg-surface-raised p-5` card with its `text-sm font-semibold` icon heading. */
+function Panel({
   icon,
   title,
+  headingGap = "mb-3",
+  className,
   children,
 }: {
   icon: IconDefinition;
   title: string;
+  headingGap?: "mb-3" | "mb-4";
+  className?: string;
   children: React.ReactNode;
 }) {
   const t = useThemeTokens();
   return (
-    <View className="rounded-xl border border-border bg-surface-raised p-5">
-      <View className="mb-3 flex-row items-center gap-2">
-        <FontAwesomeIcon icon={icon} size={15} color={t.primary} />
-        <Text variant="label" className="font-semibold">
-          {title}
-        </Text>
+    <View className={cn("rounded-xl border border-border bg-surface-raised p-5", className)}>
+      <View className={cn("flex-row items-center gap-2", headingGap)}>
+        <View className="w-4 items-center">
+          <FontAwesomeIcon icon={icon} size={14} color={t.primary} />
+        </View>
+        <Text className="text-sm font-semibold text-text-primary">{title}</Text>
       </View>
       {children}
     </View>
   );
 }
 
-function CommandLine({ command }: { command: string }) {
-  return (
-    <View className="flex-row items-center gap-2 rounded-lg bg-surface-sunken px-3 py-2">
-      <Text className="text-xs text-text-disabled" style={{ fontFamily: FONTS.mono }}>
-        $
-      </Text>
-      <Text className="text-xs text-text-primary" style={{ fontFamily: FONTS.mono }}>
-        {command}
-      </Text>
-    </View>
-  );
-}
-
-function TechItem({ icon, label, value }: { icon: IconDefinition; label: string; value: string }) {
-  const t = useThemeTokens();
-  return (
-    <View className="flex-1 flex-row items-center gap-2.5 rounded-lg bg-surface-overlay px-3 py-2.5">
-      <FontAwesomeIcon icon={icon} size={15} color={t.primary} />
-      <View className="flex-1">
-        <Text variant="caption" className="font-medium text-text-primary" numberOfLines={1}>
-          {label}
-        </Text>
-        <Text className="text-[10px] text-text-secondary">{value}</Text>
-      </View>
-    </View>
-  );
-}
-
-const LAYERS = [
-  { num: "1", badge: "bg-info-subtle", text: "text-info-fg", path: "modules/ui/", desc: "Primitive components" },
-  { num: "2", badge: "bg-primary-subtle", text: "text-primary", path: "modules/showcase/", desc: "Docs & live preview" },
-  { num: "3", badge: "bg-success-subtle", text: "text-success-fg", path: "libs/", desc: "cn(), tokens, theme" },
-];
-
-const CATEGORIES: { c: ShowcaseCategory; icon: IconDefinition }[] = [
-  { c: "Atoms", icon: faShapes },
-  { c: "Forms", icon: faKeyboard },
-  { c: "Feedback", icon: faBell },
-  { c: "Overlays", icon: faWindowMaximize },
-];
-
+/** KuiReact's HomePanel. */
 export default function Home() {
   const t = useThemeTokens();
-  const openDrawer = useDrawer((s) => s.setOpen);
-  const count = (c: ShowcaseCategory) => REGISTRY.filter((e) => e.category === c).length;
+  const width = useWindowDimensions().width;
+  const sm = width >= SM;
+  const md = width >= MD;
+  // `grid-cols-2 sm:grid-cols-4 gap-3` cell width, from the measured row.
+  const [stackRow, setStackRow] = useState(0);
+  const cols = sm ? 4 : 2;
+  const cell = stackRow ? (stackRow - 12 * (cols - 1)) / cols : undefined;
 
   return (
-    <View className="flex-1 bg-surface-base">
+    <ScrollView className="flex-1" contentContainerClassName="p-4 sm:p-6">
       <SiteHead />
-      <Header title="KUInative" />
-      <SafeAreaView edges={["bottom"]} className="flex-1">
-        <ScrollView contentContainerClassName="p-4 sm:p-6 gap-6" showsVerticalScrollIndicator={false}>
-          {/* Hero */}
-          <View className="gap-3">
-            <View className="flex-row items-center gap-3">
-              <BrandMark size={48} />
-              <View className="flex-1">
-                <Text variant="h1">KUInative</Text>
-                <Text variant="bodySm">Minimal React Native component library</Text>
-              </View>
+      <View className="mx-auto w-full max-w-4xl px-2 py-10">
+        {/* Hero */}
+        <View className="mb-10">
+          <View className="mb-3 flex-row items-center gap-3">
+            <BrandMark size={40} />
+            <View>
+              <Text className="text-2xl font-bold leading-[30px] text-text-primary">{SITE.name}</Text>
+              <Text className="text-sm text-text-secondary">{SITE.tagline}</Text>
             </View>
-            <Text variant="bodySm" className="leading-relaxed">
-              A production-ready component library built with Expo and NativeWind — a layered
-              design system mirroring KUIreact, on shared semantic tokens, for real mobile apps.
-            </Text>
           </View>
+          <Text className="max-w-2xl text-sm leading-[22.75px] text-text-secondary">
+            A production-ready component library built with Expo and React Native. A layered design system and
+            component architecture on KUIreact&apos;s semantic tokens, for real mobile apps.
+          </Text>
+        </View>
 
-          {/* Quick start */}
-          <SectionCard icon={faRocket} title="Quick Start">
+        {/* Quick start + scripts */}
+        <View className={cn("mb-8 gap-4", md && "flex-row")}>
+          <Panel icon={faRocket} title="Quick Start" className={md ? "flex-1" : undefined}>
             <View className="gap-2">
-              <CommandLine command="npm install" />
-              <CommandLine command="npm run android" />
+              {["npm install", "npm run dev"].map((cmd) => (
+                <View key={cmd} className="flex-row items-center gap-2 rounded-lg bg-surface-sunken px-3 py-2">
+                  <Text className="text-xs text-text-disabled" style={MONO}>
+                    $
+                  </Text>
+                  <Text className="text-xs text-text-primary" style={MONO}>
+                    {cmd}
+                  </Text>
+                </View>
+              ))}
             </View>
-            <Text variant="caption" className="mt-3">
-              Runs on Expo — Android, iOS, and web.
+            <Text className="mt-3 text-xs text-text-secondary">
+              Server starts at{" "}
+              <Text className="text-xs text-primary" style={MONO}>
+                http://localhost:8081
+              </Text>
             </Text>
-          </SectionCard>
+          </Panel>
 
-          {/* Scripts */}
-          <SectionCard icon={faTerminal} title="Scripts">
+          <Panel icon={faTerminal} title="Scripts" className={md ? "flex-1" : undefined}>
             <View className="gap-1.5">
-              {[
-                ["npm run android", "Android device / emulator"],
-                ["npm run ios", "iOS simulator"],
-                ["npm run web", "web preview"],
-                ["npm run typecheck", "TypeScript check"],
-              ].map(([cmd, desc]) => (
-                <View key={cmd} className="flex-row items-center gap-2">
-                  <View className="rounded bg-surface-sunken px-1.5 py-0.5">
-                    <Text className="text-xs text-text-primary" style={{ fontFamily: FONTS.mono }}>
+              {SCRIPTS.map(({ cmd, desc }) => (
+                <View key={cmd} className="flex-row items-start gap-2">
+                  <View className="shrink-0 rounded bg-surface-sunken px-1.5 py-0.5">
+                    <Text className="text-xs text-text-primary" style={MONO}>
                       {cmd}
                     </Text>
                   </View>
-                  <Text variant="caption" className="flex-1">
-                    {desc}
-                  </Text>
+                  <Text className="pt-0.5 text-xs text-text-secondary">{desc}</Text>
                 </View>
               ))}
             </View>
-          </SectionCard>
+          </Panel>
+        </View>
 
-          {/* Tech stack */}
-          <SectionCard icon={faLayerGroup} title="Tech Stack">
-            <View className="gap-3">
-              <View className="flex-row gap-3">
-                <TechItem icon={faCube} label="Expo" value="SDK 55" />
-                <TechItem icon={faMobileScreenButton} label="React Native" value="0.83" />
-              </View>
-              <View className="flex-row gap-3">
-                <TechItem icon={faWind} label="NativeWind" value="4" />
-                <TechItem icon={faCode} label="TypeScript" value="5" />
-              </View>
-            </View>
-          </SectionCard>
-
-          {/* Module layers */}
-          <SectionCard icon={faDiagramProject} title="Module Layers">
-            <View className="gap-2">
-              {LAYERS.map((l) => (
-                <View
-                  key={l.num}
-                  className="flex-row items-center gap-3 rounded-lg bg-surface-overlay px-3 py-2.5"
-                >
-                  <View className={`h-5 w-5 items-center justify-center rounded-full ${l.badge}`}>
-                    <Text className={`text-[10px] font-bold ${l.text}`}>{l.num}</Text>
-                  </View>
-                  <Text className="text-xs text-text-primary" style={{ fontFamily: FONTS.mono }}>
-                    {l.path}
-                  </Text>
-                  <Text variant="caption" className="flex-1" numberOfLines={1}>
-                    {l.desc}
-                  </Text>
+        {/* Tech stack */}
+        <Panel icon={faLayerGroup} title="Tech Stack" headingGap="mb-4" className="mb-8">
+          <View onLayout={(e) => setStackRow(e.nativeEvent.layout.width)} className="flex-row flex-wrap gap-3">
+            {STACK.map((s) => (
+              <View
+                key={s.label}
+                className="flex-row items-center gap-2.5 rounded-lg bg-surface-overlay px-3 py-2.5"
+                style={{ width: cell }}
+              >
+                <View className="w-4 shrink-0 items-center">
+                  <FontAwesomeIcon icon={s.icon} size={16} color={t.primary} />
                 </View>
-              ))}
-            </View>
-          </SectionCard>
-
-          {/* Library / categories */}
-          <SectionCard icon={faShapes} title="Library">
-            <Text variant="caption" className="mb-3">
-              {REGISTRY.length} components across {CATEGORIES.length} categories. Open the menu to
-              browse them.
-            </Text>
-            <View className="gap-3">
-              <View className="flex-row gap-3">
-                {CATEGORIES.slice(0, 2).map(({ c, icon }) => (
-                  <CategoryCard key={c} category={c} icon={icon} count={count(c)} onPress={() => openDrawer(true)} />
-                ))}
+                <View className="min-w-0 flex-1">
+                  <Text numberOfLines={1} className="text-xs font-medium text-text-primary">
+                    {s.label}
+                  </Text>
+                  <Text className="text-[10px] leading-[15px] text-text-secondary">{s.value}</Text>
+                </View>
               </View>
-              <View className="flex-row gap-3">
-                {CATEGORIES.slice(2).map(({ c, icon }) => (
-                  <CategoryCard key={c} category={c} icon={icon} count={count(c)} onPress={() => openDrawer(true)} />
-                ))}
-              </View>
-            </View>
-          </SectionCard>
-
-          {/* Footer */}
-          <View className="flex-row items-center justify-between border-t border-border pt-4">
-            <Text variant="caption">Built by Kuray Karaaslan · 0BSD</Text>
-            <Pressable
-              onPress={() => Linking.openURL(REPO_URL)}
-              accessibilityRole="link"
-              accessibilityLabel="View on GitHub"
-              className="active:opacity-70"
-            >
-              <Text variant="caption" className="font-medium text-primary">
-                GitHub ↗
-              </Text>
-            </Pressable>
+            ))}
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
-  );
-}
+        </Panel>
 
-function CategoryCard({
-  category,
-  icon,
-  count,
-  onPress,
-}: {
-  category: ShowcaseCategory;
-  icon: IconDefinition;
-  count: number;
-  onPress: () => void;
-}) {
-  const t = useThemeTokens();
-  return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel={`${category}, ${count} components`}
-      className="flex-1 rounded-lg border border-border bg-surface-base p-3 active:opacity-80"
-    >
-      <FontAwesomeIcon icon={icon} size={18} color={t.primary} />
-      <Text variant="label" className="mt-2 font-semibold">
-        {category}
-      </Text>
-      <Text variant="caption">{count} components</Text>
-    </Pressable>
+        {/* Layer architecture */}
+        <Panel icon={faDiagramProject} title="Module Layers" headingGap="mb-4" className="mb-8">
+          <View className="gap-2">
+            {LAYERS.map((l) => (
+              <View key={l.num} className="flex-row items-center gap-3 rounded-lg bg-surface-overlay px-3 py-2.5">
+                <View className={cn("h-5 w-5 shrink-0 items-center justify-center rounded-full", l.bg)}>
+                  <Text className={cn("text-[10px] font-bold leading-[15px]", l.text)}>{l.num}</Text>
+                </View>
+                <Text className="shrink-0 text-xs text-text-primary" style={MONO}>
+                  {l.path}
+                </Text>
+                <Text numberOfLines={1} className="flex-1 text-xs text-text-secondary">
+                  {l.desc}
+                </Text>
+              </View>
+            ))}
+          </View>
+          <Text className="mt-3 text-xs text-text-secondary">
+            Each layer builds on the one above it. Keep app logic in screens; ui components stay generic.
+          </Text>
+        </Panel>
+
+        {/* Footer */}
+        <View className={cn("gap-3 border-t border-border pt-4", sm ? "flex-row items-center justify-between" : "items-start")}>
+          <Text className="text-xs text-text-secondary">
+            Built by{" "}
+            <Text
+              accessibilityRole="link"
+              onPress={() => Linking.openURL(SITE.author.url)}
+              className="text-xs text-primary"
+            >
+              {SITE.author.name}
+            </Text>{" "}
+            · Licensed under 0BSD
+          </Text>
+          <GithubButton />
+        </View>
+      </View>
+    </ScrollView>
   );
 }

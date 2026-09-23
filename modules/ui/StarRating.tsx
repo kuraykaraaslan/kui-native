@@ -12,8 +12,11 @@ import { Text } from "./Text";
 
 type StarRatingSize = "sm" | "md" | "lg";
 
-// KuiReact: w-3.5 / w-5 / w-7 stars with gap-0.5 / gap-1 / gap-1.5.
-const starSize: Record<StarRatingSize, number> = { sm: 14, md: 20, lg: 28 };
+// KuiReact's star classes (sm w-3.5 h-3.5 / md w-5 h-5 / lg w-7 h-7) sit in Tailwind's
+// utilities layer, so FontAwesome's unlayered `.svg-inline--fa` box (1.25em × 1em) beats
+// them: every size renders as a 20×16 box at the inherited 16px font, with the 576×512 star
+// glyph 16px tall (18px wide). Only the gaps (gap-0.5 / gap-1 / gap-1.5) differ by size.
+const GLYPH = 18;
 const gapClasses: Record<StarRatingSize, string> = { sm: "gap-0.5", md: "gap-1", lg: "gap-1.5" };
 
 const TOTAL_STARS = 5;
@@ -32,6 +35,11 @@ export type StarRatingProps = {
   caption?: React.ReactNode;
   className?: string;
 };
+
+/** KuiReact's 1.25em × 1em FontAwesome box at 16px. */
+function StarBox({ children }: { children: React.ReactNode }) {
+  return <View className="h-4 w-5 items-center justify-center overflow-visible">{children}</View>;
+}
 
 function clampValue(value: number): number {
   if (Number.isNaN(value)) return 0;
@@ -52,7 +60,6 @@ export function StarRating({ value, size = "md", readonly = true, onChange, "ari
   const [hoverValue, setHoverValue] = useState<number | null>(null);
   const isInteractive = !readonly && typeof onChange === "function";
   const displayValue = isInteractive && hoverValue !== null ? hoverValue : safeValue;
-  const px = starSize[size];
 
   const captionNode = caption ? (
     typeof caption === "string" ? <Text className="ml-2 text-sm text-text-secondary">{caption}</Text> : <View className="ml-2">{caption}</View>
@@ -72,7 +79,9 @@ export function StarRating({ value, size = "md", readonly = true, onChange, "ari
           const half = !filled && displayValue >= starIndex - 0.5;
           return (
             <View key={starIndex} testID={filled ? "star-full" : half ? "star-half" : "star-empty"}>
-              <FontAwesomeIcon icon={filled ? faStar : half ? faStarHalfStroke : faStarRegular} size={px} color={filled || half ? t.warning : t["text-disabled"]} />
+              <StarBox>
+                <FontAwesomeIcon icon={filled ? faStar : half ? faStarHalfStroke : faStarRegular} size={GLYPH} color={filled || half ? t.warning : t["text-disabled"]} />
+              </StarBox>
             </View>
           );
         })}
@@ -99,7 +108,9 @@ export function StarRating({ value, size = "md", readonly = true, onChange, "ari
             onHoverOut={() => setHoverValue(null)}
             className="rounded-sm p-0.5"
           >
-            <FontAwesomeIcon icon={filled ? faStar : faStarRegular} size={px} color={filled ? t.warning : t["text-disabled"]} />
+            <StarBox>
+              <FontAwesomeIcon icon={filled ? faStar : faStarRegular} size={GLYPH} color={filled ? t.warning : t["text-disabled"]} />
+            </StarBox>
           </Pressable>
         );
       })}

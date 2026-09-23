@@ -145,13 +145,15 @@ export function Input({
             hitSlop={10}
             className="absolute right-3"
           >
-            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} size={14} color={t["text-disabled"]} />
+            {/* `w-3.5 h-3.5` loses to FontAwesome's 1em height at the button's 14px: an 16×14 eye glyph. */}
+            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} size={16} color={t["text-disabled"]} />
           </Pressable>
         ) : null}
 
         {showClear ? (
           <Pressable onPress={onClear} accessibilityRole="button" accessibilityLabel="Clear" hitSlop={10} className="absolute right-3">
-            <FontAwesomeIcon icon={faXmark} size={12} color={t["text-disabled"]} />
+            {/* `w-3 h-3` loses to FontAwesome's 1em height at 16px: a 12×16 xmark glyph. */}
+            <FontAwesomeIcon icon={faXmark} size={16} color={t["text-disabled"]} />
           </Pressable>
         ) : null}
 
@@ -170,7 +172,10 @@ export function Input({
               accessibilityLabel="Increment"
               className="flex-1 items-center justify-center border-b border-border px-2 active:bg-surface-overlay"
             >
-              <FontAwesomeIcon icon={faChevronUp} size={8} color={t["text-secondary"]} />
+              {/* KuiReact's `w-2 h-2` loses to FontAwesome's 1.25em × 1em box (16px font). */}
+              <View className="h-4 w-5 items-center justify-center">
+                <FontAwesomeIcon icon={faChevronUp} size={16} color={t["text-secondary"]} />
+              </View>
             </Pressable>
             <Pressable
               onPress={() => step_(-1)}
@@ -178,30 +183,31 @@ export function Input({
               accessibilityLabel="Decrement"
               className="flex-1 items-center justify-center px-2 active:bg-surface-overlay"
             >
-              <FontAwesomeIcon icon={faChevronDown} size={8} color={t["text-secondary"]} />
+              <View className="h-4 w-5 items-center justify-center">
+                <FontAwesomeIcon icon={faChevronDown} size={16} color={t["text-secondary"]} />
+              </View>
             </Pressable>
           </View>
         ) : null}
       </View>
 
-      {hint || error || success || (showCount && maxLength) ? (
-        <View className="flex-row items-center justify-between gap-2">
-          <View className="flex-1">
-            {hint && !error && !success ? <Text className="text-xs text-text-secondary">{hint}</Text> : null}
-            {error ? (
-              <Text accessibilityRole="alert" accessibilityLiveRegion="polite" className="text-xs text-error">
-                {error}
-              </Text>
-            ) : null}
-            {success && !error ? <Text className="text-xs text-success-fg">{success}</Text> : null}
-          </View>
-          {showCount && maxLength ? (
-            <Text className={cn("shrink-0 text-xs", charCount >= maxLength ? "text-error" : "text-text-disabled")}>
-              {charCount}/{maxLength}
+      {/* KuiReact always renders this row (even empty), so `space-y-1` adds its 4px gap. */}
+      <View className="flex-row items-center justify-between gap-2">
+        <View className="flex-1">
+          {hint && !error && !success ? <Text className="text-xs text-text-secondary">{hint}</Text> : null}
+          {error ? (
+            <Text accessibilityRole="alert" accessibilityLiveRegion="polite" className="text-xs text-error">
+              {error}
             </Text>
           ) : null}
+          {success && !error ? <Text className="text-xs text-success-fg">{success}</Text> : null}
         </View>
-      ) : null}
+        {showCount && maxLength ? (
+          <Text className={cn("shrink-0 text-xs", charCount >= maxLength ? "text-error" : "text-text-disabled")}>
+            {charCount}/{maxLength}
+          </Text>
+        ) : null}
+      </View>
     </View>
   );
 }

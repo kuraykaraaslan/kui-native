@@ -167,7 +167,12 @@ export function Slider({
       className={cn("relative overflow-hidden rounded-xl", className)}
       onLayout={(e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width)}
     >
-      <Animated.View {...pan.panHandlers} testID="slider-track" className="flex-row" style={{ transform: [{ translateX: x }] }}>
+      <Animated.View
+        {...pan.panHandlers}
+        testID="slider-track"
+        // Inline, not `flex-row`: NativeWind classes don't reach an Animated.View.
+        style={{ flexDirection: "row", transform: [{ translateX: x }] }}
+      >
         {slides.map((slide, i) => {
           const active = i === current;
           return (

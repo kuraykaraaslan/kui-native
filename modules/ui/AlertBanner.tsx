@@ -66,8 +66,20 @@ export function AlertBanner({
   return (
     // KuiReact: "flex items-start gap-3 rounded-lg border p-4"
     <View className={cn("flex-row items-start gap-3 rounded-lg border p-4", container, className)}>
-      <View className="mt-0.5 shrink-0" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-        {icon ?? <FontAwesomeIcon icon={defaultIcon} size={16} color={fg} />}
+      {/* KuiReact's icon <span> is a 24px line box (16px × 1.5) with the inline
+          SVG sitting 3px down — so the row is 26px tall, not 20. */}
+      <View
+        className="mt-0.5 min-h-6 shrink-0 justify-center"
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
+        {icon ?? (
+          // FA's web box: a 1em-tall glyph in a 1.25em-wide (20x16) svg. RN's icon fits
+          // the glyph into a size x size square, so it's drawn at 18 to match.
+          <View className="h-4 w-5 items-center justify-center" style={{ marginTop: 3, marginBottom: 5 }}>
+            <FontAwesomeIcon icon={defaultIcon} size={18} color={fg} />
+          </View>
+        )}
       </View>
 
       <View className="min-w-0 flex-1">
@@ -85,7 +97,8 @@ export function AlertBanner({
               accessibilityRole={action.href ? "link" : "button"}
               className="rounded active:opacity-70"
             >
-              <Text className={cn("text-xs font-semibold underline", text)}>{action.label}</Text>
+              {/* Inline in a text-sm (20px) line box on the web. */}
+              <Text className={cn("text-xs leading-5 font-semibold underline", text)}>{action.label}</Text>
             </Pressable>
           </View>
         ) : null}
@@ -97,9 +110,12 @@ export function AlertBanner({
           accessibilityRole="button"
           accessibilityLabel="Dismiss"
           hitSlop={12}
-          className="shrink-0 rounded active:opacity-70"
+          // KuiReact's <button> is a 24px line box with the SVG 3px down.
+          className="h-6 shrink-0 rounded active:opacity-70"
         >
-          <FontAwesomeIcon icon={faXmark} size={16} color={fg} />
+          <View className="h-4 w-5 items-center justify-center" style={{ marginTop: 3 }}>
+            <FontAwesomeIcon icon={faXmark} size={18} color={fg} />
+          </View>
         </Pressable>
       ) : null}
     </View>

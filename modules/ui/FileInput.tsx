@@ -204,7 +204,12 @@ export function FileInput({
           isDisabled && "opacity-50",
         )}
       >
-        <FontAwesomeIcon icon={faFolderOpen} size={32} color={t["text-disabled"]} />
+        {/* KuiReact's `w-8 h-8` (Tailwind utilities layer) loses to FontAwesome's unlayered
+            `.svg-inline--fa` box — 1.25em × 1em at the zone's 16px font — so the 576×512
+            folder glyph is 18×16. */}
+        <View className="h-4 w-5 items-center justify-center">
+          <FontAwesomeIcon icon={faFolderOpen} size={18} color={t["text-disabled"]} />
+        </View>
         <Text className="text-center text-sm text-text-secondary">
           Tap to <Text className="text-sm text-primary underline">browse</Text> files
         </Text>

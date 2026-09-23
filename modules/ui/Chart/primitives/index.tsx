@@ -101,8 +101,10 @@ export function Legend({ series, className }: { series: Series[]; className?: st
     <View role="list" className={cn("mt-3 flex-row flex-wrap items-center gap-x-4 gap-y-1.5", className)}>
       {series.map((s, i) => (
         <View key={s.id} role="listitem" className="flex-row items-center gap-2">
-          <View className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: c(paletteColor(i, s.color)), borderWidth: 1, borderColor: c(chartTheme.legendSwatchBorder) }} />
-          <Text className="text-text-secondary" style={{ fontSize: chartTheme.fontSize.legend }}>
+          {/* KuiReact is Tailwind v4, where `rounded-sm` is 4px (v3's `rounded`). */}
+          <View className="h-2.5 w-2.5 rounded" style={{ backgroundColor: c(paletteColor(i, s.color)), borderWidth: 1, borderColor: c(chartTheme.legendSwatchBorder) }} />
+          {/* The web list inherits the body's 1.5 line-height (18px at 12px). */}
+          <Text className="text-text-secondary" style={{ fontSize: chartTheme.fontSize.legend, lineHeight: chartTheme.fontSize.legend * 1.5 }}>
             {s.name}
           </Text>
         </View>

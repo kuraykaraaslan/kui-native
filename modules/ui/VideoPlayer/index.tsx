@@ -22,7 +22,7 @@ import { Text } from "../Text";
 import { formatTime } from "./format";
 import { useControlsVisibility } from "./hooks/useControlsVisibility";
 import { useVttCues } from "./hooks/useVttCues";
-import { CenterPlayOverlay, ControlRow, LoadingOverlay, Scrubber, SettingsPanel, SubtitleOverlay } from "./parts/Controls";
+import { CenterPlayOverlay, ControlRow, ControlsScrim, LoadingOverlay, Scrubber, SettingsPanel, SubtitleOverlay } from "./parts/Controls";
 import type { SettingsView, SubtitleFontSize, VideoPlayerProps } from "./types";
 
 export type { QualityOption, SubtitleTrack, AudioTrackOption, VideoPlayerProps, VideoSource, SubtitleFontSize, CastState } from "./types";
@@ -174,7 +174,7 @@ export function VideoPlayer({
 
       {effectiveControls ? (
         <View pointerEvents="box-none" className="absolute inset-0 z-20 justify-end">
-          <View pointerEvents="none" className="absolute bottom-0 left-0 right-0 h-2/3 bg-black/40" />
+          <ControlsScrim />
           {showSettings ? (
             <SettingsPanel
               view={settingsView}
@@ -205,7 +205,7 @@ export function VideoPlayer({
             ) : null}
             <View>
               {scrub !== null ? (
-                <Text className="absolute -top-7 rounded bg-black/80 px-1.5 py-0.5 text-xs text-white" style={{ left: `${scrub * 100}%`, transform: [{ translateX: -20 }] }}>
+                <Text className="absolute -top-8 rounded bg-black/80 px-1.5 py-0.5 text-xs text-white" style={{ left: `${scrub * 100}%`, transform: [{ translateX: -20 }] }}>
                   {formatTime(scrub * duration)}
                 </Text>
               ) : null}

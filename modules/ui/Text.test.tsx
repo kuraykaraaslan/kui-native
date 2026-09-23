@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react-native";
 import { Text as RNText } from "react-native";
 
+import { FONTS } from "@/libs/utils/typography";
+
 import { Text } from "./Text";
 
 function styleOf(node: ReturnType<typeof screen.getByText>) {
@@ -67,8 +69,13 @@ describe("Text", () => {
   });
 
   it("an explicit font-family class wins over the variant family", async () => {
+    await render(<Text className="font-serif">Quote</Text>);
+    expect(styleOf(screen.getByText("Quote")).fontFamily).toBeUndefined();
+  });
+
+  it("font-mono uses the mono family (Geist Mono on web, like KuiReact)", async () => {
     await render(<Text className="font-mono">Code</Text>);
-    expect(styleOf(screen.getByText("Code")).fontFamily).toBeUndefined();
+    expect(styleOf(screen.getByText("Code")).fontFamily).toBe(FONTS.mono);
   });
 
   it("forwards other RNText props such as numberOfLines", async () => {

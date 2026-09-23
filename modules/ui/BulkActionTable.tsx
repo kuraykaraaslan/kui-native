@@ -97,15 +97,23 @@ export function BulkActionTable<T extends Record<string, unknown>, Id extends st
 
   const selectionColumn: Column<T> = {
     key: "__selection",
+    // KuiReact's inline 16px checkbox (3px margins) sits at the top of a
+    // 20px line box in the text-xs header and a 21px one in text-sm rows.
     header: (
-      <SelectBox checked={allVisibleSelected} mixed={someVisibleSelected} disabled={selectableRows.length === 0} label={labels.selectAllOnPage} onPress={toggleAllVisible} />
+      <View className="h-5">
+        <SelectBox checked={allVisibleSelected} mixed={someVisibleSelected} disabled={selectableRows.length === 0} label={labels.selectAllOnPage} onPress={toggleAllVisible} />
+      </View>
     ),
     width: 48,
     render: (row) => {
       const id = rowId(row);
       const selectable = isRowSelectable ? isRowSelectable(row) : true;
       const reason = selectable === true ? undefined : selectable;
-      return <SelectBox checked={selectedSet.has(id)} disabled={reason !== undefined} hint={reason} label={`${labels.selectRow} ${String(id)}`} onPress={() => toggleRow(id)} />;
+      return (
+        <View className="h-[21px]">
+          <SelectBox checked={selectedSet.has(id)} disabled={reason !== undefined} hint={reason} label={`${labels.selectRow} ${String(id)}`} onPress={() => toggleRow(id)} />
+        </View>
+      );
     },
   };
 

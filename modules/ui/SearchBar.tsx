@@ -44,8 +44,9 @@ export function SearchBar({ id = "search", placeholder = "Search…", value, onC
 
   return (
     <View className={cn("relative flex-row items-center", className)}>
-      <View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" className="absolute left-3 z-10">
-        <FontAwesomeIcon icon={faMagnifyingGlass} size={14} color={t["text-disabled"]} />
+      <View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" className="absolute left-3 z-10 h-4 w-5 items-center justify-center">
+        {/* KuiReact's icon renders in FA's web box: a 16px glyph in a 20x16 svg. */}
+        <FontAwesomeIcon icon={faMagnifyingGlass} size={18} color={t["text-disabled"]} />
       </View>
       <RNTextInput
         ref={ref}

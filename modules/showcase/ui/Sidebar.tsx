@@ -11,83 +11,9 @@ import { cn } from "@/libs/utils/cn";
 import { FONTS } from "@/libs/utils/typography";
 import { Text } from "@/modules/ui";
 
-import {
-  CATEGORY_ORDER,
-  REGISTRY,
-  type ShowcaseCategory,
-  type ShowcaseEntry,
-} from "../registry";
+import { NAV_GROUPS } from "../data/showcase.generated";
 import { BrandMark } from "./BrandMark";
 import { useDrawer } from "./drawer.store";
-
-/** Two-letter codes for the abbr badge — taken verbatim from KuiReact's
- * registry `abbr` field (public/registry/components.json) so the sidebar
- * badges match KuiReact's 1:1. `text` has no KuiReact counterpart. */
-const ABBR: Record<string, string> = {
-  button: "Bt",
-  "skip-link": "Sl",
-  text: "Tx",
-  card: "Ca",
-  avatar: "Av",
-  badge: "Bg",
-  separator: "Se",
-  label: "Lb",
-  input: "In",
-  select: "Sl",
-  textarea: "Ta",
-  "radio-group": "Rg",
-  checkbox: "Cb",
-  toggle: "Tg",
-  spinner: "Sp",
-  toast: "To",
-  progress: "Pr",
-  "alert-banner": "Ab",
-  "empty-state": "Es",
-  skeleton: "Sk",
-  "tab-group": "Tg",
-  drawer: "Dr",
-  popover: "Po",
-  "dropdown-menu": "Dm",
-  tooltip: "Tt",
-  accordion: "Ac",
-  "video-player": "Vp",
-  "map-view": "Mp",
-  chart: "Ch",
-  "diff-viewer": "Dv",
-  "advanced-data-table": "At",
-  "bulk-action-table": "Bt",
-  "data-table": "Dt",
-  "time-picker": "Tp",
-  "color-picker": "Cp",
-  "tree-view": "Tv",
-  "content-score-bar": "Cs",
-  "view-toggle": "VT",
-  "scroll-area": "SA",
-  slider: "Sl",
-  table: "Tb",
-  "file-input": "Fi",
-  "combo-box": "Cb",
-  "tag-input": "Ti",
-  timeline: "Tl",
-  "star-rating": "SR",
-  "stat-card": "Sc",
-  statistic: "St",
-  "tab-button": "TB",
-  "brand-logo": "BL",
-  popconfirm: "Pc",
-  "date-picker": "Dp",
-  "date-range-picker": "Dr",
-  "range-slider": "Rs",
-  "multi-select": "Ms",
-  "page-header": "Ph",
-  stepper: "St",
-  breadcrumb: "Bc",
-  pagination: "Pg",
-  "search-bar": "Sb",
-  "checkbox-group": "Cg",
-  "button-group": "BG",
-  modal: "Md",
-};
 
 /**
  * The showcase navigation, 1:1 with kui-react (ShowcaseShell + AppSidebar +
@@ -185,26 +111,30 @@ export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop"
   const desktop = variant === "desktop";
   const rail = desktop && railCollapsed;
   const [query, setQuery] = useState("");
-  const [collapsed, setCollapsed] = useState<Set<ShowcaseCategory>>(() => new Set());
+  const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set());
 
-  const activeId = pathname.startsWith("/component/") ? pathname.split("/").pop() : null;
+  const activeId = pathname !== "/" ? pathname.replace(/^\//, "") : null;
   const homeActive = pathname === "/";
 
-  // KuiReact's AppSidebar filters on the item label only.
-  const groups = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const matches = q ? REGISTRY.filter((e) => e.title.toLowerCase().includes(q)) : REGISTRY;
-    return CATEGORY_ORDER.map((category) => ({
-      category,
-      items: matches.filter((e) => e.category === category),
-    })).filter((g) => g.items.length > 0);
-  }, [query]);
+  // KuiReact's AppSidebar filters on the item label only — Home included —
+  // and drops groups left empty.
+  const q = query.trim().toLowerCase();
+  const showHome = !q || "home".includes(q);
+  const groups = useMemo(
+    () =>
+      q
+        ? NAV_GROUPS.map((g) => ({ ...g, items: g.items.filter((i) => i.title.toLowerCase().includes(q)) })).filter(
+            (g) => g.items.length > 0,
+          )
+        : NAV_GROUPS,
+    [q],
+  );
 
-  const toggle = (category: ShowcaseCategory) =>
+  const toggle = (label: string) =>
     setCollapsed((prev) => {
       const next = new Set(prev);
-      if (next.has(category)) next.delete(category);
-      else next.add(category);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
       return next;
     });
 
@@ -252,9 +182,10 @@ export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop"
             accessibilityLabel={railCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             className="rounded p-1.5 active:bg-surface-overlay"
           >
-            <FaBox style={{ transform: [{ rotate: railCollapsed ? "180deg" : "0deg" }] }}>
+            {/* The web button's 24px line box (text-base leading-normal) around the 16px glyph. */}
+            <View className="h-6 w-5 items-center justify-center" style={{ transform: [{ rotate: railCollapsed ? "180deg" : "0deg" }] }}>
               <FontAwesomeIcon icon={faChevronLeft} size={16} color={t["text-secondary"]} />
-            </FaBox>
+            </View>
           </Pressable>
         </View>
       ) : null}
@@ -287,11 +218,14 @@ export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop"
       ) : null}
 
       <ScrollView
+        // KuiReact's `sidebar-scrollbar-hover` (stable thin gutter, thumb on hover) — global.css.
+        {...({ dataSet: { sidebarScrollbarHover: true } } as object)}
         className="flex-1"
         contentContainerClassName="px-2 py-3 gap-4"
         keyboardShouldPersistTaps="handled"
       >
         {/* Home — the label-less first group */}
+        {showHome ? (
         <NavRow
           collapsed={rail}
           active={homeActive}
@@ -303,16 +237,17 @@ export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop"
             </View>
           }
         />
+        ) : null}
 
         {groups.map((group) => {
           // KuiReact: groups are always expanded (and their headers hidden) on the collapsed rail.
-          const expanded = rail || !collapsed.has(group.category) || query.trim().length > 0;
+          const expanded = rail || !collapsed.has(group.label);
           const hasActive = group.items.some((e) => e.id === activeId);
           return (
-            <View key={group.category}>
+            <View key={group.label}>
               {!rail ? (
               <Pressable
-                onPress={() => toggle(group.category)}
+                onPress={() => toggle(group.label)}
                 accessibilityRole="button"
                 accessibilityState={{ expanded }}
                 className="mb-1 w-full flex-row items-center justify-between rounded-md px-3 py-1"
@@ -322,7 +257,7 @@ export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop"
                     hasActive ? "text-text-primary" : "text-text-disabled"
                   }`}
                 >
-                  {group.category}
+                  {group.label}
                 </Text>
                 <FaBox style={{ transform: [{ rotate: expanded ? "0deg" : "-90deg" }] }}>
                   <FontAwesomeIcon
@@ -335,18 +270,16 @@ export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop"
               ) : null}
               {expanded ? (
                 <View className="gap-0.5">
-                  {group.items.map((entry: ShowcaseEntry) => (
+                  {group.items.map((item) => (
                     <NavRow
                       collapsed={rail}
-                      key={entry.id}
-                      active={entry.id === activeId}
-                      label={entry.title}
-                      onPress={() => go({ pathname: "/component/[id]", params: { id: entry.id } })}
+                      key={item.id}
+                      active={item.id === activeId}
+                      label={item.title}
+                      onPress={() => go({ pathname: "/[slug]", params: { slug: item.id } })}
                       icon={
                         <View className="h-6 w-6 items-center justify-center rounded bg-surface-sunken">
-                          <Text className="text-[11px] font-bold text-text-secondary">
-                            {ABBR[entry.id] ?? entry.title.slice(0, 2)}
-                          </Text>
+                          <Text className="text-[11px] font-bold text-text-secondary">{item.abbr}</Text>
                         </View>
                       }
                     />
@@ -357,14 +290,6 @@ export function Sidebar({ variant = "drawer" }: { variant?: "drawer" | "desktop"
           );
         })}
 
-        {groups.length === 0 ? (
-          <View className="items-center gap-2 py-8">
-            <View style={{ opacity: 0.4 }}>
-              <FontAwesomeIcon icon={faMagnifyingGlass} size={20} color={t["text-secondary"]} />
-            </View>
-            <Text className="text-sm font-normal text-text-secondary">{`No results for "${query}"`}</Text>
-          </View>
-        ) : null}
       </ScrollView>
 
       {/* Footer (KuiReact: avatar only, centred, on the collapsed rail) */}

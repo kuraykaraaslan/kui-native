@@ -59,7 +59,11 @@ export function Statistic({ label, value, precision, prefix, suffix, trend, tren
           {suffix ? affix(suffix) : null}
           {trend ? (
             <View className="flex-row items-center gap-0.5">
-              <FontAwesomeIcon icon={trendIconMap[trend]} size={10} color={t[trendColorMap[trend].token]} />
+              {/* KuiReact's arrow renders in FA's web box (1.25em × 1em of text-xs =
+                  15 × 12px, its h-2.5/w-2.5 losing to FA's own sizing) with a 12px-tall glyph. */}
+              <View className="items-center justify-center" style={{ width: 15, height: 12 }}>
+                <FontAwesomeIcon icon={trendIconMap[trend]} size={12} color={t[trendColorMap[trend].token]} />
+              </View>
               {trendValue ? <Text className={cn("text-xs font-semibold", trendColorMap[trend].text)}>{trendValue}</Text> : null}
             </View>
           ) : null}

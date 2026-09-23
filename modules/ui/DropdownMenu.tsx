@@ -1,10 +1,10 @@
 import type * as React from "react";
 import { useRef, useState } from "react";
-import { AccessibilityInfo, Platform, Pressable, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 
 import { cn } from "@/libs/utils/cn";
 
-import { AnchoredPanel, useAnchor } from "./Overlays/shared";
+import { AnchoredPanel, focusElement, useAnchor } from "./Overlays/shared";
 import { Trigger } from "./Overlays/shared/useTrigger";
 import { Text } from "./Text";
 
@@ -45,7 +45,7 @@ export function DropdownMenu({ trigger, items, header, align = "left", className
 
   // KuiReact's focus trap moves focus to the first item on open.
   function focusFirstItem() {
-    if (firstItemRef.current) AccessibilityInfo.sendAccessibilityEvent(firstItemRef.current, "focus");
+    focusElement(firstItemRef.current);
   }
 
   function toggle() {

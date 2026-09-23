@@ -1,76 +1,11 @@
-import { useRef, useState, type ComponentType, type ReactNode } from "react";
-import { View } from "react-native";
+import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
+import { TextInput, View } from "react-native";
 import { countries, getEmojiFlag, type TCountryCode } from "countries-list";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
-  faBars,
-  faCirclePlay,
-  faMapLocationDot,
-  faChartLine,
-  faCodeCompare,
-  faTableColumns as faAdvancedTable,
-  faListCheck as faBulkRows,
-  faTableCellsColumnLock,
-  faClock,
-  faPalette,
-  faSitemap,
-  faGauge,
-  faScroll,
-  faTableCells,
-  faImages,
-  faTable,
-  faFileArrowUp,
-  faListUl as faComboBox,
-  faHashtag as faTagsInput,
-  faTimeline,
-  faStar,
-  faChartSimple,
-  faHashtag,
-  faTableList,
-  faCube,
-  faCircleQuestion,
-  faCalendarDays,
-  faCalendarWeek,
-  faSliders,
-  faTags,
-  faHeading,
-  faShoePrints,
-  faListOl,
-  faAnglesRight,
-  faListCheck,
-  faTableCellsLarge,
-  faCircleDot,
-  faCircleExclamation,
   faFolder,
-  faFont,
-  faGripLines,
-  faGripLinesVertical,
-  faHandPointer,
-  faIdBadge,
-  faIdCard,
-  faInbox,
-  faKeyboard,
-  faEllipsisVertical,
-  faMessage,
-  faCommentDots,
   faMagnifyingGlass,
-  faBell,
-  faListUl,
-  faTableColumns,
-  faBarsProgress,
-  faAlignLeft,
-  faArrowTrendUp,
-  faChartBar,
-  faFolderOpen,
   faRocket,
-  faSpinner,
-  faSquareCheck,
-  faTag,
-  faToggleOn,
-  faUniversalAccess,
-  faUser,
-  faWindowMaximize,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -95,6 +30,7 @@ import {
   SkeletonAvatar,
   SkeletonCard,
   SkeletonLine,
+  SkeletonTableRow,
   SkeletonText,
   SkipLink,
   Spinner,
@@ -175,25 +111,20 @@ function LiveRegionDemo() {
       <View className="flex-row">
         <Button label="Send announcement" variant="outline" size="sm" onPress={announce} />
       </View>
-      {msg ? <Text className="text-xs text-text-secondary">(screen reader hears: "{msg}")</Text> : null}
+      {msg ? <Text className="text-xs text-text-secondary">(screen reader hears: &ldquo;{msg}&rdquo;)</Text> : null}
       <LiveRegion message={msg} />
     </View>
   );
 }
 
-export type ShowcaseCategory = "Atoms" | "Forms" | "Feedback" | "Overlays";
-export const CATEGORY_ORDER: ShowcaseCategory[] = ["Atoms", "Forms", "Feedback", "Overlays"];
-
+/**
+ * The live demos behind each KuiReact showcase page, keyed by KuiReact's page
+ * id and variant title. Everything else on the page — navigation, name,
+ * category, description, code panes, variant order — comes from KuiReact via
+ * data/showcase.generated.ts; the variant titles here must match it.
+ */
 export type ShowcaseEntry = {
   id: string;
-  title: string;
-  category: ShowcaseCategory;
-  description: string;
-  icon: IconDefinition;
-  usage: string;
-  /** Small static thumbnail shown on the home card. */
-  preview: ComponentType;
-  /** Full demos shown on the detail screen. */
   variants: { title: string; Demo: ComponentType }[];
 };
 
@@ -204,7 +135,8 @@ function CheckboxDefaultDemo() {
   return <Checkbox checked={checked} onChange={setChecked} label="I agree to the Terms of Service" />;
 }
 function CheckboxSelectAllDemo() {
-  const [items, setItems] = useState([true, false, false]);
+  // KuiReact: "space-y-2" > Select all + "ml-6 space-y-1" > Option A/B/C (A and C checked).
+  const [items, setItems] = useState([true, false, true]);
   const all = items.every(Boolean);
   const some = items.some(Boolean) && !all;
   return (
@@ -215,13 +147,13 @@ function CheckboxSelectAllDemo() {
         onChange={() => setItems(items.map(() => !all))}
         label="Select all"
       />
-      <View className="gap-2 pl-7">
+      <View className="ml-6 gap-1">
         {items.map((value, i) => (
           <Checkbox
             key={i}
             checked={value}
             onChange={(next) => setItems(items.map((v, j) => (j === i ? next : v)))}
-            label={`Item ${i + 1}`}
+            label={`Option ${"ABC"[i]}`}
           />
         ))}
       </View>
@@ -230,42 +162,51 @@ function CheckboxSelectAllDemo() {
 }
 // Mirrors KuiReact's Toggle showcase variants 1:1 (same titles and copy).
 function ToggleSizesDemo() {
-  const [enabled, setEnabled] = useState(true);
+  // KuiReact: "space-y-3" of checked sm / md / lg toggles labelled "Toggle SM" etc.
   return (
     <View className="gap-3">
-      <Toggle checked={enabled} onChange={setEnabled} label="Enable notifications" size="sm" />
-      <Toggle checked={enabled} onChange={setEnabled} label="Enable notifications" size="md" />
-      <Toggle checked={enabled} onChange={setEnabled} label="Enable notifications" size="lg" />
+      {(["sm", "md", "lg"] as const).map((s) => (
+        <Toggle key={s} checked onChange={() => {}} label={`Toggle ${s.toUpperCase()}`} size={s} />
+      ))}
     </View>
   );
 }
 function ToggleDescriptionDemo() {
-  const [value, setValue] = useState(false);
+  // KuiReact: "space-y-3" of a checked and an unchecked toggle with descriptions.
   return (
-    <Toggle checked={value} onChange={setValue} label="Marketing emails" description="Receive weekly updates." />
+    <View className="gap-3">
+      <Toggle checked onChange={() => {}} label="Marketing emails" description="Receive weekly updates and promotions." />
+      <Toggle
+        checked={false}
+        onChange={() => {}}
+        label="Security alerts"
+        description="Get notified about account activity."
+      />
+    </View>
   );
 }
+const AVATAR_DEMO_SRC = `data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><rect width="128" height="128" rx="64" fill="#3b82f6"/><text x="64" y="74" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="white">JD</text></svg>`,
+)}`;
 function RocketIcon() {
   const t = useThemeTokens();
   return <FontAwesomeIcon icon={faRocket} size={16} color={t["info-fg"]} />;
 }
-function TabIcon({ icon, active }: { icon: IconDefinition; active?: boolean }) {
-  const t = useThemeTokens();
-  return <FontAwesomeIcon icon={icon} size={14} color={active ? t.primary : t["text-secondary"]} />;
-}
 const SETTINGS_ROWS = [
   { key: "notifications", label: "Push notifications", desc: "Alerts for new activity" },
-  { key: "marketing", label: "Marketing emails", desc: "Product news and offers" },
+  { key: "marketing", label: "Marketing emails", desc: "Weekly updates and offers" },
+  { key: "darkMode", label: "Dark mode", desc: "Switch to dark theme" },
 ] as const;
 function ToggleSettingsListDemo() {
-  const [s, setS] = useState<Record<string, boolean>>({ notifications: true, marketing: false });
+  const [s, setS] = useState<Record<string, boolean>>({ notifications: true, marketing: false, darkMode: false });
   return (
-    // KuiReact: "divide-y border rounded-lg" with "px-4 py-3" rows.
-    <View className="rounded-lg border border-border">
+    // KuiReact: "w-full max-w-xs divide-y divide-border border border-border rounded-lg
+    // overflow-hidden" with "bg-surface-base px-4 py-3" rows.
+    <View className="w-full max-w-xs overflow-hidden rounded-lg border border-border">
       {SETTINGS_ROWS.map(({ key, label, desc }, i) => (
         <View
           key={key}
-          className={`flex-row items-center justify-between px-4 py-3${i > 0 ? " border-t border-border" : ""}`}
+          className={`flex-row items-center justify-between bg-surface-base px-4 py-3${i > 0 ? " border-t border-border" : ""}`}
         >
           <View>
             <Text variant="label" className="font-medium">
@@ -281,7 +222,7 @@ function ToggleSettingsListDemo() {
 }
 // Mirrors KuiReact's RadioGroup showcase variants 1:1 (same titles and copy).
 const NOTIFY_OPTIONS = [
-  { value: "email", label: "Email" },
+  { value: "email", label: "Email", hint: "Sent to your primary email" },
   { value: "sms", label: "SMS" },
   { value: "none", label: "None" },
 ];
@@ -694,33 +635,56 @@ function InputCounterDemo() {
 }
 function InputPasswordDemo() {
   const [v, setV] = useState("");
-  return <Input label="Password" type="password" value={v} onChangeText={setV} />;
+  return (
+    <View className="w-full max-w-xs">
+      <Input
+        label="Password"
+        type="password"
+        value={v}
+        onChangeText={setV}
+        placeholder="Enter your password"
+        hint="Min. 8 characters"
+      />
+    </View>
+  );
 }
 function InputStepperDemo() {
-  const [v, setV] = useState("1");
-  return <Input label="Quantity" type="number" value={v} onChangeText={setV} min={0} max={99} />;
+  const [v, setV] = useState("5");
+  return (
+    <View className="w-full max-w-xs">
+      <Input label="Quantity" type="number" value={v} onChangeText={setV} min={0} max={99} />
+    </View>
+  );
 }
 function InputLoadingDemo() {
   const [v, setV] = useState("johndoe");
   return (
-    <Input label="Username" value={v} onChangeText={setV} suffixIcon={<Spinner size="xs" />} hint="Checking availability…" />
+    <View className="w-full max-w-xs">
+      <Input label="Username" value={v} onChangeText={setV} suffixIcon={<Spinner size="xs" />} hint="Checking availability…" />
+    </View>
   );
 }
 // Mirrors KuiReact's Toast showcase variants 1:1 (same titles and copy — KuiReact's
 // Toast demos are written in Turkish, so the strings are kept verbatim).
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-const fetchData = () => wait(1500).then(() => ({ name: "Rapor" }));
-const fetchUser = () => wait(1500).then(() => ({ name: "Kuray", id: 42 }));
+const fetchUser = () => wait(2000).then(() => ({ name: "Ada Lovelace", id: 42 }));
 const fetchBroken = () =>
-  wait(1500).then(() => {
-    throw new Error("503 Service Unavailable");
+  wait(1800).then((): { name: string; id: number } => {
+    throw new Error("500 Server Error");
   });
-function ToastButtons({ items }: { items: { label: string; run: () => void }[] }) {
+type ToastButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "outline";
+/** KuiReact's toast demos: a wrapping row of `size="sm"` buttons ending in a ghost "Temizle" (clear). */
+function ToastButtons({ items }: { items: { label: string; variant: ToastButtonVariant; run: () => void }[] }) {
   return (
     <View className="flex-row flex-wrap gap-2">
       {items.map((i) => (
-        <Button key={i.label} label={i.label} variant="outline" size="sm" onPress={i.run} />
+        <Button key={i.label} variant={i.variant} size="sm" onPress={i.run}>
+          {i.label}
+        </Button>
       ))}
+      <Button variant="ghost" size="sm" onPress={() => toast.clear()}>
+        Temizle
+      </Button>
     </View>
   );
 }
@@ -770,6 +734,32 @@ function DrawerRouteAwareDemo() {
     </View>
   );
 }
+// KuiReact's TabGroup "Lazy panels" demo: lazy tabs log their first mount.
+function LazyTabContent({ label, onMount }: { label: string; onMount: () => void }) {
+  useEffect(() => {
+    onMount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return <Text variant="bodySm">{label} mounted on first activation.</Text>;
+}
+function TabGroupLazyDemo() {
+  const [log, setLog] = useState<string[]>(["Tab 1 mounted"]);
+  const addLog = (entry: string) => setLog((l) => (l.includes(entry) ? l : [...l, entry]));
+  return (
+    <View className="w-full gap-2">
+      <TabGroup
+        label="Lazy tabs"
+        lazy
+        tabs={[
+          { id: "t1", label: "Tab 1", content: <Text variant="bodySm">Always mounted (initial).</Text> },
+          { id: "t2", label: "Tab 2", content: <LazyTabContent label="Tab 2" onMount={() => addLog("Tab 2 mounted")} /> },
+          { id: "t3", label: "Tab 3", content: <LazyTabContent label="Tab 3" onMount={() => addLog("Tab 3 mounted")} /> },
+        ]}
+      />
+      <Text className="text-xs text-text-disabled">Mount log: {log.join(" → ")}</Text>
+    </View>
+  );
+}
 // Mirrors KuiReact's Modal showcase variants 1:1 (same titles and copy).
 function ModalConfirmDemo() {
   const [open, setOpen] = useState(false);
@@ -780,7 +770,7 @@ function ModalConfirmDemo() {
         open={open}
         onClose={() => setOpen(false)}
         title="Confirm action"
-        description="Are you sure you want to proceed?"
+        description="Are you sure you want to proceed? This action cannot be undone."
         footer={
           <>
             <Button label="Cancel" variant="outline" onPress={() => setOpen(false)} />
@@ -788,21 +778,28 @@ function ModalConfirmDemo() {
           </>
         }
       >
-        <Text variant="bodySm">This will permanently delete all selected items.</Text>
+        <Text variant="bodySm">This will permanently delete all selected items and their associated data.</Text>
       </Modal>
     </View>
   );
 }
 function ModalSizesDemo() {
   const [size, setSize] = useState<"sm" | "md" | "lg" | null>(null);
-  const titles = { sm: "Small", md: "Medium", lg: "Large" } as const;
+  const maxWidth = { sm: "384px", md: "448px", lg: "512px" } as const;
   return (
-    <View className="flex-row gap-2">
+    <View className="flex-row flex-wrap gap-2">
       {(["sm", "md", "lg"] as const).map((s) => (
-        <Button key={s} label={titles[s]} variant="outline" size="sm" onPress={() => setSize(s)} />
+        <Button key={s} label={`Open ${s.toUpperCase()}`} variant="outline" size="sm" onPress={() => setSize(s)} />
       ))}
-      <Modal open={size !== null} onClose={() => setSize(null)} title={size ? titles[size] : ""} size={size ?? "md"}>
-        <Text variant="bodySm">…</Text>
+      <Modal
+        open={size !== null}
+        onClose={() => setSize(null)}
+        title={size ? `Modal — ${size.toUpperCase()}` : ""}
+        size={size ?? "md"}
+        description="This demo shows the three available size variants."
+        footer={<Button label="Close" variant="primary" onPress={() => setSize(null)} />}
+      >
+        <Text variant="bodySm">Max-width: {size ? maxWidth[size] : ""}.</Text>
       </Modal>
     </View>
   );
@@ -811,18 +808,23 @@ function ModalScrollableDemo() {
   const [open, setOpen] = useState(false);
   return (
     <View className="items-start">
-      <Button label="Long Content" variant="outline" size="sm" onPress={() => setOpen(true)} />
+      <Button label="Scrollable Modal" variant="outline" onPress={() => setOpen(true)} />
       <Modal
         open={open}
         onClose={() => setOpen(false)}
         title="Long Content"
         scrollable
-        footer={<Button label="OK" onPress={() => setOpen(false)} />}
+        footer={
+          <>
+            <Button label="Cancel" variant="outline" onPress={() => setOpen(false)} />
+            <Button label="OK" onPress={() => setOpen(false)} />
+          </>
+        }
       >
         <View className="gap-3">
-          {Array.from({ length: 30 }).map((_, i) => (
+          {Array.from({ length: 12 }).map((_, i) => (
             <Text key={i} variant="bodySm">
-              Paragraph {i + 1} — long content scrolls inside the modal body.
+              Paragraph {i + 1}: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </Text>
           ))}
         </View>
@@ -834,9 +836,15 @@ function ModalFullscreenDemo() {
   const [open, setOpen] = useState(false);
   return (
     <View className="items-start">
-      <Button label="Fullscreen Dialog" variant="outline" size="sm" onPress={() => setOpen(true)} />
-      <Modal open={open} onClose={() => setOpen(false)} title="Fullscreen Dialog" fullscreen>
-        <Text variant="bodySm">…</Text>
+      <Button label="Fullscreen Modal" variant="ghost" onPress={() => setOpen(true)} />
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Fullscreen Dialog"
+        fullscreen
+        footer={<Button label="Close" onPress={() => setOpen(false)} />}
+      >
+        <Text variant="bodySm">This modal takes the full viewport.</Text>
       </Modal>
     </View>
   );
@@ -846,13 +854,30 @@ function ModalNestedDemo() {
   const [inner, setInner] = useState(false);
   return (
     <View className="items-start">
-      <Button label="Open Outer" variant="outline" size="sm" onPress={() => setOuter(true)} />
-      <Modal open={outer} onClose={() => setOuter(false)} title="Outer">
-        <Button label="Open Nested" onPress={() => setInner(true)} />
+      <Button label="Open Outer Modal" variant="outline" onPress={() => setOuter(true)} />
+      <Modal
+        open={outer}
+        onClose={() => setOuter(false)}
+        title="Outer dialog"
+        description="Escape closes only the topmost overlay — try opening the nested one."
+        footer={<Button label="Close outer" onPress={() => setOuter(false)} />}
+      >
+        <View className="gap-3">
+          <Text variant="bodySm">
+            Layered focus trap demo: pressing Escape with the nested modal open only dismisses the nested one, leaving this outer modal intact.
+          </Text>
+          <Button label="Open Nested Modal" variant="primary" onPress={() => setInner(true)} />
+        </View>
         {/* Nested inside the outer Modal's tree so Android back / backdrop
             dismiss only the inner one first (KuiReact: layer-aware Escape). */}
-        <Modal open={inner} onClose={() => setInner(false)} title="Nested" size="sm">
-          <Text variant="bodySm">…</Text>
+        <Modal
+          open={inner}
+          onClose={() => setInner(false)}
+          title="Nested dialog"
+          size="sm"
+          footer={<Button label="Close nested" onPress={() => setInner(false)} />}
+        >
+          <Text variant="bodySm">This nested modal owns the top focus layer. Tab cycles only within this panel.</Text>
         </Modal>
       </Modal>
     </View>
@@ -862,12 +887,6 @@ function ModalNestedDemo() {
 export const REGISTRY: ShowcaseEntry[] = [
   {
     id: "button",
-    title: "Button",
-    category: "Atoms",
-    icon: faHandPointer,
-    description: "Pressable action with variants, sizes, and a loading state.",
-    usage: `<Button onPress={save}>Save</Button>`,
-    preview: () => <Button label="Button" size="sm" />,
     // Mirrors KuiReact's Button showcase variants 1:1 (same titles and copy).
     // KuiReact's text-glyph icons (⬇ → ✕) are kept as-is, as in its demos.
     variants: [
@@ -900,9 +919,14 @@ export const REGISTRY: ShowcaseEntry[] = [
         title: "Icon left / right",
         Demo: () => (
           <View className="flex-row flex-wrap items-center gap-2">
-            <Button iconLeft={<Text className="text-primary-fg">⬇</Text>}>Download</Button>
-            <Button variant="outline" iconRight={<Text className="text-text-primary">→</Text>}>
+            <Button variant="primary" iconLeft="⬇">
+              Download
+            </Button>
+            <Button variant="outline" iconRight="→">
               Next
+            </Button>
+            <Button variant="secondary" iconLeft="✉" iconRight="↗">
+              Send
             </Button>
           </View>
         ),
@@ -917,7 +941,19 @@ export const REGISTRY: ShowcaseEntry[] = [
           </View>
         ),
       },
-      { title: "Full width", Demo: () => <Button fullWidth>Full-width</Button> },
+      {
+        title: "Full width",
+        Demo: () => (
+          <View className="w-full gap-2">
+            <Button variant="primary" fullWidth>
+              Full-width primary
+            </Button>
+            <Button variant="outline" fullWidth>
+              Full-width outline
+            </Button>
+          </View>
+        ),
+      },
       {
         title: "Selected / active state",
         Demo: () => (
@@ -931,30 +967,13 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "Loading state",
         Demo: () => (
-          <Button variant="primary" loading>
-            Saving…
-          </Button>
-        ),
-      },
-    ],
-  },
-  {
-    id: "text",
-    title: "Text",
-    category: "Atoms",
-    icon: faFont,
-    description: "Typographic scale (headings → caption) on the shared tokens.",
-    usage: `<Text variant="h3">Title</Text>`,
-    preview: () => <Text variant="h3">Aa Bb</Text>,
-    variants: [
-      {
-        title: "Scale",
-        Demo: () => (
-          <View className="gap-1">
-            <Text variant="h1">Heading 1</Text>
-            <Text variant="h3">Heading 3</Text>
-            <Text variant="body">Body text</Text>
-            <Text variant="caption">Caption</Text>
+          <View className="flex-row flex-wrap items-center gap-2">
+            <Button variant="primary" loading>
+              Saving…
+            </Button>
+            <Button variant="outline" loading>
+              Loading details
+            </Button>
           </View>
         ),
       },
@@ -962,16 +981,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "card",
-    title: "Card",
-    category: "Atoms",
-    icon: faIdCard,
-    description: "Surface container with title, subtitle, and footer slots.",
-    usage: `<Card title="Title" subtitle="Subtitle">{children}</Card>`,
-    preview: () => (
-      <Card variant="outline">
-        <Text variant="caption">Card body</Text>
-      </Card>
-    ),
     variants: [
       {
         // KuiReact showcase (Card.showcase): title + subtitle + headerRight badge
@@ -1019,11 +1028,11 @@ export const REGISTRY: ShowcaseEntry[] = [
         title: "Clickable / hoverable",
         Demo: () => (
           <View className="gap-3">
-            <Card title="Clickable" onPress={() => toast.info("Card pressed")}>
-              <Text variant="bodySm">…</Text>
+            <Card title="Clickable card" subtitle="Tap to navigate" onPress={() => toast.info("Card pressed")}>
+              <Text variant="bodySm">This card is a button element with hover + focus ring.</Text>
             </Card>
-            <Card title="Hoverable" hoverable>
-              <Text variant="bodySm">…</Text>
+            <Card title="Hoverable only" subtitle="Hover for shadow" hoverable>
+              <Text variant="bodySm">Not clickable, just visually responsive.</Text>
             </Card>
           </View>
         ),
@@ -1033,12 +1042,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "avatar",
-    title: "Avatar",
-    category: "Atoms",
-    icon: faUser,
-    description: "User image with initials fallback and five sizes.",
-    usage: `<Avatar name="Kuray K" src={url} size="md" />`,
-    preview: () => <Avatar name="Kuray K" size="lg" />,
     variants: [
       {
         // KuiReact showcase (Avatar.showcase): Jane Doe at every size
@@ -1068,7 +1071,18 @@ export const REGISTRY: ShowcaseEntry[] = [
       },
       {
         title: "Image source",
-        Demo: () => <Avatar src="https://i.pravatar.cc/128" name="Jane Doe" />,
+        // KuiReact's AvatarImageDemo: an inline SVG "JD" image, twice (plain +
+        // online status), then a two-line caption.
+        Demo: () => (
+          <View className="flex-row items-center gap-4">
+            <Avatar src={AVATAR_DEMO_SRC} name="Jane Doe" size="md" />
+            <Avatar src={AVATAR_DEMO_SRC} name="Jane Doe" size="md" status="online" />
+            <View>
+              <Text className="text-sm font-medium text-text-primary">Image source</Text>
+              <Text className="text-xs text-text-secondary">Uses the same sizing and status rules</Text>
+            </View>
+          </View>
+        ),
       },
       {
         // KuiReact showcase: Alice/Bob/Carol/Dave, one per status
@@ -1103,17 +1117,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "badge",
-    title: "Badge",
-    category: "Atoms",
-    icon: faTag,
-    description: "Compact status/label pill in semantic colors.",
-    usage: `<Badge variant="success">Active</Badge>`,
-    preview: () => (
-      <View className="flex-row gap-1.5">
-        <Badge variant="primary">New</Badge>
-        <Badge variant="success">OK</Badge>
-      </View>
-    ),
     // Mirrors KuiReact's Badge showcase variants 1:1 (same titles and copy).
     variants: [
       { title: "Success", Demo: () => <Badge variant="success">Active</Badge> },
@@ -1150,12 +1153,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "separator",
-    title: "Separator",
-    category: "Atoms",
-    icon: faGripLinesVertical,
-    description: "Thin dividing rule, with an optional centered label.",
-    usage: `<Separator />`,
-    preview: () => <Separator className="w-16" />,
     variants: [
       {
         // KuiReact showcase (Separator.showcase): "Section one content" / "Section two content"
@@ -1187,18 +1184,12 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "label",
-    title: "Label",
-    category: "Forms",
-    icon: faIdBadge,
-    description: "Form-field label with a required-field marker.",
-    usage: `<Label required>Email</Label>`,
-    preview: () => <Label>Email</Label>,
     variants: [
       {
         // KuiReact showcase (Label.showcase): "Full name" + "Email address" (required)
         title: "Basic + required",
         Demo: () => (
-          <View className="gap-2">
+          <View className="gap-3">
             <Label>Full name</Label>
             <Label required>Email address</Label>
           </View>
@@ -1210,29 +1201,39 @@ export const REGISTRY: ShowcaseEntry[] = [
         // same "label describes/activates a field" relationship KuiReact
         // demonstrates, adapted to the platform.
         title: "Paired with a custom control",
-        Demo: () => (
-          <View className="gap-3">
-            <View>
+        Demo: function LabelPairedDemo() {
+          const t = useThemeTokens();
+          return (
+            // KuiReact: "space-y-1.5" over a raw rows={2} <textarea> and a disabled <input>.
+            <View className="gap-1.5">
               <Label>Bio</Label>
-              <Input multiline numberOfLines={2} />
-            </View>
-            <View>
+              {/* rows={2}: 2 × 20px + py-2 + border = 58px. The web <textarea> is inline-block
+                  (baseline = bottom edge), so the line strut adds ~7px beneath it. */}
+              <TextInput
+                multiline
+                numberOfLines={2}
+                textAlignVertical="top"
+                placeholder="Tell us about yourself"
+                placeholderTextColor={t["text-disabled"]}
+                className="mb-[7px] w-full rounded-md border border-border bg-surface-base px-3 py-2 text-sm text-text-primary"
+                style={{ height: 58, lineHeight: 20 }}
+              />
               <Label disabled>Handle (disabled)</Label>
-              <Input disabled placeholder="@handle" />
+              <TextInput
+                editable={false}
+                placeholder="@handle"
+                placeholderTextColor={t["text-disabled"]}
+                className="w-full rounded-md border border-border bg-surface-sunken px-3 py-2 text-sm text-text-disabled"
+                style={{ height: 38, lineHeight: 20 }}
+              />
             </View>
-          </View>
-        ),
+          );
+        },
       },
     ],
   },
   {
     id: "input",
-    title: "Input",
-    category: "Forms",
-    icon: faKeyboard,
-    description: "Labelled text field with hint, error, success, icons, clear, counter, password and number modes.",
-    usage: `<Input label="Email" value={v} onChangeText={setV} />`,
-    preview: () => <Input placeholder="Type…" className="w-44" />,
     variants: [
       {
         title: "Default",
@@ -1246,9 +1247,9 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "Prefix / suffix icon",
         Demo: () => (
-          <View className="gap-4">
+          <View className="gap-3">
             <Input label="Search" prefixIcon={<SearchIcon />} placeholder="Search…" />
-            <Input label="Amount" suffixIcon={<Text className="text-text-disabled">$</Text>} type="number" />
+            <Input label="Amount" suffixIcon={<Text className="text-text-disabled">$</Text>} placeholder="0.00" type="number" />
           </View>
         ),
       },
@@ -1277,12 +1278,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "search-bar",
-    title: "SearchBar",
-    category: "Forms",
-    icon: faMagnifyingGlass,
-    description: "Searchbox with search icon and clear button. Works in controlled and uncontrolled modes.",
-    usage: `<SearchBar placeholder="Search components…" value={q} onChange={setQ} />`,
-    preview: () => <SearchBar className="w-full" placeholder="Search components…" />,
     // Mirrors KuiReact's SearchBar showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -1358,12 +1353,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "multi-select",
-    title: "MultiSelect",
-    category: "Forms",
-    icon: faTags,
-    description: "Chip-based multi-select popover with searchable filter and disabled-option support.",
-    usage: `<MultiSelect id="tags" label="Tags" options={options} value={v} onChange={setV} />`,
-    preview: () => <MultiSelect id="ms-preview" label="Frameworks" options={[{ value: "react", label: "React" }]} value={["react"]} />,
     // Mirrors KuiReact's MultiSelect showcase variants 1:1 (same titles and
     // copy; country flags are emoji, as in KuiReact's own code sample).
     variants: [
@@ -1441,12 +1430,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "range-slider",
-    title: "RangeSlider",
-    category: "Forms",
-    icon: faSliders,
-    description: "Numeric range input. Single-handle by default, or `range` for a dual-handle min/max selector.",
-    usage: `<RangeSlider label="Volume" value={v} onChange={setV} />`,
-    preview: () => <RangeSlider className="w-full" value={40} onChange={() => {}} showValue={false} />,
     // Mirrors KuiReact's RangeSlider showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -1467,12 +1450,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "date-picker",
-    title: "DatePicker",
-    category: "Forms",
-    icon: faCalendarDays,
-    description: "Popover date picker with a locale-aware calendar grid (TR / EN), quick month / year jump from the header, and min / max / disabledDates support.",
-    usage: `<DatePicker id="date" label="Appointment date" hint="Select a future date." value={date} onChange={setDate} />`,
-    preview: () => <DatePicker id="dp-preview" value={null} onChange={() => {}} locale="en" />,
     // Mirrors KuiReact's DatePicker showcase variants 1:1 (same titles, copy and dates).
     variants: [
       {
@@ -1533,12 +1510,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "date-range-picker",
-    title: "DateRangePicker",
-    category: "Forms",
-    icon: faCalendarWeek,
-    description: "Two-month popover for picking a start → end date range. Shares the same Calendar core as DatePicker; locale-aware, with min/max/disabledDates.",
-    usage: `<DateRangePicker id="range" label="Select date range" value={range} onChange={setRange} />`,
-    preview: () => <DateRangePicker id="dr-preview" value={null} onChange={() => {}} locale="en" />,
     // Mirrors KuiReact's DateRangePicker showcase variants 1:1 (same titles,
     // copy and dates), including its "Time picker" variant.
     variants: [
@@ -1567,12 +1538,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "tag-input",
-    title: "TagInput",
-    category: "Forms",
-    icon: faTagsInput,
-    description: "Free-text input that creates chips. Add tags with Enter or comma, double-tap to edit, Backspace to delete. Duplicates are ignored.",
-    usage: `<TagInput id="tags" label="Tags" value={tags} onChange={setTags} hint="Press Enter or comma to add." />`,
-    preview: () => <TagInput id="ti-preview" label="Tags" value={["react"]} onChange={() => {}} hint=" " />,
     // Mirrors KuiReact's TagInput showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -1601,12 +1566,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "combo-box",
-    title: "ComboBox",
-    category: "Forms",
-    icon: faComboBox,
-    description: "Searchable autocomplete single-select with described options and a clearable button.",
-    usage: `<ComboBox id="framework" label="Framework" options={options} value={value} onChange={setValue} />`,
-    preview: () => <ComboBox id="cb-preview" label="Framework" options={COMBO_OPTIONS} value="nextjs" />,
     // Mirrors KuiReact's ComboBox showcase variants 1:1 (same titles, data and
     // copy). Hermes has no DOMException, so the debounced demo rejects with
     // an Error named "AbortError" (which useAsync treats the same way).
@@ -1691,15 +1650,8 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "file-input",
-    title: "FileInput",
-    category: "Forms",
-    icon: faFileArrowUp,
-    description: "File picker with MIME / extension validation, size and count limits, a selected-files list and an optional upload action.",
-    usage: `<FileInput id="photo" label="Profile photo" accept="image/*" maxSizeBytes={2 * 1024 * 1024} />`,
-    preview: () => <FileInput id="fi-preview" />,
     // Mirrors KuiReact's FileInput showcase variants 1:1 (same titles and
-    // copy). KuiReact's "Paste from clipboard" variant needs clipboard file
-    // paste, which has no RN equivalent, so it isn't reproduced.
+    // copy). `enablePaste` is accepted for parity; RN has no clipboard file paste.
     variants: [
       {
         title: "Single file",
@@ -1726,6 +1678,21 @@ export const REGISTRY: ShowcaseEntry[] = [
         ),
       },
       {
+        title: "Paste from clipboard",
+        Demo: () => (
+          <FileInput
+            id="fi-paste"
+            label="Screenshot drop"
+            multiple
+            enablePaste
+            accept="image/*"
+            maxFiles={4}
+            maxSizeBytes={4 * 1024 * 1024}
+            hint="Drop, browse, or paste a screenshot from your clipboard (Cmd/Ctrl + V while this card is focused)."
+          />
+        ),
+      },
+      {
         title: "Disabled",
         Demo: () => <FileInput id="fi-disabled" label="Disabled upload" disabled />,
       },
@@ -1733,12 +1700,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "color-picker",
-    title: "ColorPicker",
-    category: "Forms",
-    icon: faPalette,
-    description: "Popover colour picker: swatch grid, hex field, a native-style hue picker, a no-colour option and an optional HEX/RGBA/HSLA/HWB/OKLCH format switcher.",
-    usage: `<ColorPicker label="Brand color" value={c} onChange={setC} showNoColor />`,
-    preview: () => <ColorPicker value="#3b82f6" onChange={() => {}} />,
     // Mirrors KuiReact's ColorPicker showcase variants 1:1 (same titles and
     // props). The native picker (<input type="color">) is a hue strip on RN.
     variants: [
@@ -1774,12 +1735,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "time-picker",
-    title: "TimePicker",
-    category: "Forms",
-    icon: faClock,
-    description: "Time field with label/hint/error slots, matching the Input/DatePicker pattern. Hour/minute only.",
-    usage: `<TimePicker id="time" label="Meeting time" value={t} onChange={setT} hint="24-hour format" />`,
-    preview: () => <TimePicker id="tp-preview" label="Time" value="09:00" onChange={() => {}} />,
     // Mirrors KuiReact's TimePicker showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -1800,21 +1755,15 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "select",
-    title: "Select",
-    category: "Forms",
-    icon: faListUl,
-    description: "Single-select field with icons, search, placeholder, validation and disabled states.",
-    usage: `<Select id="role" label="Role" options={ROLES} value={role} onChange={setRole} />`,
-    preview: () => <Select id="p" label="Role" options={ROLES} value="editor" className="w-44" />,
     variants: [
       { title: "Controlled", Demo: SelectControlledDemo },
       { title: "With icons", Demo: SelectIconsDemo },
       {
         title: "Validation states",
         Demo: () => (
-          <View className="gap-4">
+          <View className="gap-3">
             <Select id="plan" label="Plan" placeholder="Select a plan" required error="Please select a plan." options={PLANS} />
-            <Select id="plan" label="Plan" disabled options={PLANS} value="pro" />
+            <Select id="plan" label="Plan" disabled options={[{ value: "pro", label: "Pro" }]} value="pro" />
           </View>
         ),
       },
@@ -1824,37 +1773,25 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "textarea",
-    title: "Textarea",
-    category: "Forms",
-    icon: faAlignLeft,
-    description: "Multi-line text field with label, hint, error and required marker.",
-    usage: `<Textarea label="Message" placeholder="Write your message…" hint="Max 500 characters." />`,
-    preview: () => <Textarea label="Message" rows={2} className="w-44" />,
     // Mirrors KuiReact's Textarea showcase variants 1:1 (same titles and copy).
     variants: [
       {
         title: "Default",
-        Demo: () => <Textarea label="Message" placeholder="Write your message…" hint="Max 500 characters." />,
+        Demo: () => <Textarea label="Message" placeholder="Write your message…" hint="Max 500 characters." rows={3} />,
       },
-      { title: "Error", Demo: () => <Textarea label="Message" error="Message is required." required /> },
-      { title: "Disabled", Demo: () => <Textarea label="Message" placeholder="Not editable" disabled /> },
+      { title: "Error", Demo: () => <Textarea label="Message" error="Message is required." required rows={3} /> },
+      { title: "Disabled", Demo: () => <Textarea label="Message" placeholder="Not editable" disabled rows={3} /> },
       { title: "Character counter", Demo: TextareaCounterDemo },
     ],
   },
   {
     id: "radio-group",
-    title: "RadioGroup",
-    category: "Forms",
-    icon: faCircleDot,
-    description: "Mutually-exclusive choice with a legend, hints, card style and error state.",
-    usage: `<RadioGroup name="notify" legend="Notification preference" options={options} value={v} onChange={setV} />`,
-    preview: () => <RadioGroup name="p" legend="Plan" options={NOTIFY_OPTIONS.slice(0, 2)} value="email" />,
     variants: [
       { title: "Default", Demo: RadioDefaultDemo },
       {
         title: "Disabled",
         Demo: () => (
-          <RadioGroup name="notify" legend="Notification preference" options={NOTIFY_OPTIONS} value="email" disabled />
+          <RadioGroup name="notify" legend="Notification preference" options={[{ value: "email", label: "Email" }, { value: "sms", label: "SMS" }]} value="email" disabled />
         ),
       },
       { title: "Card style", Demo: RadioCardDemo },
@@ -1862,12 +1799,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "checkbox",
-    title: "Checkbox",
-    category: "Forms",
-    icon: faSquareCheck,
-    description: "Boolean toggle with indeterminate and disabled states.",
-    usage: `<Checkbox checked={c} onChange={setC} label="Agree" />`,
-    preview: () => <Checkbox checked onChange={() => {}} label="Done" />,
     variants: [
       { title: "Default", Demo: CheckboxDefaultDemo },
       {
@@ -1887,14 +1818,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "checkbox-group",
-    title: "CheckboxGroup",
-    category: "Forms",
-    icon: faListCheck,
-    description: "Chip-style multi-select group. Selected chips use bg-primary-subtle / border-primary tokens.",
-    usage: `<CheckboxGroup legend="Tech stack" options={options} selected={sel} onChange={setSel} />`,
-    preview: () => (
-      <CheckboxGroup legend="Tech stack" options={[{ value: "react", label: "React" }, { value: "vue", label: "Vue" }]} selected={["react"]} onChange={() => {}} />
-    ),
     // Mirrors KuiReact's CheckboxGroup showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -1934,27 +1857,23 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "toggle",
-    title: "Toggle",
-    category: "Forms",
-    icon: faToggleOn,
-    description: "On/off switch with a themed track.",
-    usage: `<Toggle checked={on} onChange={setOn} label="Enable notifications" />`,
-    preview: () => <Toggle checked onChange={() => {}} />,
     variants: [
       { title: "Sizes", Demo: ToggleSizesDemo },
       { title: "With description", Demo: ToggleDescriptionDemo },
-      { title: "Disabled", Demo: () => <Toggle checked disabled label="Disabled" onChange={() => {}} /> },
+      {
+        title: "Disabled",
+        Demo: () => (
+          <View className="gap-2">
+            <Toggle checked disabled label="Disabled on" onChange={() => {}} />
+            <Toggle checked={false} disabled label="Disabled off" onChange={() => {}} />
+          </View>
+        ),
+      },
       { title: "Settings list (controlled)", Demo: ToggleSettingsListDemo },
     ],
   },
   {
     id: "spinner",
-    title: "Spinner",
-    category: "Feedback",
-    icon: faSpinner,
-    description: "Activity indicator in five sizes (xs–xl), mirrors KuiReact's Spinner.",
-    usage: `<Spinner size="lg" />`,
-    preview: () => <Spinner size="lg" />,
     variants: [
       {
         title: "Sizes",
@@ -1970,19 +1889,16 @@ export const REGISTRY: ShowcaseEntry[] = [
       },
       {
         title: "In a Button",
-        Demo: () => <Button label="Saving…" loading />,
+        Demo: () => (
+          <Button variant="primary" loading>
+            Loading…
+          </Button>
+        ),
       },
     ],
   },
   {
     id: "skip-link",
-    title: "SkipLink + LiveRegion",
-    category: "Atoms",
-    icon: faUniversalAccess,
-    description:
-      "SkipLink is visually hidden until focused, enabling keyboard users to bypass navigation. LiveRegion announces dynamic content to screen readers.",
-    usage: `<LiveRegion message={msg} />`,
-    preview: () => <LiveRegionDemo />,
     variants: [
       {
         title: "SkipLink (focus to reveal)",
@@ -2008,22 +1924,16 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "toast",
-    title: "Toast",
-    category: "Feedback",
-    icon: faBell,
-    description: "Imperative toast() notifications with variants, actions, loading and promise flows.",
-    usage: `toast.success("Kaydedildi.")`,
-    preview: () => <Button label="toast.success()" size="sm" variant="outline" />,
     variants: [
       {
         title: "Variants",
         Demo: () => (
           <ToastButtons
             items={[
-              { label: "success", run: () => toast.success("Kaydedildi.") },
-              { label: "info", run: () => toast.info("Güncelleme mevcut.") },
-              { label: "warning", run: () => toast.warning("Oturum sona eriyor.") },
-              { label: "error", run: () => toast.error("Sunucu hatası.") },
+              { label: "Success", variant: "primary", run: () => toast.success("Değişiklikler kaydedildi.") },
+              { label: "Info", variant: "outline", run: () => toast.info("Yeni bir güncelleme mevcut.") },
+              { label: "Warning", variant: "secondary", run: () => toast.warning("Oturum 5 dk sonra sona erecek.") },
+              { label: "Error", variant: "danger", run: () => toast.error("Kaydetme başarısız oldu.") },
             ]}
           />
         ),
@@ -2033,8 +1943,16 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: () => (
           <ToastButtons
             items={[
-              { label: "success", run: () => toast.success("Dosya yüklendi.", { title: "Yükleme tamamlandı" }) },
-              { label: "error", run: () => toast.error("Sunucuya bağlanılamadı.", { title: "Bağlantı hatası" }) },
+              {
+                label: "Title + Message",
+                variant: "primary",
+                run: () => toast.success("Dosya yüklendi.", { title: "Yükleme tamamlandı" }),
+              },
+              {
+                label: "Title + Error",
+                variant: "danger",
+                run: () => toast.error("Sunucuya bağlanılamadı. Ağ bağlantınızı kontrol edin.", { title: "Bağlantı hatası" }),
+              },
             ]}
           />
         ),
@@ -2045,14 +1963,23 @@ export const REGISTRY: ShowcaseEntry[] = [
           <ToastButtons
             items={[
               {
-                label: "info + actions",
+                label: "İki action",
+                variant: "outline",
                 run: () =>
-                  toast.info("Öğe silindi.", {
+                  toast.info("Öğe çöp kutusuna taşındı.", {
                     title: "Silindi",
                     actions: [
                       { label: "Geri Al", onPress: (dismiss) => dismiss() },
                       { label: "Kalıcı sil", onPress: (d) => d(), variant: "danger" },
                     ],
+                  }),
+              },
+              {
+                label: "Tek action",
+                variant: "outline",
+                run: () =>
+                  toast.success("Rapor oluşturuldu.", {
+                    actions: [{ label: "İndir", onPress: (dismiss) => dismiss() }],
                   }),
               },
             ]}
@@ -2064,16 +1991,31 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: () => (
           <ToastButtons
             items={[
-              { label: "loading", run: () => toast.loading("İşleniyor...") },
               {
-                label: "promise",
+                label: "promise() → success",
+                variant: "primary",
                 run: () =>
-                  toast.promise(fetchData(), {
-                    loading: "Yükleniyor...",
-                    success: (data) => `${data.name} hazır.`,
-                    error: "Yüklenemedi.",
-                  }),
+                  toast.promise(
+                    wait(2500).then(() => "rapor.pdf"),
+                    {
+                      loading: "Rapor oluşturuluyor...",
+                      success: (file) => `${file} başarıyla oluşturuldu.`,
+                      error: "Rapor oluşturulamadı.",
+                    },
+                  ),
               },
+              {
+                label: "promise() → error",
+                variant: "danger",
+                run: () =>
+                  toast.promise(
+                    wait(2000).then(() => {
+                      throw new Error("Timeout");
+                    }),
+                    { loading: "Veri gönderiliyor...", success: "Gönderildi!", error: "Gönderme başarısız oldu." },
+                  ),
+              },
+              { label: "loading()", variant: "outline", run: () => toast.loading("İşleniyor...") },
             ]}
           />
         ),
@@ -2084,7 +2026,8 @@ export const REGISTRY: ShowcaseEntry[] = [
           <ToastButtons
             items={[
               {
-                label: "success path",
+                label: "promise() happy path",
+                variant: "primary",
                 run: () =>
                   toast.promise(fetchUser(), {
                     loading: "Kullanıcı yükleniyor...",
@@ -2093,7 +2036,8 @@ export const REGISTRY: ShowcaseEntry[] = [
                   }),
               },
               {
-                label: "error path",
+                label: "promise() error path",
+                variant: "danger",
                 run: () =>
                   toast.promise(fetchBroken(), {
                     loading: "İstek gönderiliyor...",
@@ -2109,18 +2053,12 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "progress",
-    title: "Progress",
-    category: "Feedback",
-    icon: faBarsProgress,
-    description: "Determinate progress as a bar or a circle, in four colours and three sizes.",
-    usage: `<Progress value={62} variant="warning" showLabel />`,
-    preview: () => <Progress value={62} className="w-44" />,
     // Mirrors KuiReact's Progress showcase variants 1:1 (same titles and values).
     variants: [
       {
         title: "Bar",
         Demo: () => (
-          <View className="gap-4">
+          <View className="gap-3">
             <Progress value={30} />
             <Progress value={62} variant="warning" showLabel />
             <Progress value={90} variant="success" size="lg" showLabel />
@@ -2133,6 +2071,7 @@ export const REGISTRY: ShowcaseEntry[] = [
           <View className="flex-row items-center gap-6">
             <Progress value={40} shape="circle" showLabel />
             <Progress value={75} shape="circle" variant="success" size="lg" showLabel />
+            <Progress value={15} shape="circle" variant="error" size="sm" />
           </View>
         ),
       },
@@ -2140,17 +2079,11 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "alert-banner",
-    title: "AlertBanner",
-    category: "Feedback",
-    icon: faCircleExclamation,
-    description: "Inline semantic alert with optional title, action and dismiss.",
-    usage: `<AlertBanner variant="success" message="Profile updated successfully." dismissible />`,
-    preview: () => <AlertBanner variant="info" message="Heads up" className="w-44" />,
     // Mirrors KuiReact's AlertBanner showcase variants 1:1 (same titles and copy).
     variants: [
       {
         title: "Info",
-        Demo: () => <AlertBanner variant="info" title="System update" message="A new version is available." dismissible />,
+        Demo: () => <AlertBanner variant="info" title="System update" message="A new version is available. Please refresh the page." dismissible />,
       },
       {
         title: "Success",
@@ -2174,7 +2107,7 @@ export const REGISTRY: ShowcaseEntry[] = [
           <AlertBanner
             variant="warning"
             title="Your plan is expiring"
-            message="Upgrade before your trial ends."
+            message="Upgrade before your trial ends to keep access."
             action={{ label: "Upgrade now", onPress: () => {} }}
             dismissible
           />
@@ -2186,25 +2119,19 @@ export const REGISTRY: ShowcaseEntry[] = [
           <AlertBanner
             variant="info"
             title="Documentation updated"
-            message="New guides are available."
+            message="New guides are available for the latest API changes."
             action={{ label: "Read docs", href: "https://next-js-components.kuray.dev" }}
           />
         ),
       },
       {
         title: "Custom icon",
-        Demo: () => <AlertBanner variant="info" message="Custom icon override." icon={<RocketIcon />} />,
+        Demo: () => <AlertBanner variant="info" message="Custom icon override example." icon={<RocketIcon />} />,
       },
     ],
   },
   {
     id: "empty-state",
-    title: "EmptyState",
-    category: "Feedback",
-    icon: faInbox,
-    description: "Placeholder for empty lists with an optional action.",
-    usage: `<EmptyState title="Nothing here" actionLabel="Add" onAction={add} />`,
-    preview: () => <EmptyState icon={faInbox} title="Empty" className="py-2" />,
     // Mirrors KuiReact's EmptyState showcase variants 1:1 (same titles and copy;
     // KuiReact's 📁 emoji icon → Font Awesome's folder, per ADR 0004's FA-only rule).
     variants: [
@@ -2227,12 +2154,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "skeleton",
-    title: "Skeleton",
-    category: "Feedback",
-    icon: faGripLines,
-    description: "Pulsing placeholders shown while content loads — lines, text blocks, avatars, cards.",
-    usage: `<SkeletonCard />`,
-    preview: () => <SkeletonCard className="w-44" />,
     // Mirrors KuiReact's Skeleton showcase variants 1:1 (same titles and markup).
     variants: [
       {
@@ -2248,12 +2169,45 @@ export const REGISTRY: ShowcaseEntry[] = [
       { title: "Text block", Demo: () => <SkeletonText lines={4} /> },
       { title: "Card", Demo: () => <SkeletonCard /> },
       {
+        title: "Table rows",
+        Demo: () => (
+          <View className="w-full overflow-hidden rounded-lg border border-border">
+            <SkeletonTableRow cols={4} />
+            <SkeletonTableRow cols={4} />
+            <SkeletonTableRow cols={4} />
+          </View>
+        ),
+      },
+      {
+        title: "Dashboard layout",
+        Demo: () => (
+          <View className="w-full gap-4" accessibilityState={{ busy: true }}>
+            <View className="flex-row gap-3">
+              {[0, 1, 2].map((i) => (
+                <View key={i} className="flex-1 gap-2 rounded-lg border border-border p-4">
+                  <SkeletonLine width="w-1/2" />
+                  <SkeletonLine width="w-3/4" className="h-5" />
+                  <SkeletonLine width="w-1/3" />
+                </View>
+              ))}
+            </View>
+            <View className="overflow-hidden rounded-lg border border-border">
+              {[0, 1, 2].map((i) => (
+                <SkeletonTableRow key={i} cols={4} />
+              ))}
+            </View>
+          </View>
+        ),
+      },
+      {
         title: "Article layout",
         Demo: () => (
           <View className="gap-4">
             <SkeletonLine width="w-1/4" />
-            <SkeletonLine width="w-full" className="h-6" />
-            <SkeletonLine width="w-3/4" className="h-6" />
+            <View className="gap-2">
+              <SkeletonLine width="w-full" className="h-6" />
+              <SkeletonLine width="w-3/4" className="h-6" />
+            </View>
             <View className="flex-row items-center gap-3">
               <SkeletonAvatar size="sm" />
               <SkeletonLine width="w-24" />
@@ -2263,20 +2217,10 @@ export const REGISTRY: ShowcaseEntry[] = [
           </View>
         ),
       },
-      // KuiReact's "Table rows" and "Dashboard layout" variants use
-      // SkeletonTableRow, which is not ported (KuiNative has no Table yet).
     ],
   },
   {
     id: "accordion",
-    title: "Accordion",
-    category: "Atoms",
-    icon: faBars,
-    description: "Vertically stacked, collapsible content panels. Single-open by default, or `allowMultiple` for independent panels.",
-    usage: `<Accordion items={[{ id: "shipping", title: "Shipping", content: "..." }]} defaultOpenIds={["shipping"]} />`,
-    preview: () => (
-      <Accordion className="w-full" items={[{ id: "a", title: "Shipping", content: "" }, { id: "b", title: "Returns", content: "" }]} />
-    ),
     // Mirrors KuiReact's Accordion showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -2311,14 +2255,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "button-group",
-    title: "ButtonGroup",
-    category: "Atoms",
-    icon: faTableCellsLarge,
-    description: "Segmented button group for mutually-exclusive options. Supports 4 variants, 4 sizes and disabled items.",
-    usage: `<ButtonGroup value={v} onChange={setV} items={[{ value: "day", label: "Day" }, { value: "week", label: "Week" }]} />`,
-    preview: () => (
-      <ButtonGroup value="week" onChange={() => {}} size="sm" items={[{ value: "day", label: "Day" }, { value: "week", label: "Week" }]} />
-    ),
     // Mirrors KuiReact's ButtonGroup showcase variants 1:1 (same titles, glyphs and copy).
     variants: [
       {
@@ -2406,12 +2342,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "pagination",
-    title: "Pagination",
-    category: "Atoms",
-    icon: faAnglesRight,
-    description: "Page navigation control. Collapses large page counts with ellipsis; the current page is announced as selected.",
-    usage: `<Pagination page={page} totalPages={10} onPageChange={setPage} />`,
-    preview: () => <Pagination page={2} totalPages={5} onPageChange={() => {}} size="sm" />,
     // Mirrors KuiReact's Pagination showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -2445,14 +2375,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "stepper",
-    title: "Stepper",
-    category: "Atoms",
-    icon: faListOl,
-    description: "Multi-step progress indicator with complete, active, error, and pending states. Supports horizontal and vertical orientations.",
-    usage: `<Stepper steps={[{ label: "Account", state: "complete" }, { label: "Billing", state: "active" }]} />`,
-    preview: () => (
-      <Stepper className="w-full" steps={[{ label: "Account", state: "complete" }, { label: "Billing", state: "active" }, { label: "Review" }]} />
-    ),
     // Mirrors KuiReact's Stepper showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -2487,12 +2409,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "breadcrumb",
-    title: "Breadcrumb",
-    category: "Atoms",
-    icon: faShoePrints,
-    description: "Hierarchical navigation trail. The last item is the current page; separators are hidden from screen readers.",
-    usage: `<Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Breadcrumb" }]} />`,
-    preview: () => <Breadcrumb items={[{ label: "Home" }, { label: "Components" }, { label: "Breadcrumb" }]} />,
     // Mirrors KuiReact's Breadcrumb showcase variants 1:1 (same titles, copy
     // and hrefs — most of those routes don't exist in this app, so pressing
     // them lands on expo-router's not-found screen).
@@ -2543,12 +2459,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "page-header",
-    title: "PageHeader",
-    category: "Atoms",
-    icon: faHeading,
-    description: "Page title + subtitle + optional badge + action buttons. Supports 5 button variants (primary/secondary/outline/danger/ghost); href actions navigate.",
-    usage: `<PageHeader title="Users" subtitle="Manage your team." actions={[{ label: "Export", variant: "outline" }]} />`,
-    preview: () => <PageHeader className="w-full" title="Users" actions={[{ label: "Invite" }]} />,
     // Mirrors KuiReact's PageHeader showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -2594,12 +2504,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "brand-logo",
-    title: "BrandLogo",
-    category: "Atoms",
-    icon: faCube,
-    description: "Square brand mark with rounded corners. Renders a single letter or short token on a primary-coloured tile. 5 sizes (sm → 2xl).",
-    usage: `<BrandLogo size="md">B</BrandLogo>`,
-    preview: () => <BrandLogo size="sm">K</BrandLogo>,
     // Mirrors KuiReact's BrandLogo showcase variants 1:1 (same titles and content).
     variants: [
       {
@@ -2632,12 +2536,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "star-rating",
-    title: "StarRating",
-    category: "Atoms",
-    icon: faStar,
-    description: "Five-star rating indicator. Read-only by default with decimal/half-star rendering; pass `readonly={false}` + `onChange` for interactive whole-star selection.",
-    usage: `<StarRating value={4.5} caption="(312 reviews)" />`,
-    preview: () => <StarRating value={4.5} size="sm" />,
     // Mirrors KuiReact's StarRating showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -2668,23 +2566,19 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "stat-card",
-    title: "StatCard",
-    category: "Atoms",
-    icon: faChartSimple,
-    description: "Compact metric display card with value, label, and optional accent color.",
-    usage: `<StatCard label="Active" value={947} accent="text-success" />`,
-    preview: () => <StatCard label="Total Users" value={1284} />,
     // Mirrors KuiReact's StatCard showcase variant 1:1 (KuiReact's grid-cols-2
     // is a wrapping row of half-width cards).
     variants: [
       {
         title: "Variants",
         Demo: () => (
-          <View className="flex-row flex-wrap gap-3">
-            <StatCard className="min-w-[40%] flex-1" label="Total Users" value={1284} />
-            <StatCard className="min-w-[40%] flex-1" label="Active" value={947} accent="text-success" />
-            <StatCard className="min-w-[40%] flex-1" label="Transferred" value={38} accent="text-info" />
-            <StatCard className="min-w-[40%] flex-1" label="Cancelled" value={12} accent="text-error" />
+          // KuiReact: "grid grid-cols-2 sm:grid-cols-4 gap-3" — the showcase
+          // viewport is past `sm`, so four equal columns.
+          <View className="flex-row gap-3">
+            <StatCard className="min-w-0 flex-1" label="Total Users" value={1284} />
+            <StatCard className="min-w-0 flex-1" label="Active" value={947} accent="text-success" />
+            <StatCard className="min-w-0 flex-1" label="Transferred" value={38} accent="text-info" />
+            <StatCard className="min-w-0 flex-1" label="Cancelled" value={12} accent="text-error" />
           </View>
         ),
       },
@@ -2692,12 +2586,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "statistic",
-    title: "Statistic",
-    category: "Atoms",
-    icon: faHashtag,
-    description: "Bare numeric/text figure with a label, optional prefix/suffix, trend indicator, and loading skeleton — no card chrome (compose with Card for a bordered KPI tile).",
-    usage: `<Statistic label="Revenue" value={82400} prefix="$" trend="up" trendValue="+12.4%" />`,
-    preview: () => <Statistic label="Active users" value={1284} />,
     // Mirrors KuiReact's Statistic showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -2723,16 +2611,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "tab-button",
-    title: "TabButton",
-    category: "Atoms",
-    icon: faTableList,
-    description: "Pill-style tab button with active/inactive coloring and an optional count badge.",
-    usage: `<TabButton active={tab === "all"} onPress={() => setTab("all")} count={42}>All</TabButton>`,
-    preview: () => (
-      <TabButton active onPress={() => {}} count={42}>
-        All
-      </TabButton>
-    ),
     // Mirrors KuiReact's TabButton showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -2771,12 +2649,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "timeline",
-    title: "Timeline",
-    category: "Atoms",
-    icon: faTimeline,
-    description: "Chronological activity feed grouped by the viewer's local day, with tone-coloured markers, inline detail and optional meta.",
-    usage: `<Timeline items={[{ id: "1", at: "2026-08-25T09:12:00Z", title: "Email sent", tone: "info" }]} />`,
-    preview: () => <Timeline groupByDay={false} items={[{ id: "1", at: "2026-08-25T09:12:00Z", title: "Email sent", tone: "info" }]} />,
     // Mirrors KuiReact's Timeline showcase variants 1:1 (same titles, copy and timestamps).
     variants: [
       {
@@ -2813,12 +2685,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "table",
-    title: "Table",
-    category: "Atoms",
-    icon: faTable,
-    description: "Responsive table with column headers, an empty-state message, custom cell render support and sortable columns.",
-    usage: `<Table caption="Users" columns={[{ key: "name", header: "Name" }]} rows={rows} />`,
-    preview: () => <Table columns={[{ key: "name", header: "Name" }]} rows={[{ name: "Jane Doe" }]} />,
     // Mirrors KuiReact's Table showcase variants 1:1 (same titles and data).
     variants: [
       {
@@ -2826,11 +2692,12 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: () => (
           <Table
             caption="Users table"
+            // Widths = the web table's auto-layout widths in this preview.
             columns={[
-              { key: "name", header: "Name" },
-              { key: "email", header: "Email" },
-              { key: "role", header: "Role" },
-              { key: "status", header: "Status", render: (row) => <Badge variant={row.status === "Active" ? "success" : "neutral"}>{String(row.status)}</Badge> },
+              { key: "name", header: "Name", width: 81 },
+              { key: "email", header: "Email", width: 157 },
+              { key: "role", header: "Role", width: 83 },
+              { key: "status", header: "Status", width: 95, render: (row) => <Badge variant={row.status === "Active" ? "success" : "neutral"}>{String(row.status)}</Badge> },
             ]}
             rows={[
               { name: "Jane Doe", email: "jane@example.com", role: "Admin", status: "Active" },
@@ -2855,10 +2722,11 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: () => (
           <Table
             caption="Sortable users table"
+            // Widths = the web table's auto-layout widths in this preview.
             columns={[
-              { key: "name", header: "Name", sortable: true },
-              { key: "email", header: "Email", sortable: true },
-              { key: "role", header: "Role", sortable: true },
+              { key: "name", header: "Name", sortable: true, width: 128 },
+              { key: "email", header: "Email", sortable: true, width: 187 },
+              { key: "role", header: "Role", sortable: true, width: 101 },
             ]}
             rows={[
               { name: "Zara Kim", email: "zara@example.com", role: "Admin" },
@@ -2872,12 +2740,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "slider",
-    title: "Slider",
-    category: "Atoms",
-    icon: faImages,
-    description: "Swipeable carousel with per-slide labels, autoplay, arrows and dot navigation, velocity momentum and edge resistance.",
-    usage: `<Slider slides={[<Card key="a" />, <Card key="b" />]} autoPlay />`,
-    preview: () => <Slider className="w-full" showArrows={false} slides={[<View key="a" className="h-16 rounded-xl bg-primary-subtle" />, <View key="b" className="h-16 rounded-xl bg-success-subtle" />]} />,
     // Mirrors KuiReact's Slider showcase variants 1:1 (same titles and copy;
     // gradient tiles are drawn with react-native-svg).
     variants: [
@@ -2951,12 +2813,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "content-score-bar",
-    title: "ContentScoreBar",
-    category: "Feedback",
-    icon: faGauge,
-    description: "Rule-based content quality score with Good ≥70 / Fair ≥40 / Poor <40 tiers. Each rule shows as a chip with a passed/total count.",
-    usage: `<ContentScoreBar value={text} rules={rules} label="Quality score" />`,
-    preview: () => <ContentScoreBar className="w-full" value="" rules={[{ label: "Rule", check: () => true, points: 1 }]} />,
     // Mirrors KuiReact's ContentScoreBar showcase variants 1:1 (same titles, rules and copy).
     variants: [
       {
@@ -3004,7 +2860,15 @@ export const REGISTRY: ShowcaseEntry[] = [
           const [pwd, setPwd] = useState("Hello1");
           return (
             <View className="w-full max-w-sm gap-2">
-              <Input type="password" value={pwd} onChangeText={setPwd} placeholder="Enter password…" accessibilityLabel="Password" />
+              {/* KuiReact uses a bare <input type="password"> here (no reveal toggle). */}
+              <TextInput
+                secureTextEntry
+                value={pwd}
+                onChangeText={setPwd}
+                placeholder="Enter password…"
+                accessibilityLabel="Password"
+                className="w-full rounded-md border border-border bg-surface-base px-3 py-2 text-sm leading-5 text-text-primary"
+              />
               <ContentScoreBar value={pwd} rules={PWD_RULES} label="Password strength" />
             </View>
           );
@@ -3014,12 +2878,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "view-toggle",
-    title: "ViewToggle",
-    category: "Atoms",
-    icon: faTableCells,
-    description: "Horizontal / vertical view toggle control; two-state icon selector.",
-    usage: `<ViewToggle value={view} onChange={setView} />`,
-    preview: () => <ViewToggle value="horizontal" onChange={() => {}} />,
     // Mirrors KuiReact's ViewToggle showcase variants 1:1 (same titles and labels).
     variants: [
       {
@@ -3040,16 +2898,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "scroll-area",
-    title: "ScrollArea",
-    category: "Atoms",
-    icon: faScroll,
-    description: "Scrollable container for vertical, horizontal, or both-axis scrolling.",
-    usage: `<ScrollArea className="h-40">{items}</ScrollArea>`,
-    preview: () => (
-      <ScrollArea className="h-16 w-full rounded-md border border-border p-2">
-        <Text className="text-sm text-text-primary">Item 1</Text>
-      </ScrollArea>
-    ),
     // Mirrors KuiReact's ScrollArea showcase variants 1:1 (same titles and content).
     variants: [
       {
@@ -3084,12 +2932,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "tree-view",
-    title: "TreeView",
-    category: "Atoms",
-    icon: faSitemap,
-    description: "Collapsible tree with selection (single or multi), expand/collapse-all toolbar and level/position announcements.",
-    usage: `<TreeView label="File tree" nodes={nodes} selectedId={sel} onSelect={setSel} />`,
-    preview: () => <TreeView hideToolbar nodes={[{ id: "src", label: "src", children: [{ id: "a", label: "App.tsx" }] }]} />,
     // Mirrors KuiReact's TreeView showcase variants 1:1 (same titles and data).
     // "type-ahead" in the last title is a hardware-keyboard feature that isn't
     // ported; multi-select works with taps (toggle) and long-press (range).
@@ -3198,12 +3040,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "data-table",
-    title: "DataTable",
-    category: "Atoms",
-    icon: faTableCellsColumnLock,
-    description: "Unified table with `mode=\"static\" | \"paginated\" | \"server\"`. Multi-column sort (long-press), global search, per-column filter (text + select), pagination, and unified loading/empty/error state.",
-    usage: `<DataTable caption="Users" rows={rows} columns={columns} pageSize={5} />`,
-    preview: () => <DataTable mode="static" searchable={false} columns={[{ key: "name", header: "Name" }]} rows={[{ name: "Alice Martin" }]} />,
     // Mirrors KuiReact's DataTable showcase variants 1:1 (same titles and data).
     variants: [
       {
@@ -3227,12 +3063,14 @@ export const REGISTRY: ShowcaseEntry[] = [
                 searchPlaceholder="Search users…"
                 pageSize={5}
                 rows={USERS}
+                // Widths = the min-content widths the web table's auto layout
+                // settles on in this narrow preview (names wrap onto two lines).
                 columns={[
-                  { key: "name", header: "Name" },
-                  { key: "email", header: "Email" },
-                  { key: "role", header: "Role" },
-                  { key: "status", header: "Status", render: (row) => <Badge variant={row.status === "Active" ? "success" : row.status === "Pending" ? "warning" : "neutral"}>{row.status}</Badge> },
-                  { key: "joined", header: "Joined" },
+                  { key: "name", header: "Name", width: 90 },
+                  { key: "email", header: "Email", width: 163 },
+                  { key: "role", header: "Role", width: 83 },
+                  { key: "status", header: "Status", width: 94, render: (row) => <Badge variant={row.status === "Active" ? "success" : row.status === "Pending" ? "warning" : "neutral"}>{row.status}</Badge> },
+                  { key: "joined", header: "Joined", width: 90 },
                 ]}
               />
             </View>
@@ -3278,11 +3116,13 @@ export const REGISTRY: ShowcaseEntry[] = [
               pageSize={5}
               searchPlaceholder="Search users…"
               columns={[
-                { key: "name", header: "Name", sortable: true },
-                { key: "email", header: "Email", sortable: true, filter: { kind: "text", placeholder: "Contains…" } },
+                // Widths = the web table's auto-layout (min-content) widths here.
+                { key: "name", header: "Name", sortable: true, width: 89 },
+                { key: "email", header: "Email", sortable: true, width: 165, filter: { kind: "text", placeholder: "Contains…" } },
                 {
                   key: "team",
                   header: "Team",
+                  width: 118,
                   sortable: true,
                   filter: {
                     kind: "select",
@@ -3294,7 +3134,7 @@ export const REGISTRY: ShowcaseEntry[] = [
                     ],
                   },
                 },
-                { key: "joined", header: "Joined", sortable: true },
+                { key: "joined", header: "Joined", sortable: true, width: 101 },
               ]}
             />
           </View>
@@ -3304,20 +3144,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "bulk-action-table",
-    title: "BulkActionTable",
-    category: "Atoms",
-    icon: faBulkRows,
-    description: "Table with id-keyed row selection and a bulk-action bar. The header checkbox selects only the visible rows; selecting every matching row is an explicit offer.",
-    usage: `<BulkActionTable rows={rows} rowId={(r) => r.id} selected={sel} onSelectedChange={setSel} columns={columns} actions={actions} />`,
-    preview: () => (
-      <BulkActionTable<{ id: string; name: string }, string>
-        rows={[{ id: "a", name: "Northwind Traders" }]}
-        rowId={(r) => r.id}
-        selected={["a"]}
-        onSelectedChange={() => {}}
-        columns={[{ key: "name", header: "Company" }]}
-      />
-    ),
     // Mirrors KuiReact's BulkActionTable showcase variants 1:1 (same titles and data).
     variants: [
       {
@@ -3338,10 +3164,11 @@ export const REGISTRY: ShowcaseEntry[] = [
                 rowId={(r) => r.id}
                 selected={selected}
                 onSelectedChange={setSelected}
+                // Widths = the web table's auto-layout widths in this preview.
                 columns={[
-                  { key: "company", header: "Company" },
-                  { key: "country", header: "Country" },
-                  { key: "stage", header: "Stage" },
+                  { key: "company", header: "Company", width: 160 },
+                  { key: "country", header: "Country", width: 104 },
+                  { key: "stage", header: "Stage", width: 104 },
                 ]}
                 actions={[
                   { key: "enrich", label: "Enrich", onAction: () => undefined },
@@ -3372,9 +3199,10 @@ export const REGISTRY: ShowcaseEntry[] = [
                 isRowSelectable={(r) => (r.reason ? r.reason : true)}
                 totalMatching={1240}
                 onSelectAllMatching={() => undefined}
+                // Widths = the web table's auto-layout widths in this preview.
                 columns={[
-                  { key: "company", header: "Company" },
-                  { key: "reason", header: "Why not selectable" },
+                  { key: "company", header: "Company", width: 151 },
+                  { key: "reason", header: "Why not selectable", width: 217 },
                 ]}
                 actions={[{ key: "email", label: "Email", onAction: () => undefined }]}
               />
@@ -3386,12 +3214,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "advanced-data-table",
-    title: "AdvancedDataTable",
-    category: "Atoms",
-    icon: faAdvancedTable,
-    description: "Enhanced table with row selection (with indeterminate header), expandable rows, and optional sticky header.",
-    usage: `<AdvancedDataTable columns={columns} rows={rows} selectable caption="Team members" />`,
-    preview: () => <AdvancedDataTable columns={[{ key: "name", header: "Name" }]} rows={[{ name: "Alice" }]} selectable />,
     // Mirrors KuiReact's AdvancedDataTable showcase variants 1:1 (same titles and data).
     variants: [
       {
@@ -3406,10 +3228,11 @@ export const REGISTRY: ShowcaseEntry[] = [
           return (
             <View className="w-full">
               <AdvancedDataTable
+                // Widths = the web table's auto-layout widths in this preview.
                 columns={[
-                  { key: "name", header: "Name" },
-                  { key: "role", header: "Role" },
-                  { key: "status", header: "Status" },
+                  { key: "name", header: "Name", width: 96 },
+                  { key: "role", header: "Role", width: 104 },
+                  { key: "status", header: "Status", width: 118 },
                 ]}
                 rows={rows}
                 selectable
@@ -3424,7 +3247,8 @@ export const REGISTRY: ShowcaseEntry[] = [
         Demo: () => (
           <View className="w-full">
             <AdvancedDataTable
-              columns={[{ key: "n", header: "Name" }, { key: "v", header: "Value" }]}
+              // Widths = the web table's auto-layout widths in this preview.
+              columns={[{ key: "n", header: "Name", width: 217 }, { key: "v", header: "Value", width: 199 }]}
               rows={Array.from({ length: 10 }, (_, i) => ({ n: `Row ${i + 1}`, v: i * 10 }))}
               stickyHeader
               caption="Sticky header table"
@@ -3436,12 +3260,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "diff-viewer",
-    title: "DiffViewer",
-    category: "Atoms",
-    icon: faCodeCompare,
-    description: "Line-based text diff with unified and split modes, @@ hunk headers, old/new line numbers, configurable context and collapsible unchanged runs.",
-    usage: `<DiffViewer oldText={oldSrc} newText={newSrc} mode="split" />`,
-    preview: () => <DiffViewer oldText={"a\nb"} newText={"a\nc"} />,
     // Mirrors KuiReact's DiffViewer showcase variants 1:1 (same titles and samples).
     variants: [
       { title: "Unified (default)", Demo: () => <DiffViewer oldText={DIFF_SAMPLE_OLD} newText={DIFF_SAMPLE_NEW} /> },
@@ -3452,12 +3270,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "chart",
-    title: "Chart",
-    category: "Atoms",
-    icon: faChartLine,
-    description: "Token-aware SVG charts — line, bar, area, pie, donut, scatter and inline sparklines — with axes, grid, legend and a touch tooltip.",
-    usage: `<LineChart series={series} height={220} />`,
-    preview: () => <SparkLine values={chartSparkValues} width={120} height={28} filled />,
     // Mirrors KuiReact's Chart showcase variants 1:1 (same titles, data and frame copy).
     variants: [
       {
@@ -3521,16 +3333,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "map-view",
-    title: "MapView",
-    category: "Atoms",
-    icon: faMapLocationDot,
-    description: "Interactive map with variant-coloured markers and callouts, zones, routes, tap-to-add markers and layer toggles. Native map with CartoDB tiles; a notice on web.",
-    usage: `<MapView center={[41.015, 28.979]} zoom={6} markers={markers} zones={zones} routes={routes} />`,
-    preview: () => (
-      <View className="h-16 w-full items-center justify-center rounded-md bg-surface-sunken">
-        <FontAwesomeIcon icon={faMapLocationDot} size={22} color="#9ca3af" />
-      </View>
-    ),
     // Mirrors KuiReact's MapView showcase variants 1:1 (same titles, data and Turkish copy).
     variants: [
       {
@@ -3587,16 +3389,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "video-player",
-    title: "VideoPlayer",
-    category: "Atoms",
-    icon: faCirclePlay,
-    description: "Custom-controls video player: seek bar with buffered range, volume, speed, quality, subtitle (with font size) and audio-language settings, fullscreen and auto-hiding controls.",
-    usage: `<VideoPlayer src="video.mp4" title="Video Title" subtitles={subtitles} />`,
-    preview: () => (
-      <View className="h-16 w-full items-center justify-center rounded-md bg-black">
-        <FontAwesomeIcon icon={faCirclePlay} size={22} color="#ffffff" />
-      </View>
-    ),
     // Mirrors KuiReact's VideoPlayer showcase variants 1:1 (same titles, media and copy).
     variants: [
       {
@@ -3652,19 +3444,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "tab-group",
-    title: "TabGroup",
-    category: "Atoms",
-    icon: faFolderOpen,
-    description: "In-screen tabs with icons, badges, disabled tabs and lazy panels.",
-    usage: `<TabGroup label="Account settings" tabs={[{ id: "profile", label: "Profile", content: <Profile /> }]} />`,
-    preview: () => (
-      <TabGroup
-        tabs={[
-          { id: "a", label: "Profile", content: null },
-          { id: "b", label: "Security", content: null },
-        ]}
-      />
-    ),
     // Mirrors KuiReact's TabGroup showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -3673,9 +3452,9 @@ export const REGISTRY: ShowcaseEntry[] = [
           <TabGroup
             label="Account settings"
             tabs={[
-              { id: "profile", label: "Profile", content: <Text variant="bodySm">Profile settings</Text> },
-              { id: "security", label: "Security", content: <Text variant="bodySm">Security settings</Text> },
-              { id: "billing", label: "Billing", content: <Text variant="bodySm">Billing settings</Text> },
+              { id: "profile", label: "Profile", content: <Text variant="bodySm">Profile settings content.</Text> },
+              { id: "security", label: "Security", content: <Text variant="bodySm">Security settings content.</Text> },
+              { id: "billing", label: "Billing", content: <Text variant="bodySm">Billing settings content.</Text> },
             ]}
           />
         ),
@@ -3684,42 +3463,30 @@ export const REGISTRY: ShowcaseEntry[] = [
         title: "Icons + badge + disabled",
         Demo: () => (
           <TabGroup
+            label="Dashboard sections"
             tabs={[
-              { id: "overview", label: "Overview", icon: <TabIcon icon={faChartBar} />, content: <Text variant="bodySm">Overview</Text> },
+              { id: "overview", label: "Overview", icon: <Text className="text-sm">📊</Text>, content: <Text variant="bodySm">Overview content.</Text> },
               {
                 id: "analytics",
                 label: "Analytics",
-                icon: <TabIcon icon={faArrowTrendUp} />,
-                badge: <Badge>New</Badge>,
-                content: <Text variant="bodySm">Analytics</Text>,
+                icon: <Text className="text-sm">📈</Text>,
+                badge: <Badge variant="primary" size="sm">New</Badge>,
+                content: <Text variant="bodySm">Analytics content.</Text>,
               },
-              { id: "settings", label: "Settings", disabled: true, content: <Text variant="bodySm">Settings</Text> },
+              { id: "reports", label: "Reports", icon: <Text className="text-sm">📄</Text>, content: <Text variant="bodySm">Reports content.</Text> },
+              { id: "settings", label: "Settings", icon: <Text className="text-sm">⚙</Text>, disabled: true, content: <Text>Settings disabled.</Text> },
             ]}
           />
         ),
       },
       {
         title: "Lazy panels",
-        Demo: () => (
-          <TabGroup
-            lazy
-            tabs={[
-              { id: "light", label: "Light", content: <Text variant="bodySm">Rendered immediately.</Text> },
-              { id: "heavy", label: "Heavy", content: <Text variant="bodySm">Rendered on first activation.</Text> },
-            ]}
-          />
-        ),
+        Demo: TabGroupLazyDemo,
       },
     ],
   },
   {
     id: "drawer",
-    title: "Drawer",
-    category: "Overlays",
-    icon: faTableColumns,
-    description: "Full-height side panel with header, scrolling body and footer.",
-    usage: `<Drawer open={open} onClose={close} title="Settings" side="right">{children}</Drawer>`,
-    preview: () => <Button label="Open drawer" size="sm" variant="outline" />,
     variants: [
       { title: "Right drawer", Demo: DrawerRightDemo },
       { title: "Left drawer", Demo: DrawerLeftDemo },
@@ -3728,21 +3495,16 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "popover",
-    title: "Popover",
-    category: "Overlays",
-    icon: faCommentDots,
-    description: "Anchored panel toggled by its trigger; tap outside or Android back to close.",
-    usage: `<Popover trigger={<Button variant="outline">Open</Button>}>{content}</Popover>`,
-    preview: () => <Button variant="outline" size="sm">Open</Button>,
     // Mirrors KuiReact's Popover showcase variants 1:1 (same titles and copy).
     variants: [
       {
         title: "Bottom (default)",
         Demo: () => (
-          <Popover trigger={<Button variant="outline">Open</Button>} placement="bottom">
-            <View className="p-4">
-              <Text className="text-sm font-semibold text-text-primary">Title</Text>
-              <Text className="text-xs text-text-secondary">Content goes here.</Text>
+          <Popover trigger={<Button variant="outline">Open Popover</Button>} placement="bottom">
+            <View className="gap-2 p-4">
+              <Text className="text-sm font-semibold text-text-primary">Popover title</Text>
+              <Text className="text-xs text-text-secondary">Contextual content appears here.</Text>
+              <Button size="sm" variant="ghost" className="w-full">Action</Button>
             </View>
           </Popover>
         ),
@@ -3750,28 +3512,29 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "Placements",
         Demo: () => (
-          <View className="flex-row flex-wrap gap-2">
-            <Popover placement="top" trigger={<Button>Top</Button>}>
-              <View className="p-4">
-                <Text variant="bodySm">…</Text>
-              </View>
-            </Popover>
-            <Popover placement="right" trigger={<Button>Right</Button>}>
-              <View className="p-4">
-                <Text variant="bodySm">…</Text>
-              </View>
-            </Popover>
+          <View className="flex-row flex-wrap items-center justify-center gap-3 py-8">
+            {(["top", "bottom", "left", "right"] as const).map((p) => (
+              <Popover key={p} placement={p} trigger={<Button variant="outline" size="sm">{p}</Button>}>
+                <View className="p-3">
+                  <Text className="text-xs text-text-secondary">Popover on {p}</Text>
+                </View>
+              </Popover>
+            ))}
           </View>
         ),
       },
       {
         title: "Focus trap inside Popover",
         Demo: () => (
-          <Popover focusTrap placement="bottom" trigger={<Button>Quick edit</Button>}>
+          <Popover focusTrap placement="bottom" trigger={<Button variant="outline">Focus-trapped Popover</Button>}>
             <View className="w-64 gap-3 p-4">
+              <Text className="text-sm font-semibold text-text-primary">Quick edit</Text>
               <Input placeholder="Title" />
               <Input placeholder="Tag" />
-              <Button>Save</Button>
+              <View className="flex-row justify-end gap-2 pt-1">
+                <Button variant="ghost" size="sm">Cancel</Button>
+                <Button variant="primary" size="sm">Save</Button>
+              </View>
             </View>
           </Popover>
         ),
@@ -3780,12 +3543,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "dropdown-menu",
-    title: "DropdownMenu",
-    category: "Overlays",
-    icon: faEllipsisVertical,
-    description: "Action menu with icons, separators, danger and disabled items.",
-    usage: `<DropdownMenu trigger={<Button variant="outline" size="sm">Actions ▾</Button>} items={items} />`,
-    preview: () => <Button variant="outline" size="sm">Actions ▾</Button>,
     // Mirrors KuiReact's DropdownMenu showcase variants 1:1 (same titles, glyphs and copy).
     variants: [
       {
@@ -3818,30 +3575,32 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "tooltip",
-    title: "Tooltip",
-    category: "Overlays",
-    icon: faMessage,
-    description: "Short hint shown on long-press (hover/focus on web), with themes, arrow and delay.",
-    usage: `<Tooltip content="Help text"><Button variant="outline" size="sm">Hover me</Button></Tooltip>`,
-    preview: () => <Button variant="outline" size="sm">Hover me</Button>,
     // Mirrors KuiReact's Tooltip showcase variants 1:1 (same titles and copy).
     variants: [
       {
         title: "Placements",
         Demo: () => (
-          <View className="pt-8">
-            <Tooltip content="Help text" placement="top">
-              <Button variant="outline" size="sm">Hover me</Button>
-            </Tooltip>
+          <View className="flex-row flex-wrap items-center justify-center gap-6 py-4">
+            {(["top", "bottom", "left", "right"] as const).map((p) => (
+              <Tooltip key={p} content={`Tooltip ${p}`} placement={p}>
+                <Button variant="outline" size="sm">{p.charAt(0).toUpperCase() + p.slice(1)}</Button>
+              </Tooltip>
+            ))}
           </View>
         ),
       },
       {
         title: "Themes",
         Demo: () => (
-          <View className="pt-8">
+          <View className="flex-row flex-wrap items-center justify-center gap-4 py-4">
+            <Tooltip content="Default theme" theme="default">
+              <Button variant="outline" size="sm">Default</Button>
+            </Tooltip>
             <Tooltip content="Dark theme" theme="dark">
-              <Button>Dark</Button>
+              <Button variant="outline" size="sm">Dark</Button>
+            </Tooltip>
+            <Tooltip content="Light theme" theme="light">
+              <Button variant="outline" size="sm">Light</Button>
             </Tooltip>
           </View>
         ),
@@ -3849,12 +3608,15 @@ export const REGISTRY: ShowcaseEntry[] = [
       {
         title: "Arrow + Delay",
         Demo: () => (
-          <View className="flex-row gap-2 pt-8">
+          <View className="flex-row flex-wrap items-center justify-center gap-4 py-4">
             <Tooltip content="With arrow" arrow placement="top">
-              <Button>Arrow</Button>
+              <Button variant="outline" size="sm">Arrow</Button>
             </Tooltip>
-            <Tooltip content="500ms delay" delay={500}>
-              <Button>Delayed</Button>
+            <Tooltip content="500ms delay" delay={500} placement="bottom">
+              <Button variant="outline" size="sm">Delayed</Button>
+            </Tooltip>
+            <Tooltip content="Arrow + dark + delay" arrow theme="dark" delay={300} placement="right">
+              <Button variant="outline" size="sm">Combined</Button>
             </Tooltip>
           </View>
         ),
@@ -3863,12 +3625,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "popconfirm",
-    title: "Popconfirm",
-    category: "Overlays",
-    icon: faCircleQuestion,
-    description: "Inline \"are you sure?\" confirmation popover for destructive or consequential actions — lighter-weight than a full Modal.",
-    usage: `<Popconfirm trigger={<Button variant="outline">Log out</Button>} title="Log out of your account?" onConfirm={logOut} />`,
-    preview: () => <Button variant="danger" size="sm">Delete</Button>,
     // Mirrors KuiReact's Popconfirm showcase variants 1:1 (same titles and copy).
     variants: [
       {
@@ -3892,12 +3648,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   },
   {
     id: "modal",
-    title: "Modal",
-    category: "Overlays",
-    icon: faWindowMaximize,
-    description: "Centered dialog with backdrop and footer actions.",
-    usage: `<Modal open={open} onClose={close} title="Confirm action">{children}</Modal>`,
-    preview: () => <Button label="Open dialog" size="sm" variant="outline" />,
     variants: [
       { title: "Confirmation dialog", Demo: ModalConfirmDemo },
       { title: "Sizes (sm / md / lg)", Demo: ModalSizesDemo },

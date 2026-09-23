@@ -90,7 +90,11 @@ export function Table<T extends Record<string, unknown>>({
                     col.header
                   )}
                   {col.sortable ? (
-                    <FontAwesomeIcon icon={dir === "asc" ? faChevronUp : dir === "desc" ? faChevronDown : faSort} size={10} color={t["text-secondary"]} />
+                    // KuiReact's `w-2.5 h-2.5` loses to FontAwesome's own CSS, so the
+                    // web icon renders in a 1.25em × 1em box (15 × 12 at text-xs).
+                    <View className="h-3 w-[15px] items-center justify-center">
+                      <FontAwesomeIcon icon={dir === "asc" ? faChevronUp : dir === "desc" ? faChevronDown : faSort} size={12} color={t["text-secondary"]} />
+                    </View>
                   ) : null}
                 </View>
               );
@@ -101,13 +105,13 @@ export function Table<T extends Record<string, unknown>>({
                   accessibilityLabel={typeof col.header === "string" ? col.header : key}
                   accessibilityValue={{ text: dir === "asc" ? "sorted ascending" : dir === "desc" ? "sorted descending" : "not sorted" }}
                   onPress={() => handleSort(key)}
-                  className={cn("px-4 py-3 active:bg-surface-overlay", col.thClass)}
+                  className={cn("justify-center px-4 py-3 active:bg-surface-overlay", col.thClass)}
                   style={cellStyle(col)}
                 >
                   {label}
                 </Pressable>
               ) : (
-                <View key={key} role="columnheader" className={cn("px-4 py-3", col.thClass)} style={cellStyle(col)}>
+                <View key={key} role="columnheader" className={cn("justify-center px-4 py-3", col.thClass)} style={cellStyle(col)}>
                   {label}
                 </View>
               );

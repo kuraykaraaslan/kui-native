@@ -4,8 +4,9 @@
 // the overlays. KuiReact's Turkish copy is kept verbatim.
 
 import type * as React from "react";
-import { useMemo, useRef, useState } from "react";
-import { PanResponder, Pressable, View, type LayoutChangeEvent } from "react-native";
+import { useId, useMemo, useRef, useState } from "react";
+import { PanResponder, Platform, Pressable, View, type LayoutChangeEvent, type ViewStyle } from "react-native";
+import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import {
   faCheck,
   faChevronLeft,
@@ -98,7 +99,8 @@ export function Scrubber({
       accessibilityActions={[{ name: "increment" }, { name: "decrement" }]}
       onAccessibilityAction={(e) => onChange(Math.min(1, Math.max(0, value + (e.nativeEvent.actionName === "increment" ? 0.05 : -0.05))))}
       onLayout={(e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width)}
-      className={cn("justify-center py-2", className)}
+      // -my-2 keeps the touch padding out of the layout (KuiReact's bar is a bare h-1.5).
+      className={cn("-my-2 justify-center py-2", className)}
     >
       <View className="h-1.5 overflow-hidden rounded-full bg-white/20">
         {buffered !== undefined ? <View className="absolute inset-y-0 left-0 rounded-full bg-white/25" style={{ width: `${buffered * 100}%` }} /> : null}
@@ -164,7 +166,8 @@ export function ControlRow({
         >
           <FontAwesomeIcon icon={volumeIcon} size={14} color={dim} />
         </Pressable>
-        {showVolume ? <Scrubber testID="volume-slider" label="Volume" value={muted ? 0 : volume} onChange={onVolumeChange} className="w-20" /> : null}
+        {/* KuiReact keeps the collapsed (w-0) slider wrapper in the row, so its gap-1.5 still applies. */}
+        {showVolume ? <Scrubber testID="volume-slider" label="Volume" value={muted ? 0 : volume} onChange={onVolumeChange} className="w-20" /> : <View className="w-0" />}
       </View>
       <Text className="flex-1 pl-1 text-xs text-white/70" style={{ fontVariant: ["tabular-nums"] }}>
         {formatTime(currentTime)}
@@ -317,6 +320,25 @@ export function SettingsPanel({
   );
 }
 
+/** KuiReact: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 30%, transparent 60%) behind the controls. */
+export function ControlsScrim() {
+  const id = `kui-video-scrim-${useId().replace(/:/g, "")}`;
+  return (
+    <View pointerEvents="none" className="absolute inset-0">
+      <Svg width="100%" height="100%" pointerEvents="none">
+        <Defs>
+          <LinearGradient id={id} x1="0" y1="1" x2="0" y2="0">
+            <Stop offset={0} stopColor="#000000" stopOpacity={0.85} />
+            <Stop offset={0.3} stopColor="#000000" stopOpacity={0.3} />
+            <Stop offset={0.6} stopColor="#000000" stopOpacity={0} />
+          </LinearGradient>
+        </Defs>
+        <Rect x="0" y="0" width="100%" height="100%" fill={`url(#${id})`} />
+      </Svg>
+    </View>
+  );
+}
+
 export function LoadingOverlay() {
   return (
     <View testID="video-loading" pointerEvents="none" className="absolute inset-0 items-center justify-center bg-black/20">
@@ -325,11 +347,17 @@ export function LoadingOverlay() {
   );
 }
 
+// KuiReact: backdrop-blur-sm (Tailwind v4: 8px). react-native-web passes backdropFilter through;
+// native has no backdrop filter.
+const PLAY_BACKDROP = Platform.OS === "web" ? ({ backdropFilter: "blur(8px)" } as unknown as ViewStyle) : undefined;
+
 export function CenterPlayOverlay({ playing }: { playing: boolean }) {
   if (playing) return null;
   return (
     <View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" className="absolute inset-0 items-center justify-center">
-      <View className="h-20 w-20 items-center justify-center rounded-full border-2 border-white/20 bg-black/50">
+      <View className="h-20 w-20 items-center justify-center rounded-full bg-black/50 shadow-2xl" style={PLAY_BACKDROP}>
+        {/* KuiReact: ring-2 ring-white/20 — drawn outside the 80px circle, like a CSS ring. */}
+        <View className="absolute -inset-0.5 rounded-full border-2 border-white/20" />
         <FontAwesomeIcon icon={faPlay} size={24} color="#ffffff" style={{ marginLeft: 4 }} />
       </View>
     </View>

@@ -53,7 +53,10 @@ export function Text({ variant = "body", className, style, accessibilityRole, ch
   // classes — so when the caller passes an explicit `font-*` weight or family
   // class (e.g. <Text className="font-semibold">), leave that property to it.
   const base: { fontFamily?: string; fontWeight?: (typeof FONT_WEIGHTS)[keyof typeof FONT_WEIGHTS] } = {};
-  if (!className || !FAMILY_CLASS.test(className)) base.fontFamily = FONTS.sans;
+  // `font-mono` resolves to FONTS.mono (Geist Mono on web, like KuiReact) rather than
+  // Tailwind's default mono stack; `font-sans` / `font-serif` classes apply as written.
+  if (className && /(^|\s)font-mono(\s|$)/.test(className)) base.fontFamily = FONTS.mono;
+  else if (!className || !FAMILY_CLASS.test(className)) base.fontFamily = FONTS.sans;
   if (!className || !WEIGHT_CLASS.test(className)) base.fontWeight = variantWeight[variant];
 
   return (

@@ -65,7 +65,10 @@ function CollapsibleRun({ run }: { run: Change[] }) {
       onPress={() => setOpen(true)}
       className="w-full flex-row items-center gap-2 border-y border-border bg-surface-overlay px-3 py-1 active:bg-surface-sunken"
     >
-      <FontAwesomeIcon icon={faPlus} size={12} color={t["text-secondary"]} />
+      {/* KuiReact's `w-3 h-3` loses to FontAwesome's CSS: a 1.25em × 1em box. */}
+      <View className="h-3 w-[15px] items-center justify-center">
+        <FontAwesomeIcon icon={faPlus} size={12} color={t["text-secondary"]} />
+      </View>
       <Text className="font-mono text-xs text-text-secondary">{label}</Text>
     </Pressable>
   );
