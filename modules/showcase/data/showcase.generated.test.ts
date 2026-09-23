@@ -25,6 +25,7 @@ describe("showcase.generated (KuiReact parity contract)", () => {
 
   // The Source block shows each component's file; re-run `npm run showcase:sync` after editing one.
   it.each(Object.keys(SOURCES))("%s: Source block is current", (file) => {
-    expect(SOURCES[file]).toBe(fs.readFileSync(path.join(ROOT, file), "utf8"));
+    // Line endings aside: a Windows checkout (core.autocrlf) has CRLF files.
+    expect(SOURCES[file]).toBe(fs.readFileSync(path.join(ROOT, file), "utf8").replace(/\r\n/g, "\n"));
   });
 });
