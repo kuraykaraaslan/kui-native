@@ -19,13 +19,13 @@ semantic design tokens so the palette matches the web library 1:1.
 - **Dark mode**: runtime **light / dark / system** toggle (header button) via NativeWind
   `vars()` applied at the app root (`libs/theme.ts`); component raw colors (Switch track,
   Spinner, placeholder…) follow it through `useThemeTokens()`
-- **Showcase**: a KUIreact-style landing homepage + a slide-in **drawer** (brand, search,
-  category-grouped component nav) that opens each component's detail screen — variants in a
-  canvas plus a copy-able usage snippet
+- **Showcase**: KUIreact's showcase shell, 1:1 — the same sidebar groups and pages
+  (generated from KUIreact by `npm run showcase:sync`), detail pages with preview, code and
+  source panes in side / stack / grid layouts, and the KUIreact home panel
 
 ## Run (on Windows — Android Studio lives here)
 
-All dependencies are pinned at **Expo SDK 56** versions (from the SDK's
+All dependencies are pinned at **Expo SDK 57** versions (from the SDK's
 `bundledNativeModules`), so a single install is enough.
 
 ```bash

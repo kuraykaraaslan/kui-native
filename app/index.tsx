@@ -24,8 +24,8 @@ const MONO = { fontFamily: FONTS.mono };
 
 // KuiReact HomePanel's data, with KuiNative's own stack, commands and layers.
 const STACK: { icon: IconDefinition; label: string; value: string }[] = [
-  { icon: faNodeJs, label: "Expo", value: "SDK 56" },
-  { icon: faJs, label: "React Native", value: "0.85" },
+  { icon: faNodeJs, label: "Expo", value: "SDK 57" },
+  { icon: faJs, label: "React Native", value: "0.86" },
   { icon: faJs, label: "TypeScript", value: "6" },
   { icon: faCss3Alt, label: "NativeWind", value: "4" },
 ];
