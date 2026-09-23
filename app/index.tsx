@@ -11,6 +11,7 @@ import { useThemeTokens } from "@/libs/theme";
 import { cn } from "@/libs/utils/cn";
 import { FONTS } from "@/libs/utils/typography";
 import { BrandMark } from "@/modules/showcase/ui/BrandMark";
+import { FamilyPanel } from "@/modules/showcase/ui/FamilyPanel";
 import { GithubButton } from "@/modules/showcase/ui/Header";
 import { SiteHead } from "@/modules/showcase/ui/SiteHead";
 import { Text } from "@/modules/ui";
@@ -184,6 +185,9 @@ export default function Home() {
             Each layer builds on the one above it. Keep app logic in screens; ui components stay generic.
           </Text>
         </Panel>
+
+        {/* KUI family */}
+        <FamilyPanel current="native" />
 
         {/* Footer */}
         <View className={cn("gap-3 border-t border-border pt-4", sm ? "flex-row items-center justify-between" : "items-start")}>
