@@ -3,6 +3,20 @@
 All notable changes to `kui-native` are recorded here. Versions are git tags
 (`github:kuraykaraaslan/kui-native#vX.Y.Z`).
 
+## 0.3.1
+
+### Fixed
+
+- Overlays in dark mode rendered with the light tokens. `Modal`, `Drawer` and the anchored panel
+  behind `DropdownMenu` / `Select` / `Popover` / `Popconfirm` mount through an RN `Modal`, i.e.
+  outside the app root where the `vars()` style is applied, so their `bg-surface-*` / `text-*`
+  classes fell back to the light defaults. They now re-apply the active scheme's vars.
+
+### Added
+
+- `useThemeVars()` in `libs/theme` — the active scheme's NativeWind vars, for any content an app
+  renders outside its root (its own portals / RN `Modal`s).
+
 ## 0.3.0
 
 ### Added

@@ -5,7 +5,7 @@ import { SafeAreaInsetsContext } from "react-native-safe-area-context";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { useThemeTokens } from "../../libs/theme";
+import { useThemeTokens, useThemeVars } from "../../libs/theme";
 import { cn } from "../../libs/utils/cn";
 
 import { Backdrop, useFocusOnOpen, usePresence } from "./Overlays/shared";
@@ -45,6 +45,7 @@ export function Drawer({
   className,
 }: DrawerProps) {
   const t = useThemeTokens();
+  const themeVars = useThemeVars();
   const { width: screenWidth } = useWindowDimensions();
   // Fall back to zero insets outside a SafeAreaProvider (e.g. in tests).
   const insets = useContext(SafeAreaInsetsContext) ?? { top: 0, bottom: 0, left: 0, right: 0 };
@@ -61,7 +62,7 @@ export function Drawer({
 
   return (
     <RNModal visible transparent animationType="none" statusBarTranslucent onRequestClose={onClose}>
-      <View style={styles.fill} className={cn("flex-row", side === "right" ? "justify-end" : "justify-start")}>
+      <View style={[themeVars, styles.fill]} className={cn("flex-row", side === "right" ? "justify-end" : "justify-start")}>
         <Backdrop progress={progress} onPress={onClose} />
         <Animated.View
           accessibilityViewIsModal

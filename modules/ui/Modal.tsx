@@ -3,7 +3,7 @@ import { Animated, KeyboardAvoidingView, Platform, Pressable, Modal as RNModal, 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { useThemeTokens } from "../../libs/theme";
+import { useThemeTokens, useThemeVars } from "../../libs/theme";
 import { cn } from "../../libs/utils/cn";
 
 import { Backdrop, useFocusOnOpen, usePresence } from "./Overlays/shared";
@@ -61,6 +61,7 @@ export function Modal({
 }: ModalProps) {
   const isOpen = open ?? visible ?? false;
   const t = useThemeTokens();
+  const themeVars = useThemeVars();
   // Screen-reader focus moves to the title once open (KuiReact's focus trap
   // focuses the panel on open).
   const { focusRef: titleRef, onOpened } = useFocusOnOpen();
@@ -78,7 +79,7 @@ export function Modal({
       statusBarTranslucent
       onRequestClose={onClose}
     >
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.fill}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={[themeVars, styles.fill]}>
         <View className={cn("flex-1 p-4", fullscreen ? "items-stretch justify-center" : "items-center justify-center")}>
           <Backdrop progress={progress} onPress={closeOnBackdropClick ? onClose : undefined} />
 

@@ -2,6 +2,8 @@ import type * as React from "react";
 import { useCallback, useRef, useState } from "react";
 import { Pressable, Modal as RNModal, StyleSheet, View, useWindowDimensions, type LayoutChangeEvent } from "react-native";
 
+import { useThemeVars } from "../../../../libs/theme";
+
 export type Placement = "top" | "bottom" | "left" | "right";
 export type Align = "start" | "center" | "end";
 export type Rect = { x: number; y: number; width: number; height: number };
@@ -78,6 +80,7 @@ export function AnchoredPanel({
   children,
 }: AnchoredPanelProps) {
   const { width: screenWidth } = useWindowDimensions();
+  const themeVars = useThemeVars();
   const [size, setSize] = useState({ width: 0, height: 0 });
   const onLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
@@ -88,7 +91,7 @@ export function AnchoredPanel({
 
   return (
     <RNModal visible transparent animationType="none" statusBarTranslucent onRequestClose={onClose} onShow={onShow}>
-      <View style={StyleSheet.absoluteFill} pointerEvents={passThrough ? "none" : "box-none"}>
+      <View style={[themeVars, StyleSheet.absoluteFill]} pointerEvents={passThrough ? "none" : "box-none"}>
         {dismissOnOutsidePress ? (
           <Pressable
             testID="anchored-panel-outside"

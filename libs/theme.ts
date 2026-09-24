@@ -213,3 +213,13 @@ export function useResolvedScheme(): "light" | "dark" {
 export function useThemeTokens(): ThemeTokens {
   return tokenMaps[useResolvedScheme()];
 }
+
+/**
+ * The active scheme's NativeWind vars, for content rendered outside the app
+ * root: an RN `Modal` mounts its children in a separate tree, so the vars()
+ * applied on the root View don't reach it and token classes fall back to the
+ * light defaults. Overlays pass this as the style of their first View.
+ */
+export function useThemeVars() {
+  return themes[useResolvedScheme()];
+}
