@@ -10,10 +10,10 @@ import { create } from "zustand";
  *    `bg-primary` / `text-text-primary` className resolves to the active scheme.
  *  - `tokenMaps` — the raw hex, for RN props that take a color string and can't use
  *    a className (FontAwesome `color`, Switch `trackColor`, `placeholderTextColor`).
+ * Both are generated from the same maps, and `configureTheme()` regenerates both,
+ * so a className and `useThemeTokens()` always agree.
  */
-type TokenMap = Record<string, string>;
-
-const light: TokenMap = {
+const defaultLight = {
   primary: "#3b82f6",
   "primary-hover": "#2563eb",
   "primary-active": "#1d4ed8",
@@ -53,7 +53,19 @@ const light: TokenMap = {
   "brand-tile": "#0f172a",
 };
 
-const dark: TokenMap = {
+/** A design-token name, e.g. `"primary"` or `"text-secondary"` (a `--color-<name>` var / `bg-<name>` class). */
+export type TokenName = keyof typeof defaultLight;
+/** Every token of one scheme, as a color string. */
+export type TokenMap = Record<TokenName, string>;
+/**
+ * What `tokenMaps` / `useThemeTokens()` hand out: every token, still indexable by
+ * any string, as before the token names were typed (so `t[`${tone}-subtle`]` compiles).
+ */
+export type ThemeTokens = TokenMap & Record<string, string>;
+/** Per-scheme token overrides for `configureTheme()`. */
+export type ThemeOverrides = { light?: Partial<TokenMap>; dark?: Partial<TokenMap> };
+
+const defaultDark: TokenMap = {
   primary: "#60a5fa",
   "primary-hover": "#93c5fd",
   "primary-active": "#1d4ed8",
@@ -91,14 +103,70 @@ const dark: TokenMap = {
   "brand-tile": "#0f172a",
 };
 
+type Scheme = "light" | "dark";
+
+const DEFAULTS: Readonly<Record<Scheme, Readonly<TokenMap>>> = Object.freeze({
+  light: Object.freeze({ ...defaultLight }),
+  dark: Object.freeze({ ...defaultDark }),
+});
+const TOKEN_NAMES = Object.keys(defaultLight) as TokenName[];
+
 function toVars(map: TokenMap) {
   const out: Record<string, string> = {};
-  for (const key in map) out["--color-" + key] = map[key];
+  for (const key of TOKEN_NAMES) out["--color-" + key] = map[key];
   return vars(out);
 }
 
-export const themes = { light: toVars(light), dark: toVars(dark) } as const;
-export const tokenMaps = { light, dark } as const;
+const themeVars: Record<Scheme, ReturnType<typeof toVars>> = {
+  light: toVars(DEFAULTS.light),
+  dark: toVars(DEFAULTS.dark),
+};
+
+/**
+ * NativeWind `vars()` style for each scheme — apply `themes[scheme]` as the root
+ * view's `style`. Read through getters because on native `vars()` returns an
+ * opaque handle (its variables live in a WeakMap keyed by the object), which
+ * can't be patched in place: `configureTheme()` swaps in a new one instead.
+ */
+export const themes = {
+  get light() {
+    return themeVars.light;
+  },
+  get dark() {
+    return themeVars.dark;
+  },
+};
+
+/** Raw token values per scheme. Plain objects, updated in place by `configureTheme()`. */
+export const tokenMaps: { readonly light: ThemeTokens; readonly dark: ThemeTokens } = {
+  light: { ...DEFAULTS.light },
+  dark: { ...DEFAULTS.dark },
+};
+
+/**
+ * Override design tokens (e.g. a brand color). Merges `overrides` onto the
+ * built-in defaults — not onto a previous call — and regenerates both the
+ * NativeWind vars (`themes`, used by classNames) and the raw values
+ * (`tokenMaps`, returned by `useThemeTokens()`), so the two stay in sync.
+ *
+ * Call it once at startup, before the first render (e.g. at module scope of the
+ * root layout): components already mounted are not re-rendered. Not calling it
+ * keeps the defaults; `configureTheme()` with no argument restores them.
+ *
+ *   configureTheme({ light: { primary: "#f4511e" }, dark: { primary: "#ff7043" } });
+ */
+export function configureTheme(overrides: ThemeOverrides = {}): void {
+  for (const scheme of ["light", "dark"] as const) {
+    const patch = overrides[scheme] ?? {};
+    const merged = { ...DEFAULTS[scheme] };
+    for (const name of TOKEN_NAMES) {
+      const value = patch[name];
+      if (value !== undefined) merged[name] = value;
+    }
+    Object.assign(tokenMaps[scheme], merged);
+    themeVars[scheme] = toVars(merged);
+  }
+}
 
 export type ThemeMode = "light" | "dark" | "system";
 
@@ -142,6 +210,6 @@ export function useResolvedScheme(): "light" | "dark" {
 }
 
 /** Raw token hex for the active scheme — for color props that can't take a className. */
-export function useThemeTokens(): TokenMap {
+export function useThemeTokens(): ThemeTokens {
   return tokenMaps[useResolvedScheme()];
 }
