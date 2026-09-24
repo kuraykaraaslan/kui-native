@@ -41,6 +41,104 @@ npm run typecheck  # tsc --noEmit
 > on the Windows filesystem because React Native / Android tooling (Android Studio,
 > emulators) runs on Windows — run all `npm`/`expo` commands from Windows, not WSL.
 
+## Consuming as a package
+
+Another Expo app (SDK 57, NativeWind v4) can install `kui-native` straight from git and import
+the TypeScript sources — no path alias or build step involved. Pin a tag:
+
+```jsonc
+// package.json
+"dependencies": {
+  "kui-native": "github:kuraykaraaslan/kui-native#v0.2.0"
+}
+```
+
+React, React Native, Expo, NativeWind, Reanimated, FontAwesome, `clsx`, `tailwind-merge`,
+`zustand` and the other runtime libraries are **peer dependencies** — the app provides them, so
+there is only ever one copy of React. Some are **optional peers**, needed only by the components
+that use them: `expo-video` (VideoPlayer), `expo-document-picker` (FileInput), `expo-clipboard`
+(ColorPicker), `react-native-maps` / `leaflet` / `react-leaflet` (MapView),
+`@fortawesome/free-regular-svg-icons` (StarRating), plus `countries-list` and
+`@fortawesome/free-brands-svg-icons`. See `package.json` for the exact ranges.
+
+### Entry points
+
+| Import | What |
+|---|---|
+| `kui-native/modules/ui/<Component>` | One component, e.g. `kui-native/modules/ui/Button` — **recommended**: pulls in no optional peer it doesn't use |
+| `kui-native/modules/ui` | The full barrel — resolves *every* component, so all optional peers must be installed |
+| `kui-native/libs/theme` | `themes`, `tokenMaps`, `configureTheme`, `useThemeMode`, `useResolvedScheme`, `useThemeTokens`, token types |
+| `kui-native/libs/utils/cn` | `cn()` — `twMerge(clsx())` |
+| `kui-native/libs/utils/tailwind-tokens` | The semantic color map for `tailwind.config.js` |
+
+```ts
+import { Button } from "kui-native/modules/ui/Button";
+import { Badge } from "kui-native/modules/ui/Badge";
+```
+
+There is no `exports` map on purpose — it would close off these deep paths.
+
+### Setup
+
+1. **Tailwind** — scan the library's classes and register its tokens:
+
+   ```js
+   // tailwind.config.js
+   module.exports = {
+     content: [
+       "./app/**/*.{ts,tsx}",
+       "./components/**/*.{ts,tsx}",
+       "./node_modules/kui-native/modules/ui/**/*.{ts,tsx}",
+     ],
+     presets: [require("nativewind/preset")],
+     theme: {
+       extend: { colors: require("kui-native/libs/utils/tailwind-tokens").colors },
+     },
+   };
+   ```
+
+2. **Jest** — the package ships untranspiled TypeScript, so add `kui-native` to the
+   `transformIgnorePatterns` allow-list, e.g.
+   `"node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|nativewind|react-native-css-interop|@fortawesome/.*|kui-native)"`.
+
+3. **Brand tokens (optional)** — call `configureTheme` **once, before the first render**, e.g. at
+   module scope of the root layout. It merges onto the built-in tokens and regenerates both the
+   NativeWind vars and `useThemeTokens()`, so `bg-primary` and `useThemeTokens().primary` agree.
+   Not calling it keeps the default palette. Overrides are typed (`TokenMap` / `TokenName`).
+
+   ```ts
+   import { configureTheme } from "kui-native/libs/theme";
+
+   configureTheme({ light: { primary: "#f4511e" }, dark: { primary: "#ff7043" } });
+   ```
+
+4. **Apply the theme at the root** — the token classes read CSS variables that
+   `themes[scheme]` provides:
+
+   ```tsx
+   import { themes, useResolvedScheme } from "kui-native/libs/theme";
+
+   export default function RootLayout() {
+     const scheme = useResolvedScheme();
+     return (
+       <View style={themes[scheme]} className="flex-1 bg-surface-base">
+         <Slot />
+       </View>
+     );
+   }
+   ```
+
+5. **Theme mode persistence is the app's job.** `useThemeMode` (light / dark / system) lives in
+   memory only; the package deliberately does not persist it. Store the choice wherever the app
+   keeps its settings (MMKV, SecureStore, …) and feed it back on startup:
+
+   ```ts
+   useThemeMode.getState().setMode(savedMode); // "light" | "dark" | "system"
+   ```
+
+`global.css` ships too, as a reference for the light-mode `:root` fallback values; the app keeps
+its own `global.css` with the `@tailwind` directives.
+
 ## Structure (mirrors KUIREACT)
 
 ```
