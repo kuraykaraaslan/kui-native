@@ -49,7 +49,7 @@ the TypeScript sources — no path alias or build step involved. Pin a tag:
 ```jsonc
 // package.json
 "dependencies": {
-  "kui-native": "github:kuraykaraaslan/kui-native#v0.2.0"
+  "kui-native": "github:kuraykaraaslan/kui-native#v0.3.0"
 }
 ```
 
@@ -69,6 +69,7 @@ that use them: `expo-video` (VideoPlayer), `expo-document-picker` (FileInput), `
 | `kui-native/modules/ui` | The full barrel — resolves *every* component, so all optional peers must be installed |
 | `kui-native/libs/theme` | `themes`, `tokenMaps`, `configureTheme`, `useThemeMode`, `useResolvedScheme`, `useThemeTokens`, token types |
 | `kui-native/libs/utils/cn` | `cn()` — `twMerge(clsx())` |
+| `kui-native/libs/utils/typography` | `configureFonts`, `fontStyle`, `FONTS`, `FONT_WEIGHTS`, font types |
 | `kui-native/libs/utils/tailwind-tokens` | The semantic color map for `tailwind.config.js` |
 
 ```ts
@@ -139,6 +140,72 @@ There is no `exports` map on purpose — it would close off these deep paths.
 `global.css` ships too, as a reference for the light-mode `:root` fallback values; the app keeps
 its own `global.css` with the `@tailwind` directives.
 
+### Fonts
+
+By default the components use the OS system font on native and Geist on the web. To use your
+own font everywhere — `Text` and its variants, `font-<weight>` classes, inputs (`Input`,
+`Textarea`, `SearchBar`, `Select` / `MultiSelect` search, `ComboBox`, `TagInput`, …), button and
+badge labels, chart labels — load it and call `configureFonts` once. Example with Inter:
+
+1. Install the font package:
+
+   ```bash
+   npx expo install @expo-google-fonts/inter expo-font expo-splash-screen
+   ```
+
+2. In the root layout, call `configureFonts` **at module scope** (before the first render —
+   components read it while rendering and don't re-render when it changes), and load the fonts
+   with `useFonts` before hiding the splash screen:
+
+   ```tsx
+   // app/_layout.tsx
+   import { useEffect } from "react";
+   import { Slot } from "expo-router";
+   import * as SplashScreen from "expo-splash-screen";
+   import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, useFonts } from "@expo-google-fonts/inter";
+   import { configureFonts } from "kui-native/libs/utils/typography";
+
+   configureFonts({
+     sans: {
+       regular: "Inter_400Regular",
+       medium: "Inter_500Medium",
+       semiBold: "Inter_600SemiBold",
+       bold: "Inter_700Bold",
+       // Optional: a CSS stack for the web build (combined with fontWeight there).
+       web: "Inter, ui-sans-serif, system-ui, sans-serif",
+     },
+   });
+
+   SplashScreen.preventAutoHideAsync();
+
+   export default function RootLayout() {
+     const [loaded, error] = useFonts({ Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold });
+     useEffect(() => {
+       if (loaded || error) SplashScreen.hideAsync();
+     }, [loaded, error]);
+     if (!loaded && !error) return null;
+     return <Slot />;
+   }
+   ```
+
+How the config is applied:
+
+- **Per-weight map** (`{ regular, medium?, semiBold?, bold? }`, the expo-font /
+  `@expo-google-fonts` shape): each weight uses its own family and `fontWeight` is **not** set —
+  Android ignores `fontWeight` for custom families and iOS may synthesize a fake bold on top.
+  `regular` is required; a missing weight falls back to the nearest configured one. `Text`
+  maps `font-medium` / `font-semibold` / `font-bold` (and `thin`…`black`) classes and a
+  `style` `fontWeight` to the matching family.
+- **Plain string** (`sans: "Inter"`): one family for every weight, plus `fontWeight`.
+- **`web`**: a CSS font stack used on the web instead of the per-weight families, with
+  `fontWeight`. Without it the web build uses the per-weight families too (expo-font registers
+  them as `@font-face` there).
+- `mono` takes the same shapes and applies to `font-mono` text and the ColorPicker fields.
+- Not calling `configureFonts` keeps the defaults; `configureFonts({})` restores them.
+
+For your own components, `fontStyle(weight?, family?)` returns the matching
+`{ fontFamily, fontWeight? }` style, e.g. `style={fontStyle("semiBold")}` — or just use `Text`.
+
 ## Structure (mirrors KUIREACT)
 
 ```
@@ -153,7 +220,7 @@ modules/
 libs/
   utils/cn.ts             twMerge(clsx()) — identical to KUIREACT
   utils/tailwind-tokens.js semantic color tokens → var(--color-*)
-  utils/typography.ts     font-family + font-weight constants
+  utils/typography.ts     FONTS / FONT_WEIGHTS, configureFonts(), fontStyle()
   config/showcase.config.ts
 global.css                @tailwind + :root/.dark semantic tokens (from KUIREACT)
 ```
@@ -183,9 +250,9 @@ images, semantic token classes only (raw colors appear only where an RN prop has
 
 ## Notes
 
-- Fonts: the base uses the OS system font (zero assets). To match KUIREACT's Geist, bundle
-  Geist / Geist Mono, load them via `expo-font` in `app/_layout.tsx`, then update
-  `libs/utils/typography.ts`. Weights come from `fontWeight`, not from swapping families.
+- Fonts: the base uses the OS system font on native (zero assets) and Geist on the web. Apps
+  swap it with `configureFonts` (see [Fonts](#fonts)); components get their font from
+  `fontStyle()` in `libs/utils/typography.ts`.
 - Token values are copied from `$KUIREACT_ROOT/app/globals.css` — keep them in sync when the
   web palette changes.
 - Heavier KUIREACT layers (`modules/domains`, `modules/app`, a richer playground) are
