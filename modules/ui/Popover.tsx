@@ -2,7 +2,7 @@ import type * as React from "react";
 import { useState } from "react";
 import { Platform, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { AnchoredPanel, useAnchor, type Placement } from "./Overlays/shared";
 import { Trigger } from "./Overlays/shared/useTrigger";

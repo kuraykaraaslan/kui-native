@@ -2,7 +2,7 @@ import type * as React from "react";
 import { useRef, useState } from "react";
 import { Platform, Pressable, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { AnchoredPanel, focusElement, useAnchor } from "./Overlays/shared";
 import { Trigger } from "./Overlays/shared/useTrigger";

@@ -4,8 +4,8 @@ import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { SkeletonLine } from "./Skeleton";
 import { Text } from "./Text";

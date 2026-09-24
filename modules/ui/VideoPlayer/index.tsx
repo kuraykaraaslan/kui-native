@@ -16,7 +16,7 @@ import { Image, Pressable, View } from "react-native";
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../../libs/utils/cn";
 
 import { Text } from "../Text";
 import { formatTime } from "./format";

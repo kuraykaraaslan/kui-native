@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { AccessibilityInfo, Animated, Easing, View } from "react-native";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 type SpinnerSize = "xs" | "sm" | "md" | "lg" | "xl";
 

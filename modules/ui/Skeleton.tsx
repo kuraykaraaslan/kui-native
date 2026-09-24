@@ -2,7 +2,7 @@ import type * as React from "react";
 import { useEffect, useRef } from "react";
 import { AccessibilityInfo, Animated, Easing, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 /**
  * Tailwind's `animate-pulse` (KuiReact's skeleton animation):

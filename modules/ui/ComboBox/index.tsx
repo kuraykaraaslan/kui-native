@@ -11,7 +11,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { TextInput as RNTextInput, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../../libs/utils/cn";
 
 import { Label } from "../Label";
 import { Text } from "../Text";

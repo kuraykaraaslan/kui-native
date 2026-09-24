@@ -2,8 +2,8 @@ import { Platform, Pressable, View } from "react-native";
 import { faTableCells, faTableList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

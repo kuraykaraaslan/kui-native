@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { PanResponder, Pressable, View, type AccessibilityActionEvent, type LayoutChangeEvent } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

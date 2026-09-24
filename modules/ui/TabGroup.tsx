@@ -2,7 +2,7 @@ import type * as React from "react";
 import { useRef, useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

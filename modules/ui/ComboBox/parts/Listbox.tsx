@@ -6,7 +6,7 @@
 import { useState } from "react";
 import { Pressable, ScrollView, View, type NativeScrollEvent, type NativeSyntheticEvent } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../../../libs/utils/cn";
 
 import { SkeletonLine } from "../../Skeleton";
 import { Text } from "../../Text";

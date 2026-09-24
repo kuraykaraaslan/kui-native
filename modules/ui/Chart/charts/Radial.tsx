@@ -7,7 +7,7 @@ import { useMemo, useState } from "react";
 import { View } from "react-native";
 import Svg, { Circle, G, Path, Text as SvgText } from "react-native-svg";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../../../libs/utils/cn";
 
 import { ChartTooltip, Grid, Legend, ResponsiveContainer, useChartColor, XAxis, YAxis } from "../primitives";
 import { paletteColor } from "../theme";

@@ -15,7 +15,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../../libs/utils/cn";
 
 import { Label } from "../Label";
 import { AnchoredPanel, useAnchor } from "../Overlays/shared";

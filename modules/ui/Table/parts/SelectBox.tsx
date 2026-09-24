@@ -2,8 +2,8 @@ import { Pressable } from "react-native";
 import { faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../../../libs/theme";
+import { cn } from "../../../../libs/utils/cn";
 
 // KuiReact's native "h-4 w-4 rounded border-border-strong accent-[var(--primary)]" checkbox.
 export function SelectBox({ checked, mixed, disabled, label, hint, onPress }: { checked: boolean; mixed?: boolean; disabled?: boolean; label: string; hint?: string; onPress: () => void }) {

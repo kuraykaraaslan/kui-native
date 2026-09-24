@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react-native";
 import { Text as RNText } from "react-native";
 
-import { FONTS } from "@/libs/utils/typography";
+import { FONTS } from "../../libs/utils/typography";
 
 import { Text } from "./Text";
 

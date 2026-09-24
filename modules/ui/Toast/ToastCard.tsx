@@ -11,8 +11,8 @@ import {
   type IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../../libs/theme";
+import { cn } from "../../../libs/utils/cn";
 
 import { Text } from "../Text";
 import type { ToastItem, ToastVariant } from "./types";

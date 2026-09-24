@@ -4,8 +4,8 @@ import { View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Button } from "./Button";
 import { Text } from "./Text";

@@ -4,7 +4,7 @@ import { AccessibilityInfo, Animated, PanResponder, Pressable, View, type Layout
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 export type Slide = React.ReactNode | { id: string; content: React.ReactNode };
 

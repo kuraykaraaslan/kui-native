@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Platform, Pressable, View, type LayoutChangeEvent, type ViewStyle } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

@@ -4,8 +4,8 @@ import { Pressable, ScrollView, TextInput as RNTextInput, View } from "react-nat
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCheck, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Label } from "./Label";
 import { Text } from "./Text";

@@ -2,8 +2,8 @@ import type * as React from "react";
 import { useState } from "react";
 import { TextInput as RNTextInput, View, type TextInputProps as RNTextInputProps } from "react-native";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Label } from "./Label";
 import { Text } from "./Text";

@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { ScrollView, type ScrollViewProps } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 type ScrollAreaOrientation = "vertical" | "horizontal" | "both";
 

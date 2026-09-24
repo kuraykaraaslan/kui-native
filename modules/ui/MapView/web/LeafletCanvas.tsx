@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import type * as LeafletLib from "leaflet";
 import type * as ReactLeaflet from "react-leaflet";
 
-import { useResolvedScheme } from "@/libs/theme";
+import { useResolvedScheme } from "../../../../libs/theme";
 
 import { VARIANT_FILL, VARIANT_HEX, markerSvg, type MapMarker, type MapRoute, type MapTooltipData, type MapZone } from "../types";
 import { LEAFLET_TILES, loadLeaflet, type LeafletBundle } from "./leaflet";

@@ -10,7 +10,7 @@ import { useMemo, useState } from "react";
 import { View } from "react-native";
 import Svg, { Circle, G, Path, Rect } from "react-native-svg";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../../../libs/utils/cn";
 
 import { ChartTooltip, Crosshair, Grid, Legend, ResponsiveContainer, useChartColor, plotTouchHandlers, XAxis, YAxis } from "../primitives";
 import { paletteColor } from "../theme";

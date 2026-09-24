@@ -9,7 +9,7 @@ import { useContext, useEffect, useMemo } from "react";
 import { View } from "react-native";
 import { SafeAreaInsetsContext } from "react-native-safe-area-context";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../../libs/utils/cn";
 
 import { ToastCard } from "./ToastCard";
 import type { ToastApi, ToastItem, ToastMessages, ToastOptions, ToastPosition } from "./types";

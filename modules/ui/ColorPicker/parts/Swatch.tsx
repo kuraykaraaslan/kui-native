@@ -2,8 +2,8 @@
 
 import { Pressable } from "react-native";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../../../libs/theme";
+import { cn } from "../../../../libs/utils/cn";
 
 type SwatchProps = {
   color: string;

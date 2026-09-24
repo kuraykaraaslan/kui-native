@@ -2,8 +2,8 @@ import type * as React from "react";
 import { useEffect, useRef } from "react";
 import { Animated, Easing, Pressable, View, type PressableProps, type View as RNView } from "react-native";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

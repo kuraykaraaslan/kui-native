@@ -9,8 +9,8 @@ import { useState } from "react";
 import { View, type GestureResponderEvent, type LayoutChangeEvent } from "react-native";
 import { G, Line, Text as SvgText } from "react-native-svg";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../../../libs/theme";
+import { cn } from "../../../../libs/utils/cn";
 
 import { Text } from "../../Text";
 import { chartTheme, paletteColor, resolveColor } from "../theme";

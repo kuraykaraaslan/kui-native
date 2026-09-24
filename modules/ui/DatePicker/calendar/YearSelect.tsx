@@ -8,7 +8,7 @@
 import { useRef } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../../../libs/utils/cn";
 
 import { Text } from "../../Text";
 import { yearRange } from "../hooks/useDateFns";

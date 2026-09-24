@@ -4,8 +4,8 @@ import * as DocumentPicker from "expo-document-picker";
 import { faFolderOpen, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Label } from "./Label";
 import { Text } from "./Text";

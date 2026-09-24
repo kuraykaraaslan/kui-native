@@ -29,4 +29,24 @@ module.exports = defineConfig([
       "react-hooks/purity": "warn",
     },
   },
+  {
+    // modules/ui and libs ship inside the kui-native package. In a consumer app
+    // "@/" resolves against the *consumer's* root, so an aliased import here
+    // would silently bind to the wrong module. Package code imports relatively.
+    files: ["modules/ui/**", "libs/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              regex: "^@/",
+              message:
+                "Use a relative import: modules/ui and libs ship in the kui-native package, where '@/' resolves to the consumer's root.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]);

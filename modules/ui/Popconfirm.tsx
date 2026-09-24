@@ -4,8 +4,8 @@ import { Platform, View } from "react-native";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Button } from "./Button";
 import { AnchoredPanel, focusElement, useAnchor, type Placement } from "./Overlays/shared";

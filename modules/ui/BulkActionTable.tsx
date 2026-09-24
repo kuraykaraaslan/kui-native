@@ -1,7 +1,7 @@
 import { useMemo, type ReactNode } from "react";
 import { Pressable, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 import { Table } from "./Table/Table";

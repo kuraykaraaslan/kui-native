@@ -8,7 +8,7 @@ import "leaflet/dist/leaflet.css";
 import { useCallback, useState } from "react";
 import { View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../../libs/utils/cn";
 
 import { Card } from "../Card";
 import { useAutoMarkers } from "./hooks/useAutoMarkers";

@@ -3,8 +3,8 @@ import { Animated, KeyboardAvoidingView, Platform, Pressable, Modal as RNModal, 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Backdrop, useFocusOnOpen, usePresence } from "./Overlays/shared";
 import { Text } from "./Text";

@@ -24,8 +24,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../../../libs/theme";
+import { cn } from "../../../../libs/utils/cn";
 
 import { Spinner } from "../../Spinner";
 import { Text } from "../../Text";

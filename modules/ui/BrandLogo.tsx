@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { Platform, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

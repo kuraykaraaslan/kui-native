@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Label } from "./Label";
 import { AnchoredPanel, useAnchor } from "./Overlays/shared";

@@ -1,6 +1,6 @@
 import { Pressable, type GestureResponderEvent, type TextProps } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

@@ -1,6 +1,6 @@
 // modules/ui/Chart/types.ts
 //
-// Shared type definitions for the @/modules/ui/Chart primitive library.
+// Shared type definitions for the modules/ui/Chart primitive library.
 //
 // All chart primitives below operate on the same `Series<T>` shape so a
 // caller can swap chart types without rewriting data. The companion EJS

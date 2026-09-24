@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AccessibilityInfo, Platform, Text as RNText, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

@@ -1,8 +1,8 @@
 import type * as React from "react";
 import { Text as RNText, type TextProps as RNTextProps } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
-import { FONT_WEIGHTS, FONTS } from "@/libs/utils/typography";
+import { cn } from "../../libs/utils/cn";
+import { FONT_WEIGHTS, FONTS } from "../../libs/utils/typography";
 
 type TextVariant = "h1" | "h2" | "h3" | "h4" | "title" | "titleSm" | "body" | "bodySm" | "label" | "caption";
 

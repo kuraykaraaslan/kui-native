@@ -16,8 +16,8 @@ import { View } from "react-native";
 import Maps, { Callout, Marker, Polygon, Polyline, UrlTile, type MapPressEvent } from "react-native-maps";
 import Svg, { Circle, Path } from "react-native-svg";
 
-import { useResolvedScheme } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useResolvedScheme } from "../../../libs/theme";
+import { cn } from "../../../libs/utils/cn";
 
 import { Card } from "../Card";
 import { useAutoMarkers } from "./hooks/useAutoMarkers";

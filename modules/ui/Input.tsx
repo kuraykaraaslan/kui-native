@@ -4,8 +4,8 @@ import { Pressable, TextInput as RNTextInput, View, type TextInputProps as RNTex
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronDown, faChevronUp, faEye, faEyeSlash, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { useThemeTokens } from "@/libs/theme";
-import { cn } from "@/libs/utils/cn";
+import { useThemeTokens } from "../../libs/theme";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

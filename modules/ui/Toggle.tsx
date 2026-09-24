@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Animated, Platform, Pressable, View } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

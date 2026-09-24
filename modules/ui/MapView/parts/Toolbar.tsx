@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { faEye, faEyeSlash, faLayerGroup, faLocationDot, faPlus, faRoute, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { useThemeTokens } from "@/libs/theme";
+import { useThemeTokens } from "../../../../libs/theme";
 
 import { Button } from "../../Button";
 import { Text } from "../../Text";

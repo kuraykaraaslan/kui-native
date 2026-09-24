@@ -2,7 +2,7 @@ import type * as React from "react";
 import { Pressable, View } from "react-native";
 import { router, type Href } from "expo-router";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { Text } from "./Text";
 

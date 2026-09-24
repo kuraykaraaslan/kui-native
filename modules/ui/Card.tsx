@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { Platform, Pressable, View, type ViewProps } from "react-native";
 
-import { cn } from "@/libs/utils/cn";
+import { cn } from "../../libs/utils/cn";
 
 import { SkeletonLine } from "./Skeleton";
 import { Text } from "./Text";
