@@ -6,6 +6,7 @@ import { faChevronDown, faChevronUp, faEye, faEyeSlash, faXmark } from "@fortawe
 
 import { useThemeTokens } from "../../libs/theme";
 import { cn } from "../../libs/utils/cn";
+import { fontStyle } from "../../libs/utils/typography";
 
 import { Text } from "./Text";
 
@@ -135,6 +136,7 @@ export function Input({
             inputClassName,
           )}
           {...rest}
+          style={[fontStyle(), rest.style]}
         />
 
         {isPassword && !isReadOnly ? (

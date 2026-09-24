@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { useThemeTokens } from "../../libs/theme";
 import { cn } from "../../libs/utils/cn";
+import { fontStyle } from "../../libs/utils/typography";
 
 export type SearchBarProps = {
   id?: string;
@@ -67,7 +68,7 @@ export function SearchBar({ id = "search", placeholder = "Search…", value, onC
           focused ? "border-border-focus" : "border-border",
           currentValue ? "pr-8" : null,
         )}
-        style={focused ? { outlineWidth: 2, outlineColor: t["border-focus"], outlineStyle: "solid" } : undefined}
+        style={[fontStyle(), focused ? { outlineWidth: 2, outlineColor: t["border-focus"], outlineStyle: "solid" } : undefined]}
       />
       {currentValue ? (
         <Pressable

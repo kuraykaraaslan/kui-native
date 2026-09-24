@@ -8,6 +8,7 @@ import type * as LeafletLib from "leaflet";
 import type * as ReactLeaflet from "react-leaflet";
 
 import { useResolvedScheme } from "../../../../libs/theme";
+import { configuredFontStyle } from "../../../../libs/utils/typography";
 
 import { VARIANT_FILL, VARIANT_HEX, markerSvg, type MapMarker, type MapRoute, type MapTooltipData, type MapZone } from "../types";
 import { LEAFLET_TILES, loadLeaflet, type LeafletBundle } from "./leaflet";
@@ -30,7 +31,7 @@ type LeafletCanvasProps = {
 export function MapLoading() {
   return (
     <div className="flex h-full w-full items-center justify-center bg-surface-raised">
-      <span className="text-sm text-text-secondary">Harita yükleniyor…</span>
+      <span className="text-sm text-text-secondary" style={configuredFontStyle()}>Harita yükleniyor…</span>
     </div>
   );
 }
@@ -148,7 +149,7 @@ function MarkerPart({
         </RLTooltip>
       ) : marker.label ? (
         <RLTooltip>
-          <span style={{ fontSize: 12, fontWeight: 600 }}>{marker.label}</span>
+          <span style={{ fontSize: 12, fontWeight: 600, ...configuredFontStyle("semiBold") }}>{marker.label}</span>
         </RLTooltip>
       ) : null}
     </RLMarker>
@@ -165,7 +166,7 @@ function ZoneShape({ zone, Polygon, Tooltip }: { zone: MapZone; Polygon: typeof 
     >
       {zone.label ? (
         <Tooltip sticky>
-          <span style={{ fontWeight: 600, fontSize: 12, color: strokeColor }}>{zone.label}</span>
+          <span style={{ fontWeight: 600, fontSize: 12, color: strokeColor, ...configuredFontStyle("semiBold") }}>{zone.label}</span>
         </Tooltip>
       ) : null}
     </Polygon>
@@ -180,7 +181,7 @@ function RouteShape({ route, Polyline, Tooltip }: { route: MapRoute; Polyline: t
     >
       {route.label ? (
         <Tooltip sticky>
-          <span style={{ fontWeight: 600, fontSize: 12 }}>{route.label}</span>
+          <span style={{ fontWeight: 600, fontSize: 12, ...configuredFontStyle("semiBold") }}>{route.label}</span>
         </Tooltip>
       ) : null}
     </Polyline>
@@ -192,17 +193,17 @@ function Popup({ tooltip }: { tooltip: MapTooltipData }) {
   const hasMeta = Boolean(tooltip.description) || Boolean(tooltip.fields?.length);
   return (
     <div style={{ minWidth: 130, maxWidth: 220 }}>
-      <p style={{ fontWeight: 600, fontSize: 13, color: "#111827", marginBottom: hasMeta ? 3 : 0 }}>{tooltip.title}</p>
+      <p style={{ fontWeight: 600, fontSize: 13, color: "#111827", marginBottom: hasMeta ? 3 : 0, ...configuredFontStyle("semiBold") }}>{tooltip.title}</p>
       {tooltip.description ? (
-        <p style={{ fontSize: 11, color: "#6b7280", marginBottom: tooltip.fields?.length ? 4 : 0, lineHeight: 1.4 }}>{tooltip.description}</p>
+        <p style={{ fontSize: 11, color: "#6b7280", marginBottom: tooltip.fields?.length ? 4 : 0, lineHeight: 1.4, ...configuredFontStyle() }}>{tooltip.description}</p>
       ) : null}
       {tooltip.fields && tooltip.fields.length > 0 ? (
         <table style={{ width: "100%", borderCollapse: "collapse", marginTop: 2 }}>
           <tbody>
             {tooltip.fields.map((f, i) => (
               <tr key={i}>
-                <td style={{ fontSize: 11, color: "#6b7280", paddingRight: 6, paddingTop: 1, whiteSpace: "nowrap" }}>{f.label}</td>
-                <td style={{ fontSize: 11, color: "#111827", fontWeight: 500, paddingTop: 1 }}>{f.value}</td>
+                <td style={{ fontSize: 11, color: "#6b7280", paddingRight: 6, paddingTop: 1, whiteSpace: "nowrap", ...configuredFontStyle() }}>{f.label}</td>
+                <td style={{ fontSize: 11, color: "#111827", fontWeight: 500, paddingTop: 1, ...configuredFontStyle("medium") }}>{f.value}</td>
               </tr>
             ))}
           </tbody>

@@ -11,6 +11,7 @@ import { G, Line, Text as SvgText } from "react-native-svg";
 
 import { useThemeTokens } from "../../../../libs/theme";
 import { cn } from "../../../../libs/utils/cn";
+import { configuredFontStyle } from "../../../../libs/utils/typography";
 
 import { Text } from "../../Text";
 import { chartTheme, paletteColor, resolveColor } from "../theme";
@@ -41,7 +42,7 @@ export function XAxis({ ticks, y, xStart, xEnd, hideLine }: { ticks: AxisTick[];
       {ticks.map((t, i) => (
         <G key={`x-${i}`}>
           <Line x1={t.position} x2={t.position} y1={y} y2={y + 4} stroke={c(chartTheme.axisStroke)} strokeWidth={1} />
-          <SvgText x={t.position} y={y + 16} textAnchor="middle" fontSize={chartTheme.fontSize.axis} fill={c(chartTheme.axisText)}>
+          <SvgText x={t.position} y={y + 16} textAnchor="middle" fontSize={chartTheme.fontSize.axis} fill={c(chartTheme.axisText)} {...configuredFontStyle()}>
             {t.label}
           </SvgText>
         </G>
@@ -58,7 +59,7 @@ export function YAxis({ ticks, x, yStart, yEnd, hideLine }: { ticks: AxisTick[];
       {ticks.map((t, i) => (
         <G key={`y-${i}`}>
           <Line x1={x - 4} x2={x} y1={t.position} y2={t.position} stroke={c(chartTheme.axisStroke)} strokeWidth={1} />
-          <SvgText x={x - 8} y={t.position + 4} textAnchor="end" fontSize={chartTheme.fontSize.axis} fill={c(chartTheme.axisText)}>
+          <SvgText x={x - 8} y={t.position + 4} textAnchor="end" fontSize={chartTheme.fontSize.axis} fill={c(chartTheme.axisText)} {...configuredFontStyle()}>
             {t.label}
           </SvgText>
         </G>

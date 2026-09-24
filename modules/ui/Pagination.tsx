@@ -3,6 +3,7 @@ import { Pressable, TextInput as RNTextInput, View } from "react-native";
 
 import { useThemeTokens } from "../../libs/theme";
 import { cn } from "../../libs/utils/cn";
+import { fontStyle } from "../../libs/utils/typography";
 
 import { Text } from "./Text";
 
@@ -133,6 +134,7 @@ export function Pagination({
             accessibilityLabel={`Jump to page, 1–${totalPages}`}
             placeholderTextColor={t["text-disabled"]}
             className="w-14 rounded-md border border-border bg-surface-base px-1 py-1 text-center text-sm text-text-primary"
+            style={fontStyle()}
           />
           <Pressable
             accessibilityRole="button"

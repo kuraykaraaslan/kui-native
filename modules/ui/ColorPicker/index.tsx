@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { useThemeTokens } from "../../../libs/theme";
 import { cn } from "../../../libs/utils/cn";
+import { fontStyle } from "../../../libs/utils/typography";
 
 import { Label } from "../Label";
 import { AnchoredPanel, useAnchor } from "../Overlays/shared";
@@ -198,6 +199,7 @@ export function ColorPicker({
                   autoCorrect={false}
                   accessibilityLabel="Hex color"
                   className="min-w-0 flex-1 rounded border border-border bg-surface-base px-2 py-1 font-mono text-xs text-text-primary"
+                  style={fontStyle("regular", "mono")}
                 />
               ) : null}
               {showNativePicker ? (

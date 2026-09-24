@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AccessibilityInfo, Platform, Text as RNText, View } from "react-native";
 
 import { cn } from "../../libs/utils/cn";
+import { configuredFontStyle } from "../../libs/utils/typography";
 
 import { Text } from "./Text";
 
@@ -31,11 +32,13 @@ export function SkipLink({ href = "#main-content", label = "Skip to main content
       testID="skip-link"
       accessibilityRole="link"
       className={cn("rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-fg", className)}
-      style={
+      // Raw RN Text keeps react-native-web's own font unless configureFonts sets one.
+      style={[
+        configuredFontStyle("medium"),
         focused
           ? { position: "absolute", top: 16, left: 16, zIndex: 100 }
-          : { position: "absolute", width: 1, height: 1, overflow: "hidden", opacity: 0 }
-      }
+          : { position: "absolute", width: 1, height: 1, overflow: "hidden", opacity: 0 },
+      ]}
     >
       {label}
     </RNText>

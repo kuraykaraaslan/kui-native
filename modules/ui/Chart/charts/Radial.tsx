@@ -8,6 +8,7 @@ import { View } from "react-native";
 import Svg, { Circle, G, Path, Text as SvgText } from "react-native-svg";
 
 import { cn } from "../../../../libs/utils/cn";
+import { configuredFontStyle } from "../../../../libs/utils/typography";
 
 import { ChartTooltip, Grid, Legend, ResponsiveContainer, useChartColor, XAxis, YAxis } from "../primitives";
 import { paletteColor } from "../theme";
@@ -83,7 +84,7 @@ export function PieChart({ series, height = 240, showLegend = true, showTooltip 
                   />
                 ))}
                 {r0 > 0 ? (
-                  <SvgText x={cx} y={cy + 5} textAnchor="middle" fill={c("var(--text-primary)")} fontSize={14} fontWeight="600">
+                  <SvgText x={cx} y={cy + 5} textAnchor="middle" fill={c("var(--text-primary)")} fontSize={14} fontWeight="600" {...configuredFontStyle("semiBold")}>
                     {hover === null ? String(Math.round(total)) : `${pct}%`}
                   </SvgText>
                 ) : null}

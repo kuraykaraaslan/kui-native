@@ -56,13 +56,11 @@
 /*
  * KuiReact's Tailwind preflight makes form controls inherit the page font
  * (`font: inherit`), so its inputs set in Geist. react-native-web gives
- * <input>/<textarea> its own system stack instead; match KuiReact on web.
- * (Native platforms ignore element selectors.)
+ * <input>/<textarea> its own system stack instead, so every kui-native
+ * TextInput sets `fontStyle()` (FONTS.sans — or the configureFonts family)
+ * inline. No `input { font-family: … !important }` rule here: it would
+ * override a configured font.
  */
-input,
-textarea {
-  font-family: Geist, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
-}
 
 /* KuiReact's `.sidebar-scrollbar-hover` (app/globals.css), on the showcase nav. */
 [data-sidebar-scrollbar-hover] {

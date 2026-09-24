@@ -6,6 +6,7 @@ import { faCheck, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg
 
 import { useThemeTokens } from "../../libs/theme";
 import { cn } from "../../libs/utils/cn";
+import { fontStyle } from "../../libs/utils/typography";
 
 import { Label } from "./Label";
 import { Text } from "./Text";
@@ -125,6 +126,7 @@ export function Select({
                 placeholderTextColor={t["text-disabled"]}
                 accessibilityLabel={`Search ${label}`}
                 className="w-full rounded-md border border-border bg-surface-base px-3 py-1.5 text-sm text-text-primary"
+                style={fontStyle()}
               />
             </View>
           ) : null}

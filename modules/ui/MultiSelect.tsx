@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { useThemeTokens } from "../../libs/theme";
 import { cn } from "../../libs/utils/cn";
+import { fontStyle } from "../../libs/utils/typography";
 
 import { useAsync } from "./ComboBox/hooks/useAsync";
 import { useFilter } from "./ComboBox/hooks/useFilter";
@@ -176,6 +177,7 @@ export function MultiSelect({
                   placeholderTextColor={t["text-disabled"]}
                   accessibilityLabel={`Search ${label}`}
                   className="w-full rounded-md border border-border bg-surface-base py-1.5 pl-7 pr-3 text-sm text-text-primary"
+                  style={fontStyle()}
                 />
               </View>
             </View>

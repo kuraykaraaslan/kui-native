@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { useThemeTokens } from "../../libs/theme";
 import { cn } from "../../libs/utils/cn";
+import { fontStyle } from "../../libs/utils/typography";
 
 import { Label } from "./Label";
 import { Text } from "./Text";
@@ -139,6 +140,7 @@ export function TagInput({
               onSubmitEditing={finishEdit}
               accessibilityLabel={`Edit ${tag}`}
               className="w-24 rounded border border-border-focus bg-surface-base px-1.5 py-0.5 text-xs text-text-primary"
+              style={fontStyle()}
             />
           ) : (
             <Pressable
@@ -186,6 +188,7 @@ export function TagInput({
             accessibilityLabel={label}
             accessibilityHint={error ?? hint}
             className="min-w-24 flex-1 p-0 text-sm text-text-primary"
+            style={fontStyle()}
           />
         ) : null}
       </Pressable>

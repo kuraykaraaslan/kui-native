@@ -1,8 +1,8 @@
 import type * as React from "react";
-import { Text as RNText, type TextProps as RNTextProps } from "react-native";
+import { Text as RNText, StyleSheet, type TextProps as RNTextProps, type TextStyle } from "react-native";
 
 import { cn } from "../../libs/utils/cn";
-import { FONT_WEIGHTS, FONTS } from "../../libs/utils/typography";
+import { FONT_WEIGHTS, fontStyle, fontWeightName, usesWeightFamilies, type FontWeightName } from "../../libs/utils/typography";
 
 type TextVariant = "h1" | "h2" | "h3" | "h4" | "title" | "titleSm" | "body" | "bodySm" | "label" | "caption";
 
@@ -22,17 +22,17 @@ const variantCls: Record<TextVariant, string> = {
   caption: "text-xs text-text-secondary",
 };
 
-const variantWeight: Record<TextVariant, (typeof FONT_WEIGHTS)[keyof typeof FONT_WEIGHTS]> = {
-  h1: FONT_WEIGHTS.bold,
-  h2: FONT_WEIGHTS.bold,
-  h3: FONT_WEIGHTS.semiBold,
-  h4: FONT_WEIGHTS.semiBold,
-  title: FONT_WEIGHTS.semiBold,
-  titleSm: FONT_WEIGHTS.semiBold,
-  body: FONT_WEIGHTS.regular,
-  bodySm: FONT_WEIGHTS.regular,
-  label: FONT_WEIGHTS.medium,
-  caption: FONT_WEIGHTS.regular,
+const variantWeight: Record<TextVariant, FontWeightName> = {
+  h1: "bold",
+  h2: "bold",
+  h3: "semiBold",
+  h4: "semiBold",
+  title: "semiBold",
+  titleSm: "semiBold",
+  body: "regular",
+  bodySm: "regular",
+  label: "medium",
+  caption: "regular",
 };
 
 const headingVariants = new Set<TextVariant>(["h1", "h2", "h3", "h4", "title", "titleSm"]);
@@ -52,12 +52,26 @@ export function Text({ variant = "body", className, style, accessibilityRole, ch
   // The variant's weight/family are inline styles, which win over NativeWind
   // classes — so when the caller passes an explicit `font-*` weight or family
   // class (e.g. <Text className="font-semibold">), leave that property to it.
-  const base: { fontFamily?: string; fontWeight?: (typeof FONT_WEIGHTS)[keyof typeof FONT_WEIGHTS] } = {};
-  // `font-mono` resolves to FONTS.mono (Geist Mono on web, like KuiReact) rather than
-  // Tailwind's default mono stack; `font-sans` / `font-serif` classes apply as written.
-  if (className && /(^|\s)font-mono(\s|$)/.test(className)) base.fontFamily = FONTS.mono;
-  else if (!className || !FAMILY_CLASS.test(className)) base.fontFamily = FONTS.sans;
-  if (!className || !WEIGHT_CLASS.test(className)) base.fontWeight = variantWeight[variant];
+  // `font-mono` resolves to the configured/default mono family (Geist Mono on
+  // web, like KuiReact) rather than Tailwind's default mono stack; `font-sans`
+  // / `font-serif` classes apply as written.
+  const family = className && /(^|\s)font-mono(\s|$)/.test(className) ? "mono" : !className || !FAMILY_CLASS.test(className) ? "sans" : null;
+  const classWeight = className ? fontWeightName(WEIGHT_CLASS.exec(className)?.[2]) : undefined;
+  let base: TextStyle = {};
+  let override: TextStyle | undefined;
+  const weightFamilies = family !== null && usesWeightFamilies(family);
+  const flat = weightFamilies ? StyleSheet.flatten(style) : undefined;
+  if (family && weightFamilies && flat?.fontFamily == null) {
+    // Per-weight families (configureFonts): the weight picks the family —
+    // from the caller's style, a `font-*` class or the variant — and any
+    // fontWeight from the class/style is reset so it can't fake-bold it.
+    const styleWeight = fontWeightName(flat?.fontWeight);
+    base = fontStyle(styleWeight ?? classWeight ?? variantWeight[variant], family);
+    if (styleWeight || classWeight) override = { fontWeight: "400" };
+  } else {
+    if (family) base.fontFamily = fontStyle("regular", family).fontFamily;
+    if (!classWeight) base.fontWeight = FONT_WEIGHTS[variantWeight[variant]];
+  }
 
   return (
     <RNText
@@ -66,7 +80,7 @@ export function Text({ variant = "body", className, style, accessibilityRole, ch
       // elements); callers can still override via accessibilityRole.
       accessibilityRole={accessibilityRole ?? (headingVariants.has(variant) ? "header" : undefined)}
       className={cn(variantCls[variant], className)}
-      style={[base, style]}
+      style={override ? [base, style, override] : [base, style]}
       {...rest}
     >
       {children}

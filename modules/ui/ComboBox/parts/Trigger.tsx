@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { useThemeTokens } from "../../../../libs/theme";
 import { cn } from "../../../../libs/utils/cn";
+import { fontStyle } from "../../../../libs/utils/typography";
 
 type TriggerProps = {
   id: string;
@@ -88,6 +89,7 @@ export function Trigger({
         onBlur={onBlur}
         onChangeText={onChange}
         className="flex-1 p-0 text-sm text-text-primary"
+        style={fontStyle()}
       />
 
       {clearable && showClear && !disabled ? (

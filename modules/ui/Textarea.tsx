@@ -4,6 +4,7 @@ import { TextInput as RNTextInput, View, type TextInputProps as RNTextInputProps
 
 import { useThemeTokens } from "../../libs/theme";
 import { cn } from "../../libs/utils/cn";
+import { fontStyle } from "../../libs/utils/typography";
 
 import { Label } from "./Label";
 import { Text } from "./Text";
@@ -72,7 +73,7 @@ export function Textarea({
           error ? "border-error bg-error-subtle" : focused ? "border-border-focus bg-surface-base" : "border-border bg-surface-base",
           disabled && "opacity-50 bg-surface-sunken",
         )}
-        style={[{ minHeight: rows * LINE_HEIGHT + CHROME, lineHeight: LINE_HEIGHT }, style]}
+        style={[fontStyle(), { minHeight: rows * LINE_HEIGHT + CHROME, lineHeight: LINE_HEIGHT }, style]}
         {...rest}
       />
       {hint && !error ? <Text className="text-xs text-text-secondary">{hint}</Text> : null}
