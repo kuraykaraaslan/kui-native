@@ -46,7 +46,7 @@ jobs:
 
             ### Artifacts
 
-            - `kui-native-web-${{ github.ref_name }}.tar.gz` containing the Expo
+            - `kui-native-web-<version>.tar.gz` containing the Expo
               web export
             - `SHA256SUMS` for integrity verification
 
