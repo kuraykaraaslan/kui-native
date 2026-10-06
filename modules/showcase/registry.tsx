@@ -96,6 +96,15 @@ import {
 } from "@/modules/ui";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { useThemeTokens } from "@/libs/theme";
+import {
+  ThemeBrandOverrideDemo,
+  ThemeOverlaysDemo,
+  ThemeTokenSwatchesDemo,
+  TypographyDefaultDemo,
+  TypographyFontStyleDemo,
+  TypographyMonoDemo,
+  TypographySansDemo,
+} from "./foundations";
 
 function LiveRegionDemo() {
   const [msg, setMsg] = useState("");
@@ -1440,7 +1449,7 @@ export const REGISTRY: ShowcaseEntry[] = [
         },
       },
       {
-        title: "Dual handle (range)",
+        title: "Dual-handle range",
         Demo: function RangeSliderDualDemo() {
           const [v, setV] = useState<[number, number]>([20, 70]);
           return <RangeSlider range label="Price range" value={v} onChange={setV} min={0} max={100} className="w-full max-w-xs" />;
@@ -1858,8 +1867,6 @@ export const REGISTRY: ShowcaseEntry[] = [
   {
     id: "toggle",
     variants: [
-      { title: "Sizes", Demo: ToggleSizesDemo },
-      { title: "With description", Demo: ToggleDescriptionDemo },
       {
         title: "Disabled",
         Demo: () => (
@@ -1869,6 +1876,8 @@ export const REGISTRY: ShowcaseEntry[] = [
           </View>
         ),
       },
+      { title: "Sizes", Demo: ToggleSizesDemo },
+      { title: "With description", Demo: ToggleDescriptionDemo },
       { title: "Settings list (controlled)", Demo: ToggleSettingsListDemo },
     ],
   },
@@ -3654,6 +3663,25 @@ export const REGISTRY: ShowcaseEntry[] = [
       { title: "Scrollable body", Demo: ModalScrollableDemo },
       { title: "Fullscreen", Demo: ModalFullscreenDemo },
       { title: "Nested modals (layer-aware Escape)", Demo: ModalNestedDemo },
+    ],
+  },
+  {
+    id: "theme-customization",
+    // KuiNative-only (Foundations): configureTheme() brand overrides.
+    variants: [
+      { title: "Brand override (live)", Demo: ThemeBrandOverrideDemo },
+      { title: "Token swatches", Demo: ThemeTokenSwatchesDemo },
+      { title: "Overlays in a themed scope", Demo: ThemeOverlaysDemo },
+    ],
+  },
+  {
+    id: "typography",
+    // KuiNative-only (Foundations): configureFonts() / fontStyle().
+    variants: [
+      { title: "Default type scale", Demo: TypographyDefaultDemo },
+      { title: "configureFonts: sans family", Demo: TypographySansDemo },
+      { title: "configureFonts: mono family", Demo: TypographyMonoDemo },
+      { title: "fontStyle() output", Demo: TypographyFontStyleDemo },
     ],
   },
 ];

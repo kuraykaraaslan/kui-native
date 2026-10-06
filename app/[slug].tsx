@@ -39,6 +39,7 @@ const CATEGORY_STYLES: Record<ShowcasePageCategory, { bg: string; text: string }
   Atom: { bg: "bg-info-subtle", text: "text-info-fg" },
   Molecule: { bg: "bg-primary-subtle", text: "text-primary" },
   Organism: { bg: "bg-success-subtle", text: "text-success-fg" },
+  Foundation: { bg: "bg-secondary-subtle", text: "text-secondary" },
 };
 
 /** `text-sm font-mono text-text-primary leading-relaxed` (14px / 22.75px). */

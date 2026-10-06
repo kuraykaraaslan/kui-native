@@ -1,5 +1,8 @@
-/** KuiReact's `ShowcaseComponent['category']`, restricted to the ui layer. */
-export type ShowcasePageCategory = "Atom" | "Molecule" | "Organism";
+/**
+ * KuiReact's `ShowcaseComponent['category']`, restricted to the ui layer, plus
+ * "Foundation" for KuiNative-only pages (theme, typography) with no KuiReact page.
+ */
+export type ShowcasePageCategory = "Atom" | "Molecule" | "Organism" | "Foundation";
 
 /** A KuiReact showcase variant: title, code pane and `layout`. */
 export type ShowcaseVariantMeta = {

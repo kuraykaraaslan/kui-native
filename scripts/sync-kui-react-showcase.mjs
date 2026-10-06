@@ -36,6 +36,56 @@ const NATIVE_FILE = {
   slider: "modules/ui/Slider.tsx",
 };
 
+/**
+ * KuiNative-only pages (no KuiReact page): a "Foundations" nav group. Variant
+ * titles must match the demos in modules/showcase/registry.tsx; code is the
+ * code-pane snippet. Source block = `filePath`.
+ */
+const NATIVE_ONLY = {
+  label: "Foundations",
+  pages: [
+    {
+      id: "theme-customization",
+      title: "Theme customization",
+      abbr: "Th",
+      description:
+        "configureTheme() overrides design tokens (e.g. a brand color) for both className vars and useThemeVars()/useThemeTokens(); overlays re-apply the vars inside RN Modal portals. Call it once at startup; configureTheme() restores defaults.",
+      filePath: "libs/theme.ts",
+      variants: [
+        {
+          title: "Brand override (live)",
+          code: `import { configureTheme } from '@/libs/theme';\n\nconfigureTheme({\n  light: { primary: '#f4511e', 'primary-hover': '#d84315' },\n  dark: { primary: '#ff7043', 'primary-hover': '#ff8a65' },\n});\n\n// Restore the defaults\nconfigureTheme();`,
+        },
+        {
+          title: "Token swatches",
+          code: `const t = useThemeTokens();\n\n<View className="bg-primary" />\n<Text>{t.primary}</Text>`,
+        },
+        {
+          title: "Overlays in a themed scope",
+          code: `// Modal, Drawer and AnchoredPanel re-apply the active theme vars\n// inside the RN Modal portal (useThemeVars), so overrides reach them.\n<Modal open={open} onClose={close} title="Themed modal">\n  <Badge variant="primary">Primary badge</Badge>\n</Modal>`,
+        },
+      ],
+    },
+    {
+      id: "typography",
+      title: "Typography",
+      abbr: "Ty",
+      description:
+        "configureFonts() swaps the sans / mono family (a single family, or a per-weight map for expo-font families); fontStyle() resolves { fontFamily, fontWeight } for a weight. Call configureFonts once at startup; configureFonts({}) restores defaults.",
+      filePath: "libs/utils/typography.ts",
+      variants: [
+        { title: "Default type scale", code: `<Text variant="h2">Heading two</Text>\n<Text variant="body">Body text</Text>\n<Text variant="caption">Caption</Text>` },
+        {
+          title: "configureFonts: sans family",
+          code: `import { configureFonts } from '@/libs/utils/typography';\n\nconfigureFonts({ sans: 'Georgia' });\n\n// Per-weight map (expo-font):\nconfigureFonts({\n  sans: { regular: 'Inter_400Regular', semiBold: 'Inter_600SemiBold', bold: 'Inter_700Bold' },\n});\n\nconfigureFonts(); // restore`,
+        },
+        { title: "configureFonts: mono family", code: `configureFonts({ mono: 'Courier' });\n\n<Text style={fontStyle('regular', 'mono')}>0123456789</Text>` },
+        { title: "fontStyle() output", code: `fontStyle('bold'); // { fontFamily, fontWeight: '700' }\nfontStyle('regular', 'mono');` },
+      ],
+    },
+  ],
+};
+
 function parse(file) {
   return ts.createSourceFile(file, fs.readFileSync(file, "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 }
@@ -136,7 +186,9 @@ const nav = uiGroups.map((g) => ({
       category: c.category,
       description: c.description,
       filePath,
-      variants: c.variants.map((v) => ({
+      // KuiReact variants without a native demo (component not ported yet) are
+      // reported below and left out, so the page only lists what renders here.
+      variants: c.variants.filter((v) => (nativeDemos.get(item.id) ?? []).includes(v.title)).map((v) => ({
         title: v.title,
         code: v.code ?? null,
         stack: lay.find((l) => l.title === v.title)?.stack ?? false,
@@ -150,6 +202,27 @@ const nav = uiGroups.map((g) => ({
     return true;
   }),
 }));
+const foundationItems = [];
+for (const p of NATIVE_ONLY.pages) {
+  const have = nativeDemos.get(p.id);
+  if (!have) {
+    report.push(`missing native-only demo entry: ${p.id}`);
+    continue;
+  }
+  if (!fs.existsSync(path.join(ROOT, p.filePath))) throw new Error(`${p.id}: ${p.filePath} not found`);
+  const want = p.variants.map((v) => v.title);
+  for (const t of want) if (!have.includes(t)) report.push(`missing demo: ${p.id} → "${t}"`);
+  for (const t of have) if (!want.includes(t)) report.push(`extra demo: ${p.id} → "${t}"`);
+  pages[p.id] = {
+    name: p.title,
+    category: "Foundation",
+    description: p.description,
+    filePath: p.filePath,
+    variants: p.variants.map((v) => ({ title: v.title, code: v.code, stack: false, wrap: null })),
+  };
+  foundationItems.push({ id: p.id, title: p.title, abbr: p.abbr });
+}
+nav.push({ label: NATIVE_ONLY.label, items: foundationItems });
 for (const id of nativeDemos.keys()) {
   if (!pages[id]) report.push(`extra page: ${id} (not in KuiReact's ui groups)`);
 }
