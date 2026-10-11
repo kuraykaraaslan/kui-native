@@ -234,7 +234,7 @@ global.css                @tailwind + :root/.dark semantic tokens (from KUIREACT
 
 Each one is a pixel-for-pixel port of its KuiReact counterpart (same classes, tokens, sizes and
 states), and its showcase entry reuses KuiReact's own variant titles and sample copy. Parity
-status per component: [docs/audits/kui-react-parity](./docs/audits/kui-react-parity/00-executive-summary.md).
+status per component: [docs/audits/2026-09-22-kui-react-parity](./docs/audits/2026-09-22-kui-react-parity/00-executive-summary.md).
 
 Conventions (per `UI_Interface_Rules_ReactNative`): Pressable-first, `cn()` for class
 merging, `accessibilityRole`/`Label`/`State` on interactive elements, `expo-image` for

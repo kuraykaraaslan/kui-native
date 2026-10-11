@@ -76,7 +76,7 @@ export function Avatar({ name, src, size = "md", status, className }: AvatarProp
       // `accessible` is required for a plain View's accessibilityRole to be
       // exposed to assistive tech at all (RN treats a View with a role but
       // no `accessible` as invisible to VoiceOver/TalkBack and to role-based
-      // queries) — see docs/audits/kui-react-parity, same defect fixed on Spinner.
+      // queries) — see docs/audits/2026-09-22-kui-react-parity, same defect fixed on Spinner.
       accessible
       accessibilityRole="image"
       accessibilityLabel={name}

@@ -1,4 +1,4 @@
-// Generates the data-driven parts of docs/audits/kui-react-parity/ from
+// Generates the data-driven parts of docs/audits/2026-09-22-kui-react-parity/ from
 // facts.json (source-derived) + curated.js (reviewer judgement).
 // Hand-written analytical reports live alongside and are not touched here.
 const fs = require("fs");

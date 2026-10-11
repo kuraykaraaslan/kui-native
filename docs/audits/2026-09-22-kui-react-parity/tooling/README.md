@@ -13,7 +13,7 @@ Hand-written files, which the scripts do not touch: `00`, `04`–`07`, `09`, `ph
 ## Run
 
 ```bash
-cd docs/audits/kui-react-parity/tooling
+cd docs/audits/2026-09-22-kui-react-parity/tooling
 # optional: snapshot the pinned commit's sources so they match KN_REV even if the checkout has moved on
 git -C ../../../.. archive <rev> modules libs app | tar -x -C /tmp/kn-snapshot
 KN_REV=<rev> KN_SRC=/tmp/kn-snapshot node extract.js   # ~2–6 min over the WSL UNC path; both default to HEAD / the checkout
