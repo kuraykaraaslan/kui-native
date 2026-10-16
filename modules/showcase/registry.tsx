@@ -3290,6 +3290,17 @@ export const REGISTRY: ShowcaseEntry[] = [
         ),
       },
       {
+        title: "Stacked bars and areas",
+        Demo: () => (
+          <ChartFrame title="Revenue + expenses, stacked">
+            <BarChart series={chartBarSeries} stacked height={200} />
+            <View className="mt-3">
+              <AreaChart series={chartBarSeries} stacked height={200} />
+            </View>
+          </ChartFrame>
+        ),
+      },
+      {
         title: "BarChart",
         Demo: () => (
           <ChartFrame title="Revenue vs expenses (monthly)">
