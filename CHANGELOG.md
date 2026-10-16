@@ -3,6 +3,33 @@
 All notable changes to `kui-native` are recorded here. Versions are git tags
 (`github:kuraykaraaslan/kui-native#vX.Y.Z`).
 
+## Unreleased
+
+### Changed
+
+- Charts follow KuiReact's chart rework (`dbc7886`). Value axes widen to round bounds with
+  readable steps (0–351 becomes 0–400 by 100, never a 263.25 tick); `niceTicks` now returns
+  ticks at a round step instead of `count + 1` even splits. Crowded category labels are thinned.
+  The grid is dashed at full strength, the axes drop their tick marks and the value-axis line.
+  The legend uses 8px round dots; the tooltip is a rounded-lg card with round dots. Pie / Donut
+  dim the other slices to 0.5 and size the centre total to the hole.
+- `plotTouchHandlers` also reports the finger position, and can read bands down the plot.
+
+### Added
+
+- Chart settings from KuiReact: a right value axis (`Series.yAxis`, `y2Min` / `y2Max` /
+  `y2Label` / `y2Format`), point marks (`showPoints`, `pointShape`, `pointSize`), gradient fills,
+  curves and line styles, grouped stacks (`stacked`, `Series.stack`), horizontal bars, value
+  labels, category ticks and markers, thresholds, axis titles, `yTickCount`, `yMin` / `yMax`,
+  `gridStyle`, `showXAxis` / `showYAxis`, legend position / values / toggling / grid layout, the
+  tooltip options (`tooltipMode`, `tooltipHeader`, `tooltipValueFormat`, `tooltipTotal`), `fill`,
+  Pie / Donut slice labels, gaps, start angle and centre caption, a scatter trend line.
+- The helpers behind them, with KuiReact's names and behaviour (`niceStep`, `resolveDomain`,
+  `alignedDomain`, `thinLabels`, `stackKeys`, `groupedStackTops`, `linearRegression`,
+  `pointPath`, …), the date text helpers (`dayMonthText`, `clockText`, `formatTick`), and the
+  primitives `ChartFrame`, `Thresholds`, `AxisTitles`, `PointMark`. ISO date categories print
+  short dates (`6 Oct`).
+
 ## 0.3.1
 
 ### Fixed
