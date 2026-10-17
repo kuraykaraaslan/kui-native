@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import { AccessibilityInfo, Text as RNText } from "react-native";
+import { AccessibilityInfo, Linking, Text as RNText } from "react-native";
 
 import { Button } from "./Button";
-import { DropdownMenu, type DropdownItem } from "./DropdownMenu";
+import { DropdownMenu, arrangeMenuItems, mergeMenuItems, type DropdownItem } from "./DropdownMenu";
 
 function classNameOf(el: { props: { className?: string | string[] } }) {
   const c = el.props.className;
@@ -98,5 +98,69 @@ describe("DropdownMenu", () => {
     }
     expect(classNameOf(screen.getByRole("menuitem", { name: "Edit" }))).toContain("px-3");
     expect(classNameOf(screen.getByText("Delete"))).toContain("text-error");
+  });
+
+  describe("contributed items", () => {
+    const labels = () => screen.getAllByRole("menuitem").map((i) => i.props.accessibilityLabel);
+
+    it("hidden items are left out, with no stray separators", async () => {
+      await openMenu({
+        items: [{ label: "Edit" }, { type: "separator" }, { label: "Call", hidden: true }, { type: "separator" }, { label: "Delete", danger: true }],
+      });
+      expect(labels()).toEqual(["Edit", "Delete"]);
+      expect(screen.container.queryAll((n) => classNameOf(n as never).includes("my-1 border-t"))).toHaveLength(1);
+    });
+
+    it("orders items by group and order, with a separator between groups", async () => {
+      await openMenu({
+        items: [
+          { id: "sign-out", label: "Sign out", group: "session", order: 1000 },
+          { id: "profile", label: "Profile", group: "account", order: 100 },
+          { type: "separator" },
+          { id: "dnd", label: "Do not disturb", group: "status", order: 50 },
+          { id: "settings", label: "Settings", group: "account", order: 200 },
+        ],
+      });
+      expect(labels()).toEqual(["Do not disturb", "Profile", "Settings", "Sign out"]);
+      expect(screen.container.queryAll((n) => classNameOf(n as never).includes("my-1 border-t"))).toHaveLength(2);
+      expect(screen.getByTestId("menuitem-dnd")).toBeTruthy();
+    });
+
+    it("an item with href opens it after onPress and closes the menu", async () => {
+      const onPress = jest.fn();
+      const open = jest.spyOn(Linking, "openURL").mockResolvedValue(true as never);
+      await openMenu({ items: [{ id: "docs", label: "Docs", href: "https://example.test/docs", onPress }] });
+      await fireEvent.press(screen.getByRole("menuitem", { name: "Docs" }));
+      expect(onPress).toHaveBeenCalledTimes(1);
+      expect(open).toHaveBeenCalledWith("https://example.test/docs");
+      expect(screen.queryByRole("menuitem")).toBeNull();
+      open.mockRestore();
+    });
+
+    it("disabledReason shows under a disabled item and is its accessibility hint", async () => {
+      await openMenu({ items: [{ label: "Archive", disabled: true, disabledReason: "Only owners can archive" }] });
+      expect(screen.getByRole("menuitem", { name: "Archive" }).props.accessibilityHint).toBe("Only owners can archive");
+      expect(screen.getByText("Only owners can archive")).toBeTruthy();
+    });
+
+    it("disabledReason is ignored while the item is enabled", async () => {
+      await openMenu({ items: [{ label: "Archive", disabledReason: "Only owners can archive" }] });
+      expect(screen.queryByText("Only owners can archive")).toBeNull();
+    });
+  });
+
+  describe("arrangeMenuItems / mergeMenuItems", () => {
+    it("leaves a list without group or order exactly as it is", () => {
+      const items: DropdownItem[] = [{ label: "A" }, { type: "separator" }, { label: "B" }];
+      expect(arrangeMenuItems(items)).toEqual(items);
+    });
+
+    it("mergeMenuItems replaces by id in place and appends the rest", () => {
+      const merged = mergeMenuItems(
+        [{ id: "a", label: "A" }, { id: "b", label: "B" }],
+        [{ id: "b", label: "B2" }, { id: "c", label: "C" }, { label: "No id" }],
+      );
+      expect(merged.map((i) => (i.type === "separator" ? "-" : i.label))).toEqual(["A", "B2", "C", "No id"]);
+    });
   });
 });

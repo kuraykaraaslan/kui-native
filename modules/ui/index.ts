@@ -55,8 +55,8 @@ export type {
 export { DiffViewer } from "./DiffViewer";
 export type { Change, ChangeType, DiffMode, DiffViewerProps, Hunk } from "./DiffViewer";
 export { Drawer } from "./Drawer";
-export { DropdownMenu } from "./DropdownMenu";
-export type { DropdownItem, DropdownMenuProps } from "./DropdownMenu";
+export { DropdownMenu, arrangeMenuItems, mergeMenuItems } from "./DropdownMenu";
+export type { DropdownItem, DropdownMenuItem, DropdownMenuProps, DropdownSeparator } from "./DropdownMenu";
 export type { DrawerProps } from "./Drawer";
 export { EmptyState } from "./EmptyState";
 export type { EmptyStateProps } from "./EmptyState";
