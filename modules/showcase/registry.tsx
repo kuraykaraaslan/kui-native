@@ -105,6 +105,7 @@ import {
   TypographyMonoDemo,
   TypographySansDemo,
 } from "./foundations";
+import { ContributedMenuDemo, IsolatedTabsDemo, RowActionsDemo, UnavailableSizesDemo, UnavailableTabDemo } from "./extensions";
 
 function LiveRegionDemo() {
   const [msg, setMsg] = useState("");
@@ -2140,6 +2141,16 @@ export const REGISTRY: ShowcaseEntry[] = [
     ],
   },
   {
+    id: "unavailable-contribution",
+    // Mirrors KuiReact's UnavailableContribution showcase variants 1:1 (same titles and copy).
+    variants: [
+      { title: "Card (dashboard widget, panel)", Demo: () => <UnavailableSizesDemo size="card" /> },
+      { title: "Inline (top bar, menu, every reason)", Demo: () => <UnavailableSizesDemo size="inline" /> },
+      { title: "Node (page-builder block, automation node)", Demo: () => <UnavailableSizesDemo size="node" /> },
+      { title: "Tab panel", Demo: UnavailableTabDemo },
+    ],
+  },
+  {
     id: "empty-state",
     // Mirrors KuiReact's EmptyState showcase variants 1:1 (same titles and copy;
     // KuiReact's 📁 emoji icon → Font Awesome's folder, per ADR 0004's FA-only rule).
@@ -3149,6 +3160,10 @@ export const REGISTRY: ShowcaseEntry[] = [
           </View>
         ),
       },
+      {
+        title: "Row actions (rowActions)",
+        Demo: RowActionsDemo,
+      },
     ],
   },
   {
@@ -3503,6 +3518,10 @@ export const REGISTRY: ShowcaseEntry[] = [
         title: "Lazy panels",
         Demo: TabGroupLazyDemo,
       },
+      {
+        title: "Contributed tabs: isolate + order",
+        Demo: IsolatedTabsDemo,
+      },
     ],
   },
   {
@@ -3590,6 +3609,10 @@ export const REGISTRY: ShowcaseEntry[] = [
             />
           </View>
         ),
+      },
+      {
+        title: "Contributed items: group, order, hidden, href, disabledReason",
+        Demo: ContributedMenuDemo,
       },
     ],
   },

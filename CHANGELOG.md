@@ -5,6 +5,32 @@ All notable changes to `kui-native` are recorded here. Versions are git tags
 
 ## Unreleased
 
+### Added — extension surfaces (KuiReact `feat/extensions`, next-boilerplate phase 37)
+
+- `UnavailableContribution`: the placeholder admins and editors see where a contributed piece of UI
+  cannot be shown, built on the `EmptyState` / `Badge` / `Button` look. KuiReact's nine reasons
+  (`disabled`, `unentitled`, `blocked`, `retired`, `banned`, `quarantined`, `failed`, `missing`,
+  `no-access`) with the same icons, tones and English texts (`UNAVAILABLE_REASONS`), sizes `inline`,
+  `card`, `tab`, `node`, optional `title`, `label`, `detail`, `icon`, `tone`, `action` (`label`,
+  `onPress`, `href` via `Linking.openURL`) and `framed`. The inline size's tooltip becomes the
+  accessibility hint.
+- `TabGroup`: `isolate` (group or per tab) wraps each panel in an error boundary and `Suspense`
+  (`renderError`, `loadingFallback`, `onTabError`, `retryLabel`); a throwing tab shows a "failed"
+  placeholder with Retry while the others keep working. Tabs take `order` and a per-tab `lazy`; a
+  removed active tab hands over to the first one. KuiReact exports the boundary as
+  `ContributionBoundary`; here it stays private to TabGroup.
+- `DropdownMenu` items take `id` (`testID` `menuitem-<id>`), `href`, `order`, `group`, `hidden` and
+  `disabledReason` (under the label and as the accessibility hint); `arrangeMenuItems` and
+  `mergeMenuItems` are exported, and `portal` is accepted for API parity (the menu already sits in an
+  overlay).
+- `DataTable`: `rowActions` (`id`, `label`, `icon`, `onPress`, `href`, `hidden`, `disabled`,
+  `disabledReason` — values or functions of the row — `destructive`, `group`, `order`) in a trailing
+  48px column of ellipsis menus, `rowActionsLabel`, and the `rowActions` / `actionsColumn` messages;
+  `resolveRowActions` and `DataTableRowAction` are exported.
+- `libs/utils/orderItems`: `sortByOrder` / `groupByOrder`, KuiReact's CSS-`order`-like ordering.
+- Showcase: the UnavailableContribution page and the new TabGroup, DropdownMenu and DataTable
+  variants (synced from KuiReact).
+
 ### Changed
 
 - Charts follow KuiReact's chart rework (`dbc7886`). Value axes widen to round bounds with
