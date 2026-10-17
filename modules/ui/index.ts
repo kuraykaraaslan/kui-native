@@ -60,6 +60,16 @@ export type { DropdownItem, DropdownMenuProps } from "./DropdownMenu";
 export type { DrawerProps } from "./Drawer";
 export { EmptyState } from "./EmptyState";
 export type { EmptyStateProps } from "./EmptyState";
+export { UnavailableContribution, UNAVAILABLE_REASONS, UNAVAILABLE_REASON_IDS } from "./UnavailableContribution";
+export type {
+  UnavailableContributionAction,
+  UnavailableContributionContent,
+  UnavailableContributionProps,
+  UnavailableContributionSize,
+  UnavailableReason,
+  UnavailableReasonMeta,
+  UnavailableTone,
+} from "./UnavailableContribution";
 export { FileInput } from "./FileInput";
 export type { FileEntry, FileInputMessages, FileInputProps, PickedFile, UploadState } from "./FileInput";
 export { Label } from "./Label";
