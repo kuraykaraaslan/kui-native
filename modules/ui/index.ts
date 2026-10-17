@@ -132,7 +132,7 @@ export { TagInput } from "./TagInput";
 export type { TagInputProps } from "./TagInput";
 export type { TabButtonProps } from "./TabButton";
 export { TabGroup } from "./TabGroup";
-export type { Tab, TabGroupProps } from "./TabGroup";
+export type { Tab, TabErrorContext, TabGroupProps } from "./TabGroup";
 export { Text } from "./Text";
 export { StarRating } from "./StarRating";
 export type { StarRatingProps } from "./StarRating";
