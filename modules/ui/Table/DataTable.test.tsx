@@ -107,3 +107,62 @@ describe("DataTable (server)", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("Server down");
   });
 });
+
+// KuiReact: modules/ui/Table/DataTable.rowActions.test.tsx.
+describe("DataTable rowActions", () => {
+  type Company = { id: string; name: string; status: string; email: string };
+  const COMPANIES: Company[] = [
+    { id: "1", name: "Acme", status: "active", email: "a@acme.test" },
+    { id: "2", name: "Globex", status: "archived", email: "" },
+  ];
+  const COMPANY_COLUMNS: Column<Company>[] = [{ key: "name", header: "Name" }];
+
+  it("without rowActions there is no actions column (unchanged)", async () => {
+    await render(<DataTable mode="static" searchable={false} columns={COMPANY_COLUMNS} rows={COMPANIES} />);
+    expect(screen.queryAllByTestId("row-actions")).toHaveLength(0);
+  });
+
+  it("adds a trailing menu per row; actions get the row and do not press the row", async () => {
+    const onCall = jest.fn();
+    const onRowPress = jest.fn();
+    await render(
+      <DataTable
+        mode="static"
+        searchable={false}
+        columns={COMPANY_COLUMNS}
+        rows={COMPANIES}
+        onRowPress={onRowPress}
+        rowActionsLabel={(row) => `Actions for ${row.name}`}
+        rowActions={[
+          { id: "call", label: "Call", onPress: onCall },
+          { id: "delete", label: "Delete", destructive: true, group: "danger", order: 100 },
+        ]}
+      />,
+    );
+    expect(screen.getAllByTestId("row-actions")).toHaveLength(2);
+    await fireEvent.press(screen.getByRole("button", { name: "Actions for Acme" }));
+    expect(screen.getAllByRole("menuitem").map((i) => i.props.accessibilityLabel)).toEqual(["Call", "Delete"]);
+    await fireEvent.press(screen.getByRole("menuitem", { name: "Call" }));
+    expect(onCall).toHaveBeenCalledWith(COMPANIES[0]);
+    expect(onRowPress).not.toHaveBeenCalled();
+  });
+
+  it("resolves hidden, disabled and disabledReason per row; all hidden leaves an empty cell", async () => {
+    await render(
+      <DataTable
+        mode="static"
+        searchable={false}
+        columns={COMPANY_COLUMNS}
+        rows={COMPANIES}
+        rowActions={[
+          { id: "restore", label: "Restore", hidden: (row) => row.status !== "archived" },
+          { id: "sign", label: "Sign", hidden: (row) => row.status !== "archived", disabled: (row) => !row.email, disabledReason: "Add an email address first" },
+        ]}
+      />,
+    );
+    expect(screen.getAllByTestId("row-actions")).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: "Row actions" })).toHaveLength(1);
+    await fireEvent.press(screen.getByRole("button", { name: "Row actions" }));
+    expect(screen.getByRole("menuitem", { name: "Sign" }).props.accessibilityHint).toBe("Add an email address first");
+  });
+});

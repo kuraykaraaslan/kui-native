@@ -9,7 +9,7 @@
 // anchored panels. Columns share the width equally (min 120px or a
 // column's `width`) and the table scrolls horizontally, as in <Table />.
 // KuiReact's legacy AdvancedDataTable / ServerDataTable branches are a
-// separate roadmap item.
+// separate roadmap item. `rowActions` adds KuiReact's trailing actions column.
 
 import type * as React from "react";
 import { Pressable, ScrollView, View, type ViewStyle } from "react-native";
@@ -27,6 +27,7 @@ import { Text } from "../Text";
 import { useServerTable } from "./core/useServerTable";
 import { useTable } from "./core/useTable";
 import { FilterPopover } from "./parts/FilterPopover";
+import { ROW_ACTIONS_WIDTH, RowActionsCell } from "./parts/RowActionsCell";
 import {
   DEFAULT_MESSAGES,
   type Column,
@@ -34,6 +35,7 @@ import {
   type DataTableFetchResult,
   type DataTableMessages,
   type DataTableMode,
+  type DataTableRowAction,
   type DataTableStateValue,
   type FilterState,
   type SortState,
@@ -59,6 +61,13 @@ export type DataTableProps<T extends Record<string, unknown>> = {
   state?: DataTableStateValue;
   /** KuiReact's `onRowClick`. */
   onRowPress?: (row: T) => void;
+  /**
+   * Per-row actions, shown as a menu in a trailing column (static, paginated and server modes).
+   * Hidden actions are left out per row; a row with none left gets an empty cell.
+   */
+  rowActions?: DataTableRowAction<T>[];
+  /** Accessible label of a row's actions button; a function names the row (e.g. "Actions for Acme"). */
+  rowActionsLabel?: string | ((row: T) => string);
   messages?: Partial<DataTableMessages>;
   initialSort?: SortState[];
   className?: string;
@@ -81,7 +90,25 @@ type Controls = {
   setColumnFilter: (key: string, value: string) => void;
 };
 
-function HeaderRow<T extends Record<string, unknown>>({ columns, ctl }: { columns: Column<T>[]; ctl: Controls }) {
+type RowActionsParts<T> = {
+  /** Accessible name of the actions column, when the table has one. */
+  header: string | null;
+  cell: (row: T) => React.ReactNode;
+};
+
+/** The trailing actions column, only when `rowActions` has entries (KuiReact's rowActionsParts). */
+function rowActionsParts<T extends Record<string, unknown>>(props: DataTableProps<T>, msgs: DataTableMessages): RowActionsParts<T> {
+  const { rowActions, rowActionsLabel } = props;
+  const list = rowActions && rowActions.length > 0 ? rowActions : null;
+  const labelFor = (row: T) =>
+    typeof rowActionsLabel === "function" ? rowActionsLabel(row) : rowActionsLabel ?? msgs.rowActions ?? "Row actions";
+  return {
+    header: list ? msgs.actionsColumn ?? "Actions" : null,
+    cell: (row: T) => (list ? <RowActionsCell<T> row={row} actions={list} label={labelFor(row)} /> : null),
+  };
+}
+
+function HeaderRow<T extends Record<string, unknown>>({ columns, ctl, actionsHeader }: { columns: Column<T>[]; ctl: Controls; actionsHeader?: string | null }) {
   const t = useThemeTokens();
   return (
     <View className="flex-row border-b border-border bg-surface-sunken">
@@ -134,11 +161,25 @@ function HeaderRow<T extends Record<string, unknown>>({ columns, ctl }: { column
           </View>
         );
       })}
+      {actionsHeader ? (
+        // KuiReact: an `sr-only` "Actions" heading in a `w-12` column.
+        <View role="columnheader" aria-label={actionsHeader} className="px-2 py-3" style={{ width: ROW_ACTIONS_WIDTH }} />
+      ) : null}
     </View>
   );
 }
 
-function BodyRows<T extends Record<string, unknown>>({ columns, rows, onRowPress }: { columns: Column<T>[]; rows: T[]; onRowPress?: (row: T) => void }) {
+function BodyRows<T extends Record<string, unknown>>({
+  columns,
+  rows,
+  onRowPress,
+  actions,
+}: {
+  columns: Column<T>[];
+  rows: T[];
+  onRowPress?: (row: T) => void;
+  actions?: (row: T) => React.ReactNode;
+}) {
   return (
     <>
       {rows.map((row, i) => {
@@ -152,13 +193,16 @@ function BodyRows<T extends Record<string, unknown>>({ columns, rows, onRowPress
           );
         });
         const rowClass = cn("flex-row", i > 0 && "border-t border-border");
+        const trailing = actions?.(row) ?? null;
         return onRowPress ? (
           <Pressable key={i} testID="datatable-row" accessibilityRole="button" onPress={() => onRowPress(row)} className={cn(rowClass, "active:bg-surface-overlay")}>
             {cells}
+            {trailing}
           </Pressable>
         ) : (
           <View key={i} testID="datatable-row" className={rowClass}>
             {cells}
+            {trailing}
           </View>
         );
       })}
@@ -233,13 +277,25 @@ function Toolbar({
   );
 }
 
-function Frame<T extends Record<string, unknown>>({ caption, columns, children, ctl }: { caption?: string; columns: Column<T>[]; children: React.ReactNode; ctl: Controls }) {
-  const minWidth = columns.reduce((sum, c) => sum + (c.width ?? MIN_COL_WIDTH), 0);
+function Frame<T extends Record<string, unknown>>({
+  caption,
+  columns,
+  children,
+  ctl,
+  actionsHeader,
+}: {
+  caption?: string;
+  columns: Column<T>[];
+  children: React.ReactNode;
+  ctl: Controls;
+  actionsHeader?: string | null;
+}) {
+  const minWidth = columns.reduce((sum, c) => sum + (c.width ?? MIN_COL_WIDTH), 0) + (actionsHeader ? ROW_ACTIONS_WIDTH : 0);
   return (
     <View role="region" aria-label={caption ?? "Data table"} className="w-full overflow-hidden rounded-lg border border-border">
       <ScrollView horizontal nestedScrollEnabled contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flexGrow: 1, minWidth }}>
-          <HeaderRow columns={columns} ctl={ctl} />
+          <HeaderRow columns={columns} ctl={ctl} actionsHeader={actionsHeader} />
           <View className="bg-surface-base">{children}</View>
         </View>
       </ScrollView>
@@ -278,6 +334,7 @@ function ClientView<T extends Record<string, unknown>>(props: DataTableProps<T> 
   } = props;
   const msgs: DataTableMessages = { ...DEFAULT_MESSAGES, ...messages };
   const isStatic = mode === "static";
+  const actions = rowActionsParts(props, msgs);
   const table = useTable<T>({ rows, columns, initialSort, initialPageSize: isStatic ? Math.max(rows.length, defaultPageSize) : defaultPageSize });
 
   const total = table.total;
@@ -309,8 +366,8 @@ function ClientView<T extends Record<string, unknown>>(props: DataTableProps<T> 
           rowsPerPageLabel={msgs.rowsPerPage}
         />
       ) : null}
-      <Frame caption={caption} columns={columns} ctl={table}>
-        {resolved !== "ready" ? <StateRow state={resolved} message={message} /> : <BodyRows columns={columns} rows={pageRows} onRowPress={onRowPress} />}
+      <Frame caption={caption} columns={columns} ctl={table} actionsHeader={actions.header}>
+        {resolved !== "ready" ? <StateRow state={resolved} message={message} /> : <BodyRows columns={columns} rows={pageRows} onRowPress={onRowPress} actions={actions.cell} />}
       </Frame>
       {!isStatic ? (
         <Footer
@@ -344,6 +401,7 @@ function ServerView<T extends Record<string, unknown>>(props: DataTableProps<T> 
     id,
   } = props;
   const msgs: DataTableMessages = { ...DEFAULT_MESSAGES, ...messages };
+  const actions = rowActionsParts(props, msgs);
   if (!fetchPage) throw new Error('DataTable mode="server" requires a `fetchPage` prop.');
   const table = useServerTable<T>({ fetchPage, initialPageSize: defaultPageSize, initialSort });
 
@@ -365,8 +423,8 @@ function ServerView<T extends Record<string, unknown>>(props: DataTableProps<T> 
         onPageSize={table.changePageSize}
         rowsPerPageLabel={msgs.rowsPerPage}
       />
-      <Frame caption={caption} columns={columns} ctl={table}>
-        {resolved !== "ready" ? <StateRow state={resolved} message={message} /> : <BodyRows columns={columns} rows={table.rows} onRowPress={onRowPress} />}
+      <Frame caption={caption} columns={columns} ctl={table} actionsHeader={actions.header}>
+        {resolved !== "ready" ? <StateRow state={resolved} message={message} /> : <BodyRows columns={columns} rows={table.rows} onRowPress={onRowPress} actions={actions.cell} />}
       </Frame>
       <Footer summary={table.total === 0 ? "No results" : `Showing ${start}–${end} of ${table.total}`} page={table.page} totalPages={table.totalPages} onPage={table.setPage} />
     </View>

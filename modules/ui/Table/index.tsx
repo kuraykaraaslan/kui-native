@@ -27,4 +27,6 @@ export type {
   DataTableFetchArgs,
   DataTableFetchResult,
   DataTableMessages,
+  DataTableRowAction,
 } from "./types";
+export { resolveRowActions } from "./parts/RowActionsCell";
